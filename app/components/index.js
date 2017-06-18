@@ -20,3 +20,5 @@ export { form_connector } from './basic/form/form_connector.js';  /** Form 组�
 export { FormContainer } from './basic/form/FormContainer.js';    /** Form 组件，提供Form外衣，是Form可以正常工作*/
 import * as ValidateMethods from './basic/form/validate.js';
 export { ValidateMethods };                                       /** Form 组件，提供具体的验证方法 */
+export { ScrollerSegment } from './custom/ScrollSegment.js';
+export { SelectCarNum } from './custom/SelectCarNum.js';

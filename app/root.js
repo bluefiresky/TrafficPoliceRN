@@ -12,8 +12,9 @@ import { StackNavigator } from 'react-navigation';
 import { backgroundGrey, mainBule, W } from './configs/index.js';
 
 import {
-  /** auth */     LoginView, RegisterView, ResetView,
-  /** product */  CommonProblemsView, FeedbackView, AboutUsView, SettingView
+  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,
+  /** peoplePolice */ PpHomePageView,AccidentBasicInformationView,PhotoEvidenceVeiw,GatheringPartyInformationView,GatheringCardPhotoView,ConfirmInformationView,AccidentFactAndResponsibilityView,SignatureConfirmationView,
+  /** assistPolice */ ApHomePageView,AAccidentBasicInformationView,APhotoEvidenceVeiw,SelectHandleTypeView,AGatheringPartyInformationView,AGatheringCardPhotoView,AConfirmInformationView,AccidentConditionView,AccidentConfirmResponView,ASignatureConfirmationView,AAccidentFactAndResponsibilityView,WaitRemoteResponsibleView,ResponsibleResultView
  } from './views/index.js';
 
 const isIos = Platform.OS === 'ios';
@@ -38,21 +39,50 @@ const publicNavigationOptions = {
 }
 
 /** App-主栈 */
-const MainNavigator = StackNavigator({
-  SettingView: { screen: SettingView, navigationOptions: { title: '设置'} },
-  CommonProblemsView: { screen: CommonProblemsView, navigationOptions: { title: '常见问题'} },
-  FeedbackView: { screen: FeedbackView, navigationOptions: { title: '意见反馈'} },
-  AboutUsView: { screen: AboutUsView, navigationOptions: { title: '关于我们'} },
-},{
-  headerMode: 'screen',
-  navigationOptions: () => (publicNavigationOptions)
-})
+// const MainNavigator = StackNavigator({
+//   LoginView: { screen: LoginView, navigationOptions: { title: '登录'} },
+//   PpHomePageView: { screen: PpHomePageView, navigationOptions: { title: '首页'} },
+//   ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} }
+// },{
+//   headerMode: 'screen',
+//   mode: 'modal',
+//   navigationOptions: () => (publicNavigationOptions)
+// })
 
-/** App-Auth栈 */
-const AuthNavigator = StackNavigator({
-  LoginView: { screen: LoginView },
-  RegisterView: { screen: RegisterView, navigationOptions: { title: '注册'} },
-  ResetView: { screen: ResetView, navigationOptions: { title: '找回密码'} }
+/** App-public栈 */
+const PublicNavigator = StackNavigator({
+  //公共
+  LoginView: { screen: LoginView, navigationOptions: { title: '登录'} },
+  //协警
+  ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} },
+  AAccidentBasicInformationView: { screen: AAccidentBasicInformationView, navigationOptions: { title: '基本信息'} },
+  APhotoEvidenceVeiw: { screen: APhotoEvidenceVeiw, navigationOptions: { title: '拍照取证'} },
+  SelectHandleTypeView: { screen: SelectHandleTypeView, navigationOptions: { title: '选择处理方式'} },
+  AGatheringPartyInformationView: { screen: AGatheringPartyInformationView, navigationOptions: { title: '采集当事人信息'} },
+  AGatheringCardPhotoView: { screen: AGatheringCardPhotoView, navigationOptions: { title: '采集证件信息'} },
+  AConfirmInformationView: { screen: AConfirmInformationView, navigationOptions: { title: '确认信息'} },
+  AAccidentFactAndResponsibilityView: { screen: AAccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实'} },
+  WaitRemoteResponsibleView: { screen: WaitRemoteResponsibleView, navigationOptions: { title: '等待远程定责'} },
+  ResponsibleResultView: { screen: ResponsibleResultView },
+  ASignatureConfirmationView: { screen: ASignatureConfirmationView, navigationOptions: { title: '签字确认'} },
+  AccidentConditionView: { screen: AccidentConditionView, navigationOptions: { title: '事故形态及情形'} },
+  AccidentConfirmResponView: { screen: AccidentConfirmResponView, navigationOptions: { title: '事故定责'} },
+
+  //民警
+  PpHomePageView: { screen: PpHomePageView, navigationOptions: { title: '首页'} },
+  AccidentBasicInformationView: { screen: AccidentBasicInformationView, navigationOptions: { title: '事故基本信息'} },
+  PhotoEvidenceVeiw: { screen: PhotoEvidenceVeiw, navigationOptions: { title: '拍照取证'} },
+  GatheringPartyInformationView: { screen: GatheringPartyInformationView, navigationOptions: { title: '采集当事人信息'} },
+  GatheringCardPhotoView: { screen: GatheringCardPhotoView, navigationOptions: { title: '采集证件照片'} },
+  ConfirmInformationView: { screen: ConfirmInformationView, navigationOptions: { title: '确认信息'} },
+  AccidentFactAndResponsibilityView: { screen: AccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实及责任'} },
+  SignatureConfirmationView: { screen: SignatureConfirmationView, navigationOptions: { title: '签字确认'} },
+  //公共
+  SettingView: { screen: SettingView, navigationOptions: { title: '设置'} },
+  FeedBackView: { screen: FeedBackView, navigationOptions: { title: '意见反馈'} },
+  HistoricalCaseView: { screen: HistoricalCaseView, navigationOptions: { title: '历史案件'} },
+  CaseDetailsView: { screen: CaseDetailsView, navigationOptions: { title: '案件详情'} },
+  // LookConclusionView: { screen: LookConclusionView, navigationOptions: { title: '案件详情'} },
 },{
   headerMode: 'screen',
   navigationOptions: () => (publicNavigationOptions)
@@ -60,10 +90,10 @@ const AuthNavigator = StackNavigator({
 
 /** App-基础栈 */
 const AppNavigator = StackNavigator({
-  Main: { screen: MainNavigator },
-  Auth: { screen: AuthNavigator },
+  // Main: { screen: MainNavigator },
+  Public: { screen: PublicNavigator }
 }, {
-  initialRouteName: 'Auth',
+  initialRouteName: 'Public',
   headerMode: 'none',
   mode: 'modal',
 });
