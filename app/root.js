@@ -38,17 +38,6 @@ const publicNavigationOptions = {
   headerBackTitle: '返回'
 }
 
-/** App-主栈 */
-// const MainNavigator = StackNavigator({
-//   LoginView: { screen: LoginView, navigationOptions: { title: '登录'} },
-//   PpHomePageView: { screen: PpHomePageView, navigationOptions: { title: '首页'} },
-//   ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} }
-// },{
-//   headerMode: 'screen',
-//   mode: 'modal',
-//   navigationOptions: () => (publicNavigationOptions)
-// })
-
 /** App-public栈 */
 const PublicNavigator = StackNavigator({
   //公共

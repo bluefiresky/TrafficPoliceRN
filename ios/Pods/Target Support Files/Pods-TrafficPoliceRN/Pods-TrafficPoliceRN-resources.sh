@@ -21,6 +21,9 @@ case "${TARGETED_DEVICE_FAMILY}" in
   3)
     TARGET_DEVICE_ARGS="--target-device tv"
     ;;
+  4)
+    TARGET_DEVICE_ARGS="--target-device watch"
+    ;;
   *)
     TARGET_DEVICE_ARGS="--target-device mac"
     ;;
@@ -77,9 +80,11 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "BaiduMapKit/BaiduMapKit/BaiduMapAPI_Map.framework/Resources/mapapi.bundle"
   install_resource "IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "BaiduMapKit/BaiduMapKit/BaiduMapAPI_Map.framework/Resources/mapapi.bundle"
   install_resource "IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle"
 fi
 
