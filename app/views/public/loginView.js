@@ -18,7 +18,6 @@ class LoginView extends Component {
     super(props);
     this.state = {
       loading: false,
-      showRoles:false,
       codeText: '获取验证码',
       codeSecondsLeft: 60,
       codeSecondsLeftSp:60,
@@ -27,6 +26,11 @@ class LoginView extends Component {
     this.phoneNum = '';
     this.verificationCode = '';
   }
+
+  componentWillUnmount(){
+    this.timer && clearInterval(this.timer);
+  }
+
   //输入框文字变化
   onChangeText(text, type) {
     switch (type) {
@@ -50,6 +54,7 @@ class LoginView extends Component {
       Toast.showShortCenter('手机号输入有误');
       return;
     }
+
     if (this.state.codeSecondsLeft === 60) {
       this.timer = setInterval(() => {
         let t = this.state.codeSecondsLeft - 1;
@@ -60,30 +65,15 @@ class LoginView extends Component {
           this.setState({codeText: `(${t})秒后再次获取`, codeSecondsLeft: t, codeColor: formRightText});
           if (t === 30) {
             let that = this;
-            Alert.alert(
-                '提醒',
-                '收不到验证码？试试语音验证码',
-                [{text: '取消', onPress: () =>{}},
-                {text: '语音验证码', onPress: () =>{
-                    that.timer && clearInterval(that.timer);
-                    //获取语音验证码
-                    that.timer1 = setInterval(() => {
-                      let st = that.state.codeSecondsLeftSp - 1;
-                      if (st === 0) {
-                        that.timer1 && clearInterval(that.timer1);
-                        that.setState({codeText: '重新获取', codeSecondsLeftSp: 60, codeColor: mainBule,codeSecondsLeft:60})
-                      } else {
-                        that.setState({codeText: `(${st})秒后再次获取`, codeSecondsLeftSp: st, codeColor: formRightText});
-                      }
-                    },1000)
-                  },}]
-              )
+            Toast.showShortCenter('收不到验证码？试试语音验证码');
           }
         }
       }, 1000);
-
+      // 不管成功与否，开始倒计时
+      this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType:1}) );
     }
   }
+
   loginBtnClick(){
     if (!this.checkPhone(this.phoneNum)) {
       Toast.showShortCenter('请输入正确手机号');
@@ -93,28 +83,33 @@ class LoginView extends Component {
       Toast.showShortCenter('验证码不能为空');
       return;
     }
-    this.setState({
-      showRoles: !this.state.showRoles
+
+    this.setState({loading: true})
+    let self = this;
+    this.props.dispatch( create_service(Contract.POST_USER_LOGIN_PHONE, {mobile: this.phoneNum, smsCode: this.verificationCode}))
+      .then( res => {
+        console.log(' LoginView post user login res -->> ', res);
+        if(res) {
+          self.props.dispatch( create_service(Contract.GET_USER_INFO, {}))
+            .then( res => {
+              if(res){
+                this.setState({loading: false})
+                if(res.policeType === 2) self.props.navigation.navigate('PpHomePageView');
+                else if(res.policeType === 3) self.props.navigation.navigate('ApHomePageView');
+              }else{
+                self.setState({loading: false})
+              }
+          })
+        }else{
+          this.setState({loading: false})
+        }
     })
+
   }
-  selectRoles(type){
-    this.setState({
-      showRoles: false
-    })
-    switch (type) {
-      case 'AssistPolice':
-      //协警
-      this.props.navigation.navigate('ApHomePageView');
-      break;
-      case 'PeoplePolice':
-      //民警
-      this.props.navigation.navigate('PpHomePageView');
-      break;
-      default:
-    }
-  }
+
   render(){
     let { loading,codeText,codeColor,codeSecondsLeft } = this.state;
+
     return(
       <ScrollView style={styles.container}
                   showsVerticalScrollIndicator ={false}>
@@ -147,18 +142,6 @@ class LoginView extends Component {
           </View>
           <View style={{marginLeft:15, marginTop:30}}>
             <XButton title='登录' onPress={() => this.loginBtnClick()}/>
-            {this.state.showRoles?<View style={{width:100,backgroundColor:'#ffffff',marginTop:-20,marginLeft:W/2,borderColor:'#F0F0F0',borderWidth:1}}>
-              <TouchableHighlight style={{marginTop:10,marginLeft:5,width:90,backgroundColor:'#C8C8C8'}} underlayColor='#C8C8C8' onPress={() => this.selectRoles('AssistPolice')}>
-                <Text style={{fontSize:14,alignSelf:'center',padding:5}}>
-                  协警角色
-                </Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={{marginTop:15,marginLeft:5,marginBottom:10, width:90,backgroundColor:'#C8C8C8'}} underlayColor='#C8C8C8' onPress={() => this.selectRoles('PeoplePolice')}>
-                <Text style={{fontSize:14,alignSelf:'center',padding:5}}>
-                  民警角色
-                </Text>
-              </TouchableHighlight>
-            </View>:null}
           </View>
           <ProgressView show={loading}/>
         </View>

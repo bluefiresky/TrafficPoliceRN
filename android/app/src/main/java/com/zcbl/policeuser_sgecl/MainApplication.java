@@ -1,4 +1,4 @@
-package com.trafficpolicern;
+package com.zcbl.policeuser_sgecl;
 
 import android.app.Application;
 
@@ -11,6 +11,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.zcbl.policeuser_sgecl.modules.ModuleManagerPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new PickerViewPackage(),
             new ImagePickerPackage(),
-            new RCTToastPackage()
+            new RCTToastPackage(),
+            new ModuleManagerPackage()
       );
     }
   };

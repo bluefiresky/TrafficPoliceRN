@@ -79,7 +79,6 @@ const PublicNavigator = StackNavigator({
 
 /** App-基础栈 */
 const AppNavigator = StackNavigator({
-  // Main: { screen: MainNavigator },
   Public: { screen: PublicNavigator }
 }, {
   initialRouteName: 'Public',

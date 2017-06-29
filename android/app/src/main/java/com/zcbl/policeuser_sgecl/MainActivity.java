@@ -1,4 +1,4 @@
-package com.trafficpolicern;
+package com.zcbl.policeuser_sgecl;
 
 import com.facebook.react.ReactActivity;
 

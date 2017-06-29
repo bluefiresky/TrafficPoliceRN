@@ -59,10 +59,9 @@ function dispatch_reducers(dispatch, promise, name, params){
       if (data.terminate){
         console.log('%c create_service terminate === true and doing ## LOGIN_FAIL ##', 'color:red');
         dispatch({ type : "LOGIN_FAIL" });
-        // Actions.login();
       }else{
         if (data.success){
-          dispatch({ type : name, requestParams : params, data : data });
+          dispatch({ type : name, requestParams : params, data : data.data });
           return data.data;
         }else{
           Toast.showShortCenter(data.message)
@@ -70,15 +69,6 @@ function dispatch_reducers(dispatch, promise, name, params){
       }
     }).catch( error => {
       console.log('%c create_service && catch error -->> ', 'color:red', error);
-
-      if(error.result_code === 20000) {
-        Toast.showShortCenter("请登录");
-        dispatch({ type : "LOGIN_FAIL" });
-      }else if(error.result_code === - 1){
-        Toast.showShortCenter("网络请求错误,请稍后重试");
-      }else {
-        Toast.showShortCenter(error.error_msg);
-      }
     })
 
   return nPromise
