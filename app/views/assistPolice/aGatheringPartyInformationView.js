@@ -167,7 +167,7 @@ class AGatheringPartyInformationView extends Component {
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}}></View>
         <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,width:85,marginLeft:5}}>姓名：</Text>
+          <Text style={{fontSize:13,color:formLeftText,marginLeft:5}}>姓名：</Text>
           <TextInput style={{fontSize: 13,flex:1}}
                      onChangeText={(text) => { this.onChangeText(text,index,'Name') } }
                      clearButtonMode={'while-editing'}
@@ -176,7 +176,7 @@ class AGatheringPartyInformationView extends Component {
         <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
         <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,width:85,marginLeft:5}}>联系方式：</Text>
+          <Text style={{fontSize:13,color:formLeftText,marginLeft:5}}>联系方式：</Text>
           <TextInput style={{fontSize: 13,flex:1}}
                      onChangeText={(text) => { this.onChangeText(text,index,'Phone') } }
                      clearButtonMode={'while-editing'}
@@ -186,7 +186,7 @@ class AGatheringPartyInformationView extends Component {
         <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
         <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,width:85,marginLeft:5}}>驾驶证号：</Text>
+          <Text style={{fontSize:13,color:formLeftText,marginLeft:5}}>驾驶证号：</Text>
           <TextInput style={{fontSize: 13,flex:1}}
                      onChangeText={(text) => { this.onChangeText(text,index,'DrivingLicense') } }
                      clearButtonMode={'while-editing'}
@@ -195,7 +195,7 @@ class AGatheringPartyInformationView extends Component {
         <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
         <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
           <Text style={{fontSize:12,color:'red',alignSelf:'center'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,width:85,marginLeft:5,alignSelf:'center'}}>车牌号：</Text>
+          <Text style={{fontSize:13,color:formLeftText,marginLeft:5,alignSelf:'center'}}>车牌号：</Text>
           <SelectCarNum style={{flex:1,marginRight:15}}
                         provincialData={value.carNumArr[0]}
                         letterData={value.carNumArr[1]}
@@ -206,7 +206,7 @@ class AGatheringPartyInformationView extends Component {
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
         <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
-          <Text style={{fontSize:13,color:formLeftText,width:85,marginLeft:10}}>交通方式：</Text>
+          <Text style={{fontSize:13,color:formLeftText,marginLeft:10}}>交通方式：</Text>
           <Text style={{fontSize:13,color:formLeftText}}>驾驶：</Text>
           <TouchableHighlight onPress={() => this.showTypePicker(this.carTypeData,index,'carTypeData')} underlayColor='transparent'>
             <View style={{flex:1,flexDirection:'row'}}>
@@ -218,7 +218,7 @@ class AGatheringPartyInformationView extends Component {
         <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
         <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,width:85,marginLeft:5}}>保险公司：</Text>
+          <Text style={{fontSize:13,color:formLeftText,marginLeft:5}}>保险公司：</Text>
           <TouchableHighlight onPress={() => this.showTypePicker(this.insuranceCompanyData,index,'insuranceCompanyData')} underlayColor='transparent'>
             <View style={{flex:1,flexDirection:'row'}}>
               <Text style={{fontSize:13,color:formLeftText,marginLeft:10}}>{this.submitDataArr[index].insuranceCompanyData}</Text>
@@ -228,7 +228,7 @@ class AGatheringPartyInformationView extends Component {
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
         <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
-          <Text style={{fontSize:13,color:formLeftText,width:85,marginLeft:10}}>保险单号：</Text>
+          <Text style={{fontSize:13,color:formLeftText,marginLeft:10}}>保险单号：</Text>
           <TextInput style={{fontSize: 13,flex:1}}
                      onChangeText={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') } }
                      clearButtonMode={'while-editing'}
@@ -236,7 +236,7 @@ class AGatheringPartyInformationView extends Component {
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
         <View style={{flexDirection:'row',marginLeft:15,paddingTop:10}}>
-          <Text style={{fontSize:13,color:formLeftText,width:85,marginLeft:10}}>保险到期日：</Text>
+          <Text style={{fontSize:13,color:formLeftText,marginLeft:10}}>保险到期日：</Text>
           <DatePicker
             style={{marginTop:-12,marginLeft:-10}}
             date={this.state.date}

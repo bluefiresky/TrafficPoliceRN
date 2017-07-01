@@ -71,32 +71,41 @@ export class SelectCarNum extends Component {
       this.selectNum = this.selectNum + value;
       this.returnValue()
       for (var i = 0; i < numberData.length; i++) {
-        numberData[i].isSelcted = (i == index ? true : false)
+        numberData[i].isSelcted = (i == index)
       }
       if (this.selectNum.length == 5) {
         this.setState({
-          show: false,
+          show: false
         })
-        for (var i = 0; i < numberData.length; i++) {
-          numberData[i].isSelcted = false
-        }
       }
     }
   }
   //删除
   deleteClick() {
+    let { numberData } = this.props;
     if (this.selectNum.length > 0) {
+      this.selectNum = this.selectNum.substring(0,this.selectNum.length-1);
+      this.returnValue()
+      if (this.selectNum.length == 0) {
+        for (var i = 0; i < numberData.length; i++) {
+          numberData[i].isSelcted = false
+        }
+        this.setState({show:false})
+        return
+      }
+      for (var i = 0; i < numberData.length; i++) {
+        let lastStr = this.selectNum.substr(this.selectNum.length-1,1)
+        numberData[i].isSelcted = (lastStr == numberData[i].title)
+      }
       this.setState({
         show:true
       })
     }
-    this.selectNum = this.selectNum.substring(0,this.selectNum.length-1);
-    this.returnValue()
   }
   //确定
   confirmClick(){
     this.setState({
-      show: false,
+      show: false
     })
     this.returnValue()
   }
@@ -109,9 +118,7 @@ export class SelectCarNum extends Component {
     let width = (this.viewWidth - 60) / 5;
     return (
       <TouchableHighlight style={{width:width, height: width,alignItems:'center',justifyContent: 'center',marginLeft:10,borderColor:'#D4D4D4',borderWidth:1,marginTop:10,backgroundColor:(value.isSelcted ? 'orange':'white')}} key={index} onPress={() => this.clickItem(value.title,index)} underlayColor={'transparent'}>
-        <Text style={{fontSize:14}}>
-          {value.title}
-        </Text>
+        <Text style={{fontSize:14}}>{value.title}</Text>
       </TouchableHighlight>
     )
   }
@@ -122,7 +129,7 @@ export class SelectCarNum extends Component {
       <View style={[{},style]}>
         <View style={{flexDirection:'row'}}
               onLayout={(e) => {
-                this.viewWidth = e.nativeEvent.layout.width;
+                this.viewWidth = e.nativeEvent.layout.width * 0.7;
               }}>
           <Text style={{backgroundColor:'#D4D4D4',fontWeight:'bold',fontSize:16,width:30,height:30,padding:5,textAlign:'center'}} onPress={() => this.showData('provincialData',provincialData)}>
             {this.selectPro}
@@ -134,8 +141,7 @@ export class SelectCarNum extends Component {
             {this.selectNum}
           </Text>
         </View>
-        {this.state.show?<View style={{marginTop:10}}>
-          <View style={{borderColor:'#D4D4D4',borderWidth:1}}>
+        {this.state.show?<View style={{borderColor:'#D4D4D4',borderWidth:1,marginTop:10}}>
             <View style={{marginBottom:10,flexDirection:'row',flexWrap:'wrap',}}>
               {this.state.showData.map((value,index) => this.renderOneItem(value,index))}
             </View>
@@ -151,8 +157,7 @@ export class SelectCarNum extends Component {
                 </Text>
               </TouchableHighlight>
             </View>:null}
-          </View>
-        </View>:null}
+          </View>:null}
       </View>
     )
   }

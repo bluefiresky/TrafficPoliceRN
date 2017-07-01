@@ -82,12 +82,12 @@ class APhotoEvidenceVeiw extends Component {
   }
   //取证完成
   commit() {
-    for (var i = 0; i < 3; i++) {
-      if (!this.state.data[i].imageURL) {
-        Toast.showShortCenter(`【${this.state.data[i].title}】必须拍照`);
-        return
-      }
-    }
+    // for (var i = 0; i < 3; i++) {
+    //   if (!this.state.data[i].imageURL) {
+    //     Toast.showShortCenter(`【${this.state.data[i].title}】必须拍照`);
+    //     return
+    //   }
+    // }
     let that = this;
     Alert.alert('提示', '请确保拍摄的证件照片清晰完整，提交之后无法修改' ,[{
             text : "再看看",

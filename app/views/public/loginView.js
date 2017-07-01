@@ -85,14 +85,14 @@ class LoginView extends Component {
     }
   }
   loginBtnClick(){
-    if (!this.checkPhone(this.phoneNum)) {
-      Toast.showShortCenter('请输入正确手机号');
-      return;
-    }
-    if (!this.verificationCode) {
-      Toast.showShortCenter('验证码不能为空');
-      return;
-    }
+    // if (!this.checkPhone(this.phoneNum)) {
+    //   Toast.showShortCenter('请输入正确手机号');
+    //   return;
+    // }
+    // if (!this.verificationCode) {
+    //   Toast.showShortCenter('验证码不能为空');
+    //   return;
+    // }
     this.setState({
       showRoles: !this.state.showRoles
     })
