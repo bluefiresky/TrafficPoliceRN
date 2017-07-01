@@ -40,7 +40,7 @@ RCT_REMAP_METHOD(location,
     [BMKMapManager setCoordinateTypeUsedInBaiduMapSDK:BMK_COORDTYPE_BD09LL];
     
     // 启动BaiduMapManger, 配置百度地图应用AK, 授权成功后才能开始定位，授权回调在下边
-    BOOL flag = [self.mapManager start:@"5inBuoGGYFqvnOBogvrFAN4ExBGKuVGF" generalDelegate:self];
+    BOOL flag = [self.mapManager start:@"ouL4ZpqMYoGhpxxO8cZzOCbHtwknIpcg" generalDelegate:self];
     if(!flag){
       NSMutableDictionary *map = [[NSMutableDictionary alloc] initWithCapacity:1];
       [map setValue:@(-98) forKey:@"errorCode"];

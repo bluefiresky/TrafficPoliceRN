@@ -1032,7 +1032,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zcbl.AccidentProfessionalRelease;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zcbl.policeuse;
 				PRODUCT_NAME = TrafficPoliceRN;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1056,7 +1056,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zcbl.AccidentProfessionalRelease;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zcbl.policeuse;
 				PRODUCT_NAME = TrafficPoliceRN;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
