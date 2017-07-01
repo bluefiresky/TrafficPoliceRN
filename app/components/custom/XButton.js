@@ -8,7 +8,7 @@
 */
 
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ViewPropTypes } from "react-native";
 import { Button } from 'react-native-elements';
 
 import { W, mainBule } from '../../configs/index.js';
@@ -16,7 +16,7 @@ import { W, mainBule } from '../../configs/index.js';
 export class XButton extends Component {
 
   static propTypes = {
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     textStyle: Text.propTypes.style
   }
 

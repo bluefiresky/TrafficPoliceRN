@@ -8,20 +8,11 @@ target 'TrafficPoliceRN' do
   react_native_path = "../node_modules/react-native"
   pod "Yoga", :path => "#{react_native_path}/ReactCommon/yoga"
   pod "React", :path => react_native_path, :subspecs => [
-    'Core',
-    'RCTActionSheet',
-    'RCTAnimation',
-    'RCTGeolocation',
-    'RCTImage',
-    'RCTLinkingIOS',
-    'RCTNetwork',
-    'RCTSettings',
-    'RCTText',
-    'RCTVibration',
-    'RCTWebSocket'
+    'Core'
   ]
 
   pod 'IQKeyboardManager'
+  pod 'BaiduMapKit' #百度地图SDK
 
 # when not using frameworks  we can do this instead of including the source files in our project (1/4):
 #  pod 'react-native-maps', path: '../../'
