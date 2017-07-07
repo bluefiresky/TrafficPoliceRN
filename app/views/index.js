@@ -10,6 +10,7 @@ export { FeedBackView } from './public/feedBackView.js';                        
 export { HistoricalCaseView } from './public/historicalCaseView.js';            /** 历史案件 */
 export { CaseDetailsView } from './public/caseDetailsView.js';                  /** 案件详情 */
 export { LookConclusionView } from './public/lookConclusionView.js';            /** 查看事故认定书 */
+export { LookBigImageView } from './public/lookBigImageView.js';            /** 查看事故认定书 */
 
 /** 民警 */
 export { PpHomePageView } from './peoplePolice/ppHomePageView.js';                            /** 民警首页 */

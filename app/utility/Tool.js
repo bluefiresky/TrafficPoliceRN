@@ -66,5 +66,56 @@ export default class Tools {
            time = time + " " + this.addZero(times.getHours()) + ":" + this.addZero(times.getMinutes())+ ":" + this.addZero(times.getSeconds());
            return time;
     }
+    /** 时间处理 */
+    static handleTime(time,isChaneg,timeType){
+      if (isChaneg) {
+        let timeStr = time.split(" ");
+        let time1 = timeStr[0].replace('-', '年').replace('-', '月') + '日'
+        if (timeType == 'time') {
+          let time2;
+          if (timeStr[2] == 'am') {
+            if (parseInt(timeStr[1].split(':')[0]) < 10) {
+              time2 = `0${timeStr[1].split(':')[0]}时${timeStr[1].split(':')[1]}分`
+            } else {
+              time2 = timeStr[1].replace(':', '时') + '分'
+            }
+          } else {
+            let time2Str = timeStr[1].split(":");
+            time2 = (parseInt(time2Str[0]) + 12) + '时' + time2Str[1] + '分'
+          }
+          return `${time1} ${time2}`
+        }
+        return time1
+      } else {
+        let timeStr = time.split(" ");
+        let time1 = timeStr[0].replace('-', '年').replace('-', '月') + '日'
+        if (timeType == 'time') {
+          let time2 = timeStr[1].replace(':', '时') + '分'
+          return `${time1} ${time2}`
+        }
+        return time1
+      }
+    }
+    static getTime(format){
+      Date.prototype.Format = function(fmt) {
+        var o = {
+          "M+" : this.getMonth()+1,                 //月份
+          "d+" : this.getDate(),                    //日
+          "h+" : this.getHours(),                   //小时
+          "m+" : this.getMinutes(),                 //分
+          "s+" : this.getSeconds(),                 //秒
+          "q+" : Math.floor((this.getMonth()+3)/3), //季度
+          "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt))
+          fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        for(var k in o)
+          if(new RegExp("("+ k +")").test(fmt))
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        return fmt;
+       }
+       return (new Date().Format(format))
+    }
+    /** 时间处理 */
 
 }

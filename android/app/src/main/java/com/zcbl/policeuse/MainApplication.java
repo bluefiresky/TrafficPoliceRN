@@ -12,7 +12,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.zcbl.policeuse.modules.ModuleManagerPackage;
-
+import com.reactnative.photoview.PhotoViewPackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
             new PickerViewPackage(),
             new ImagePickerPackage(),
             new RCTToastPackage(),
-            new ModuleManagerPackage()
+            new ModuleManagerPackage(),
+            new PhotoViewPackage()
       );
     }
   };

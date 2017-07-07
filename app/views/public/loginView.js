@@ -1,8 +1,9 @@
 /**
 * 登录页面
 */
+'use strict'
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Alert } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
@@ -14,14 +15,18 @@ import { XButton } from '../../components/index.js';  /** 自定义组件 */
 
 class LoginView extends Component {
 
+  static navigationOptions = {
+    header: null
+  }
   constructor(props){
     super(props);
     this.state = {
       loading: false,
-      codeText: '获取验证码',
+      codeText: '发送验证码',
       codeSecondsLeft: 60,
       codeSecondsLeftSp:60,
-      codeColor:mainBule
+      codeColor:'#4F4F4F',
+      showSpeekCode:false
     }
     this.phoneNum = '';
     this.verificationCode = '';
@@ -48,24 +53,29 @@ class LoginView extends Component {
     let reg = /^[0-9]+.?[0-9]*$/;
     return (!phone || phone.indexOf(1) !== 0 || phone.length !== 11 || !reg.test(phone)) ? false:true;
   }
+  //验证验证码
+  checkCode(code){
+    let reg = /^[0-9]+.?[0-9]*$/;
+    return (!code || code.length !== 6 || !reg.test(code)) ? false:true;
+  }
   //获取验证码
   sendVerificationCode(){
     if (!this.checkPhone(this.phoneNum)) {
       Toast.showShortCenter('手机号输入有误');
       return;
     }
-
     if (this.state.codeSecondsLeft === 60) {
       this.timer = setInterval(() => {
         let t = this.state.codeSecondsLeft - 1;
         if (t === 0) {
           this.timer && clearInterval(this.timer);
-          this.setState({codeText: '重新获取', codeSecondsLeft: 60, codeColor: mainBule})
+          this.setState({codeText: '重新获取', codeSecondsLeft: 60, codeColor: '#4F4F4F'})
         } else{
-          this.setState({codeText: `(${t})秒后再次获取`, codeSecondsLeft: t, codeColor: formRightText});
+          this.setState({codeText: `${t}s`, codeSecondsLeft: t, codeColor: formRightText});
           if (t === 30) {
-            let that = this;
-            Toast.showShortCenter('收不到验证码？试试语音验证码');
+            this.setState({
+              showSpeekCode: true
+            })
           }
         }
       }, 1000);
@@ -75,15 +85,16 @@ class LoginView extends Component {
   }
 
   loginBtnClick(){
+    this.props.navigation.navigate('PpHomePageView');
+    return
     if (!this.checkPhone(this.phoneNum)) {
-      Toast.showShortCenter('请输入正确手机号');
+      Toast.showShortCenter('请输入手机号');
       return;
     }
-    if (!this.verificationCode) {
-      Toast.showShortCenter('验证码不能为空');
+    if (!this.checkCode(this.verificationCode)) {
+      Toast.showShortCenter('验证码必须是6位');
       return;
     }
-
     this.setState({loading: true})
     let self = this;
     this.props.dispatch( create_service(Contract.POST_USER_LOGIN_PHONE, {mobile: this.phoneNum, smsCode: this.verificationCode}))
@@ -108,43 +119,60 @@ class LoginView extends Component {
 
   render(){
     let { loading,codeText,codeColor,codeSecondsLeft } = this.state;
-
     return(
-      <ScrollView style={styles.container}
-                  showsVerticalScrollIndicator ={false}>
-        <View style={{marginTop:50,backgroundColor:'#ffffff'}}>
-          <Image source={{}} style={{width:100,height:80,backgroundColor:'green',alignSelf:'center'}}/>
-          <View style={{marginTop:30}}>
-            <Text style={{marginLeft:15,color:formLeftText,fontSize:15}}>手机号码</Text>
-            <TextInput style={{height:40,width:W-30,fontSize:13,marginLeft:15,borderColor:'#F0F0F0',borderWidth:1,padding:5,marginTop:15}}
-              onChangeText={(text) => this.onChangeText(text,'phoneNum')}
-              placeholder={'请输入手机号码'}
-              clearButtonMode={'while-editing'}
-              keyboardType={'numeric'}
-              underlineColorAndroid = {'transparent'}
-            />
+      <View style={styles.container}>
+          <View style={{height:(Platform.OS === 'ios') ? 64 : 44,width:W,backgroundColor:'#ffffff'}}>
           </View>
-          <View style={{marginTop:20}}>
-            <Text style={{marginLeft:15,color:formLeftText,fontSize:15}}>验证码</Text>
-            <View style={{flexDirection:'row',marginLeft:15,marginTop:15,justifyContent:'space-between'}}>
-              <TextInput style={{height:40,width:180,fontSize:13,padding:5,borderColor:'#F0F0F0',borderWidth:1}}
-                onChangeText={(text) => this.onChangeText(text,'verificationCode')}
-                placeholder={'请输入验证码'}
+          <View style={{flex:1,marginTop:30,backgroundColor:'#ffffff'}}>
+            <Image source={require('./image/login.png')} style={{width:90,height:90,alignSelf:'center'}}/>
+            <Text style={{marginTop:10,alignSelf:'center',fontSize:16,color:'#1174D9',fontWeight:'bold'}}>
+              警用事故处理
+            </Text>
+            <View style={{marginTop:30,flexDirection:'row',width:W-30,marginLeft:15,backgroundColor:'#EFF2F7',borderRadius:10}}>
+              <Image source={require('./image/phone.png')} style={{width:11,height:16,alignSelf:'center',marginLeft:15}}/>
+              <TextInput style={{height:45,flex:1,fontSize:13,paddingLeft:41,marginLeft:-26}}
+                onChangeText={(text) => this.onChangeText(text,'phoneNum')}
+                placeholder={'请输入手机号码'}
                 clearButtonMode={'while-editing'}
                 keyboardType={'numeric'}
+                maxLength={11}
+                placeholderTextColor={'#1174D9'}
                 underlineColorAndroid = {'transparent'}
               />
-              <TouchableHighlight style={{alignSelf:'center',marginLeft:20,marginRight:20}} onPress={() => {this.sendVerificationCode()}} underlayColor={'transparent'} disabled={(codeColor !== mainBule)}>
-                <Text style={{color:codeColor,fontSize:14}}>{codeText}</Text>
+            </View>
+            <View style={{marginTop:20,flexDirection:'row',width:W-30,marginLeft:15,backgroundColor:'#EFF2F7',borderRadius:10}}>
+              <Image source={require('./image/verification_code.png')} style={{width:13,height:15,alignSelf:'center',marginLeft:15}}/>
+              <TextInput style={{height:45,width:W-30,fontSize:13,paddingLeft:43,borderRadius:5,marginLeft:-28}}
+                onChangeText={(text) => this.onChangeText(text,'verificationCode')}
+                placeholder={'请输入验证码'}
+                placeholderTextColor={'#1174D9'}
+                clearButtonMode={'while-editing'}
+                keyboardType={'numeric'}
+                maxLength={6}
+                underlineColorAndroid = {'transparent'}
+              />
+              <TouchableHighlight style={{width:100,padding:5,backgroundColor:'#ffffff',marginLeft:-110,justifyContent:'center',marginTop:5,marginBottom:5,borderRadius:5}} onPress={() => {this.sendVerificationCode()}} underlayColor={'transparent'} disabled={(codeColor !== '#4F4F4F')}>
+                <Text style={{color:codeColor,fontSize:13,alignSelf:'center'}}>{codeText}</Text>
               </TouchableHighlight>
             </View>
+            {this.state.showSpeekCode ? <View style={{flexDirection:'row',justifyContent:'flex-end',marginTop:15}}>
+              <Text style={{marginRight:15}}>
+                收不到验证码？试试
+                <Text style={{color:'#267BD8'}} onPress={() => {
+                  Toast.showShortCenter('请注意接听电话');
+                  this.setState({
+                    showSpeekCode: false
+                  })
+                }}>语音验证码</Text>
+              </Text>
+            </View>:null}
+            <View style={{marginLeft:15, marginTop:50}}>
+              <XButton title='登录' onPress={() => this.loginBtnClick()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
+            </View>
+            <ProgressView show={loading}/>
           </View>
-          <View style={{marginLeft:15, marginTop:30}}>
-            <XButton title='登录' onPress={() => this.loginBtnClick()}/>
-          </View>
-          <ProgressView show={loading}/>
-        </View>
-      </ScrollView>
+          <Image source={require('./image/login_bg.png')} style={{width:W,height:W / 5.28}} resizeMode="contain"/>
+      </View>
     );
   }
 

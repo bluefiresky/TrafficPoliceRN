@@ -89,18 +89,21 @@ class ConfirmInformationView extends Component {
   }
   renderOnePersonInfo(value,index){
     return (
-      <View style={{backgroundColor:'#ffffff'}} key={index}>
-        <View style={{paddingTop:10,paddingBottom:10,backgroundColor:'#D4D4D4'}}>
-          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`${value.title}当事人`}</Text>
+      <View style={{backgroundColor:'#ffffff',marginTop:10}} key={index}>
+        <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`${value.title}当事人信息`}</Text>
         </View>
-        {this.renderRowItem('姓名',value.name,index,'Name')}
-        {this.renderRowItem('联系方式',value.phone,index,'Phone')}
-        {this.renderRowItem('驾驶证号',value.drivingLicense,index,'DrivingLicense')}
-        {this.renderRowItem('车牌号',value.carNum,index,'CarNum')}
-        {this.renderRowItem('交通方式',value.carType,index,'CarType')}
-        {this.renderRowItem('保险公司',value.insuranceCompany,index,'InsuranceCompany')}
-        {this.renderRowItem('保险单号',value.insuranceCertificateNum,index,'InsuranceCertificateNum')}
-        {this.renderRowItem('保险到期日',value.insuranceTime,index,'InsuranceTime')}
+        <View style={{marginTop:10}}>
+          {this.renderRowItem('姓名',value.name,index,'Name')}
+          {this.renderRowItem('联系方式',value.phone,index,'Phone')}
+          {this.renderRowItem('驾驶证号',value.drivingLicense,index,'DrivingLicense')}
+          {this.renderRowItem('车牌号',value.carNum,index,'CarNum')}
+          {this.renderRowItem('交通方式',value.carType,index,'CarType')}
+          {this.renderRowItem('保险公司',value.insuranceCompany,index,'InsuranceCompany')}
+          {this.renderRowItem('保险单号',value.insuranceCertificateNum,index,'InsuranceCertificateNum')}
+          {this.renderRowItem('保险到期日',value.insuranceTime,index,'InsuranceTime')}
+        </View>
       </View>
     )
   }
@@ -182,25 +185,31 @@ class ConfirmInformationView extends Component {
     return(
       <ScrollView style={styles.container}
                    showsVerticalScrollIndicator={false}>
-         <View style={{paddingTop:10,paddingBottom:10,backgroundColor:'#D4D4D4'}}>
-           <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>基本信息</Text>
+         <View style={{backgroundColor:'#ffffff',marginTop:10}}>
+           <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
+             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+             <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>基本信息</Text>
+           </View>
+           <View style={{marginTop:10}}>
+             {this.renderRowItem('事故时间','2017年6月4日 17时8分',null,'AccidentTime')}
+             {this.renderRowItem('天气','晴',null,'Weather')}
+             {this.renderRowItem('事故地点','北京市朝阳区',null,'AccidentSite')}
+           </View>
          </View>
-         <View style={{backgroundColor:'#ffffff'}}>
-           {this.renderRowItem('事故时间','2017年6月4日 17时8分',null,'AccidentTime')}
-           {this.renderRowItem('天气','晴',null,'Weather')}
-           {this.renderRowItem('事故地点','北京市朝阳区',null,'AccidentSite')}
-         </View>
-         <View style={{paddingTop:10,paddingBottom:10,backgroundColor:'#D4D4D4'}}>
-           <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>事故现场照片</Text>
-         </View>
-         <View style={{flex:1,marginTop:15,backgroundColor:'#ffffff',marginRight:this.rowMargin}}>
-           <FlatList
-             keyExtractor={(data,index) => {return index}}
-             showsVerticalScrollIndicator={false}
-             data={this.accidentData.accidentPhoto}
-             numColumns={this.rowNum}
-             renderItem={this.renderItem.bind(this)}
-           />
+         <View style={{backgroundColor:'#ffffff',marginTop:10}}>
+           <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
+             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+             <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>现场照片</Text>
+           </View>
+           <View style={{flex:1,marginTop:15,marginRight:this.rowMargin}}>
+             <FlatList
+               keyExtractor={(data,index) => {return index}}
+               showsVerticalScrollIndicator={false}
+               data={this.accidentData.accidentPhoto}
+               numColumns={this.rowNum}
+               renderItem={this.renderItem.bind(this)}
+             />
+           </View>
          </View>
          {this.accidentData.partyInfo.map((value,index) => this.renderOnePersonInfo(value,index))}
          <View style={{paddingTop:10,paddingBottom:10,backgroundColor:'#D4D4D4'}}>
@@ -218,7 +227,7 @@ class ConfirmInformationView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: backgroundGrey
   }
 });
 

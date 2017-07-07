@@ -10,41 +10,14 @@ import { W, H, backgroundGrey,formLeftText, formRightText } from '../../configs/
 import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
-import { ScrollerSegment } from '../../components/index';
 import HistoricalCaseCellView from './historicalCaseCellView'
-import { SettingView } from './settingView'
-import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
 
 class HistoricalCaseView extends Component {
 
   static navigationOptions = ({ navigation }) => {
     let { title } = navigation.state.params;
-    this.listener = RCTDeviceEventEmitter.addListener('ChangeRightTitle', (index) => {
-      if (index == 0) {
-        navigation.setParams({title: '日历选择'})
-      } else if (index == 1) {
-        navigation.setParams({title:'全部上传'})
-      } else {
-        navigation.setParams({title:''})
-      }
-    });
     return {
-      headerRight: (
-        <Text style={{fontSize:15,color:'#ffffff',marginRight:15}} onPress={()=>{
-          if (title == '日历选择') {
-
-          } else if (title == '全部上传') {
-            Alert.alert(
-                '提醒',
-                '是否将所有待上传案件全部上传？',
-                [{text: '取消', onPress: () =>{}},
-                {text: '全部上传', onPress: () =>{
-                  //上传案件
-                }}]
-              )
-          }
-        }}>{title}</Text>
-      )
+      title: title
     }
   }
   componentWillUnmount() {
@@ -54,36 +27,6 @@ class HistoricalCaseView extends Component {
     this.state = {
       currentIndex: 0
     }
-    this.segArrays = ['已完结', '待上传','未完结'];
-    this.data = [1,2,3,4];
-    this.contentArrs = Array();
-  }
-  renderContent(i){
-    return (
-      <HistoricalCase  navigation={this.props.navigation} key={i} currentIndex={i}/>
-    )
-  }
-  render(){
-    this.contentArrs = [];
-    for (var i = 0; i < 3; i++) {
-      this.contentArrs.push(this.renderContent(i));
-    }
-    return(
-      <View style={styles.container}>
-        <ScrollerSegment segDatas = {this.segArrays} contentDatas={this.contentArrs} onPress={(index) => {
-          RCTDeviceEventEmitter.emit('ChangeRightTitle',index);
-          this.setState({currentIndex: index});
-        }}/>
-       </View>
-    );
-  }
-
-}
-class HistoricalCase extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-    }
     this.data = [1,2,3,4];
   }
   renderItem({item,index}) {
@@ -92,9 +35,8 @@ class HistoricalCase extends Component {
     )
   }
   render(){
-    console.log(this.props.currentIndex);
     return(
-      <View style={{flex:1,marginBottom:64}}>
+      <View style={{flex:1}}>
         <FlatList style={{backgroundColor:backgroundGrey}}
                   keyExtractor={(data,index) => {return index}}
                   data={this.data}

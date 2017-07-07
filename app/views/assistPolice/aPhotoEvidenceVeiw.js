@@ -148,7 +148,7 @@ class APhotoEvidenceVeiw extends Component {
            />
          </View>
          <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-           <XButton title={'取证完成'} onPress={() => this.commit()}/>
+           <XButton title={'取证完成'} onPress={() => this.commit()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
          </View>
       </View>
     );

@@ -36,23 +36,23 @@ class SettingView extends Component {
       <ScrollView style={styles.container}
                   showsVerticalScrollIndicator ={false}>
         <TouchableHighlight style={{marginTop:50,marginLeft:15,width:W-30}} underlayColor='#B4B4B4' onPress={() => this.useHelp()}>
-          <View style={{flex:1,flexDirection:'row',backgroundColor:'#B4B4B4',padding:10}}>
-            <View style={{width:8,height:8,borderRadius:4,backgroundColor:'black',alignSelf:'center'}}></View>
-            <Text style={{fontSize:15,marginLeft:5,color:formLeftText}}>
+          <View style={{flex:1,flexDirection:'row',backgroundColor:'#ffffff',padding:15}}>
+            <View style={{width:6,height:6,borderRadius:3,backgroundColor:'#1C79D9',alignSelf:'center'}}></View>
+            <Text style={{fontSize:16,marginLeft:5,color:formLeftText}}>
               使用帮助
             </Text>
           </View>
         </TouchableHighlight>
-        <TouchableHighlight style={{marginTop:50,marginLeft:15,width:W-30}} underlayColor='#B4B4B4' onPress={() => this.feedback()}>
-          <View style={{flex:1,flexDirection:'row',backgroundColor:'#B4B4B4',padding:10}}>
-            <View style={{width:8,height:8,borderRadius:4,backgroundColor:'black',alignSelf:'center'}}></View>
-            <Text style={{fontSize:15,marginLeft:5,color:formLeftText}}>
+        <TouchableHighlight style={{marginTop:20,marginLeft:15,width:W-30}} underlayColor='#B4B4B4' onPress={() => this.feedback()}>
+          <View style={{flex:1,flexDirection:'row',backgroundColor:'#ffffff',padding:15}}>
+            <View style={{width:6,height:6,borderRadius:3,backgroundColor:'#1C79D9',alignSelf:'center'}}></View>
+            <Text style={{fontSize:16,marginLeft:5,color:formLeftText}}>
               意见反馈
             </Text>
           </View>
         </TouchableHighlight>
         <View style={{marginLeft:15, marginTop:100}}>
-          <XButton title='退出登录' onPress={() => {this.exitLogin()}}/>
+          <XButton title='退出登录' onPress={() => {this.exitLogin()}} style={{backgroundColor:'#ffffff',borderRadius:20}} textStyle={{color:'#FC0042'}}/>
         </View>
       </ScrollView>
     );
@@ -63,7 +63,7 @@ class SettingView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#EFF2F7'
   }
 });
 

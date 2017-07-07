@@ -19,7 +19,6 @@ export class SelectCarNum extends Component {
     this.viewWidth = 0;
     this.returnText = '';
     this.selectPro = '';
-    this.selectLet = '';
     this.selectNum = ''
   }
   showData(type,data){
@@ -29,17 +28,15 @@ export class SelectCarNum extends Component {
     })
     if (type == 'provincialData') {
       this.currSeleIndex = 0
-    } else if (type == 'letterData') {
+    } else if (type == 'numberData') {
       this.currSeleIndex = 1
-    } else {
-      this.currSeleIndex = 2
     }
   }
   clickItem(value,index){
-    let { style, provincialData, letterData, numberData } = this.props;
+    let { style, provincialData, numberData } = this.props;
     if (this.currSeleIndex == 0) {
       this.setState({
-        showData:letterData
+        showData:numberData
       })
       this.selectPro = value;
       this.currSeleIndex = 1;
@@ -52,30 +49,14 @@ export class SelectCarNum extends Component {
       this.setState({
         showData:numberData
       })
-      this.selectLet = value;
-      this.currSeleIndex = 2;
-      for (var i = 0; i < letterData.length; i++) {
-        letterData[i].isSelcted = (i == index ? true : false)
-      }
-      this.returnValue()
-    } else {
-      if (this.selectNum.length == 5) {
-        this.setState({
-          show: false,
-        })
-        return;
-      }
-      this.setState({
-        showData:numberData
-      })
       this.selectNum = this.selectNum + value;
       this.returnValue()
       for (var i = 0; i < numberData.length; i++) {
         numberData[i].isSelcted = (i == index)
       }
-      if (this.selectNum.length == 5) {
+      if (this.selectNum.length == 6) {
         this.setState({
-          show: false
+          show:false
         })
       }
     }
@@ -86,13 +67,6 @@ export class SelectCarNum extends Component {
     if (this.selectNum.length > 0) {
       this.selectNum = this.selectNum.substring(0,this.selectNum.length-1);
       this.returnValue()
-      if (this.selectNum.length == 0) {
-        for (var i = 0; i < numberData.length; i++) {
-          numberData[i].isSelcted = false
-        }
-        this.setState({show:false})
-        return
-      }
       for (var i = 0; i < numberData.length; i++) {
         let lastStr = this.selectNum.substr(this.selectNum.length-1,1)
         numberData[i].isSelcted = (lastStr == numberData[i].title)
@@ -134,9 +108,9 @@ export class SelectCarNum extends Component {
           <Text style={{backgroundColor:'#D4D4D4',fontWeight:'bold',fontSize:16,width:30,height:30,padding:5,textAlign:'center'}} onPress={() => this.showData('provincialData',provincialData)}>
             {this.selectPro}
           </Text>
-          <Text style={{backgroundColor:'#D4D4D4',fontWeight:'bold',fontSize:16,width:30,height:30,padding:5,marginLeft:10,textAlign:'center'}} onPress={() => this.showData('letterData',letterData)}>
+          {/* <Text style={{backgroundColor:'#D4D4D4',fontWeight:'bold',fontSize:16,width:30,height:30,padding:5,marginLeft:10,textAlign:'center'}} onPress={() => this.showData('letterData',letterData)}>
             {this.selectLet}
-          </Text>
+          </Text> */}
           <Text style={{flex:1,backgroundColor:'#D4D4D4',fontSize:14,height:30,marginLeft:10,textAlign:'center',paddingTop:7}} onPress={() => this.showData('numberData',numberData)}>
             {this.selectNum}
           </Text>
@@ -145,7 +119,7 @@ export class SelectCarNum extends Component {
             <View style={{marginBottom:10,flexDirection:'row',flexWrap:'wrap',}}>
               {this.state.showData.map((value,index) => this.renderOneItem(value,index))}
             </View>
-            {this.currSeleIndex == 2 ? <View style={{flexDirection:'row',justifyContent: 'center',flex:1,marginBottom:10}}>
+            {this.currSeleIndex == 1 ? <View style={{flexDirection:'row',justifyContent: 'center',flex:1,marginBottom:10}}>
               <TouchableHighlight style={{borderColor:'#D4D4D4',borderWidth:1,alignSelf:'center',padding:10}} onPress={() => this.deleteClick()} underlayColor='transparent'>
                 <Text style={{textAlign:'center',fontSize:14}}>
                   删除

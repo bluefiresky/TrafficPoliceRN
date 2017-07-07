@@ -45,11 +45,16 @@ class FeedBackView extends Component {
                   showsVerticalScrollIndicator ={false}>
         <View style={{flex:1,marginLeft:15}}>
           <Text style={{fontSize:14,color:formLeftText,marginTop:30}}>反馈内容：</Text>
-          <TextInput style={{height:180,width:W-30,borderWidth:1,textAlignVertical:"top",borderColor:'#F0F0F0',marginTop:15,fontSize:12,padding:5}} placeholder="请输入您的建议" multiline={true} onChangeText={(text) => this.onChangeText(text,'FeedBack')} maxLength={200}/>
+          <TextInput    style={{height:180,width:W-30,borderWidth:1,textAlignVertical:"top",borderColor:'#F0F0F0',marginTop:15,fontSize:12,padding:5,backgroundColor:'#FBFBFE'}}
+            multiline={true}
+            onChangeText={(text) => this.onChangeText(text,'FeedBack')}
+            maxLength={200}
+          />
           <Text style={{fontSize:14,color:formLeftText,marginTop:50}}>联系方式：</Text>
-          <TextInput style={{height:40,width:W-30,borderWidth:1,borderColor:'#F0F0F0',marginTop:15,fontSize:12,padding:5}} placeholder="请输入您的手机号" onChangeText={(text) => this.onChangeText(text,'Phone')}/>
-          <View style={{marginLeft:15, marginTop:50}}>
-            <XButton title='提交意见' onPress={() => {this.submitFeedBack()}}/>
+          <TextInput style={{height:40,width:W-30,borderWidth:1,borderColor:'#F0F0F0',marginTop:15,fontSize:12,padding:5,backgroundColor:'#FBFBFE'}}
+            onChangeText={(text) => this.onChangeText(text,'Phone')}/>
+          <View style={{marginTop:50}}>
+            <XButton title='提交意见' onPress={() => this.submitFeedBack()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
           </View>
         </View>
       </ScrollView>
