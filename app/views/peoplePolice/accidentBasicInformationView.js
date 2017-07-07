@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, ScrollView, Alert, TouchableHighlight,TextInput
 import { connect } from 'react-redux';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
-import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
+import { ProgressView, InputWithIcon } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { getStore } from '../../redux/index.js';       /** Redux的store */
@@ -111,12 +111,7 @@ class AccidentBasicInformationView extends Component {
             </Text>
           </Text>
           <View style={{backgroundColor:'#EFF2F7',width:W,height:1,marginTop:10}}></View>
-          <View style={{flexDirection:'row',paddingVertical:10}}>
-            <Image source={require('./image/location.png')} style={{width:20,height:20,alignSelf:'center',marginLeft:15}}/>
-            <TextInput style={{fontSize:14,height:30,flex:1,marginLeft:15}}
-                       defaultValue={this.state.accidentSite}
-                       onChangeText={(text) => this.onChangeText(text)}/>
-          </View>
+          <InputWithIcon icon={require('./image/location.png')} noBorder={true} placeholder={this.state.accidentSite} onChange={this.onChangeText.bind(this)}/>            
         </View>
         <View style={{marginLeft:15, marginTop:50}}>
           <XButton title='拍照取证' onPress={() => this.gotoTakePhoto()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>

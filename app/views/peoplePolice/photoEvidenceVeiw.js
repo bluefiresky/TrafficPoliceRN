@@ -112,12 +112,12 @@ class PhotoEvidenceVeiw extends Component {
   }
   //取证完成
   commit() {
-    for (var i = 0; i < 3; i++) {
-      if (!this.state.data[i].imageURL) {
-        Toast.showShortCenter(`【${this.state.data[i].title}】必须拍照`);
-        return
-      }
-    }
+    // for (var i = 0; i < 3; i++) {
+    //   if (!this.state.data[i].imageURL) {
+    //     Toast.showShortCenter(`【${this.state.data[i].title}】必须拍照`);
+    //     return
+    //   }
+    // }
     let that = this;
     Alert.alert('提示', '事故现场照片采集完成，请立即指引当事人挪车。' ,[{
             text : "返回修改",
@@ -133,15 +133,25 @@ class PhotoEvidenceVeiw extends Component {
     return (
       <TouchableHighlight style={{marginLeft:this.rowMargin,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
         <View style={{flex:1}}>
-          <Image style={{width: this.rowWH,height: this.rowWH * 0.7,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
-                 source={item.imageURL ? item.imageURL:null}>
-            {!item.imageURL ? <Image style={{alignSelf:'center'}} source={require('./image/personal_camera.png')}/>:null}
-          </Image>
+          {
+            !item.imageURL?
+              <View style={{width: this.rowWH, height: this.rowWH * 0.7, backgroundColor: 'white', borderColor: '#D4D4D4', borderWidth: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <Image style={{height: 50, width: 50, resizeMode: 'contain'}} source={require('./image/personal_camera.png')}/>
+              </View>
+            :
+              <Image style={{width: this.rowWH,height: this.rowWH * 0.7,justifyContent:'center',alignItems: 'center', borderColor:'#D4D4D4',borderWidth:1}}>
+                <Image style={{height: 50, width: 50, resizeMode: 'contain'}} source={require('./image/personal_camera.png')}/>
+              </Image>
+          }
           <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.title}</Text>
         </View>
       </TouchableHighlight>
     )
   }
+  // <Image style={{}}
+  //        source={item.imageURL ? item.imageURL:null}>
+  //   {!item.imageURL ?
+  // </Image>
   render(){
     return(
       <View style={styles.container}>

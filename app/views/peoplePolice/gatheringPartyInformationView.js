@@ -43,32 +43,32 @@ class GatheringPartyInformationView extends Component {
   //下一步
   gotoNext(){
     //检测必填项
-     for (var i = 0; i < this.submitDataArr.length; i++) {
-       if (!this.submitDataArr[i].name) {
-         Toast.showShortCenter(`请输入${this.carInfoData[i].title}当事人姓名`)
-         return
-       }
-       if (!this.checkPhone(this.submitDataArr[i].phone)) {
-         Toast.showShortCenter(`${this.carInfoData[i].title}手机号输入有误`)
-         return
-       }
-       if (!this.submitDataArr[i].drivingLicense) {
-         Toast.showShortCenter(`请输入${this.carInfoData[i].title}驾驶证号`)
-         return
-       }
-       if (!this.submitDataArr[i].carNum) {
-         Toast.showShortCenter(`请输入${this.carInfoData[i].title}车牌号`)
-         return
-       }
-       if (!this.submitDataArr[i].insuranceCompanyData) {
-         Toast.showShortCenter(`请输入${this.carInfoData[i].title}车辆类型`)
-         return
-       }
-       if (!this.submitDataArr[i].insuranceCompanyData) {
-         Toast.showShortCenter(`请输入${this.carInfoData[i].title}保险公司`)
-         return
-       }
-     }
+    //  for (var i = 0; i < this.submitDataArr.length; i++) {
+    //    if (!this.submitDataArr[i].name) {
+    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}当事人姓名`)
+    //      return
+    //    }
+    //    if (!this.checkPhone(this.submitDataArr[i].phone)) {
+    //      Toast.showShortCenter(`${this.carInfoData[i].title}手机号输入有误`)
+    //      return
+    //    }
+    //    if (!this.submitDataArr[i].drivingLicense) {
+    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}驾驶证号`)
+    //      return
+    //    }
+    //    if (!this.submitDataArr[i].carNum) {
+    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}车牌号`)
+    //      return
+    //    }
+    //    if (!this.submitDataArr[i].insuranceCompanyData) {
+    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}车辆类型`)
+    //      return
+    //    }
+    //    if (!this.submitDataArr[i].insuranceCompanyData) {
+    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}保险公司`)
+    //      return
+    //    }
+    //  }
      //提交信息
 
      //提交成功后跳转到下个页面

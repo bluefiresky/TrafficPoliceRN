@@ -9,7 +9,7 @@ import { View, StyleSheet, AppState, AsyncStorage, ActivityIndicator, Text } fro
 import { configureStore, getStore } from './redux/index.js';
 import RootView from './root.js';
 
-
+console.ignoredYellowBox = ['Warning: BackAndroid is deprecated.']
 export default class TrafficPoliceRN extends Component {
 
   constructor(props){

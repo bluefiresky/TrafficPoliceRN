@@ -121,8 +121,8 @@ class PpHomePageView extends Component {
          </View>
        </TouchableHighlight>:null}
        <TouchableHighlight onPress={()=> this.handleCase()} underlayColor={'transparent'}>
-         <Image source={require('./image/handle_case.png')} style={{marginTop:20,alignSelf:'center',width:150,height:150}}>
-          <Text style={{fontSize:14,color:'#ffffff',marginTop:95,backgroundColor:'transparent',alignSelf:'center'}}>
+         <Image source={require('./image/handle_case.png')} style={{marginTop:20,alignSelf:'center',width:120,height:120,resizeMode: 'contain'}}>
+          <Text style={{fontSize:14,color:'#ffffff',marginTop:72,backgroundColor:'transparent',alignSelf:'center'}}>
             处理案件
           </Text>
          </Image>
