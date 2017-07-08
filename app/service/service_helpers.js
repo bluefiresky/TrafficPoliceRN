@@ -37,6 +37,9 @@ function http_factory({method, paramsType}) {
     let h;
     let path = XIN_SERVICE_URL;
     if(paramsType === 'form') {
+      if(auth.token){
+        signParams.sessionId = auth.token;
+      }
       h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)};
       meta.headers['Content-type'] = 'application/x-www-form-urlencoded';
       meta.body = qs.stringify(Object.assign(signParams, otherParams, h))
@@ -69,10 +72,10 @@ function http_factory({method, paramsType}) {
         let code = jsonData.code;
         if(code == 200){
           return { success: true, data : jsonData };
-        } else if(code == 500){
+        }else if(code == 500){
           return { success: false, message: jsonData.message };
         }else {
-          return { success: false, message: jsonData.message }
+          return { success: false, message: jsonData.message };
         }
       }else{
         return { success : false, code : response.status, message : '网络连接错误' };
@@ -117,7 +120,7 @@ function sign(api, version, signParams, extraParams){
 
   console.log('before sha1 sign str -->> ', str);
   let sign = sha1(str);
-  console.log('after sha1 sign str -->> ', sign.toUpperCase());
+  // console.log('after sha1 sign str -->> ', sign.toUpperCase());
   return sign.toUpperCase();
 }
 

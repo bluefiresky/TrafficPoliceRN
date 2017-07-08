@@ -79,9 +79,22 @@ const PublicNavigator = StackNavigator({
   navigationOptions: () => (publicNavigationOptions)
 })
 
+const prevMain = PublicNavigator.router.getStateForAction;
+PublicNavigator.router = {
+  ...PublicNavigator.router,
+  getStateForAction(action, state){
+    if(state && action.type === 'replace'){
+      const routes = state.routes.slice(0, state.routes.length -1);
+      routes.push(action);
+      return { ...state, routes, index: routes.length - 1 };
+    }
+    return prevMain(action, state);
+  }
+};
+
 /** App-基础栈 */
 const AppNavigator = StackNavigator({
-  Public: { screen: PublicNavigator }
+  Public: { screen: PublicNavigator },
 }, {
   initialRouteName: 'Public',
   headerMode: 'none',
@@ -93,7 +106,7 @@ class RootView extends Component {
   constructor(props){
     super(props);
     this.state={
-      statusBackColor: isIos? 'transparent' : mainBule
+      statusBackColor: isIos? 'transparent' : '#1C79D9'
     };
   }
 

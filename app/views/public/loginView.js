@@ -32,6 +32,18 @@ class LoginView extends Component {
     this.verificationCode = '';
   }
 
+  componentWillMount(){
+    console.log(' execute LoginView and the personal -->> ', global.personal);
+    if(global.auth.isLogin){
+      if(global.personal.policeType == 2) this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+      else if(global.personal.policeType == 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
+    }
+  }
+
+  componentDidMount(){
+
+  }
+
   componentWillUnmount(){
     this.timer && clearInterval(this.timer);
   }
@@ -85,8 +97,8 @@ class LoginView extends Component {
   }
 
   loginBtnClick(){
-    this.props.navigation.navigate('PpHomePageView');
-    return
+    // this.props.navigation.navigate('PpHomePageView');
+    // return
     if (!this.checkPhone(this.phoneNum)) {
       Toast.showShortCenter('请输入手机号');
       return;
@@ -105,8 +117,8 @@ class LoginView extends Component {
             .then( res => {
               if(res){
                 this.setState({loading: false})
-                if(res.policeType === 2) self.props.navigation.navigate('PpHomePageView');
-                else if(res.policeType === 3) self.props.navigation.navigate('ApHomePageView');
+                if(res.policeType === 2) self.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+                else if(res.policeType === 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
               }else{
                 self.setState({loading: false})
               }

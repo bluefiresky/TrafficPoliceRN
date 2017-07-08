@@ -2,21 +2,24 @@
 * 民警首页
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image,Platform,TouchableHighlight } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image,Platform,TouchableHighlight,InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 
-import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
+import { W, H, backgroundGrey,formLeftText, formRightText, mainBule, Version } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 
+const AppType = Platform.OS === 'ios'?2:1;
+
 class PpHomePageView extends Component {
 
   static navigationOptions = {
     header: null
   }
+
   constructor(props){
     super(props);
     this.state = {
@@ -25,9 +28,20 @@ class PpHomePageView extends Component {
       showHistoryCase: true,
       loading: false
     }
+
+    this.forceUpdate = null;
+    this.dictionary = null;
+    this._getData = this._getData.bind(this);
   }
+
+  componentWillMount(){
+  }
+
   componentDidMount() {
     //1、载入页面，加载账户信息、大队章、勘察章、字典表（保险公司、天气、车辆类型等）信息，加载过程显示loading，信息缓存到本地。2、每次启动APP，请求后台字典数据是否有更新，如果有更新，后台返回新的字典数据，客户端缓存最新字典数据；如果没有更新，不需重新缓存数据。若无网络，弹框提示“未检测到网络，是否离线处理？”点击继续。
+    InteractionManager.runAfterInteractions(() => {
+       this._getData();
+    });
   }
   //处理案件
   handleCase(){
@@ -133,6 +147,19 @@ class PpHomePageView extends Component {
         <ProgressView show={this.state.loading}/>
       </ScrollView>
     );
+  }
+
+  /** Private **/
+  async _getData(){
+    this.setState({loading: true})
+    // 查看信分期的强制更新跳转
+    this.forceUpdate = await this.props.dispatch( create_service(Contract.POST_FORCE_UPDATE, {appType: AppType, appVersion: Version}));
+    console.log('PpHomePageView execute _getData this.forceUpdate -->> ', this.forceUpdate);
+    // 字典需要上传本地的版本
+    this.dictionary = await this.props.dispatch( create_service(Contract.POST_ACHIEVE_DICTIONARY,{v: 0}))
+    console.log('PpHomePageView execute _getData this.dictionary -->> ', this.dictionary);
+
+    this.setState({loading: false})
   }
 
 }
