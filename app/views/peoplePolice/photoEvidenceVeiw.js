@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.9)'
-  },
+  }
 });
 
 module.exports.PhotoEvidenceVeiw = connect()(PhotoEvidenceVeiw)

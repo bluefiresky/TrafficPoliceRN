@@ -26,7 +26,6 @@ class LoginView extends Component {
       loading: false,
       codeText: '发送验证码',
       codeSecondsLeft: 60,
-      codeSecondsLeftSp:60,
       codeColor:'#4F4F4F',
       showSpeekCode:false
     }
@@ -98,8 +97,8 @@ class LoginView extends Component {
   }
 
   loginBtnClick(){
-    // this.props.navigation.navigate('PpHomePageView');
-    // return
+    this.props.navigation.navigate('ApHomePageView');
+    return
     if (!this.checkPhone(this.phoneNum)) {
       Toast.showShortCenter('请输入手机号');
       return;

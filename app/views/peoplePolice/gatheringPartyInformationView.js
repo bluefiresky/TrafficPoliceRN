@@ -20,7 +20,7 @@ class GatheringPartyInformationView extends Component {
 
   constructor(props){
     super(props);
-    this.carTypeData = ['小型轿车','大型货车','重型挂车','中型越野汽车','其他'];
+    this.carTypeData = ['大型载客汽车','中型载客汽车','小型载客汽车','微型载客汽车','重型载货汽车','中型载货汽车','轻型载货汽车','微型载货汽车','使馆汽车','领馆汽车','境外汽车','外籍汽车','香港入出境车','澳门入出境车','三轮汽车','低速货车','挂车','其他'];
     this.insuranceCompanyData = ['太平洋','平安','人保'];
     this.state = {
       refresh:false,
@@ -32,9 +32,9 @@ class GatheringPartyInformationView extends Component {
     this.partyDrivingLicense = '';
     this.partyInsuranceCertificateNum = '';
     //提交的内容
-    this.jiafangInfo = {name:'',phone:'',drivingLicense:'',insuranceCertificateNum:'',carTypeData:this.carTypeData[0],insuranceCompanyData: this.insuranceCompanyData[0],carNum:'',date:this.getNowTimeString()};
-    this.yifangInfo = {name:'',phone:'',drivingLicense:'',insuranceCertificateNum:'',carTypeData:this.carTypeData[0],insuranceCompanyData: this.insuranceCompanyData[0],carNum:'',date:this.getNowTimeString()};
-    this.bingfangInfo = {name:'',phone:'',drivingLicense:'',insuranceCertificateNum:'',carTypeData:this.carTypeData[0],insuranceCompanyData: this.insuranceCompanyData[0],carNum:'',date:this.getNowTimeString()};
+    this.jiafangInfo = {name:'',phone:'',drivingLicense:'',insuranceCertificateNum:'',carTypeData:'',insuranceCompanyData: '',carNum:'',date:this.getNowTimeString()};
+    this.yifangInfo = {name:'',phone:'',drivingLicense:'',insuranceCertificateNum:'',carTypeData:'',insuranceCompanyData: '',carNum:'',date:this.getNowTimeString()};
+    this.bingfangInfo = {name:'',phone:'',drivingLicense:'',insuranceCertificateNum:'',carTypeData:'',insuranceCompanyData: '',carNum:'',date:this.getNowTimeString()};
     this.carInfoData = [{title:'甲方',carNumArr:[getProvincialData(),getNumberData()]}];
     this.addOtherTitle = ['乙方','丙方'];
     this.addOtherInfo = [this.yifangInfo,this.bingfangInfo];
@@ -135,7 +135,6 @@ class GatheringPartyInformationView extends Component {
       pickerTitleText:'请选择',
       onPickerConfirm: data => {
         if (type == 'carTypeData') {
-          this.carInfoData[index].carTypeData = data[0];
           if (data[0] == '其他') {
             this.setState({
               showOtherCarTextInput: true
@@ -147,19 +146,6 @@ class GatheringPartyInformationView extends Component {
             })
           }
         } else if (type == 'insuranceCompanyData') {
-          this.carInfoData[index].insuranceCompanyData = data[0];
-          this.submitDataArr[index].insuranceCompanyData = data[0];
-        }
-        this.setState({
-          refresh:true
-        })
-      },
-      onPickerSelect: data => {
-        if (type == 'carTypeData') {
-          this.carInfoData[index].carTypeData = data[0];
-          this.submitDataArr[index].carTypeData = data[0];
-        } else if (type == 'insuranceCompanyData') {
-          this.carInfoData[index].insuranceCompanyData = data[0];
           this.submitDataArr[index].insuranceCompanyData = data[0];
         }
         this.setState({

@@ -224,7 +224,6 @@ class PpHomePageView extends Component {
   _onRefresh(){
     this._getData(true);
   }
-
 }
 
 const styles = StyleSheet.create({

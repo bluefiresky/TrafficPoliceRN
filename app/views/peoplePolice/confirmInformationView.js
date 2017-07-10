@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,Alert } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
@@ -28,8 +28,9 @@ class ConfirmInformationView extends Component {
     this.partyVerData = [{name:'甲方当事人',ver:''},{name:'乙方当事人',ver:''},{name:'丙方当事人',ver:''}];
 
     this.accidentData = {basicInfo:{accidentTime:'2017年6月4日 17时8分',weather:'晴',accidentSite:'北京市朝 阳区'}, accidentPhoto:[{'title': '侧前方',imageURL:''},{'title': '侧后方',imageURL:''},{'title': '碰撞部位',imageURL:''},{'title': '其它现场照片',imageURL:''}],
-    partyInfo:[{title:'甲方',name:'XXX',phone:'13333333333',drivingLicense:'XXX',carNum:'XXX',carType:'XXX',insuranceCompany:'XXX',insuranceCertificateNum:'XXX',insuranceTime:'XXX'},{title:'乙方',name:'XXX',phone:'13333333333',drivingLicense:'XXX',carNum:'XXX',carType:'XXX',
-    insuranceCompany:'XXX',insuranceCertificateNum:'XXX',insuranceTime:'XXX'}],signData:{}};
+    partyInfo:[{title:'甲方',name:'XXX',phone:'13333333333',drivingLicense:'XXX',carNum:'XXX',carType:'XXX',insuranceCompany:'XXX',insuranceCertificateNum:'XXX',insuranceTime:'XXX',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]},
+    {title:'乙方',name:'XXX',phone:'13333333333',drivingLicense:'XXX',carNum:'XXX',carType:'XXX',
+    insuranceCompany:'XXX',insuranceCertificateNum:'XXX',insuranceTime:'XXX',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]}],signData:{}};
   }
   //下一步
   gotoNext(){
@@ -80,29 +81,51 @@ class ConfirmInformationView extends Component {
         return
       }
     }
-    this.props.navigation.navigate('AccidentFactAndResponsibilityView');
+    let that = this;
+    Alert.alert('提示', '请确认信息是否完整无误，提交后无法修改。' ,[{
+            text : "返回修改",
+            onPress : () => {}
+          },{
+            text : "确认无误",
+            onPress : () => {
+              that.props.navigation.navigate('AccidentFactAndResponsibilityView');
+            }
+          }])
   }
   //验证手机号
   checkPhone(phone){
     let reg = /^[0-9]+.?[0-9]*$/;
     return (!phone || phone.indexOf(1) !== 0 || phone.length !== 11 || !reg.test(phone)) ? false:true;
   }
-  renderOnePersonInfo(value,index){
+  renderImgaeItem(value,index,ind){
     return (
-      <View style={{backgroundColor:'#ffffff',marginTop:10}} key={index}>
+      <View style={{marginLeft:this.rowMargin,marginBottom:15}} key={index}>
+          <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
+                 source={value.imageURL ? value.imageURL:null}>
+          </Image>
+          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{value.title}</Text>
+      </View>
+    )
+  }
+  renderOnePersonInfo(value,ind){
+    return (
+      <View style={{backgroundColor:'#ffffff',marginTop:10}} key={ind}>
         <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
           <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
           <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`${value.title}当事人信息`}</Text>
         </View>
         <View style={{marginTop:10}}>
-          {this.renderRowItem('姓名',value.name,index,'Name')}
-          {this.renderRowItem('联系方式',value.phone,index,'Phone')}
-          {this.renderRowItem('驾驶证号',value.drivingLicense,index,'DrivingLicense')}
-          {this.renderRowItem('车牌号',value.carNum,index,'CarNum')}
-          {this.renderRowItem('交通方式',value.carType,index,'CarType')}
-          {this.renderRowItem('保险公司',value.insuranceCompany,index,'InsuranceCompany')}
-          {this.renderRowItem('保险单号',value.insuranceCertificateNum,index,'InsuranceCertificateNum')}
-          {this.renderRowItem('保险到期日',value.insuranceTime,index,'InsuranceTime')}
+          {this.renderRowItem('姓名',value.name,ind,'Name')}
+          {this.renderRowItem('联系方式',value.phone,ind,'Phone')}
+          {this.renderRowItem('驾驶证号',value.drivingLicense,ind,'DrivingLicense')}
+          {this.renderRowItem('车牌号',value.carNum,ind,'CarNum')}
+          {this.renderRowItem('交通方式',value.carType,ind,'CarType')}
+          {this.renderRowItem('保险公司',value.insuranceCompany,ind,'InsuranceCompany')}
+          {this.renderRowItem('保险单号',value.insuranceCertificateNum,ind,'InsuranceCertificateNum')}
+          {this.renderRowItem('保险到期日',value.insuranceTime,ind,'InsuranceTime')}
+        </View>
+        <View style={{flexDirection:'row',marginTop:10,flexWrap:'wrap'}}>
+          {value.data.map((value,index) => this.renderImgaeItem(value,index,ind))}
         </View>
       </View>
     )
@@ -146,14 +169,16 @@ class ConfirmInformationView extends Component {
     }
   }
   renderRowItem(title,value,index,type){
+    let disabled = (type == 'AccidentTime' || type == 'Weather' || type == 'AccidentSite')
     return (
       <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
-        <Text style={{fontSize:13,color:formLeftText,alignSelf:'center'}}>{`${title}：`}</Text>
+        <Text style={{fontSize:14,color:formLeftText,alignSelf:'center'}}>{`${title}：`}</Text>
         <View style={{flex:1}}>
-          <TextInput style={{fontSize: 13,flex:1,height:20}}
+          <TextInput style={{fontSize: 14,flex:1,height:20,marginTop:5}}
                      onChangeText={(text) => { this.onChangeText(text,index,type) } }
                      clearButtonMode={'while-editing'}
                      placeholder = {`请输入${title}`}
+                     editable={!disabled}
                      defaultValue={value}/>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginTop:5}}></View>
         </View>
@@ -162,21 +187,19 @@ class ConfirmInformationView extends Component {
   }
   renderItem({item,index}) {
     return (
-      <TouchableHighlight style={{marginLeft:this.rowMargin,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(index)}>
-        <View style={{flex:1}}>
-          <Image style={{width: this.rowWH,height: this.rowWH*0.7,backgroundColor:'green',justifyContent:'center'}}
-                 source={item.imageURL ? item.imageURL:null}>
-          </Image>
-          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.title}</Text>
-        </View>
-      </TouchableHighlight>
+      <View style={{marginLeft:this.rowMargin,marginBottom:15}}>
+        <Image style={{width: this.rowWH,height: this.rowWH*0.7,backgroundColor:'green',justifyContent:'center'}}
+               source={item.imageURL ? item.imageURL:null}>
+        </Image>
+        <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.title}</Text>
+      </View>
     )
   }
   renderOneParty(value,index) {
     return (
-      <View style={{marginTop:20,backgroundColor:'#ffffff',flexDirection:'row'}} key={index}>
-        <Text style={{marginLeft:15,color:formLeftText,fontSize:13,alignSelf:'center'}}>{`${value.title}当事人：`}</Text>
-        <View style={{marginLeft:20,width:150,height:75,backgroundColor:'#D4D4D4'}}>
+      <View style={{backgroundColor:'#ffffff'}} key={index}>
+        <Text style={{marginLeft:15,color:formLeftText,fontSize:15,marginTop:10}}>{`${value.title}当事人：`}</Text>
+        <View style={{marginLeft:15,width:W-30,height:75,backgroundColor:'#D4D4D4',marginTop:10}}>
         </View>
       </View>
     )
@@ -212,12 +235,13 @@ class ConfirmInformationView extends Component {
            </View>
          </View>
          {this.accidentData.partyInfo.map((value,index) => this.renderOnePersonInfo(value,index))}
-         <View style={{paddingTop:10,paddingBottom:10,backgroundColor:'#D4D4D4'}}>
-           <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>如以上信息无误，请当事人签字确认。</Text>
+         <View style={{flexDirection:'row',paddingTop:10,paddingBottom:10,backgroundColor:'#ffffff',marginTop:10}}>
+           <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
+           <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>如以上信息无误，请当事人签字</Text>
          </View>
          {this.accidentData.partyInfo.map((value,index) => this.renderOneParty(value,index))}
          <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-           <XButton title='下一步' onPress={() => this.gotoNext()}/>
+           <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
          </View>
       </ScrollView>
     );

@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
-import { W, H, backgroundGrey,formLeftText } from '../../configs/index.js';/** 自定义配置参数 */
+import { W, H, backgroundGrey,formLeftText,formRightText } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
@@ -29,15 +29,38 @@ class SelectHandleTypeView extends Component {
     return(
       <ScrollView style={styles.container}
                   showsVerticalScrollIndicator ={false}>
-        <View style={{marginLeft:15,marginBottom:10,marginTop:50}}>
-          <XButton title={'多车事故|自行协商'} onPress={() => this.commit(0)}/>
-        </View>
-        <View style={{marginLeft:15,marginBottom:10,marginTop:50}}>
-          <XButton title={'多车事故|需远程定则'} onPress={() => this.commit(1)}/>
-        </View>
-        <View style={{marginLeft:15,marginBottom:10,marginTop:50}}>
-          <XButton title={'单车事故'} onPress={() => this.commit(2)}/>
-        </View>
+          <View style={{marginTop:50}}>
+            <View style={{marginLeft:15,marginBottom:10,marginTop:30}}>
+              <XButton title={'多车事故|自行协商'} onPress={() => this.commit(0)} style={{backgroundColor:'#2DB3E7',borderRadius:20}}/>
+            </View>
+            <View style={{marginLeft:15,marginBottom:10,marginTop:30}}>
+              <XButton title={'多车事故|需远程定则'} onPress={() => this.commit(1)} style={{backgroundColor:'#FEB35A',borderRadius:20}}/>
+            </View>
+            <View style={{marginLeft:15,marginBottom:10,marginTop:30}}>
+              <XButton title={'单车事故'} onPress={() => this.commit(2)} style={{backgroundColor:'#36BC99',borderRadius:20}}/>
+            </View>
+          </View>
+          <View style={{marginTop:50}}>
+            <Text style={{marginLeft:15,color:formRightText}}>
+              注：
+            </Text>
+            <View style={{flexDirection:'row',marginLeft:15,flex:1,marginTop:10,marginRight:15}}>
+              <Text style={{color:formRightText}}>
+                1、
+              </Text>
+              <Text style={{color:formRightText,lineHeight:20,marginRight:15,marginTop:-2}}>
+                多车事故丨需远程定责，适用于当事人对事故事实及成因有争议，责任划分不明确的事故。事故信息将上传后台，由后台值守民警进行定责，并生成交通事故认定书。
+              </Text>
+            </View>
+            <View style={{flexDirection:'row',marginLeft:15,flex:1,marginTop:10}}>
+              <Text style={{color:formRightText}}>
+                2、
+              </Text>
+              <Text style={{color:formRightText,lineHeight:20,marginRight:15,marginTop:-2}}>
+                单车事故，均需提交后台，由后台值守民警远程定责，并生成交通事故认定书
+              </Text>
+            </View>
+          </View>
       </ScrollView>
     );
   }

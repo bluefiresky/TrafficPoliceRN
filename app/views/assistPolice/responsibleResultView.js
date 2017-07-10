@@ -23,7 +23,9 @@ class ResponsibleResultView extends Component {
   constructor(props){
     super(props);
     this.applyText = '';
-    this.partyResponsData = [{name:'张三',responsibility:'全部责任'}];
+    this.partyResponsibility = [{name:'张三',carNum:'京A123212','responsibility':'全部责任'},
+                                {name:'李四',carNum:'京B123212','responsibility':'全部责任'},
+                                {name:'王五',carNum:'京C123212','responsibility':'全部责任'}];
     this.state = {
       refresh:false
     }
@@ -37,7 +39,7 @@ class ResponsibleResultView extends Component {
     return (
       <View style={{marginTop:15, marginLeft:15}} key={index}>
         <View style={{flexDirection:'row'}}>
-            <Text style={{fontSize:14}}>{`当事人${value.name}负`}</Text>
+            <Text style={{fontSize:14}}>{`当事人${value.name}（${value.carNum}）`}</Text>
             <Text style={{fontSize:14,marginLeft:30}}>{value.responsibility}</Text>
         </View>
       </View>
@@ -49,26 +51,30 @@ class ResponsibleResultView extends Component {
     return(
       <ScrollView style={styles.container}
                    showsVerticalScrollIndicator={false}>
-        <View style={{paddingTop:10,paddingBottom:10,backgroundColor:'#D4D4D4'}}>
+        <View style={{flexDirection:'row',paddingTop:10,backgroundColor:'#ffffff',marginTop:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
           <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>事故事实及责任</Text>
         </View>
-        <View style={{backgroundColor:'#ffffff',marginBottom:10}}>
-          <Text style={{marginLeft:15,marginRight:15,marginTop:15,color:formLeftText,fontSize:13}}>
+        <View style={{backgroundColor:'#ffffff'}}>
+          <Text style={{marginLeft:15,marginRight:15,marginTop:15,color:formLeftText,fontSize:13,lineHeight:20}}>
             2017-09-08 12:35:27，测试驾驶车牌号为京A12537行驶至北京朝阳区百子湾南二路78号院88号时，的卡萨和大咖电话开始的骄傲和圣诞节啊，段时间打开；量较大开始点击啊。当事人测试负全责。
           </Text>
         </View>
-        {this.partyResponsData.map((value,index) => this.renderOneParty(value,index))}
-        {(index !== 2)?<View style={{marginTop:15}}>
-          <View style={{paddingTop:10,paddingBottom:10,backgroundColor:'#D4D4D4'}}>
+        <View style={{backgroundColor:'#ffffff',paddingBottom:15}}>
+          {this.partyResponsibility.map((value,index) => this.renderOneParty(value,index))}
+        </View>
+        {(index != 2)?<View style={{backgroundColor:'#ffffff',paddingBottom:20}}>
+          <View style={{flexDirection:'row',paddingTop:10,marginTop:10}}>
+            <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
             <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>损害赔偿及调解结果</Text>
           </View>
-          <TextInput style={{height:100, fontSize: 14, marginLeft:15,marginTop:10, width: W - 30,borderWidth:1,borderColor:'#D4D4D4'}}
+          <TextInput style={{height:100, fontSize: 14, marginLeft:15,marginTop:10, width: W - 30,borderWidth:1,borderColor:'#D4D4D4',backgroundColor:'#FBFBFE',padding:5}}
                      multiline = {true}
                      editable={false}
-                     defaultValue={'经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。'}/>
+                     defaultValue={'经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。'}/>
         </View>:null}
-        <View style={{marginLeft:15,marginBottom:10,marginTop:50}}>
-          <XButton title='下一步' onPress={() => this.gotoNext()}/>
+        <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
+          <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
         </View>
       </ScrollView>
     );
@@ -79,7 +85,7 @@ class ResponsibleResultView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: backgroundGrey
   }
 });
 

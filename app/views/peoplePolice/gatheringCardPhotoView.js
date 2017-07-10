@@ -37,7 +37,8 @@ class GatheringCardPhotoView extends Component {
             quality: 0.5,
             storageOptions: {
                 skipBackup: true,
-                path: 'images'
+                path: 'images',
+                cameraRoll:true
             }
         };
   }

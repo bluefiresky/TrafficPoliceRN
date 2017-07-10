@@ -1,10 +1,4 @@
 rootProject.name = 'TrafficPoliceRN'
-
-include ':app'
-
-include ':react-native-photo-view'
-project(':react-native-photo-view').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-photo-view/android')
-
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
 
@@ -17,3 +11,9 @@ project(':react-native-image-picker').projectDir = new File(rootProject.projectD
 include ':react-native-toast'
 project(':react-native-toast').projectDir = new File(rootProject.projectDir, '../node_modules/@remobile/react-native-toast/android')
 
+include ':app'
+include ':react-native-photo-view'
+project(':react-native-photo-view').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-photo-view/android')
+
+include ':reactnativesignaturecapture',':app'
+project(':reactnativesignaturecapture').projectDir = new File(settingsDir, '../node_modules/react-native-signature-capture/android')

@@ -65,7 +65,9 @@ export class ScrollerSegment extends Component {
   }
   //处理前一个被选中的btn
   clickSeg(index){
-    this.props.onPress(index);
+    if (this.props.onPress) {
+      this.props.onPress(index);
+    }
     //处理seg上面的事件
     this.refs['segBtn'+this.preSegSelectd].setBtnSelected(false);
     this.preSegSelectd = index;
