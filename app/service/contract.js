@@ -20,11 +20,13 @@ export const POST_USER_LOGOUT = 'post_user_logout';                           //
  * Personal 相关接口名
  */
 export const GET_USER_INFO = 'get_user_info';                                 // 获取个人信息
-
 export const POST_FORCE_UPDATE = 'post_forced_update';                        // 强制更新
-
 export const POST_ACHIEVE_DICTIONARY = 'post_achieve_dictionary';             // 获取字典
 
+/*
+ * Main 相关接口名
+ */
+export const POST_ACCIDENTS_SEARCH = 'post_accidents_search';                 // 获取历史案件列表
 /*
  * Common 相关接口名
  */

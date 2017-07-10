@@ -17,6 +17,7 @@ class FeedBackView extends Component {
   constructor(props){
     super(props);
     this.state = {
+      loading: false
     }
     this.feedBackText = '';
     this.phoneNum = '';
@@ -38,6 +39,20 @@ class FeedBackView extends Component {
       Toast.showShortCenter('手机号输入有误');
       return;
     }
+    if(this.feedBackText != null && this.feedBackText.length >0 ){
+      let self = this;
+      this.setState({loading: true})
+      this.props.dispatch( create_service(Contract.POST_ADVICE_ADD, {adviceContent: this.feedBackText, contactMobile:this.phoneNum}))
+        .then( res => {
+          if(res){
+            self.props.navigation.goBack(null);
+          }else{
+            this.setState({loading: false})
+          }
+      })
+    }else{
+      Toast.showShortCenter('意见内容不能为空')
+    }
   }
   render(){
     return(
@@ -51,11 +66,15 @@ class FeedBackView extends Component {
             maxLength={200}
           />
           <Text style={{fontSize:14,color:formLeftText,marginTop:50}}>联系方式：</Text>
-          <TextInput style={{height:40,width:W-30,borderWidth:1,borderColor:'#F0F0F0',marginTop:15,fontSize:12,padding:5,backgroundColor:'#FBFBFE'}}
+          <TextInput
+            style={{height:40,width:W-30,borderWidth:1,borderColor:'#F0F0F0',marginTop:15,fontSize:12,padding:5,backgroundColor:'#FBFBFE'}}
+            keyboardType={'numeric'}
             onChangeText={(text) => this.onChangeText(text,'Phone')}/>
           <View style={{marginTop:50}}>
             <XButton title='提交意见' onPress={() => this.submitFeedBack()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
           </View>
+
+          <ProgressView show={this.state.loading}/>
         </View>
       </ScrollView>
     );

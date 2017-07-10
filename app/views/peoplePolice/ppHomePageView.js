@@ -2,7 +2,7 @@
 * 民警首页
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image,Platform,TouchableHighlight,InteractionManager,Linking,RefreshControl } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image,Platform,TouchableHighlight,InteractionManager,Linking,RefreshControl,TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule, Version } from '../../configs/index.js';/** 自定义配置参数 */
@@ -57,13 +57,13 @@ class PpHomePageView extends Component {
   gotoHistoryCase(type){
     switch (type) {
       case 'WaitUpload':
-        this.props.navigation.navigate('HistoricalCaseView',{title:'已完结案件'});
+        this.props.navigation.navigate('HistoricalCaseView',{title:'待上传案件', type: 1});
         break;
       case 'NoComplete':
-        this.props.navigation.navigate('HistoricalCaseView',{title:'待上传案件'});
+        this.props.navigation.navigate('HistoricalCaseView',{title:'未完结案件', type: 2});
         break;
       case 'HistoryCase':
-        this.props.navigation.navigate('HistoricalCaseView',{title:'未完结案件'});
+        this.props.navigation.navigate('HistoricalCaseView',{title:'已完结案件', type: 3});
         break;
       default:
 
@@ -171,8 +171,8 @@ class PpHomePageView extends Component {
           null
        }
 
-       <TouchableHighlight onPress={()=> this.handleCase()} underlayColor={'transparent'}>
-         <Image source={require('./image/handle_case.png')} style={{marginTop:20,alignSelf:'center',width:120,height:120,resizeMode: 'contain'}}>
+       <TouchableHighlight underlayColor={'transparent'} onPress={()=> this.handleCase()} style={{marginTop: 30, alignSelf:'center', width: 130, height: 130, alignItems: 'center', justifyContent: 'center'}}>
+         <Image source={require('./image/handle_case.png')} style={{width:120,height:120,resizeMode: 'contain'}}>
           <Text style={{fontSize:14,color:'#ffffff',marginTop:72,backgroundColor:'transparent',alignSelf:'center'}}>
             处理案件
           </Text>
@@ -180,7 +180,7 @@ class PpHomePageView extends Component {
        </TouchableHighlight>
 
         <ProgressView show={this.state.loading}/>
-        <UpdateModal show={this.state.showForceUpdate} />
+        <UpdateModal show={this.state.showForceUpdate} content={this.state.forceUpdateParams}/>
       </ScrollView>
     );
   }
@@ -193,8 +193,7 @@ class PpHomePageView extends Component {
     // 查看信分期的强制更新跳转，逻辑：isUpgrade -> [isAllUpgrade -> depCodes]
     this.forceUpdate = await this.props.dispatch( create_service(Contract.POST_FORCE_UPDATE, {appType: AppType, appVersion: Version}));
     console.log('PpHomePageView execute _getData this.forceUpdate -->> ', this.forceUpdate);
-    // if(this._checkUpdate(this.forceUpdate)) return;
-    // if(this._checkUpdate({isUpgrade: 1, isAllUpgrade: 1, depCodes:null, appDownloadUrl:'http://www.baidu.com', upgradeReason:'你的app需要强制更新了'})) return;
+    if(this._checkUpdate(this.forceUpdate)) return;
 
     // 字典需要上传本地的版本
     this.dictionary = await this.props.dispatch( create_service(Contract.POST_ACHIEVE_DICTIONARY,{v: 0}))
@@ -205,15 +204,15 @@ class PpHomePageView extends Component {
   }
 
   _checkUpdate(data){
+    if(!data) return false;
     let { isUpgrade, isAllUpgrade, depCodes, appDownloadUrl, upgradeReason } = data;
-    if(isUpgrade === 1){
-      if(isAllUpgrade === 1){
-        // Linking.openURL(appDownloadUrl);
+    if(isUpgrade === 2){
+      if(isAllUpgrade === 2){
         this.setState({showForceUpdate: true, forceUpdateParams:{appDownloadUrl, upgradeReason}})
         return true;
-      }else if(isAllUpgrade === 0){
-        if(depCodes.indexOf(global.personal.depCode) != -1){
-          // Linking.openURL(appDownloadUrl);
+      }else if(isAllUpgrade === 1){
+        let tmp = depCodes.split(',');
+        if(tmp.indexOf(global.personal.depCode) != -1){
           this.setState({showForceUpdate: true, forceUpdateParams:{appDownloadUrl, upgradeReason}})
           return true;
         }
@@ -223,7 +222,6 @@ class PpHomePageView extends Component {
   }
 
   _onRefresh(){
-    console.log(' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     this._getData(true);
   }
 
