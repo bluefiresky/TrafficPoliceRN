@@ -6,12 +6,12 @@ import React, { Component } from 'react';
 import { StyleSheet, Modal, Text, View, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import Toast from '@remobile/react-native-toast';
 
-import { W/** 屏宽*/, H/** 屏高*/, backgroundGrey/** 背景灰 */, mainBule, borderColor } from '../../configs/index.js';/** 自定义配置参数 */
+import { W/** 屏宽*/, H/** 屏高*/, backgroundGrey/** 背景灰 */, mainBule, borderColor, formLeftText } from '../../configs/index.js';/** 自定义配置参数 */
 
-const ComponentW = W - 60;
-const ComponentH = H - (Platform.OS === 'ios'? 140 : 100);
+const ComponentW = W - 80;
+const ComponentH = (3*ComponentW)/5
 
-export class ProtocolModal extends Component {
+export class UpdateModal extends Component {
 
   constructor(props){
     super(props);
@@ -23,13 +23,14 @@ export class ProtocolModal extends Component {
       <View>
         <Modal animationType="slide"  transparent={true} visible={show} onRequestClose={()=>{}}>
           <View style={styles.container}>
-            <View style={{width: ComponentW, height: ComponentH, backgroundColor: 'white'}}>
+            <View style={{width: ComponentW, height: ComponentH, backgroundColor: 'white', borderRadius: 10}}>
               <View style={{flex: 1}}>
                 <ScrollView style={{padding: 5}}><Text>{content}</Text></ScrollView>
               </View>
+              <View style={{height: 1, backgroundColor: borderColor}} />
               <TouchableOpacity onPress={closeEvent} activeOpacity={0.8}>
-                <View style={{width: ComponentW, height: 35, backgroundColor: mainBule, alignItems: 'center', justifyContent: 'center'}}>
-                  <Text style={{color: 'white', fontSize: 16}}>确定</Text>
+                <View style={{width: ComponentW, height: 35, alignItems: 'center', justifyContent: 'center'}}>
+                  <Text style={{color: formLeftText, fontSize: 16}}>确定</Text>
                 </View>
               </TouchableOpacity>
             </View>

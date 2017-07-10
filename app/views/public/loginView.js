@@ -13,6 +13,8 @@ import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 
+const MarginTop = Platform.OS === 'ios'? 64:44;
+
 class LoginView extends Component {
 
   static navigationOptions = {
@@ -29,6 +31,17 @@ class LoginView extends Component {
     }
     this.phoneNum = '';
     this.verificationCode = '';
+  }
+
+  componentWillMount(){
+    if(global.auth.isLogin){
+      if(global.personal.policeType == 2) this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+      else if(global.personal.policeType == 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
+    }
+  }
+
+  componentDidMount(){
+
   }
 
   componentWillUnmount(){
@@ -58,7 +71,7 @@ class LoginView extends Component {
     return (!code || code.length !== 6 || !reg.test(code)) ? false:true;
   }
   //获取验证码
-  sendVerificationCode(){
+  sendVerificationCode(smsType){
     if (!this.checkPhone(this.phoneNum)) {
       Toast.showShortCenter('手机号输入有误');
       return;
@@ -79,7 +92,7 @@ class LoginView extends Component {
         }
       }, 1000);
       // 不管成功与否，开始倒计时
-      this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType:1}) );
+      this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType}) );
     }
   }
 
@@ -104,8 +117,8 @@ class LoginView extends Component {
             .then( res => {
               if(res){
                 this.setState({loading: false})
-                if(res.policeType === 2) self.props.navigation.navigate('PpHomePageView');
-                else if(res.policeType === 3) self.props.navigation.navigate('ApHomePageView');
+                if(res.policeType === 2) self.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+                else if(res.policeType === 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
               }else{
                 self.setState({loading: false})
               }
@@ -120,9 +133,8 @@ class LoginView extends Component {
     let { loading,codeText,codeColor,codeSecondsLeft } = this.state;
     return(
       <View style={styles.container}>
-          <View style={{height:(Platform.OS === 'ios') ? 64 : 44,width:W,backgroundColor:'#ffffff'}}>
-          </View>
-          <View style={{flex:1,marginTop:30,backgroundColor:'#ffffff'}}>
+
+          <View style={{flex:1,marginTop:MarginTop}}>
             <Image source={require('./image/login.png')} style={{width:90,height:90,alignSelf:'center'}}/>
             <Text style={{marginTop:10,alignSelf:'center',fontSize:16,color:'#1174D9',fontWeight:'bold'}}>
               警用事故处理
@@ -150,7 +162,7 @@ class LoginView extends Component {
                 maxLength={6}
                 underlineColorAndroid = {'transparent'}
               />
-              <TouchableHighlight style={{width:100,padding:5,backgroundColor:'#ffffff',marginLeft:-110,justifyContent:'center',marginTop:5,marginBottom:5,borderRadius:5}} onPress={() => {this.sendVerificationCode()}} underlayColor={'transparent'} disabled={(codeColor !== '#4F4F4F')}>
+              <TouchableHighlight style={{width:100,padding:5,backgroundColor:'#ffffff',marginLeft:-110,justifyContent:'center',marginTop:5,marginBottom:5,borderRadius:5}} onPress={() => {this.sendVerificationCode(1)}} underlayColor={'transparent'} disabled={(codeColor !== '#4F4F4F')}>
                 <Text style={{color:codeColor,fontSize:13,alignSelf:'center'}}>{codeText}</Text>
               </TouchableHighlight>
             </View>
@@ -158,9 +170,12 @@ class LoginView extends Component {
               <Text style={{marginRight:15}}>
                 收不到验证码？试试
                 <Text style={{color:'#267BD8'}} onPress={() => {
-                  Toast.showShortCenter('请注意接听电话');
-                  this.setState({
-                    showSpeekCode: false
+                  this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType:2}) )
+                    .then(res => {
+                      this.setState({showSpeekCode: false})
+                      if(res){
+                        Toast.showShortCenter('请注意接听电话');
+                      }
                   })
                 }}>语音验证码</Text>
               </Text>
@@ -170,6 +185,7 @@ class LoginView extends Component {
             </View>
             <ProgressView show={loading}/>
           </View>
+
           <Image source={require('./image/login_bg.png')} style={{width:W,height:W / 5.28}} resizeMode="contain"/>
       </View>
     );

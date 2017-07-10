@@ -5,7 +5,7 @@
 
 import { http_get, http_post, service_url } from "../service_helpers";
 
-/** 发送验证码 ## action:[ '0' ] */
+/** 获取用户信息 ## action:[ '0' ] */
 export const get_user_info = ({version}) => {
   return http_get( 'police.get', {}, {}, version )
 }

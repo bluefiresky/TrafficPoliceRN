@@ -7,6 +7,7 @@ import { View, Text, StyleSheet, Platform, TouchableWithoutFeedback, Image, Scro
 
 import { H, W, backgroundGrey, mainBule, borderColor, formLeftText, formRightText, commonText, placeholderColor } from '../../configs/index.js';
 
+const IndicatorColor = Platform.OS === 'ios'? 'white':'#1174D9';
 
 class ProgressView extends Component {
 
@@ -21,7 +22,7 @@ class ProgressView extends Component {
       return (
         <View style={[styles.progress, {marginBottom}]}>
           <View style={{alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: 'rgba(0,0,0,0.8)', paddingTop: 20, paddingLeft: 20, paddingRight: 18, paddingBottom: 18}}>
-            <ActivityIndicator color={'white'} animating={true} size={'large'} />
+            <ActivityIndicator animating={true} size={'large'} />
             {
               tip?
               <Text style={{fontSize: 14, color: 'white', marginTop: 10}}>{tip}</Text>

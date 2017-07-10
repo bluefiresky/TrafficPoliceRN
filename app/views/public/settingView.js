@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
+import { NavigationActions } from 'react-navigation'
 
 import { W, H, backgroundGrey,formLeftText } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
@@ -30,6 +31,15 @@ class SettingView extends Component {
   //退出登录
   exitLogin(){
     //检测是否存在未完结及未上传案件，如果存在则提示。如果不存在或者继续退出，则退出到登录页，清空APP缓存及未完结、未上传案件
+    //退出登录要清空路由栈
+    this.props.dispatch( create_service(Contract.POST_USER_LOGOUT, {}))
+      .then( res => {
+        console.log(' SettingView execute exitLogin and the res -->> ', res);
+        if(res){
+          let resetAction = NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName: 'LoginView'}) ]})
+          this.props.navigation.dispatch(resetAction)
+        }
+      })
   }
   render(){
     return(

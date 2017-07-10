@@ -69,14 +69,14 @@ class GatheringCardPhotoView extends Component {
   }
   //信息采集完成
   gotoNext(){
-    for (var i = 0; i < this.carInfoData.length; i++) {
-      for (var j = 0; j < this.carInfoData[i].data.length; j++) {
-        if (!this.carInfoData[i].data[j].imageURL) {
-          Toast.showShortCenter(`请上传${this.carInfoData[i].name}的${this.carInfoData[i].data[j].title}`);
-          return;
-        }
-      }
-    }
+    // for (var i = 0; i < this.carInfoData.length; i++) {
+    //   for (var j = 0; j < this.carInfoData[i].data.length; j++) {
+    //     if (!this.carInfoData[i].data[j].imageURL) {
+    //       Toast.showShortCenter(`请上传${this.carInfoData[i].name}的${this.carInfoData[i].data[j].title}`);
+    //       return;
+    //     }
+    //   }
+    // }
     let that = this;
     Alert.alert('提示', '请确保拍摄的证件照片清晰完整，提交之后无法修改' ,[{
             text : "返回修改",
@@ -91,17 +91,25 @@ class GatheringCardPhotoView extends Component {
   renderItem(item,index,ind) {
     let innerImgae;
     if (!item.imageURL) {
-      innerImgae = <Image style={{alignSelf:'center'}} source={require('./image/personal_camera.png')}/>
+      innerImgae = <Image style={{width: 40, height: 40, resizeMode: 'contain', alignSelf:'center'}} source={require('./image/personal_camera.png')}/>
     } else {
       innerImgae = null
     }
     return (
       <TouchableHighlight style={{marginLeft:this.rowMargin,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(index,ind)} key={index}>
         <View style={{flex:1}}>
-          <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
-                 source={item.imageURL ? item.imageURL:null}>
-            {innerImgae}
-          </Image>
+          {
+            item.imageURL?
+              <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
+                     source={item.imageURL ? item.imageURL:null}>
+                {innerImgae}
+              </Image>
+            :
+              <View style={{width: this.rowWH,height: this.rowWH * 0.5, justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}>
+                {innerImgae}
+              </View>
+          }
+
           <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.title}</Text>
         </View>
       </TouchableHighlight>

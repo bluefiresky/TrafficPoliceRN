@@ -27,6 +27,7 @@ class SignatureConfirmationView extends Component {
   }
   //下一步
   gotoNext(){
+    Toast.showShortCenter('以下流程开中')
     console.log(this.submitPartyData);
   }
   //获取验证码
