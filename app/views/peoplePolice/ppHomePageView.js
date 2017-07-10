@@ -134,7 +134,6 @@ class PpHomePageView extends Component {
       </ScrollView>
     );
   }
-
 }
 
 const styles = StyleSheet.create({

@@ -2,7 +2,7 @@
 * 确认事故信息
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, TouchableHighlight,TextInput,Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert, TouchableHighlight,TextInput,Image,NativeModules, InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
@@ -29,9 +29,30 @@ class AccidentBasicInformationView extends Component {
   componentDidMount(){
      //页面载入，获取当前系统时间，可修改。点击时间框，调起时间选择插件。时间格式“XXXX年XX月XX日 XX时XX分”。需同时记录当前系统时间、修改后时间，都需传给后台。
     //页面载入时，进行定位，定位结束loading消失,无法定位，弹框提示手动修改事故地点。定位失败，弹框提示重试。定位成功，显示定位到的地点
-    this.setState({
-      accidentSite:'北京市朝阳区'
-    })
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({loading: true})
+      // -100 停止定位 -99 坐标转换地址失败 -98 地图管理器启动失败
+      NativeModules.BaiduMapModule.location().then((result) => {
+        console.log('AAccidentBasicInformationView execute componentDidMount location and the result -->> ', result);
+        if(result && !result.errorCode) this.setState({accidentSite: result.address, loading: false})
+        else if(result && result.errorCode && result.errorCode != -100) {
+          this.setState({ loading: false});
+          Alert.alert('提示', '无法获取当前位置，请重试' ,[{
+                  text : "返回首页",
+                  onPress : () => {
+                    console.log('11');
+                  }
+                },{
+                  text : "重试",
+                  onPress : () => {
+                    console.log('22');
+                  }
+                }])
+        }else{
+          this.setState({loading: false})
+        }
+      })
+    });
   }
 
   onChangeText(text){

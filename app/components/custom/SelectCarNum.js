@@ -54,7 +54,7 @@ export class SelectCarNum extends Component {
       for (var i = 0; i < numberData.length; i++) {
         numberData[i].isSelcted = (i == index)
       }
-      if (this.selectNum.length == 6) {
+      if (this.selectNum.length == 8) {
         this.setState({
           show:false
         })
@@ -108,9 +108,6 @@ export class SelectCarNum extends Component {
           <Text style={{backgroundColor:'#D4D4D4',fontWeight:'bold',fontSize:16,width:30,height:30,padding:5,textAlign:'center'}} onPress={() => this.showData('provincialData',provincialData)}>
             {this.selectPro}
           </Text>
-          {/* <Text style={{backgroundColor:'#D4D4D4',fontWeight:'bold',fontSize:16,width:30,height:30,padding:5,marginLeft:10,textAlign:'center'}} onPress={() => this.showData('letterData',letterData)}>
-            {this.selectLet}
-          </Text> */}
           <Text style={{flex:1,backgroundColor:'#D4D4D4',fontSize:14,height:30,marginLeft:10,textAlign:'center',paddingTop:7}} onPress={() => this.showData('numberData',numberData)}>
             {this.selectNum}
           </Text>

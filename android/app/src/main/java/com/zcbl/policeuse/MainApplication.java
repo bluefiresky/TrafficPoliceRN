@@ -3,6 +3,9 @@ package com.zcbl.policeuse;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rssignaturecapture.RSSignatureCapturePackage;
+import com.remobile.toast.RCTToastPackage;
+import com.rssignaturecapture.RSSignatureCapturePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.beefe.picker.PickerViewPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -28,6 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RSSignatureCapturePackage(),
+            new RCTToastPackage(),
+            new RSSignatureCapturePackage(),
             new VectorIconsPackage(),
             new PickerViewPackage(),
             new ImagePickerPackage(),

@@ -1,0 +1,12 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  constructor(props){$/;"	function	line:19
+state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^    this.state = {$/;"	property	line:21
+gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  gotoNext(){$/;"	function	line:27
+renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:31
+renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderOneParty(value,index) {$/;"	function	line:42
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  render(){$/;"	function	line:113

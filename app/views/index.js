@@ -34,8 +34,14 @@ export { AConfirmInformationView } from './assistPolice/aConfirmInformationView.
 export { AAccidentFactAndResponsibilityView } from './assistPolice/aAccidentFactAndResponsibilityView.js';  /** 事故事实 */
 export { WaitRemoteResponsibleView } from './assistPolice/waitRemoteResponsibleView.js';  /** 等待远程定责 */
 export { ResponsibleResultView } from './assistPolice/responsibleResultView.js';  /** 定责结果 */
-
-
 export { AccidentConditionView } from './assistPolice/accidentConditionView.js';  /** 确认信息 */
 export { AccidentConfirmResponView } from './assistPolice/accidentConfirmResponView.js';  /** 确认信息 */
 export { ASignatureConfirmationView } from './assistPolice/aSignatureConfirmationView.js';  /** 确认信息 */
+
+/** 保险报案 */
+export { InsuranceReportPartyInfoView } from './insuranceReport/insuranceReportPartyInfoView.js';  /** 保险报案当事人信息 */
+export { InsuranceReportSuccessView } from './insuranceReport/insuranceReportSuccessView.js';  /** 保险报案成功 */
+export { PerfectInformantInfoView } from './insuranceReport/perfectInformantInfoView.js';  /** 完善报案人信息 */
+export { ExploreTakePhotoView } from './insuranceReport/exploreTakePhotoView.js';  /** 查勘拍照 */
+export { ConfirmReportPartyInfoView } from './insuranceReport/confirmReportPartyInfoView.js';  /** 查勘拍照 */
+export { ExploreSuccessView } from './insuranceReport/exploreSuccessView.js';  /** 查勘成功 */

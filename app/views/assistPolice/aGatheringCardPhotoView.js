@@ -20,9 +20,9 @@ class AGatheringCardPhotoView extends Component {
     super(props);
     this.state = {
     }
-    this.carInfoData = [{name:'甲方（张三）',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]},
-                        {name:'乙方（李四）',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]},
-                        {name:'丙方（王五）',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]}];
+    this.carInfoData = [{name:'甲方（张三 京A12345）',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]},
+                        {name:'乙方（李四 京A12345）',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]},
+                        {name:'丙方（王五 京A12345）',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]}];
     this.rowNum = 2;
     this.rowMargin = 20;
     this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
@@ -37,7 +37,8 @@ class AGatheringCardPhotoView extends Component {
             quality: 0.5,
             storageOptions: {
                 skipBackup: true,
-                path: 'images'
+                path: 'images',
+                cameraRoll:true
             }
         };
   }
@@ -71,18 +72,18 @@ class AGatheringCardPhotoView extends Component {
     for (var i = 0; i < this.carInfoData.length; i++) {
       for (var j = 0; j < this.carInfoData[i].data.length; j++) {
         if (!this.carInfoData[i].data[j].imageURL) {
-          Toast.showShortCenter(`${this.carInfoData[i].name}的${this.carInfoData[i].data[j].title}尚未拍摄`);
+          Toast.showShortCenter(`请上传${this.carInfoData[i].name}的${this.carInfoData[i].data[j].title}`);
           return;
         }
       }
     }
     let that = this;
-    let { index } = this.props.navigation.state.params
+    let { index } = this.props.navigation.state.params;
     Alert.alert('提示', '请确保拍摄的证件照片清晰完整，提交之后无法修改。' ,[{
             text : "返回修改",
             onPress : () => {}
           },{
-            text : "确认",
+            text : "确认无误",
             onPress : () => {
               that.props.navigation.navigate('AConfirmInformationView',{index:index});
             }
@@ -98,7 +99,7 @@ class AGatheringCardPhotoView extends Component {
     return (
       <TouchableHighlight style={{marginLeft:this.rowMargin,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(index,ind)} key={index}>
         <View style={{flex:1}}>
-          <Image style={{width: this.rowWH,height: this.rowWH * 0.7,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
+          <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
                  source={item.imageURL ? item.imageURL:null}>
             {innerImgae}
           </Image>
@@ -109,11 +110,12 @@ class AGatheringCardPhotoView extends Component {
   }
   renderOnePersonInfo(value,ind){
     return (
-      <View style={{flex:1,marginTop:15,backgroundColor:'#ffffff',marginRight:this.rowMargin}} key={ind}>
-        <View style={{paddingTop:10,paddingBottom:10,backgroundColor:'#D4D4D4'}}>
+      <View style={{flex:1,backgroundColor:'#ffffff',marginTop:10}} key={ind}>
+        <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
           <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{value.name}</Text>
         </View>
-        <View style={{flexDirection:'row',marginTop:15,flexWrap:'wrap'}}>
+        <View style={{flexDirection:'row',marginTop:10,flexWrap:'wrap'}}>
           {value.data.map((value,index) => this.renderItem(value,index,ind))}
         </View>
       </View>
@@ -123,10 +125,10 @@ class AGatheringCardPhotoView extends Component {
     return(
       <ScrollView style={styles.container}
                    showsVerticalScrollIndicator={false}>
-         <View style={{marginTop:10,backgroundColor:'#ffffff'}}>
+         <View style={{flex:1}}>
            {this.carInfoData.map((value,index) => this.renderOnePersonInfo(value,index))}
            <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-             <XButton title='信息采集完成' onPress={() => this.gotoNext()}/>
+             <XButton title='信息采集完成' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
            </View>
          </View>
       </ScrollView>
@@ -137,7 +139,7 @@ class AGatheringCardPhotoView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: backgroundGrey
   }
 });
 
