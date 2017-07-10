@@ -14,3 +14,8 @@ export const post_forced_update = ({appType, appVersion, version}) => {
 export const post_achieve_dictionary = ({v, version}) => {
   return http_post( 'dictionary.get', {version: v}, {}, version )
 }
+
+/** 提交意见反馈 **/
+export const post_advice_add = ({adviceContent, contactMobile, version}) => {
+  return http_post( 'advice.add', {adviceContent, contactMobile}, {}, version )
+}

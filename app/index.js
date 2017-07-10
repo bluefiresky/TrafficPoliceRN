@@ -4,12 +4,14 @@
 */
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { View, StyleSheet, AppState, AsyncStorage, ActivityIndicator, Text } from 'react-native';
+import { View, StyleSheet, AppState, AsyncStorage, ActivityIndicator, Text, Platform } from 'react-native';
 
 import { configureStore, getStore } from './redux/index.js';
 import RootView from './root.js';
 
 console.ignoredYellowBox = ['Warning: BackAndroid is deprecated.']
+
+const IndicatorColor = Platform.OS === 'ios'? 'white':'#1174D9';
 export default class TrafficPoliceRN extends Component {
 
   constructor(props){

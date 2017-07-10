@@ -24,3 +24,8 @@ export const GET_USER_INFO = 'get_user_info';                                 //
 export const POST_FORCE_UPDATE = 'post_forced_update';                        // 强制更新
 
 export const POST_ACHIEVE_DICTIONARY = 'post_achieve_dictionary';             // 获取字典
+
+/*
+ * Common 相关接口名
+ */
+export const POST_ADVICE_ADD = 'post_advice_add';                             // 意见反馈

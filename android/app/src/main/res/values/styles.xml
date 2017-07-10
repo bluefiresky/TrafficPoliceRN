@@ -1,8 +1,14 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppBaseTheme" parent="android:Theme.Light" />
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/launch_bg</item>
+        <item name="android:colorBackground">#EFF2F7</item>
+        <item name="android:scrollbarSize">5dp</item>
+        <item name="android:scrollbarStyle">insideOverlay</item>
     </style>
 
 </resources>

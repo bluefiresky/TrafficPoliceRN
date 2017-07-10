@@ -10,9 +10,12 @@ const initial = {
   policeName: null,
   mobile: null,
   depName: null,      // 所属大队
+  depCode: null,      // 所属大队编号
   policeNumber: null, // 警员编号
   sealNumber: null,   // 勘查章号
+  depSealUrlBase64: null,  // 大队章base64
   depSealUrl: null,   // 大队章URL
+  sealUrlBase64: null,     // 勘查章base64
   sealUrl: null,      // 勘查章URL
   cityName: null,     // 所属城市
   provinceShortName: null // 省份简称
@@ -21,8 +24,8 @@ const initial = {
 export const personal = (state = initial, action) => {
   switch(action.type) {
     case GET_USER_INFO :
-      let { policeType, policeName, mobile, depName, policeNumber, sealNumber, depSealUrl, sealUrl, cityName, provinceShortName } = action.data;
-      let personal = { policeType, policeName, mobile, depName, policeNumber, sealNumber, depSealUrl, sealUrl, cityName, provinceShortName };
+      let { policeType, policeName, mobile, depName, policeNumber, sealNumber, depSealUrlBase64, sealUrlBase64, cityName, provinceShortName, depCode, depSealUrl, sealUrl } = action.data;
+      let personal = { policeType, policeName, mobile, depName, policeNumber, sealNumber, depSealUrlBase64, sealUrlBase64, cityName, provinceShortName, depCode, depSealUrl, sealUrl };
       global.personal = personal;
       return personal;
     case CLEAR_USER_INFO :
