@@ -15,12 +15,14 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
+import com.google.gson.Gson;
 
 public class BaiduMapModule extends ReactContextBaseJavaModule implements ActivityEventListener {
     private static final String TAG = "ReactNativeJS";
 
     private ReactApplicationContext reactContext;
     private Promise promise;
+    private int locateTimes = 0;
 
     public LocationClient mLocationClient = null;
 
@@ -47,6 +49,7 @@ public class BaiduMapModule extends ReactContextBaseJavaModule implements Activi
         option.setCoorType("bd09ll");
         //可选，默认gcj02，设置返回的定位结果坐标系
 
+//        option.setScanSpan(1000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true); //可选，设置是否需要地址信息，默认不需要
         option.setOpenGps(true);       //可选，默认false,设置是否使用gps
         option.setLocationNotify(true);//可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
@@ -71,20 +74,34 @@ public class BaiduMapModule extends ReactContextBaseJavaModule implements Activi
             // BDLocation.TypeServerError;     服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因
             // BDLocation.TypeNetWorkException;  网络不同导致定位失败，请检查网络是否通畅
             // BDLocation.TypeCriteriaException; 无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机
-
+            Log.i(TAG, "onReceiveLocation: and the BDLocation -->> "+new Gson().toJson(location));
             int errorCode = location.getLocType();
             WritableMap map = Arguments.createMap();
             if(errorCode == BDLocation.TypeGpsLocation || errorCode == BDLocation.TypeNetWorkLocation || errorCode == BDLocation.TypeOffLineLocation){
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 String address = location.getAddrStr();
-                map.putDouble("latitude", latitude);
-                map.putDouble("longitude", longitude);
-                map.putString("address", address);
-                BaiduMapModule.this.promise.resolve(map);
+                if(address != null && !"".equals(address)){
+                    map.putDouble("latitude", latitude);
+                    map.putDouble("longitude", longitude);
+                    map.putString("address", address);
+                    BaiduMapModule.this.promise.resolve(map);
+                    BaiduMapModule.this.mLocationClient.stop();
+
+                }else{
+                    BaiduMapModule.this.locateTimes += 1;
+                    if(BaiduMapModule.this.locateTimes > 10){
+                        map.putInt("errorCode", 62);
+                        BaiduMapModule.this.promise.resolve(map);
+                        BaiduMapModule.this.mLocationClient.stop();
+                    }
+                }
+
             }else{
                 map.putInt("errorCode", errorCode);
                 BaiduMapModule.this.promise.resolve(map);
+                BaiduMapModule.this.mLocationClient.stop();
+
             }
         }
 

@@ -29,18 +29,16 @@ class HistoricalCaseView extends Component {
       isLoadingMore: false,
       loadingMoreString: '',
       loading: false,
-      data: [1,2,3,4,5]
+      data: 'default'
     }
     this.height = 0;
     this.currentPage = 1;
+    this._onGetData = this._onGetData.bind(this);
   }
 
   componentDidMount(){
     InteractionManager.runAfterInteractions( () => {
-      this.props.dispatch( create_service(Contract.POST_ACCIDENTS_SEARCH ,{page:this.currentPage, pageNum:10}))
-        .then( res => {
-          console.log(' HistoricalCaseView and the componentDidMount res -->> ', res);
-      })
+      this._onGetData();
     })
   }
 
@@ -64,12 +62,15 @@ class HistoricalCaseView extends Component {
         <View style={{justifyContent:'center', alignItems:'center', width: W, height: this.state.isLoadingMore?30:0}}>
           <ActivityIndicator animating={this.state.isLoadingMore} color={mainBule}/>
         </View>
-        <ProgressView show={this.state.loading} />
+        <ProgressView show={this.state.loading} hasTitleBar={true}/>
       </View>
     );
   }
 
   _renderList(data){
+    if(data === 'default') return;
+    else if(!data || data.length === 0) return this._renderEmptyView();
+
     return(
       <View style={{flex: 1}}>
         <FlatList
@@ -84,6 +85,9 @@ class HistoricalCaseView extends Component {
   }
 
   _renderLoadMoreList(data){
+    if(data === 'default') return;
+    else if(!data || data.length === 0) return this._renderEmptyView();
+
     return(
       <View style={{flex: 1}}>
         <FlatList
@@ -91,7 +95,7 @@ class HistoricalCaseView extends Component {
           data={data}
           renderItem={this._renderItem.bind(this)}
           onScroll = {this._onScroll.bind(this)}
-          onRefresh = {this._onRefresh}
+          onRefresh = {this._onGetData}
           scrollEventThrottle={5}
           onEndReachedThreshold ={-10}
           refreshing = {false}
@@ -110,9 +114,26 @@ class HistoricalCaseView extends Component {
     )
   }
 
-  /** Private **/
-  _onRefresh(){
+  _renderEmptyView(){
+    return(
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Text style={{fontSize: 16, color: formRightText}}>当前没有历史案件</Text>
+      </View>
+    )
+  }
 
+  /** Private **/
+  _onGetData(){
+    this.setState({loading: true})
+    this.props.dispatch( create_service(Contract.POST_ACCIDENTS_SEARCH ,{page:1, pageNum:10}))
+      .then( res => {
+        console.log(' HistoricalCaseView and the componentDidMount res -->> ', res);
+        if(res){
+          this.setState({loading: false, data: res.accidents});
+        }else{
+          this.setState({loading: false, data: null})
+        }
+    })
   }
 
   _onScroll(e){
@@ -141,36 +162,21 @@ class HistoricalCaseView extends Component {
   _loadingMore(){
     this.currentPage += 1;
     this.setState({loadingMoreString:'加载更多……', isLoadingMore:true })
-    console.log('加载的页数',this.currentPage);
     let self = this;
-    setTimeout(()=>{
-      if(this.currentPage === 2 ){
-        self.setState({data:[1,2,3,4,5,6,7,8,9,10], isLoadingMore: false})
-      }
-      if(self.currentPage === 3){
-        self.setState({loadingMoreString:'没有更多了', isLoadingMore: false})
-        setTimeout(() => {
-          self.loadMoreRef.scrollToEnd();
-        },1000)
-
-      }
-    }, 3000)
-    // this.props.dispatch(create_service(Contract.POST_ACCIDENTS_SEARCH,{page:this.currentPage, pageNum: 10}))
-    //   .then((res)=>{
-    //     this.setState({data: [1,2,3,4,5,6,7,8,9,10], loadingMoreString: '', isLoadingMore: false})
-    //     // console.log('第二页数据',res)
-    //     // let newData = []
-    //     // if (this.state.mydata.length === res.count){
-    //     //   console.log('没有更多数据了')
-    //     //   this.setState({loadingMoreString:'没有更多数据了', isLoadingMore:false})
-    //     // }else {
-    //     //   console.log('总数据',moreData)
-    //     //   let moreData = res
-    //     //   let oldData = this.state.data;
-    //     //   newData = oldData.concat(moreData.list)
-    //     //   this.setState({data:newData, isLoadingMore:false })
-    //     // }
-    // })
+    this.props.dispatch(create_service(Contract.POST_ACCIDENTS_SEARCH,{page:this.currentPage, pageNum: 10}))
+      .then((res)=>{
+        console.log(' 第 ' + self.currentPage + ' 页的数据 res -->> ' ,res)
+        if(res){
+          let { totalPage, accidents } = res;
+          if(self.currentPage > totalPage){
+            self.setState({isLoadingMore: false});
+            setTimeout(() => { self.loadMoreRef.scrollToEnd(); }, 500);
+          }else{
+            let newData = self.state.data.concat(accidents);
+            self.setState({data: newData, isLoadingMore: false});
+          }
+        }
+    })
   }
 }
 const styles = StyleSheet.create({

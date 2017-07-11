@@ -31,15 +31,13 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RSSignatureCapturePackage(),
-            new RCTToastPackage(),
-            new RSSignatureCapturePackage(),
-            new VectorIconsPackage(),
-            new PickerViewPackage(),
-            new ImagePickerPackage(),
-            new RCTToastPackage(),
-            new ModuleManagerPackage(),
-            new PhotoViewPackage()
+          new RSSignatureCapturePackage(),
+          new VectorIconsPackage(),
+          new PickerViewPackage(),
+          new ImagePickerPackage(),
+          new RCTToastPackage(),
+          new ModuleManagerPackage(),
+          new PhotoViewPackage()
       );
     }
   };

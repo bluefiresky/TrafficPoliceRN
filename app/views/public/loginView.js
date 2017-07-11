@@ -35,8 +35,9 @@ class LoginView extends Component {
 
   componentWillMount(){
     if(global.auth.isLogin){
-      if(global.personal.policeType == 2) this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
-      else if(global.personal.policeType == 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
+      this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+      // if(global.personal.policeType == 2) this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+      // else if(global.personal.policeType == 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
     }
   }
 
@@ -97,8 +98,8 @@ class LoginView extends Component {
   }
 
   loginBtnClick(){
-    this.props.navigation.navigate('ApHomePageView');
-    return
+    // this.props.navigation.navigate('ApHomePageView');
+    // return
     if (!this.checkPhone(this.phoneNum)) {
       Toast.showShortCenter('请输入手机号');
       return;
@@ -117,8 +118,10 @@ class LoginView extends Component {
             .then( res => {
               if(res){
                 this.setState({loading: false})
-                if(res.policeType === 2) self.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
-                else if(res.policeType === 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
+                this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+
+                // if(res.policeType === 2) self.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+                // else if(res.policeType === 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
               }else{
                 self.setState({loading: false})
               }

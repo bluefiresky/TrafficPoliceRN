@@ -19,33 +19,34 @@ export default class HistoricalCaseCellView extends Component {
     this.state = {
     }
   }
-  cellClick() {
-    this.props.navigation.navigate('CaseDetailsView')
+  cellClick(taskNo) {
+    this.props.navigation.navigate('CaseDetailsView', {taskNo})
   }
   render() {
-      return (
-        <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.cellClick()}>
-          <View style={{flexDirection:'row',marginBottom:15,justifyContent:'space-between'}}>
-            <View style={styles.left}>
-              <View style={{flexDirection:'row',marginTop:15}}>
-                <Text style={{color:formLeftText,fontSize:13}}>事故时间：</Text>
-                <Text style={{color:formLeftText,fontSize:13}}>2017-05-20 10:55</Text>
-              </View>
-              <View style={{flexDirection:'row',marginTop:10}}>
-                <Text style={{color:formLeftText,fontSize:13}}>事故地点：</Text>
-                <Text style={{color:formLeftText,fontSize:13}}>北京市朝阳区</Text>
-              </View>
-              <View style={{flexDirection:'row',marginTop:10}}>
-                <Text style={{color:formLeftText,fontSize:13}}>当事人：</Text>
-                <Text style={{color:formLeftText,fontSize:13,width:W-100}}>张三（京543216）张三（京543216）张三（京543216）张三（京543216）张三（京543216）张三（京543216）张三（京543216）张三（京543216）张三（京543216）</Text>
-              </View>
+    let { accidentAddress, accidentTime, taskNo, cars } = this.props.rowData;
+    return (
+      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.cellClick(taskNo)}>
+        <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
+          <View style={styles.left}>
+            <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
+              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
+              <Text style={{color:formLeftText,fontSize:14}}>{accidentTime}</Text>
             </View>
-            <View style={styles.right}>
-              <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,alignSelf:'center'}}/>
+            <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
+              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
+              <Text style={{color:formLeftText,fontSize:14}}>{accidentAddress}</Text>
+            </View>
+            <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start'}}>
+              <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
+              <Text style={{color:formLeftText,fontSize:14}}>{cars.map(car => car.ownerName + ' (' + car.licenseNo + ')\n')}</Text>
             </View>
           </View>
-        </TouchableHighlight>
-      )
+          <View style={styles.right}>
+            <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
+          </View>
+        </View>
+      </TouchableHighlight>
+    )
   }
 }
 const styles = StyleSheet.create({
@@ -57,7 +58,9 @@ const styles = StyleSheet.create({
       marginLeft:15
     },
     right:{
+      width: 10,
+      alignItems: 'center',
       justifyContent:'center',
-      marginRight:15
+      marginRight:15,
     }
 });

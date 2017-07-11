@@ -27,6 +27,7 @@ export const POST_ACHIEVE_DICTIONARY = 'post_achieve_dictionary';             //
  * Main 相关接口名
  */
 export const POST_ACCIDENTS_SEARCH = 'post_accidents_search';                 // 获取历史案件列表
+export const POST_ACCIDENT_DETAILS = 'post_accident_details';                 // 获取历史案件详情
 /*
  * Common 相关接口名
  */

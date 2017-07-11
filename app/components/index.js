@@ -11,6 +11,8 @@ export { InputPlaceholder } from './custom/InputPlaceholder.js'; /** 无lable输
 export { UploadImageView } from './custom/UploadImage.js'; /** 自定义可上传服务器并返回上传后地址的ImageView */
 export { EmptyView } from './custom/EmptyView.js'; /** 自定义可上传服务器并返回上传后地址的ImageView */
 export { UpdateModal } from './custom/UpdateModal.js';
+export { TipModal } from './custom/TipModal.js';  /** 可自定义参数弹出提示框 */
+
 
 /** Basic Component [注]可在custom逐渐集中对其进行自定义修改*/
 export { BaseView } from './basic/BaseView.js';         /** 基础View，提供一些提特定的基础显示效果 */

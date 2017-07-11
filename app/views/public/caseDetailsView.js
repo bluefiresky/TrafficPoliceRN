@@ -2,7 +2,7 @@
 * 确认事故信息
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, FlatList } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, FlatList, InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
@@ -33,13 +33,27 @@ class CaseDetailsView extends Component {
   constructor(props){
     super(props);
     this.state = {
-      data: [{'title': '侧前方',imageURL:''},{'title': '侧后方',imageURL:''},{'title': '碰撞部位',imageURL:''},{'title': '其他现场照片',imageURL:''}]
+      data: [{'title': '侧前方',imageURL:''},{'title': '侧后方',imageURL:''},{'title': '碰撞部位',imageURL:''},{'title': '其他现场照片',imageURL:''}],
+      loading: false,
     }
     this.rowNum = 3;
     this.rowMargin = 10;
     this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
     this.carInfoData = ['甲方', '乙方','丙方'];
   }
+
+  componentDidMount(){
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({loading: true});
+      let { taskNo } = this.props.navigation.state.params;
+      this.props.dispatch( create_service(Contract.POST_ACCIDENT_DETAILS, {taskNo}))
+        .then( res => {
+          console.log(' CaseDetailsView execute componentDidMount fetch and the res -->> ', res);
+          this.setState({loading: false})
+      })
+    })
+  }
+
   renderItem({item,index}) {
     return (
       <View style={{marginLeft:this.rowMargin,marginBottom:15}}>
@@ -122,14 +136,17 @@ class CaseDetailsView extends Component {
   }
   render(){
     return(
-      <ScrollView style={styles.container}
-                   showsVerticalScrollIndicator={false}>
-        {this.renderHeader()}
-        {this.carInfoData.map((value,index) => this.renderOnePersonInfo(value,index))}
-        <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-          <XButton title='查看交通事故认定书' onPress={() => this.gotoNext()}/>
-        </View>
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {this.renderHeader()}
+          {this.carInfoData.map((value,index) => this.renderOnePersonInfo(value,index))}
+          <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
+            <XButton title='查看交通事故认定书' onPress={() => this.gotoNext()}/>
+          </View>
+        </ScrollView>
+        <ProgressView show={this.state.loading} hasTitleBar={true} />
+      </View>
+
     );
   }
 
