@@ -17,7 +17,7 @@ import {
   /** peoplePolice */ PpHomePageView,AccidentBasicInformationView,PhotoEvidenceVeiw,GatheringPartyInformationView,GatheringCardPhotoView,ConfirmInformationView,AccidentFactAndResponsibilityView,SignatureConfirmationView,
   /** assistPolice */ ApHomePageView,AAccidentBasicInformationView,APhotoEvidenceVeiw,SelectHandleTypeView,AGatheringPartyInformationView,AGatheringCardPhotoView,AConfirmInformationView,AccidentConditionView,AccidentConfirmResponView,ASignatureConfirmationView,AAccidentFactAndResponsibilityView,WaitRemoteResponsibleView,ResponsibleResultView,
   /** insuranceReport */
-  InsuranceReportPartyInfoView,InsuranceReportSuccessView,PerfectInformantInfoView,ExploreTakePhotoView,ConfirmReportPartyInfoView,ExploreSuccessView,
+  InsuranceReportPartyInfoView,InsuranceReportSuccessView,PerfectInformantInfoView,ExploreTakePhotoView,ConfirmReportPartyInfoView,ExploreSuccessView,SelectInInsuranceCompanyView,SelectCityView,
  } from './views/index.js';
 
 const isIos = Platform.OS === 'ios';
@@ -44,40 +44,16 @@ const publicNavigationOptions = {
 /** App-public栈 */
 const PublicNavigator = StackNavigator({
   //保险报案
+  InsuranceReportPartyInfoView: { screen: InsuranceReportPartyInfoView, navigationOptions: { title: '保险报案'} },
+  SelectCityView: { screen: SelectCityView, navigationOptions: { title: '保险报案'} },
+  SelectInInsuranceCompanyView: { screen: SelectInInsuranceCompanyView, navigationOptions: { title: '保险报案'} },
   ExploreSuccessView: { screen: ExploreSuccessView, navigationOptions: { title: '完成'} },
   ConfirmReportPartyInfoView: { screen: ConfirmReportPartyInfoView, navigationOptions: { title: '确认信息'} },
   ExploreTakePhotoView: { screen: ExploreTakePhotoView, navigationOptions: { title: '查勘拍照'} },
   PerfectInformantInfoView: { screen: PerfectInformantInfoView, navigationOptions: { title: '完善报案人信息'} },
-  InsuranceReportPartyInfoView: { screen: InsuranceReportPartyInfoView, navigationOptions: { title: '保险报案'} },
   InsuranceReportSuccessView: { screen: InsuranceReportSuccessView, navigationOptions: { title: '完成'} },
   //公共
   LoginView: { screen: LoginView, navigationOptions: { title: '登录'} },
-
-  // //协警
-  ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} },
-  AAccidentBasicInformationView: { screen: AAccidentBasicInformationView, navigationOptions: { title: '基本信息'} },
-  APhotoEvidenceVeiw: { screen: APhotoEvidenceVeiw, navigationOptions: { title: '拍照取证'} },
-  SelectHandleTypeView: { screen: SelectHandleTypeView, navigationOptions: { title: '选择处理方式'} },
-  AGatheringPartyInformationView: { screen: AGatheringPartyInformationView, navigationOptions: { title: '采集当事人信息'} },
-  AGatheringCardPhotoView: { screen: AGatheringCardPhotoView, navigationOptions: { title: '采集证件信息'} },
-  AConfirmInformationView: { screen: AConfirmInformationView, navigationOptions: { title: '确认信息'} },
-  AAccidentFactAndResponsibilityView: { screen: AAccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实'} },
-  WaitRemoteResponsibleView: { screen: WaitRemoteResponsibleView, navigationOptions: { title: '等待远程定责'} },
-  ResponsibleResultView: { screen: ResponsibleResultView },
-  ASignatureConfirmationView: { screen: ASignatureConfirmationView, navigationOptions: { title: '签字确认'} },
-  AccidentConditionView: { screen: AccidentConditionView, navigationOptions: { title: '事故形态及情形'} },
-  AccidentConfirmResponView: { screen: AccidentConfirmResponView, navigationOptions: { title: '事故定责'} },
-
-  //民警
-  PpHomePageView: { screen: PpHomePageView, navigationOptions: { title: '首页'} },
-  AccidentBasicInformationView: { screen: AccidentBasicInformationView, navigationOptions: { title: '事故基本信息'} },
-  PhotoEvidenceVeiw: { screen: PhotoEvidenceVeiw, navigationOptions: { title: '拍照取证'} },
-  GatheringPartyInformationView: { screen: GatheringPartyInformationView, navigationOptions: { title: '采集当事人信息'} },
-  GatheringCardPhotoView: { screen: GatheringCardPhotoView, navigationOptions: { title: '采集证件照片'} },
-  ConfirmInformationView: { screen: ConfirmInformationView, navigationOptions: { title: '确认信息'} },
-  AccidentFactAndResponsibilityView: { screen: AccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实及责任'} },
-  SignatureConfirmationView: { screen: SignatureConfirmationView, navigationOptions: { title: '签字确认'} },
-  //公共
   SettingView: { screen: SettingView, navigationOptions: { title: '设置'} },
   FeedBackView: { screen: FeedBackView, navigationOptions: { title: '意见反馈'} },
   HistoricalCaseView: { screen: HistoricalCaseView},
