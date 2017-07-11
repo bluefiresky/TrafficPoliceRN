@@ -53,7 +53,12 @@ class InsuranceReportPartyInfoView extends Component {
         {value.isReport ? <View>
             <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:15}}>
             <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>保险公司</Text>
-              <TouchableHighlight style={{marginRight:15}} underlayColor='transparent' onPress={()=>{console.log('1');}}>
+              <TouchableHighlight style={{marginRight:15}} underlayColor='transparent' onPress={()=>{this.props.navigation.navigate('SelectInInsuranceCompanyView',{selData:(selData)=>{
+                value.insuranceCompany = selData;
+                this.setState({
+                  refresh: true
+                })
+              }})}}>
                 <View style={{flex:1,flexDirection:'row'}}>
                   <Text style={{marginLeft:20,color:(value.insuranceCompany ? formLeftText : formRightText),marginRight:10}}>{value.insuranceCompany ? value.insuranceCompany : '请选择当事人报案保险公司'}</Text>
                   <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,alignSelf:'center'}}/>

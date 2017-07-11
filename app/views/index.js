@@ -45,3 +45,5 @@ export { PerfectInformantInfoView } from './insuranceReport/perfectInformantInfo
 export { ExploreTakePhotoView } from './insuranceReport/exploreTakePhotoView.js';  /** 查勘拍照 */
 export { ConfirmReportPartyInfoView } from './insuranceReport/confirmReportPartyInfoView.js';  /** 查勘拍照 */
 export { ExploreSuccessView } from './insuranceReport/exploreSuccessView.js';  /** 查勘成功 */
+export { SelectInInsuranceCompanyView } from './insuranceReport/selectInInsuranceCompanyView.js';  /** 选择保险公司 */
+export { SelectCityView } from './insuranceReport/selectCityView.js';  /** 选择保险公司 */

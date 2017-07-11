@@ -33,6 +33,7 @@ export default class TrafficPoliceRN extends Component {
       const state = store.getState();
       console.log('Index configureStore state -->> ', state);
       global.auth = state.auth;
+      global.stackKeys = {};
       global.personal = state.personal;
       global.storage = storage;
       AsyncStorage.getItem("has_open_app")

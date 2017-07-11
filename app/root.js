@@ -17,7 +17,7 @@ import {
   /** peoplePolice */ PpHomePageView,AccidentBasicInformationView,PhotoEvidenceVeiw,GatheringPartyInformationView,GatheringCardPhotoView,ConfirmInformationView,AccidentFactAndResponsibilityView,SignatureConfirmationView,
   /** assistPolice */ ApHomePageView,AAccidentBasicInformationView,APhotoEvidenceVeiw,SelectHandleTypeView,AGatheringPartyInformationView,AGatheringCardPhotoView,AConfirmInformationView,AccidentConditionView,AccidentConfirmResponView,ASignatureConfirmationView,AAccidentFactAndResponsibilityView,WaitRemoteResponsibleView,ResponsibleResultView,
   /** insuranceReport */
-  InsuranceReportPartyInfoView,InsuranceReportSuccessView,PerfectInformantInfoView,ExploreTakePhotoView,ConfirmReportPartyInfoView,ExploreSuccessView,
+  InsuranceReportPartyInfoView,InsuranceReportSuccessView,PerfectInformantInfoView,ExploreTakePhotoView,ConfirmReportPartyInfoView,ExploreSuccessView,SelectInInsuranceCompanyView,SelectCityView,
  } from './views/index.js';
 
 const isIos = Platform.OS === 'ios';
