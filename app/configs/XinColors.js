@@ -7,7 +7,7 @@
 export const backgroundGrey = "#f2f5f7"
 
 //项目主色调蓝色、导航条色
-export const mainBule = "#4DAFD4"
+export const mainBule = "#1C79D9"
 export const tabBarColor = "#383a45"
 export const mainBackground = '#f2f2f2'
 

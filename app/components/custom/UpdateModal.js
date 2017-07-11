@@ -3,7 +3,7 @@
 * 页面容器，用于覆盖当前页面的modal
 */
 import React, { Component } from 'react';
-import { StyleSheet, Modal, Text, View, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Modal, Text, View, Platform, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import Toast from '@remobile/react-native-toast';
 
 import { W/** 屏宽*/, H/** 屏高*/, backgroundGrey/** 背景灰 */, mainBule, borderColor, formLeftText } from '../../configs/index.js';/** 自定义配置参数 */
@@ -24,13 +24,13 @@ export class UpdateModal extends Component {
         <Modal animationType="slide"  transparent={true} visible={show} onRequestClose={()=>{}}>
           <View style={styles.container}>
             <View style={{width: ComponentW, height: ComponentH, backgroundColor: 'white', borderRadius: 10}}>
-              <View style={{flex: 1}}>
-                <ScrollView style={{padding: 5}}><Text>{content}</Text></ScrollView>
+              <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10}}>
+                <Text>{content? content.upgradeReason : null }</Text>
               </View>
               <View style={{height: 1, backgroundColor: borderColor}} />
-              <TouchableOpacity onPress={closeEvent} activeOpacity={0.8}>
-                <View style={{width: ComponentW, height: 35, alignItems: 'center', justifyContent: 'center'}}>
-                  <Text style={{color: formLeftText, fontSize: 16}}>确定</Text>
+              <TouchableOpacity onPress={()=>{ Linking.openURL(content.appDownloadUrl) }} activeOpacity={0.8}>
+                <View style={{width: ComponentW, height: 40, alignItems: 'center', justifyContent: 'center'}}>
+                  <Text style={{color: '#1174D9', fontSize: 16}}>确定</Text>
                 </View>
               </TouchableOpacity>
             </View>

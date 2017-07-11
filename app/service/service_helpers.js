@@ -118,7 +118,7 @@ function sign(api, version, signParams, extraParams){
   })
   str += XIN_APISIGN_STR
 
-  // console.log('before sha1 sign str -->> ', str);
+  console.log('before sha1 sign str -->> ', str);
   let sign = sha1(str);
   // console.log('after sha1 sign str -->> ', sign.toUpperCase());
   return sign.toUpperCase();

@@ -148,7 +148,7 @@ android {
 
     sourceSets {
         main {
-            jniLibs.srcDirs = ['libs']
+            jniLibs.srcDirs = ['libs', "src/main/jniLibs"]
         }
     }
 
@@ -166,8 +166,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-signature-capture')
-    compile project(':@remobile/react-native-toast')
     compile project(':react-native-photo-view')
     compile project(':react-native-vector-icons')
     compile project(':react-native-picker')

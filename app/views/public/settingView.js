@@ -36,35 +36,31 @@ class SettingView extends Component {
       .then( res => {
         console.log(' SettingView execute exitLogin and the res -->> ', res);
         if(res){
-          let resetAction = NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName: 'LoginView'}) ]})
-          this.props.navigation.dispatch(resetAction)
+          this.props.dispatch({ type : 'CLEAR_USER_INFO' })
+          this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName: 'LoginView'}) ]}) )
         }
       })
   }
   render(){
     return(
-      <ScrollView style={styles.container}
-                  showsVerticalScrollIndicator ={false}>
-        <TouchableHighlight style={{marginTop:50,marginLeft:15,width:W-30}} underlayColor='#B4B4B4' onPress={() => this.useHelp()}>
-          <View style={{flex:1,flexDirection:'row',backgroundColor:'#ffffff',padding:15}}>
-            <View style={{width:6,height:6,borderRadius:3,backgroundColor:'#1C79D9',alignSelf:'center'}}></View>
-            <Text style={{fontSize:16,marginLeft:5,color:formLeftText}}>
-              使用帮助
-            </Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight style={{marginTop:20,marginLeft:15,width:W-30}} underlayColor='#B4B4B4' onPress={() => this.feedback()}>
-          <View style={{flex:1,flexDirection:'row',backgroundColor:'#ffffff',padding:15}}>
-            <View style={{width:6,height:6,borderRadius:3,backgroundColor:'#1C79D9',alignSelf:'center'}}></View>
-            <Text style={{fontSize:16,marginLeft:5,color:formLeftText}}>
-              意见反馈
-            </Text>
-          </View>
-        </TouchableHighlight>
-        <View style={{marginLeft:15, marginTop:100}}>
-          <XButton title='退出登录' onPress={() => {this.exitLogin()}} style={{backgroundColor:'#ffffff',borderRadius:20}} textStyle={{color:'#FC0042'}}/>
+      <View style={styles.container}>
+        <View style={{flex:1}}>
+          <TouchableHighlight style={{marginTop:44,height:44, width:W}} underlayColor='#B4B4B4' onPress={() => this.useHelp()}>
+            <View style={{flex:1,flexDirection:'row',backgroundColor:'#ffffff',alignItems:'center',paddingLeft:20}}>
+              <View style={{width:6,height:6,borderRadius:3,backgroundColor:'#1C79D9'}} />
+              <Text style={{fontSize:16,marginLeft:10,color:formLeftText}}>使用帮助</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight style={{marginTop:10,height:44,width:W}} underlayColor='#B4B4B4' onPress={() => this.feedback()}>
+            <View style={{flex:1,flexDirection:'row',backgroundColor:'#ffffff',alignItems:'center',paddingLeft:20}}>
+              <View style={{width:6,height:6,borderRadius:3,backgroundColor:'#1C79D9',alignSelf:'center'}} />
+              <Text style={{fontSize:16,marginLeft:10,color:formLeftText}}>意见反馈</Text>
+            </View>
+          </TouchableHighlight>
         </View>
-      </ScrollView>
+
+        <XButton title='退出登录' onPress={() => {this.exitLogin()}} style={{alignSelf:'center', marginBottom:100,backgroundColor:'#ffffff',borderRadius:20}} textStyle={{color:'#FC0042'}}/>
+      </View>
     );
   }
 
