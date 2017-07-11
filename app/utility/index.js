@@ -6,3 +6,4 @@
 export { normalize } from './normalizeText.js';
 // export { getLocation } from './Location.js';
 export { parse_url } from './url';
+export { StorageHelper } from './StorageHelper.js';

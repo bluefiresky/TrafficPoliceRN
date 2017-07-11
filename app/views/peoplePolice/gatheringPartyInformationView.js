@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule,getProvincialData,getNumberData } from '../../configs/index.js';/** 自定义配置参数 */
-import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
+import { ProgressView, TipModal } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { getStore } from '../../redux/index.js';       /** Redux的store */
@@ -15,6 +15,22 @@ import { XButton, SelectCarNum } from '../../components/index.js';  /** 自定�
 import Picker from 'react-native-picker';
 import DatePicker from 'react-native-datepicker';
 import Tool from '../../utility/Tool';
+import { StorageHelper } from '../../utility/StorageHelper.js';
+
+const personList = [
+    {
+        "name": "王五",
+        "phone": "15010955030",
+        "licensePlateNum": "冀CWA356",
+        "insureCompanyCode": "110000003003",
+        "insureCompanyName": "中国太平洋财产保险股份有限公司",
+        "driverNum": "111222121333636666",
+        "carType": "小型载客汽车",
+        "carInsureNumber": "223369",
+        "carInsureDueDate": "2018-04-10",
+        "carDamagedPart": "1,3"
+    }
+]
 
 class GatheringPartyInformationView extends Component {
 
@@ -70,6 +86,9 @@ class GatheringPartyInformationView extends Component {
     //    }
     //  }
      //提交信息
+     let handleWay = (this.carInfoData.length) > 1?'01':'02';
+     StorageHelper.saveHandleWay(handleWay);
+     StorageHelper.saveStep2(personList);
 
      //提交成功后跳转到下个页面
      this.props.navigation.navigate('GatheringCardPhotoView');

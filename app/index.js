@@ -5,11 +5,13 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { View, StyleSheet, AppState, AsyncStorage, ActivityIndicator, Text, Platform } from 'react-native';
+import Storage from 'react-native-storage';
 
 import { configureStore, getStore } from './redux/index.js';
 import RootView from './root.js';
 
 console.ignoredYellowBox = ['Warning: BackAndroid is deprecated.']
+const storage = new Storage({ size: 1000, storageBackend: AsyncStorage, defaultExpires: null, enableCache: true })
 
 const IndicatorColor = Platform.OS === 'ios'? 'white':'#1174D9';
 export default class TrafficPoliceRN extends Component {
@@ -32,6 +34,7 @@ export default class TrafficPoliceRN extends Component {
       console.log('Index configureStore state -->> ', state);
       global.auth = state.auth;
       global.personal = state.personal;
+      global.storage = storage;
       AsyncStorage.getItem("has_open_app")
         .then((data) => {
           this.setState({store: store, guide: data})

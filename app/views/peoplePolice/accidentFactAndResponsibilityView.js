@@ -12,6 +12,12 @@ import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
 import Picker from 'react-native-picker';
+import { StorageHelper } from '../../utility/StorageHelper.js';
+
+const example = {
+  supplementary: '补充事故事实',
+  conciliation: '',
+}
 
 class AccidentFactAndResponsibilityView extends Component {
 
@@ -29,12 +35,13 @@ class AccidentFactAndResponsibilityView extends Component {
   }
   //完成
   gotoNext(){
-    for (var i = 0; i < this.partyResponsibility.length; i++) {
-      if (!this.partyResponsibility[i].responsibility) {
-        Toast.showShortCenter(`请选择${this.partyResponsibility[i].name}的责任类型`)
-        return
-      }
-    }
+    // for (var i = 0; i < this.partyResponsibility.length; i++) {
+    //   if (!this.partyResponsibility[i].responsibility) {
+    //     Toast.showShortCenter(`请选择${this.partyResponsibility[i].name}的责任类型`)
+    //     return
+    //   }
+    // }
+    StorageHelper.saveStep5(example)
     this.props.navigation.navigate('SignatureConfirmationView');
   }
   //输入框文字变化

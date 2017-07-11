@@ -14,6 +14,8 @@ import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import DatePicker from 'react-native-datepicker';
 import Picker from 'react-native-picker';
 import Tool from '../../utility/Tool';
+import { StorageHelper } from '../../utility/StorageHelper.js';
+
 class AccidentBasicInformationView extends Component {
 
   constructor(props){
@@ -30,6 +32,8 @@ class AccidentBasicInformationView extends Component {
 
     this.locationData = null;
     this._onGetLocation = this._onGetLocation.bind(this);
+    this.gotoTakePhoto = this.gotoTakePhoto.bind(this);
+    this.tmp = 1;
   }
   componentDidMount(){
     //页面载入，获取当前系统时间，可修改。点击时间框，调起时间选择插件。时间格式“XXXX年XX月XX日 XX时XX分”。需同时记录当前系统时间、修改后时间，都需传给后台。
@@ -56,6 +60,16 @@ class AccidentBasicInformationView extends Component {
   }
   //去取证
   gotoTakePhoto(){
+    StorageHelper.create({
+      id: '1499771792020',
+      basic: {
+        address: '000测试-北京市朝阳区百子湾南二路78号院-3',
+        accidentTime: '2017-07-11 17:10:00',
+        latitude: '39.90167',
+        longitude: '116.473731',
+        weather: '1'
+      }
+    })
     this.props.navigation.navigate('PhotoEvidenceVeiw');
   }
   render(){
