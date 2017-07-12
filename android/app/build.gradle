@@ -166,6 +166,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-zip-archive')
+    compile project(':react-native-fs')
     compile project(':react-native-photo-view')
     compile project(':react-native-vector-icons')
     compile project(':react-native-picker')

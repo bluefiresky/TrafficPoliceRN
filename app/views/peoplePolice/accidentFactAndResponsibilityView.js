@@ -5,14 +5,14 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TextInput,TouchableHighlight} from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
-import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
-import * as Contract from '../../service/contract.js'; /** api方法名 */
-import { create_service } from '../../redux/index.js'; /** 调用api的Action */
-import { getStore } from '../../redux/index.js';       /** Redux的store */
-import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
 import Picker from 'react-native-picker';
-import { StorageHelper } from '../../utility/StorageHelper.js';
+
+import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
+import * as Contract from '../../service/contract.js'; /** api方法名 */
+import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
+import { XButton } from '../../components/index.js';  /** 自定义组件 */
+import { StorageHelper } from '../../utility/index.js';
 
 const example = {
   supplementary: '补充事故事实',

@@ -77,8 +77,9 @@ class LoginView extends Component {
       Toast.showShortCenter('手机号输入有误');
       return;
     }
-    
+    this.setState({loading: true})
     let codeData = await this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType}) );
+    this.setState({loading: false})
     if(!codeData) return;
 
     if (this.state.codeSecondsLeft === 60) {

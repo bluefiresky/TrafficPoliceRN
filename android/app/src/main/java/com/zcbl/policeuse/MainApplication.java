@@ -3,6 +3,8 @@ package com.zcbl.policeuse;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnziparchive.RNZipArchivePackage;
+import com.rnfs.RNFSPackage;
 import com.rssignaturecapture.RSSignatureCapturePackage;
 import com.remobile.toast.RCTToastPackage;
 import com.rssignaturecapture.RSSignatureCapturePackage;
@@ -31,6 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNZipArchivePackage(),
+          new RNFSPackage(),
           new RSSignatureCapturePackage(),
           new VectorIconsPackage(),
           new PickerViewPackage(),

@@ -5,17 +5,16 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
+import Picker from 'react-native-picker';
+import DatePicker from 'react-native-datepicker';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule,getProvincialData,getNumberData } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, TipModal } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
-import { create_service } from '../../redux/index.js'; /** 调用api的Action */
-import { getStore } from '../../redux/index.js';       /** Redux的store */
+import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
-import Picker from 'react-native-picker';
-import DatePicker from 'react-native-datepicker';
 import Tool from '../../utility/Tool';
-import { StorageHelper } from '../../utility/StorageHelper.js';
+import { StorageHelper } from '../../utility/index.js';
 
 const personList = [
     {
@@ -88,7 +87,7 @@ class GatheringPartyInformationView extends Component {
      //提交信息
      let handleWay = (this.carInfoData.length) > 1?'01':'02';
      StorageHelper.saveStep2_3(handleWay, personList);
-     
+
      //提交成功后跳转到下个页面
      this.props.navigation.navigate('GatheringCardPhotoView');
   }

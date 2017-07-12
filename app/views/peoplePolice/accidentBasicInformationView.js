@@ -4,17 +4,16 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, TouchableHighlight,TextInput,Image,NativeModules, InteractionManager } from "react-native";
 import { connect } from 'react-redux';
+import DatePicker from 'react-native-datepicker';
+import Picker from 'react-native-picker';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, InputWithIcon, TipModal } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
-import { create_service } from '../../redux/index.js'; /** 调用api的Action */
-import { getStore } from '../../redux/index.js';       /** Redux的store */
+import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
-import DatePicker from 'react-native-datepicker';
-import Picker from 'react-native-picker';
 import Tool from '../../utility/Tool';
-import { StorageHelper } from '../../utility/StorageHelper.js';
+import { StorageHelper } from '../../utility/index.js';
 
 class AccidentBasicInformationView extends Component {
 

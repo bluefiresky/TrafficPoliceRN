@@ -5,7 +5,7 @@
 //  Created by Sky on 2017/6/21.
 //  Copyright © 2017年 Facebook. All rights reserved.
 //
-#import "RCTBridgeModule.h"
+#import <React/RCTBridgeModule.h>
 #import <React/RCTBridge.h>
 #import <BaiduMapAPI_Base/BMKBaseComponent.h>
 #import <BaiduMapAPI_Location/BMKLocationComponent.h>

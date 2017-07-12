@@ -20,6 +20,7 @@ const format = 'json';
 const http_post = http_factory({method : "POST", paramsType : "form"})
 const http_get = http_factory({method : "GET", paramsType : "query"})
 const http_put = http_factory({method : "PUT", paramsType : "json"})
+const http_post_file = http_factory({method : "POST", paramsType : "file"})
 
 function http_factory({method, paramsType}) {
 
@@ -43,6 +44,7 @@ function http_factory({method, paramsType}) {
       h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)};
       meta.headers['Content-type'] = 'application/x-www-form-urlencoded';
       meta.body = qs.stringify(Object.assign(signParams, otherParams, h))
+
     } else if (paramsType === 'query') {
       let query;
       if(auth.token){
@@ -54,8 +56,9 @@ function http_factory({method, paramsType}) {
         query = qs.stringify(Object.assign(signParams, otherParams, h))
       }
       path += "?" + query
-    }
 
+    }
+    
     /** 开始连网获并取返回数据 */
     console.log('%c service_helpers ## path: ## ' + path + ' ## meta -->> ', 'color:limegreen', meta);
     try{
@@ -124,4 +127,4 @@ function sign(api, version, signParams, extraParams){
   return sign.toUpperCase();
 }
 
-export { http_get, http_post, http_put, service_url }
+export { http_get, http_post, http_put, service_url, http_post_file }

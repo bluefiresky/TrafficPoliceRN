@@ -5,15 +5,14 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView,TouchableHighlight,Platform,Alert } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
+import ImagePicker from 'react-native-image-picker';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, TipModal } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
-import { create_service } from '../../redux/index.js'; /** 调用api的Action */
-import { getStore } from '../../redux/index.js';       /** Redux的store */
+import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
-import ImagePicker from 'react-native-image-picker';
-import { StorageHelper } from '../../utility/StorageHelper.js';
+import { StorageHelper } from '../../utility/index.js';
 
 const photoList = [
   {

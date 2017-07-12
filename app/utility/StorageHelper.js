@@ -80,6 +80,7 @@ export class StorageHelper{
       })
   }
 
+  // 获取一条案件数据详情
   static async getCurrentCaseInfo(){
     try {
       return await global.storage.load({key: global.personal.mobile + 'uncompleted', id:global.currentCaseId})
@@ -88,10 +89,6 @@ export class StorageHelper{
       return null;
     }
   }
-
-
-
-  // static
 
   // 转存未完成的数据到未上传列表
   static saveAsUnUploaded({ id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty }){
