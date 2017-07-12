@@ -41,7 +41,7 @@ class AccidentFactAndResponsibilityView extends Component {
     //     return
     //   }
     // }
-    StorageHelper.saveStep5(example)
+    StorageHelper.saveStep6(example)
     this.props.navigation.navigate('SignatureConfirmationView');
   }
   //输入框文字变化

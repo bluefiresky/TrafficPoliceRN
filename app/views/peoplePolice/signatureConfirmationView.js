@@ -38,7 +38,7 @@ class SignatureConfirmationView extends Component {
   }
   //下一步
   gotoNext(){
-    StorageHelper.saveStep6(dutyList);
+    StorageHelper.saveStep7(dutyList);
     Toast.showShortCenter('以下流程开中')
     StorageHelper.getCurrentCaseInfo((info) => {
       console.log(' SignatureConfirmationView gotoNext and this.info -->> ', info);

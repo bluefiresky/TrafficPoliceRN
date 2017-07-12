@@ -101,7 +101,7 @@ class GatheringCardPhotoView extends Component {
           self.setState({showTip: false});
         }},
         right:{label: '确认无误', event: () => {
-          StorageHelper.saveStep3(photoList)
+          StorageHelper.saveStep4(photoList)
           self.setState({showTip: false});
           self.props.navigation.navigate('ConfirmInformationView');
 

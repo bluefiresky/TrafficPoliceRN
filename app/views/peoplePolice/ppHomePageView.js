@@ -47,12 +47,11 @@ class PpHomePageView extends Component {
 
   componentDidMount() {
     //1、载入页面，加载账户信息、大队章、勘察章、字典表（保险公司、天气、车辆类型等）信息，加载过程显示loading，信息缓存到本地。2、每次启动APP，请求后台字典数据是否有更新，如果有更新，后台返回新的字典数据，客户端缓存最新字典数据；如果没有更新，不需重新缓存数据。若无网络，弹框提示“未检测到网络，是否离线处理？”点击继续。
-    InteractionManager.runAfterInteractions(() => {
+    InteractionManager.runAfterInteractions(async () => {
       this._getData();
       global.currentCaseId = '1499771792020';
-      StorageHelper.getCurrentCaseInfo((info) => {
-        console.log(' PpHomePageView load local case info -> ', info);
-      });
+      let info = await StorageHelper.getCurrentCaseInfo();
+      console.log(' PpHomePageView load local case info -> ', info);
     });
   }
   //处理案件
@@ -64,7 +63,7 @@ class PpHomePageView extends Component {
     switch (type) {
       case 'WaitUpload':
         // this.props.navigation.navigate('HistoricalCaseView',{title:'待上传案件', type: 1});
-        global.storage.remove({key: global.personal.mobile, id: '1499771792020'})
+        global.storage.remove({key: global.personal.mobile+'uncompleted', id: '1499771792020'})
         break;
       case 'NoComplete':
         this.props.navigation.navigate('HistoricalCaseView',{title:'未完结案件', type: 2});

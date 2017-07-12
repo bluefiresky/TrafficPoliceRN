@@ -87,9 +87,8 @@ class GatheringPartyInformationView extends Component {
     //  }
      //提交信息
      let handleWay = (this.carInfoData.length) > 1?'01':'02';
-     StorageHelper.saveHandleWay(handleWay);
-     StorageHelper.saveStep2(personList);
-
+     StorageHelper.saveStep2_3(handleWay, personList);
+     
      //提交成功后跳转到下个页面
      this.props.navigation.navigate('GatheringCardPhotoView');
   }

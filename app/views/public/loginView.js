@@ -35,9 +35,9 @@ class LoginView extends Component {
 
   componentWillMount(){
     if(global.auth.isLogin){
-      this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
-      // if(global.personal.policeType == 2) this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
-      // else if(global.personal.policeType == 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
+      // this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+      if(global.personal.policeType == 2) this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+      else if(global.personal.policeType == 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
     }
   }
 
@@ -72,11 +72,15 @@ class LoginView extends Component {
     return (!code || code.length !== 6 || !reg.test(code)) ? false:true;
   }
   //获取验证码
-  sendVerificationCode(smsType){
+  async sendVerificationCode(smsType){
     if (!this.checkPhone(this.phoneNum)) {
       Toast.showShortCenter('手机号输入有误');
       return;
     }
+    
+    let codeData = await this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType}) );
+    if(!codeData) return;
+
     if (this.state.codeSecondsLeft === 60) {
       this.timer = setInterval(() => {
         let t = this.state.codeSecondsLeft - 1;
@@ -93,7 +97,6 @@ class LoginView extends Component {
         }
       }, 1000);
       // 不管成功与否，开始倒计时
-      this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType}) );
     }
   }
 
@@ -118,10 +121,10 @@ class LoginView extends Component {
             .then( res => {
               if(res){
                 this.setState({loading: false})
-                this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+                // this.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
 
-                // if(res.policeType === 2) self.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
-                // else if(res.policeType === 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
+                if(res.policeType === 2) self.props.navigation.dispatch({ type: 'replace', routeName: 'PpHomePageView', key: 'PpHomePageView', params: {}})
+                else if(res.policeType === 3) this.props.navigation.dispatch({ type: 'replace', routeName: 'ApHomePageView', key: 'ApHomePageView', params: {}})
               }else{
                 self.setState({loading: false})
               }
