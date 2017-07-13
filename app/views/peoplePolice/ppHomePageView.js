@@ -60,15 +60,15 @@ class PpHomePageView extends Component {
       case 'WaitUpload':
         // this.props.navigation.navigate('HistoricalCaseView',{title:'待上传案件', type: 1});
         // global.storage.remove({key: global.personal.mobile+'uncompleted', id: '1499771792020'});
-        // let deleteRes = await Utility.deleteFileByName('1499771792020')
-        // console.log(' PpHomePageView deleteFileByName and the res -->> ', deleteRes);
         let base64Str = await Utility.zipFileByName('1499771792020');
         console.log(' getFilePathByName zip path -->> ', base64Str);
-
-        this.res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:1, fileName:'1499771792020', file:base64Str}))
+        this.res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:1, fileName:'1499771792020', file:'zip@'+base64Str}))
         break;
       case 'NoComplete':
-        this.props.navigation.navigate('HistoricalCaseView',{title:'未完结案件', type: 2});
+        let deleteRes = await Utility.deleteFileByName('1499771792020')
+        console.log(' PpHomePageView deleteFileByName and the res -->> ', deleteRes);
+
+        // this.props.navigation.navigate('HistoricalCaseView',{title:'未完结案件', type: 2});
         break;
       case 'HistoryCase':
         this.props.navigation.navigate('HistoricalCaseView',{title:'已完结案件', type: 3});

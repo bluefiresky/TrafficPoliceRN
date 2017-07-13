@@ -43,17 +43,11 @@ class SignatureConfirmationView extends Component {
 
 
     let info = await StorageHelper.getCurrentCaseInfo();
-    console.log(' SignatureConfirmationView gotoNext and this.info -->> ', info);
+    console.log(' @@@@@@@@@@@@@@@@@@@@@@@  this.info -->> ', info);
     if(info){
       this.fileRes = await Utility.convertObjtoFile(info, info.id);
       console.log(' @@@@@@@@@@@@@@@@@@@@@@@ this.fileRes -->> ', this.fileRes);
     }
-
-    // this.fileContent = await Utility.getFileByName(info.id);
-    // console.log('@@@@@@@@@@@@@##############$$$$$$$$$$$$$$ this.fileContent -->> ', this.fileContent);
-
-    this.zipPath = await Utility.zipFileByName(info.id);
-    console.log('%%^%(^)&^***^*(&767607349018740913724) -->> zipPath -->> ', this.zipPath);
 
   }
   //获取验证码
