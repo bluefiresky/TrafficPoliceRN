@@ -34,14 +34,14 @@ class AccidentFactAndResponsibilityView extends Component {
     }
   }
   //完成
-  gotoNext(){
+  async gotoNext(){
     // for (var i = 0; i < this.partyResponsibility.length; i++) {
     //   if (!this.partyResponsibility[i].responsibility) {
     //     Toast.showShortCenter(`请选择${this.partyResponsibility[i].name}的责任类型`)
     //     return
     //   }
     // }
-    StorageHelper.saveStep6(example)
+    await StorageHelper.saveStep6(example)
     this.props.navigation.navigate('SignatureConfirmationView');
   }
   //输入框文字变化

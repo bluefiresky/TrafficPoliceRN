@@ -10,6 +10,9 @@ import { zip, zipToBase64, unzip, unzipAssets, subscribe } from 'react-native-zi
 
 const IsIos = Platform.OS === 'ios';
 
+/**
+ * File相关操作
+**/
 export function getFilePathByName(name, type){
   if(type && type === 'zip') return RNFS.DocumentDirectoryPath + `/${name}.zip`;
   else if(type && type === 'json') return RNFS.DocumentDirectoryPath + `/${name}/${name}.json`;
@@ -19,14 +22,14 @@ export function getFilePathByName(name, type){
 export async function convertObjtoFile(obj, name){
   let dir = RNFS.DocumentDirectoryPath + `/${name}`;
   let path = dir + `/${name}.json`;
-  console.log('Utility convertObjtoFile and the file path -->> ', path);
+  console.log('%c Utility execute convertObjtoFile and the obj -->> ' , 'color:dodgerblue', obj);
 
   try {
     let exists = await RNFS.exists(dir);
     if(!exists){
       let make = await RNFS.mkdir(dir);
     }
-    let success =  await RNFS.writeFile(path, convertObjToUploadJson(obj), 'utf8');
+    await RNFS.writeFile(path, convertObjToUploadJson(obj), 'utf8');
     return 'success';
   } catch (e) {
     console.log('%c convertObjtoFile catch error -->> ' , 'color:red', e.message);
@@ -37,11 +40,10 @@ export async function convertObjtoFile(obj, name){
 // 根据文件名获取文件, -->> 返回文件内容 <<--
 export async function getFileByName(name){
   let path = RNFS.DocumentDirectoryPath + `/${name}/${name}.json`;
-  console.log('Utility getFileByName and the file path -->> ', path);
+  console.log('%c Utility execute getFileByName and the path -->> ' , 'color:dodgerblue', path);
 
   try {
     let success = await RNFS.readFile(path, 'utf8');
-    console.log(' ##$%*%(^)*^)^&(*&^*(&%&*^%&*%)) -->> ', success);
     return 'success';
   } catch (e) {
     console.log('%c getFileByName catch error -->> ' , 'color:red', e.message);
@@ -54,8 +56,8 @@ export async function getFileByName(name){
 export async function deleteFileByName(name, type){
   let filePath = RNFS.DocumentDirectoryPath + `/${name}`;
   let zipPath = RNFS.DocumentDirectoryPath + `/${name}.zip`
-  console.log('Utility deleteFileByName and the filepath -->> ', filePath);
-  console.log('Utility deleteFileByName and the zipPath -->> ', zipPath);
+  // console.log('%c Utility execute deleteFileByName and the filePath -->> ' , 'color:dodgerblue', obj);
+  // console.log('%c Utility execute deleteFileByName and the zipPath -->> ' , 'color:dodgerblue', obj);
 
   try {
     if(RNFS.exists(filePath)) await RNFS.unlink(filePath);
@@ -70,7 +72,6 @@ export async function deleteFileByName(name, type){
 export async function zipFileByName(name){
   const targetPath = RNFS.DocumentDirectoryPath + `/${name}.zip`
   const sourcePath = RNFS.DocumentDirectoryPath + `/${name}`
-  console.log('Utility zipFileByName and the file targetPath -->> ', targetPath);
 
   try {
     let path = await zipToBase64(sourcePath, targetPath);
@@ -100,5 +101,32 @@ function convertObjToUploadJson(obj){
     dutyList: duty,
     signList: sign
   }
+
+  console.log('%c Utility execute convertObjToUploadJson and the uploadData -->> ' , 'color:dodgerblue', uploadData);
   return JSON.stringify(uploadData);
+}
+
+
+/**
+   Date 相关操作
+**/
+export function formatDate(format){
+  Date.prototype.Format = function(fmt) {
+    let o = {
+      "M+" : this.getMonth()+1,                 //月份
+      "d+" : this.getDate(),                    //日
+      "h+" : this.getHours(),                   //小时
+      "m+" : this.getMinutes(),                 //分
+      "s+" : this.getSeconds(),                 //秒
+      "q+" : Math.floor((this.getMonth()+3)/3), //季度
+      "S"  : this.getMilliseconds()             //毫秒
+    };
+    if(/(y+)/.test(fmt))
+      fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    for(var k in o)
+      if(new RegExp("("+ k +")").test(fmt))
+    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+    return fmt;
+   }
+   return (new Date().Format(format))
 }

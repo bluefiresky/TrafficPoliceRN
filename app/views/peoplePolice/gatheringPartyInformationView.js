@@ -2,19 +2,19 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import Picker from 'react-native-picker';
 import DatePicker from 'react-native-datepicker';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule,getProvincialData,getNumberData } from '../../configs/index.js';/** 自定义配置参数 */
-import { ProgressView, TipModal } from '../../components/index.js';  /** 自定义组件 */
+import { ProgressView, TipModal, Input } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
 import Tool from '../../utility/Tool';
-import { StorageHelper } from '../../utility/index.js';
+import { StorageHelper, Utility } from '../../utility/index.js';
 
 const personList = [
     {
@@ -35,11 +35,10 @@ class GatheringPartyInformationView extends Component {
 
   constructor(props){
     super(props);
-    this.carTypeData = ['大型载客汽车','中型载客汽车','小型载客汽车','微型载客汽车','重型载货汽车','中型载货汽车','轻型载货汽车','微型载货汽车','使馆汽车','领馆汽车','境外汽车','外籍汽车','香港入出境车','澳门入出境车','三轮汽车','低速货车','挂车','其他'];
-    this.insuranceCompanyData = ['太平洋','平安','人保'];
+
     this.state = {
       refresh:false,
-      date: Tool.handleTime(Tool.getTime("yyyy-MM-dd"),false,'date'),
+      carInsureDueDate: Utility.formatDate('yyyy-MM-dd'),
       showOtherCarTextInput: false
     }
     this.partyName = '';
@@ -47,46 +46,67 @@ class GatheringPartyInformationView extends Component {
     this.partyDrivingLicense = '';
     this.partyInsuranceCertificateNum = '';
     //提交的内容
-    this.jiafangInfo = {name:'',phone:'',drivingLicense:'',insuranceCertificateNum:'',carTypeData:'',insuranceCompanyData: '',carNum:'',date:this.getNowTimeString()};
-    this.yifangInfo = {name:'',phone:'',drivingLicense:'',insuranceCertificateNum:'',carTypeData:'',insuranceCompanyData: '',carNum:'',date:this.getNowTimeString()};
-    this.bingfangInfo = {name:'',phone:'',drivingLicense:'',insuranceCertificateNum:'',carTypeData:'',insuranceCompanyData: '',carNum:'',date:this.getNowTimeString()};
+    this.jiafangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:'',carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.yifangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:'',carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.bingfangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:'',carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
     this.carInfoData = [{title:'甲方',carNumArr:[getProvincialData(),getNumberData()]}];
     this.addOtherTitle = ['乙方','丙方'];
     this.addOtherInfo = [this.yifangInfo,this.bingfangInfo];
     this.submitDataArr = [this.jiafangInfo];
   }
+
+  componentDidMount(){
+    InteractionManager.runAfterInteractions(()=>{
+      let dictionary = getStore().getState().dictionary;
+      this.carTypeData = [];
+      let carTypeList = dictionary.carTypeList.forEach((c) => {
+        this.carTypeData.push(c.name);
+      });
+      this.insuranceCompanyData = dictionary.insureList;
+      this.insuranceCompanyLabel = [];
+      this.insuranceCompanyData.forEach((w) => {
+        this.insuranceCompanyLabel.push(w.inscomname);
+      })
+    })
+  }
+
   //下一步
-  gotoNext(){
+  async gotoNext(){
     //检测必填项
-    //  for (var i = 0; i < this.submitDataArr.length; i++) {
-    //    if (!this.submitDataArr[i].name) {
-    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}当事人姓名`)
-    //      return
-    //    }
-    //    if (!this.checkPhone(this.submitDataArr[i].phone)) {
-    //      Toast.showShortCenter(`${this.carInfoData[i].title}手机号输入有误`)
-    //      return
-    //    }
-    //    if (!this.submitDataArr[i].drivingLicense) {
-    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}驾驶证号`)
-    //      return
-    //    }
-    //    if (!this.submitDataArr[i].carNum) {
-    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}车牌号`)
-    //      return
-    //    }
-    //    if (!this.submitDataArr[i].insuranceCompanyData) {
-    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}车辆类型`)
-    //      return
-    //    }
-    //    if (!this.submitDataArr[i].insuranceCompanyData) {
-    //      Toast.showShortCenter(`请输入${this.carInfoData[i].title}保险公司`)
-    //      return
-    //    }
-    //  }
+     for (var i = 0; i < this.submitDataArr.length; i++) {
+       if (!this.submitDataArr[i].name) {
+         Toast.showShortCenter(`请输入${this.carInfoData[i].title}当事人姓名`)
+         return
+       }
+       if (!this.checkPhone(this.submitDataArr[i].phone)) {
+         Toast.showShortCenter(`${this.carInfoData[i].title}手机号输入有误`)
+         return
+       }
+       if (!this.submitDataArr[i].driverNum) {
+         Toast.showShortCenter(`请输入${this.carInfoData[i].title}驾驶证号`)
+         return
+       }
+       if (!this.submitDataArr[i].licensePlateNum) {
+         Toast.showShortCenter(`请输入${this.carInfoData[i].title}车牌号`)
+         return
+       }
+       if (!this.submitDataArr[i].carType) {
+         Toast.showShortCenter(`请输入${this.carInfoData[i].title}车辆类型`)
+         return
+       }
+       if (!this.submitDataArr[i].insureCompanyName) {
+         Toast.showShortCenter(`请选择${this.carInfoData[i].title}保险公司`)
+         return
+       }
+       if (!this.submitDataArr[i].carInsureNumber) {
+         Toast.showShortCenter(`请输入${this.carInfoData[i].title}保单号`)
+         return
+       }
+     }
      //提交信息
-     let handleWay = (this.carInfoData.length) > 1?'01':'02';
-     StorageHelper.saveStep2_3(handleWay, personList);
+     console.log('GatheringPartyInformationView submit and the submitDataArr -->> ', this.submitDataArr);
+    //  let handleWay = (this.carInfoData.length) > 1?'01':'02';
+    //  await StorageHelper.saveStep2_3('01', personList);
 
      //提交成功后跳转到下个页面
      this.props.navigation.navigate('GatheringCardPhotoView');
@@ -132,19 +152,20 @@ class GatheringPartyInformationView extends Component {
         this.submitDataArr[index].phone = text;
         break;
       case 'DrivingLicense':
-        this.submitDataArr[index].drivingLicense = text;
+        this.submitDataArr[index].driverNum = text;
         break;
       case 'InsuranceCertificateNum':
-        this.submitDataArr[index].insuranceCertificateNum = text;
+        this.submitDataArr[index].carInsureNumber = text;
         break;
       case 'OtherCarType':
-        this.submitDataArr[index].carTypeData = text;
+        this.submitDataArr[index].carType = text;
         break;
       default:
     }
   }
   //下拉选择
   showTypePicker(typeData,index,type) {
+      let self = this;
       Picker.init({
       pickerData: typeData,
       pickerConfirmBtnText:'确定',
@@ -153,17 +174,19 @@ class GatheringPartyInformationView extends Component {
       onPickerConfirm: data => {
         if (type == 'carTypeData') {
           if (data[0] == '其他') {
-            this.setState({
+            self.setState({
               showOtherCarTextInput: true
             })
           } else {
-            this.submitDataArr[index].carTypeData = data[0];
-            this.setState({
+            self.submitDataArr[index].carType = data[0];
+            self.setState({
               showOtherCarTextInput: false
             })
           }
         } else if (type == 'insuranceCompanyData') {
-          this.submitDataArr[index].insuranceCompanyData = data[0];
+          let w = self.insuranceCompanyData[self.insuranceCompanyLabel.indexOf(data[0])]
+          self.submitDataArr[index].insureCompanyCode = w.inscomcode;
+          self.submitDataArr[index].insureCompanyName = w.inscomname;
         }
         this.setState({
           refresh:true
@@ -174,8 +197,9 @@ class GatheringPartyInformationView extends Component {
   }
   renderOnePersonInfo(value,index){
     return (
-      <View style={{marginTop:10,backgroundColor:'#ffffff'}} key={index}>
-        <View style={{flexDirection:'row',paddingTop:10,paddingBottom:10,justifyContent:'space-between'}}>
+      <View style={{backgroundColor:'#ffffff'}} key={index}>
+        <View style={{width:W, height:(index>0)?10:0, backgroundColor:backgroundGrey}} />
+        <View style={{marginTop:10,flexDirection:'row',paddingTop:10,paddingBottom:10,justifyContent:'space-between'}}>
           <View style={{flexDirection:'row',marginLeft:15}}>
             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
             <Text style={{fontSize:15,color:formLeftText,marginLeft:10,alignSelf:'center'}}>{`${value.title}当事人`}</Text>
@@ -184,94 +208,77 @@ class GatheringPartyInformationView extends Component {
             <Image style={{width:20,height:20}} source={require('./image/delete.png')}/>
           </TouchableHighlight>:null}
         </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey}}></View>
-        <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
+
+        <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
+        <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,marginLeft:5}}>姓名：</Text>
-          <TextInput style={{fontSize: 13,flex:1}}
-                     onChangeText={(text) => { this.onChangeText(text,index,'Name') } }
-                     clearButtonMode={'while-editing'}
-                     placeholder = {'请输入当事人姓名'}/>
+          <Input label={'姓名: '} placeholder={'请输入当事人姓名'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Name') }}/>
         </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
+        <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
+
+        <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,marginLeft:5}}>联系方式：</Text>
-          <TextInput style={{fontSize: 13,flex:1}}
-                     onChangeText={(text) => { this.onChangeText(text,index,'Phone') } }
-                     clearButtonMode={'while-editing'}
-                     keyboardType={'numeric'}
-                     maxLength={11}
-                     placeholder = {'请输入当事人联系方式'}/>
+          <Input label={'联系方式: '} placeholder={'请输入当事人联系方式'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
         </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
+        <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
+
+        <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,marginLeft:5}}>驾驶证号：</Text>
-          <TextInput style={{fontSize: 13,flex:1}}
-                     onChangeText={(text) => { this.onChangeText(text,index,'DrivingLicense') } }
-                     clearButtonMode={'while-editing'}
-                     maxLength={18}
-                     placeholder = {'请输入当事人驾驶证号'}/>
+          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
         </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
-          <Text style={{fontSize:12,color:'red',alignSelf:'center'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,marginLeft:5,alignSelf:'center'}}>车牌号：</Text>
-          <SelectCarNum style={{flex:1,marginRight:15}}
-                        provincialData={value.carNumArr[0]}
-                        numberData={value.carNumArr[1]}
-                        onChangeValue={(text)=> {
-                          this.submitDataArr[index].carNum = text;
-                        }}/>
+        <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
+
+        <View style={{flexDirection:'row',marginLeft:20,paddingTop:10,paddingBottom:10, alignItems: 'center'}}>
+          <SelectCarNum label={'车牌号: '} style={{flex:1,marginRight:15}} provincialData={value.carNumArr[0]} numberData={value.carNumArr[1]} onChangeValue={(text)=> { this.submitDataArr[index].licensePlateNum = text; }}/>
         </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        <View style={{flex:1}}>
-          <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10,marginRight:15}}>
+        <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
+
+        <View style={{flex:1,paddingLeft:20}}>
+          <View style={{flexDirection:'row',paddingTop:10,paddingBottom:10,marginRight:15}}>
             <Text style={{fontSize:12,color:'red'}}>*</Text>
-            <Text style={{fontSize:13,color:formLeftText,marginLeft:5}}>车辆类型：</Text>
+            <Text style={{fontSize:14,color:formLeftText,marginLeft:5}}>车辆类型：</Text>
             <TouchableHighlight onPress={() => this.showTypePicker(this.carTypeData,index,'carTypeData')} underlayColor='transparent' style={{flex:1}}>
               <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
                 <View style={{flex:1}}></View>
-                <Text style={{fontSize:13,color:formLeftText,marginLeft:10,marginRight:30}} >{this.submitDataArr[index].carTypeData}</Text>
-                <Image style={{width:7,height:12,alignSelf:'center'}} source={require('./image/right_arrow.png')}/>
+                <Text style={{fontSize:14,color:formLeftText,marginLeft:10,marginRight:10}} >{this.submitDataArr[index].carType}</Text>
+                <Image style={{width:7,height:12,alignSelf:'center',resizeMode:'contain'}} source={require('./image/right_arrow.png')}/>
               </View>
             </TouchableHighlight>
           </View>
-          {this.state.showOtherCarTextInput ? <View style={{height:40}}>
-            <TextInput style={{fontSize: 13,flex:1,height:35,textAlign:'right',marginRight:22}}
-                       onChangeText={(text) => { this.onChangeText(text,index,'OtherCarType') } }
-                       maxLength={18}
-                       placeholder = {'请输入其他车辆类型'}/>
-          </View>:null}
+          <View style={{width:W,height:this.state.showOtherCarTextInput?1:0,backgroundColor:backgroundGrey}} />
+          {
+            this.state.showOtherCarTextInput?
+              <Input label={'其他类型'} placeholder={'请输入其他车辆类型'} maxLength={18} style={{flex:1, height: 40, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'OtherCarType') }}/>
+              :
+              null
+          }
         </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        <View style={{flex:1,flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10,marginRight:15}}>
+        <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
+
+        <View style={{flex:1,flexDirection:'row',marginLeft:20,paddingTop:10,paddingBottom:10,marginRight:15}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Text style={{fontSize:13,color:formLeftText,marginLeft:5}}>保险公司：</Text>
-          <TouchableHighlight onPress={() => this.showTypePicker(this.insuranceCompanyData,index,'insuranceCompanyData')} underlayColor='transparent' style={{flex:1}}>
+          <Text style={{fontSize:14,color:formLeftText,marginLeft:5}}>保险公司:</Text>
+          <TouchableHighlight onPress={() => this.showTypePicker(this.insuranceCompanyLabel,index,'insuranceCompanyData')} underlayColor='transparent' style={{flex:1}}>
             <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
               <View style={{flex:1}}></View>
-              <Text style={{fontSize:13,color:formLeftText,marginLeft:10,marginRight:30}}>{this.submitDataArr[index].insuranceCompanyData}</Text>
-              <Image style={{width:7,height:12,alignSelf:'center'}} source={require('./image/right_arrow.png')}/>
+              <Text style={{fontSize:14,color:formLeftText,marginLeft:10,marginRight:10}}>{this.submitDataArr[index].insureCompanyName}</Text>
+              <Image style={{width:7,height:12,alignSelf:'center',resizeMode:'center'}} source={require('./image/right_arrow.png')}/>
             </View>
           </TouchableHighlight>
         </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
-          <Text style={{fontSize:13,color:formLeftText,marginLeft:10}}>保单号：</Text>
-          <TextInput style={{fontSize: 13,flex:1}}
-                     onChangeText={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') } }
-                     clearButtonMode={'while-editing'}
-                     maxLength={40}
-                     placeholder = {'请输入交强险保单号'}/>
+        <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
+
+        <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
+          <Text style={{fontSize:12,color:'red'}}>*</Text>
+          <Input label={'保单号: '} placeholder={'请输入交强险保单号'} maxLength={40} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
         </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
+        <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
+
         <View style={{flexDirection:'row',marginLeft:15,paddingTop:10}}>
-          <Text style={{fontSize:13,color:formLeftText,marginLeft:10}}>保险到期日：</Text>
+          <Text style={{fontSize:14,color:formLeftText,marginLeft:10}}>保险到期日:</Text>
           <DatePicker
             style={{marginTop:-12,flex:1}}
-            date={this.state.date}
+            date={this.state.carInsureDueDate}
             mode="date"
             format="YYYY-MM-DD"
             confirmBtnText="确定"
@@ -286,38 +293,42 @@ class GatheringPartyInformationView extends Component {
               dateInput: {
                 borderColor:'#ffffff',
                 height:25,
-                marginRight:15,
+                marginRight:5,
                 alignItems:'flex-end'
               }
             }}
             onDateChange={(date) => {
-              this.submitDataArr[index].date = Tool.handleTime(date,true,'date')
+              console.log('#### date -->> ', date);
+              this.submitDataArr[index].carInsureDueDate = date;
               this.setState({
-                date: Tool.handleTime(date,true,'date')
+                // date: Tool.handleTime(date,true,'date')
+                carInsureDueDate: date
               })
             }}
           />
         </View>
+        <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
       </View>
     )
   }
   render(){
     return(
-      <ScrollView style={styles.container}
-                   showsVerticalScrollIndicator={false}>
-         {this.carInfoData.map((value,index) => this.renderOnePersonInfo(value,index))}
-         <View style={{marginLeft:15,marginTop:30,marginBottom:15,flexDirection:'row'}}>
-           <XButton title={'+增加当事人'} onPress={() => this.addOtherCarInfo()} disabled={(this.submitDataArr.length == 3)} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
-           <XButton title={'继续采集信息'} onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}}/>
-         </View>
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+           {this.carInfoData.map((value,index) => this.renderOnePersonInfo(value,index))}
+           <View style={{marginLeft:15,marginTop:30,marginBottom:15,flexDirection:'row'}}>
+             <XButton title={'+增加当事人'} onPress={() => this.addOtherCarInfo()} disabled={(this.submitDataArr.length == 3)} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+             <XButton title={'继续采集信息'} onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}}/>
+           </View>
+        </ScrollView>
+      </View>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: backgroundGrey
+    backgroundColor: 'white'
   }
 });
 

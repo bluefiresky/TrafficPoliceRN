@@ -8,7 +8,7 @@
 */
 
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, ViewPropTypes } from "react-native";
+import { View, Text, StyleSheet, ViewPropTypes, TouchableHighlight } from "react-native";
 import { Button } from 'react-native-elements';
 
 import { W, mainBule } from '../../configs/index.js';
@@ -40,7 +40,8 @@ export class XButton extends Component {
         disabled={d}
         loading={loading}
         title={t}
-        onPress={onPress}/>
+        onPress={onPress}
+        Component={TouchableHighlight}/>
     );
   }
 }

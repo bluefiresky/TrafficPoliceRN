@@ -46,7 +46,6 @@ class ConfirmInformationView extends Component {
   componentDidMount(){
     InteractionManager.runAfterInteractions(async ()=>{
       this.currentCaseInfo = await StorageHelper.getCurrentCaseInfo();
-      console.log(' ConfirmInformationView getCurrentCaseInfo -->> ', this.currentCaseInfo);
     })
   }
   //下一步
@@ -105,9 +104,9 @@ class ConfirmInformationView extends Component {
         left:{label: '返回修改', event: () => {
           self.setState({showTip: false});
         }},
-        right:{label: '确认无误', event: () => {
+        right:{label: '确认无误', event: async () => {
           this.currentCaseInfo.sign = signList;
-          StorageHelper.saveStep5(this.currentCaseInfo)
+          await StorageHelper.saveStep5(this.currentCaseInfo)
           self.setState({showTip: false});
           self.props.navigation.navigate('AccidentFactAndResponsibilityView');
 

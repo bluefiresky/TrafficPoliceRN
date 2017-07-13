@@ -99,8 +99,8 @@ class GatheringCardPhotoView extends Component {
         left:{label: '返回修改', event: () => {
           self.setState({showTip: false});
         }},
-        right:{label: '确认无误', event: () => {
-          StorageHelper.saveStep4(photoList)
+        right:{label: '确认无误', event: async () => {
+          await StorageHelper.saveStep4(photoList)
           self.setState({showTip: false});
           self.props.navigation.navigate('ConfirmInformationView');
 

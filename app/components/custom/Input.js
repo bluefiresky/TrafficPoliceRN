@@ -119,7 +119,7 @@ export class Input extends Component {
       <View style={ [{paddingLeft: 20, flexDirection: 'row', height: InputH, backgroundColor: 'white'}, border, style] }>
         {this.renderLabelView(l, labelWidth, label)}
         <TextInput
-          style={{flex: 1, fontSize: 16, color: commonText, paddingLeft: 0}}
+          style={{flex: 1, fontSize: 14, color: commonText, paddingLeft: 0}}
           onChangeText={ (text) => { this._onChangeText(text) } }
           value={value}
           autoFocus={autoFocus}
@@ -141,7 +141,7 @@ export class Input extends Component {
     if (!l) {
       return(
         <View style={{width: labelWidth? labelWidth : 80, justifyContent: 'center'}}>
-          <Text style={{ color: formLeftText, fontSize: 16 }}>{ label }</Text>
+          <Text style={{ color: formLeftText, fontSize: 14 }}>{ label }</Text>
         </View>
       )
     }

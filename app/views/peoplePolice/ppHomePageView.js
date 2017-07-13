@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image,Platform,TouchableHighlight,InteractionManager,Linking,RefreshControl,TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
+import Toast from '@remobile/react-native-toast';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule, Version } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, UpdateModal } from '../../components/index.js';  /** 自定义组件 */
@@ -65,6 +66,8 @@ class PpHomePageView extends Component {
         this.res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:1, fileName:'1499771792020', file:'zip@'+base64Str}))
         break;
       case 'NoComplete':
+        let removeRes = await StorageHelper.removeItem(global.personal.mobile+'uncompleted', '1499771792020');
+        console.log(' PpHomePageView removeRes and the res -->> ', removeRes);
         let deleteRes = await Utility.deleteFileByName('1499771792020')
         console.log(' PpHomePageView deleteFileByName and the res -->> ', deleteRes);
 
@@ -204,7 +207,8 @@ class PpHomePageView extends Component {
     if(this._checkUpdate(this.forceUpdate)) return;
 
     // 字典需要上传本地的版本
-    this.dictionary = await this.props.dispatch( create_service(Contract.POST_ACHIEVE_DICTIONARY,{v: 0}))
+    let v = getStore().getState().dictionary.version;
+    this.dictionary = await this.props.dispatch( create_service(Contract.POST_ACHIEVE_DICTIONARY,{v}))
     // console.log('PpHomePageView execute _getData this.dictionary -->> ', this.dictionary);
 
     if(refresh) this.setState({isRefreshing: false});

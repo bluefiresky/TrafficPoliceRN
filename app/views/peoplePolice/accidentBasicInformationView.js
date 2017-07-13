@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, TouchableHighlight,TextInput,Image,NativeModules, InteractionManager } from "react-native";
 import { connect } from 'react-redux';
+import Toast from '@remobile/react-native-toast';
 import DatePicker from 'react-native-datepicker';
 import Picker from 'react-native-picker';
 
@@ -19,11 +20,12 @@ class AccidentBasicInformationView extends Component {
 
   constructor(props){
     super(props);
-    this.weatherData = ['晴','阴','小雨','大雨','小雪','大雪'];
+
     this.state = {
-      date: Tool.handleTime(Tool.getTime("yyyy-MM-dd hh:mm a"),false,'time'),
-      weatherData: '',
-      accidentSite:'北京市',
+      // date: Tool.handleTime(Tool.getTime("yyyy-MM-dd hh:mm a"),false,'time'),
+      date: Tool.getTime('yyyy-MM-dd hh:mm'),
+      weather: null,
+      accidentSite: null,
       loading: false,
       showTip: false,
       tipParams: {}
@@ -32,6 +34,7 @@ class AccidentBasicInformationView extends Component {
     this.locationData = null;
     this._onGetLocation = this._onGetLocation.bind(this);
     this.gotoTakePhoto = this.gotoTakePhoto.bind(this);
+    this.showWeatherPicker = this.showWeatherPicker.bind(this);
     this.tmp = 1;
   }
   componentDidMount(){
@@ -39,6 +42,13 @@ class AccidentBasicInformationView extends Component {
     //页面载入时，进行定位，定位结束loading消失,无法定位，弹框提示手动修改事故地点。定位失败，弹框提示重试。定位成功，显示定位到的地点
     InteractionManager.runAfterInteractions(() => {
       this._onGetLocation();
+
+      this.weatherData = getStore().getState().dictionary.weatherList;
+      this.weatherDataLabel = [];
+      this.weatherData.forEach((w) => {
+        this.weatherDataLabel.push(w.name);
+      })
+
     });
   }
 
@@ -48,29 +58,47 @@ class AccidentBasicInformationView extends Component {
   }
 
   showWeatherPicker() {
-      Picker.init({
-        pickerData: this.weatherData,
-        pickerConfirmBtnText:'确定',
-        pickerCancelBtnText:'取消',
-        pickerTitleText:'请选择',
-        onPickerConfirm: data => { this.setState({weatherData:data[0]}) }
-     });
+    let self = this;
+    Picker.init({
+      pickerData: this.weatherDataLabel,
+      pickerConfirmBtnText:'确定',
+      pickerCancelBtnText:'取消',
+      pickerTitleText:'请选择',
+      onPickerConfirm: data => {
+        let w = self.weatherData[this.weatherDataLabel.indexOf(data[0])]
+        self.setState({weather:w})
+      }
+    });
      Picker.show();
   }
   //去取证
-  gotoTakePhoto(){
-    StorageHelper.create({
-      id: '1499771792020',
-      basic: {
-        address: '000测试-北京市朝阳区百子湾南二路78号院-3',
-        accidentTime: '2017-07-11 17:10:00',
-        latitude: '39.90167',
-        longitude: '116.473731',
-        weather: '1'
-      }
-    })
+  /**
+    basic: {
+      address: '000测试-北京市朝阳区百子湾南二路78号院-3',
+      accidentTime: '2017-07-11 17:10:00',
+      latitude: '39.90167',
+      longitude: '116.473731',
+      weather: '1'
+    }
+  **/
+  async gotoTakePhoto(){
+    let { weather, date, accidentSite } = this.state;
+    if(!weather) {
+      Toast.showShortCenter('请选择天气');
+      return;
+    }
+    if(!accidentSite) {
+      Toast.showShortCenter('请输入事故地点');
+      return;
+    }
+
+    let { latitude, longitude } = this.locationData;
+    let basic = { address: accidentSite, latitude:String(latitude), longitude:String(longitude), weather: weather.code, accidentTime: date+':00'};
+    // create -> 对id做了 @@global.currentCaseId 绑定
+    await StorageHelper.create({ basic });
     this.props.navigation.navigate('PhotoEvidenceVeiw');
   }
+
   render(){
     return(
       <View style={styles.container}>
@@ -82,7 +110,13 @@ class AccidentBasicInformationView extends Component {
                <DatePicker style={{flex:1}} date={this.state.date} mode="datetime" format="YYYY-MM-DD h:mm a" confirmBtnText="确定" cancelBtnText="取消"
                  iconSource={require('./image/right_arrow.png')}
                  customStyles={{dateInput: { alignItems:'flex-end', borderColor:'#ffffff' }, dateIcon: { width:7, height:12, marginRight:15 } }}
-                 onDateChange={(date) => { this.setState({date: Tool.handleTime(date,true,'time')}) }}
+                 onDateChange={(date) => {
+                   console.log('########### date -->> ', date);
+                   let tmp;
+                   if(date.indexOf('am') != -1) tmp = date.replace('am','');
+                   if(date.indexOf('pm') != -1) tmp = date.replace('pm','');
+                   this.setState({date: tmp.trim()})
+                 }}
                />
              </View>
            </View>
@@ -93,8 +127,8 @@ class AccidentBasicInformationView extends Component {
                <Text style={{marginLeft:15,fontSize:15,color:formLeftText,alignSelf:'center'}}>天气</Text>
                <TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={() => this.showWeatherPicker()} underlayColor='transparent'>
                  <View style={{flexDirection:'row'}}>
-                   <Text style={{alignSelf:'center',color: (this.state.weatherData ? formLeftText : formRightText)}}>
-                     {this.state.weatherData ? this.state.weatherData: '请选择事故现场天气'}
+                   <Text style={{alignSelf:'center',color: (this.state.weather ? formLeftText : formRightText)}}>
+                     {this.state.weather ? this.state.weather.name: '请选择事故现场天气'}
                    </Text>
                    <Image style={{width:7,height:12,marginLeft:5,alignSelf:'center'}} source={require('./image/right_arrow.png')}/>
                  </View>
@@ -106,10 +140,10 @@ class AccidentBasicInformationView extends Component {
           <View style={{backgroundColor:'#ffffff',marginTop:15}}>
             <Text style={{color:formLeftText,marginLeft:15,marginTop:10,fontSize:15}}>
               事故地点
-              <Text style={{color:formRightText,fontSize:15}}> (可手动更改事故地点)</Text>
+              <Text style={{color:formRightText,fontSize:15}}>(可手动更改事故地点)</Text>
             </Text>
             <View style={{backgroundColor:'#EFF2F7',width:W,height:1,marginTop:10}}></View>
-            <InputWithIcon labelWidth={30} style={{height: 55}} icon={require('./image/location.png')} noBorder={true} value={this.state.accidentSite} onChange={this.onChangeText.bind(this)} multiline={true}/>
+            <InputWithIcon labelWidth={20} style={{height: 55, paddingLeft:15}} icon={require('./image/location.png')} noBorder={true} value={this.state.accidentSite} onChange={this.onChangeText.bind(this)} multiline={true}/>
           </View>
 
           {/** 拍照取证 */}

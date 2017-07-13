@@ -130,12 +130,12 @@ export class InputWithIcon extends Component {
     const ClearButton = this.renderClearButton(hasClearButton, value);
 
     return(
-      <View style={ [{paddingLeft: 30, flexDirection: 'row', height: InputH, backgroundColor: 'white'}, border, style && style] }>
+      <View style={ [{paddingLeft: 20, flexDirection: 'row', height: InputH, backgroundColor: 'white'}, border, style && style] }>
         <View style={{width: labelWidth? labelWidth : 60, justifyContent: 'center'}}>
           <Image style={{height: 20, width: 20}} source={icon} resizeMode='contain'/>
         </View>
         <TextInput
-          style={{flex: 1, fontSize: 16, color: commonText}}
+          style={{flex: 1, fontSize: 16, color: commonText, textAlign: 'justify'}}
           onChangeText={ (text) => { this._onChangeText(text) } }
           value={value}
           autoFocus={autoFocus}

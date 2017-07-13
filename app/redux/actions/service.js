@@ -27,6 +27,8 @@ import { getStore } from "../index.js";
 import * as mocks from "../../service/mock/index.js";
 import * as dists from "../../service/dist/index.js";
 
+import * as Contract from '../../service/contract.js';
+
 export function create_service(name, ...params) {
 
   console.log('%c create_service the name: -- ' + name + ' -- && and the params -->> ', 'color:limegreen', params);
@@ -53,7 +55,7 @@ export function create_service(name, ...params) {
  * 用于联网后　需要 reducer 保存　data　到　state
  */
 function dispatch_reducers(dispatch, promise, name, params){
-  dispatch({ type : name + "@Init", requestParams : params });
+  // dispatch({ type : name + "@Init", requestParams : params });
   const nPromise =
     promise.then( data => {
       if (data.terminate){
@@ -61,7 +63,7 @@ function dispatch_reducers(dispatch, promise, name, params){
         dispatch({ type : "LOGIN_FAIL" });
       }else{
         if (data.success){
-          dispatch({ type : name, requestParams : params, data : data.data });
+          dispatch({ type : name, requestParams : params, data });
           return data.data;
         }else{
           Toast.showShortCenter(data.message)
@@ -72,6 +74,12 @@ function dispatch_reducers(dispatch, promise, name, params){
     })
 
   return nPromise
+}
+
+function filterDispatch(dispatch, name, params, data){
+  if((name === Contract.POST_ACHIEVE_DICTIONARY) && (data.updateFlag === 0)) return;
+  console.log(' filterDispatch and the name -->> ', name);
+  dispatch({ type : name, requestParams : params, data });
 }
 
 /**

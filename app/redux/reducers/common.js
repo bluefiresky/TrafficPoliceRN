@@ -13,7 +13,7 @@ const initial = {
   insureList: null,      // 保险公司集合{inscomname:'',inscomcode:'',insphone:'',insreporttel:''}
   situationList: null,   // 事故情形集合{name:'',code:''}
   updateFlag: -1, // 0无， 1有
-  version: -1,    // 字典版本
+  version: 0,    // 字典版本
   helpUrl: null
 }
 
@@ -21,7 +21,9 @@ export const dictionary = (state = initial, action) => {
   switch(action.type) {
     case POST_ACHIEVE_DICTIONARY :
       let { carTypeList, damagedList, formList, weatherList, insureList, situationList, updateFlag, version, helpUrl } = action.data;
-      return { carTypeList, damagedList, formList, weatherList, insureList, situationList, updateFlag, version, helpUrl };
+      if(updateFlag === 1)
+        return { carTypeList, damagedList, formList, weatherList, insureList, situationList, updateFlag, version, helpUrl };
+      else return state;
     case CLEAR_USER_INFO :
       return {...initial}
   }

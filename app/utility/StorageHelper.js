@@ -15,9 +15,15 @@ export class StorageHelper{
       weather: '1'
     }
   */
-  static create({id, basic}){
+  static create({basic}){
+    let key = global.personal.mobile + 'uncompleted';
+    // let id = new Date().getTime();
+    let id = '1499771792020';
+    let data = {id, basic};
+    console.log('%c StorageHelper execute create -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
     global.currentCaseId = id;
-    global.storage.save({key: global.personal.mobile + 'uncompleted', id, data:{id, basic}})
+    global.storage.save({ key, id, data })
   }
 
   // 照片信息
@@ -34,12 +40,19 @@ export class StorageHelper{
       ...
     ]
   **/
-  static saveStep1(photo){
-    global.storage.load({key: global.personal.mobile + 'uncompleted', id:global.currentCaseId})
-      .then( res => {
-        let { id, basic } = res;
-        global.storage.save({key: global.personal.mobile + 'uncompleted', id, data:{ id, basic, photo } })
-      })
+  static async saveStep1(photo){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      this.loadRes = await global.storage.load({key, id});
+      let data = {...this.loadRes, photo}
+      console.log('%c StorageHelper execute saveStep1 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep1 and the message -->> ', 'color:red',e.message);
+    }
   }
 
   // 第二步与第三步合成(交警步骤需要第二，第三步合成)
@@ -60,30 +73,53 @@ export class StorageHelper{
         }
     ]
   */
-  static saveStep2_3(handleWay, person){
-    global.storage.load({key: global.personal.mobile + 'uncompleted', id:global.currentCaseId})
-      .then( res => {
-        let { id, basic, photo } = res;
-        global.storage.save({key: global.personal.mobile + 'uncompleted', id, data:{ id, basic, photo, person, handleWay } })
-      })
+  static async saveStep2_3(handleWay, person){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      this.loadRes = await global.storage.load({key, id});
+      let data = {...this.loadRes, handleWay, person}
+      console.log('%c StorageHelper execute saveStep2_3 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep2_3 and the message -->> ', 'color:red',e.message);
+    }
   }
 
   // 处理方式 01：交警单车 02：交警多车 03：协警单车 04：协警多车无争议 05：协警多车有争议
-  static saveStep2(handleWay){
-    global.storage.load({key: global.personal.mobile + 'uncompleted', id:global.currentCaseId})
-      .then( res => {
-        let { id, basic, photo } = res;
-        global.storage.save({key: global.personal.mobile + 'uncompleted', id, data:{ id, basic, photo, person, handleWay } })
-      })
+  static async saveStep2(handleWay){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      this.loadRes = await global.storage.load({key, id});
+      let data = {...this.loadRes, handleWay}
+      console.log('%c StorageHelper execute saveStep2 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep2 and the message -->> ', 'color:red',e.message);
+    }
+
   }
 
   // 当事人信息
-  static saveStep3(person){
-    global.storage.load({key: global.personal.mobile + 'uncompleted', id:global.currentCaseId})
-      .then( res => {
-        let { id, basic, photo, handleWay } = res;
-        global.storage.save({key: global.personal.mobile + 'uncompleted', id, data:{ id, basic, photo, handleWay, person } })
-      })
+  static async saveStep3(person){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      this.loadRes = await global.storage.load({key, id});
+      let data = {...this.loadRes, person}
+      console.log('%c StorageHelper execute saveStep3 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep3 and the message -->> ', 'color:red',e.message);
+    }
+
   }
 
   // 证件照信息
@@ -100,12 +136,20 @@ export class StorageHelper{
       ...
     ]
   **/
-  static saveStep4(credentials){
-    global.storage.load({key: global.personal.mobile + 'uncompleted', id:global.currentCaseId})
-      .then( res => {
-        let { id, basic, photo, handleWay, person } = res;
-        global.storage.save({key: global.personal.mobile + 'uncompleted', id, data:{ id, basic, photo, handleWay, person, credentials } })
-      })
+  static async saveStep4(credentials){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      this.loadRes = await global.storage.load({key, id});
+      let data = {...this.loadRes, credentials}
+      console.log('%c StorageHelper execute saveStep4 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep4 and the message -->> ', 'color:red',e.message);
+    }
+
   }
 
   // 确认之前信息
@@ -118,17 +162,36 @@ export class StorageHelper{
         }
     ]
   **/
-  static saveStep5({id, basic, photo, handleWay, person, credentials, sign}){
-    global.storage.save({key: global.personal.mobile + 'uncompleted', id, data:{ id, basic, photo, handleWay, person, credentials, sign } })
+  static async saveStep5({id, basic, photo, handleWay, person, credentials, sign}){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let itemId = global.currentCaseId;
+      let data = {id, basic, photo, handleWay, person, credentials, sign}
+      console.log('%c StorageHelper execute saveStep5 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id:itemId, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep5 and the message -->> ', 'color:red',e.message);
+    }
+
   }
 
   // 事故事实
-  static saveStep6({supplementary, conciliation}){
-    global.storage.load({key: global.personal.mobile + 'uncompleted', id:global.currentCaseId})
-      .then( res => {
-        let { id, basic, photo, handleWay, person, credentials, sign } = res;
-        global.storage.save({key: global.personal.mobile + 'uncompleted', id, data:{ id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation } })
-      })
+  static async saveStep6({supplementary, conciliation}){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      this.loadRes = await global.storage.load({key, id});
+      let data = {...this.loadRes, supplementary, conciliation}
+      console.log('%c StorageHelper execute saveStep6 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep6 and the message -->> ', 'color:red',e.message);
+    }
+
   }
 
   // 责任信息
@@ -143,28 +206,63 @@ export class StorageHelper{
         }
     ]
   **/
-  static saveStep7(duty){
-    global.storage.load({key: global.personal.mobile + 'uncompleted', id:global.currentCaseId})
-      .then( res => {
-        let { id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation } = res;
-        global.storage.save({key: global.personal.mobile + 'uncompleted', id, data:{ id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty } })
-      })
+  static async saveStep7(duty){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      this.loadRes = await global.storage.load({key, id});
+      let data = {...this.loadRes, duty}
+      console.log('%c StorageHelper execute saveStep7 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep7 and the message -->> ', 'color:red',e.message);
+    }
+
   }
 
   // 获取一条案件数据详情
   static async getCurrentCaseInfo(){
     try {
-      return await global.storage.load({key: global.personal.mobile + 'uncompleted', id:global.currentCaseId})
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      let data = await global.storage.load({key, id});
+      console.log('%c StorageHelper execute getCurrentCaseInfo -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      return data;
     } catch (e) {
-      console.log(' StorageHelper getCurrentCaseInfo and catch error -->> ', e.message);
-      return null;
+      console.log('%c StorageHelper getCurrentCaseInfo and catch error -->> ', 'color:red', e.message);
     }
   }
 
   // 转存未完成的数据到未上传列表
-  static saveAsUnUploaded({ id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty }){
-    global.storage.save({key: global.personal.mobile + 'unuploaded', id, data:{id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty}})
-    global.storage.remove({key:global.personal.mobile + 'uncompleted', id})
+  static async saveAsUnUploaded({ id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty }){
+    try {
+      let key = global.personal.mobile + 'unuploaded';
+      let itemId = global.currentCaseId;
+      let data = { id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty }
+      console.log('%c StorageHelper execute saveAsUnUploaded -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id:itemId, data })
+      await global.storage.remove({key:global.personal.mobile + 'uncompleted', id:itemId})
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper saveAsUnUploaded and catch error -->> ', 'color:red', e.message);
+    }
+
+  }
+
+
+  static async removeItem(key, id){
+    try {
+      console.log('%c StorageHelper execute saveAsUnUploaded -- the key -->> ## ' + key + ' ## id -->> ' + id , 'color:dodgerblue');
+      await global.storage.remove({key, id})
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper removeItem and catch error -->> ', 'color:red', e.message);
+    }
   }
 
 }

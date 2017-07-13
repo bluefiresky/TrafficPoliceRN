@@ -38,15 +38,13 @@ class SignatureConfirmationView extends Component {
   }
   //下一步
   async gotoNext(){
-    StorageHelper.saveStep7(dutyList);
+    await StorageHelper.saveStep7(dutyList);
     Toast.showShortCenter('以下流程开中');
 
-
     let info = await StorageHelper.getCurrentCaseInfo();
-    console.log(' @@@@@@@@@@@@@@@@@@@@@@@  this.info -->> ', info);
     if(info){
       this.fileRes = await Utility.convertObjtoFile(info, info.id);
-      console.log(' @@@@@@@@@@@@@@@@@@@@@@@ this.fileRes -->> ', this.fileRes);
+      console.log(' @@@@@@@@@@@@@@@@@@@@@@@ convertObjtoFile fileRes -->> ', this.fileRes);
     }
 
   }
