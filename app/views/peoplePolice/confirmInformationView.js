@@ -123,7 +123,6 @@ class ConfirmInformationView extends Component {
           self.setState({showTip: false});
         }},
         right:{label: '确认无误', event: async () => {
-          this.currentCaseInfo.sign = signList;
           await StorageHelper.saveStep5(this.currentCaseInfo)
           self.setState({showTip: false});
           self.props.navigation.navigate('AccidentFactAndResponsibilityView');

@@ -162,11 +162,11 @@ export class StorageHelper{
         }
     ]
   **/
-  static async saveStep5({id, basic, photo, handleWay, person, credentials, sign}){
+  static async saveStep5({id, basic, photo, handleWay, person, credentials}){
     try {
       let key = global.personal.mobile + 'uncompleted';
       let itemId = global.currentCaseId;
-      let data = {id, basic, photo, handleWay, person, credentials, sign}
+      let data = {id, basic, photo, handleWay, person, credentials}
       console.log('%c StorageHelper execute saveStep5 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id:itemId, data })
@@ -178,12 +178,12 @@ export class StorageHelper{
   }
 
   // 事故事实
-  static async saveStep6({supplementary, conciliation}){
+  static async saveStep6({supplementary, conciliation, localDutyList}){
     try {
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
-      let data = {...this.loadRes, supplementary, conciliation}
+      let data = {...this.loadRes, supplementary, conciliation, localDutyList}
       console.log('%c StorageHelper execute saveStep6 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id, data })

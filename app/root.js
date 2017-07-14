@@ -71,7 +71,7 @@ const PublicNavigator = StackNavigator({
   // PhotoEvidenceVeiw: { screen: PhotoEvidenceVeiw, navigationOptions: { title: '拍照取证'} },
   // GatheringPartyInformationView: { screen: GatheringPartyInformationView, navigationOptions: { title: '采集当事人信息'} },
   // GatheringCardPhotoView: { screen: GatheringCardPhotoView, navigationOptions: { title: '采集证件照片'} },
-  ConfirmInformationView: { screen: ConfirmInformationView, navigationOptions: { title: '确认信息'} },
+  // ConfirmInformationView: { screen: ConfirmInformationView, navigationOptions: { title: '确认信息'} },
   AccidentFactAndResponsibilityView: { screen: AccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实及责任'} },
   SignatureConfirmationView: { screen: SignatureConfirmationView, navigationOptions: { title: '签字确认'} },
   //保险报案

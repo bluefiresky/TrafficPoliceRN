@@ -14,6 +14,7 @@ export { UpdateModal } from './custom/UpdateModal.js';
 export { TipModal } from './custom/TipModal.js';  /** 可自定义参数弹出提示框 */
 export { InsurancePicker} from './custom/InsurancePicker.js';  /** 保险Picker **/
 export { CarTypePicker} from './custom/CarTypePicker.js';      /** 车辆类型Picker **/
+export { DutyTypePicker} from './custom/DutyTypePicker.js';    /** 责任Picker **/
 
 
 /** Basic Component [注]可在custom逐渐集中对其进行自定义修改*/
