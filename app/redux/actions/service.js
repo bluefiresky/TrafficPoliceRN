@@ -63,7 +63,7 @@ function dispatch_reducers(dispatch, promise, name, params){
         dispatch({ type : "LOGIN_FAIL" });
       }else{
         if (data.success){
-          dispatch({ type : name, requestParams : params, data });
+          dispatch({ type : name, requestParams : params, data: data.data });
           return data.data;
         }else{
           Toast.showShortCenter(data.message)

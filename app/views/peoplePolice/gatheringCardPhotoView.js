@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView,TouchableHighlight,Platform,Alert } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView,TouchableHighlight,Platform,Alert,InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import ImagePicker from 'react-native-image-picker';
@@ -12,7 +12,7 @@ import { ProgressView, TipModal } from '../../components/index.js';  /** 自定�
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
-import { StorageHelper } from '../../utility/index.js';
+import { StorageHelper, Utility } from '../../utility/index.js';
 
 const photoList = [
   {
@@ -27,6 +27,22 @@ const photoList = [
   }
 ]
 
+const CredentialsIcon = require('./image/e_credentials.png');
+const CameraIcon = require('./image/camera.png');
+const ImageW = (W - 3 * 20) / 2;
+const ImageH = (220 * ImageW)/340;
+const photoOption = {
+  title: '选择照片', //选择器的标题，可以设置为空来不显示标题
+  cancelButtonTitle: '取消',
+  takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
+  chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
+  mediaType: 'photo',
+  maxWidth: 1920,
+  maxHeight: 1080,
+  quality: 0.5,
+  storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
+}
+
 class GatheringCardPhotoView extends Component {
 
   constructor(props){
@@ -35,63 +51,57 @@ class GatheringCardPhotoView extends Component {
       showTip: false,
       tipParams: {},
     }
-    this.carInfoData = [{name:'甲方（张三 京A12345）',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]},
-                        {name:'乙方（李四 京A12345）',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]},
-                        {name:'丙方（王五 京A12345）',data:[{'title': '驾驶证',imageURL:''},{'title': '行驶证',imageURL:''}]}];
-    this.rowNum = 2;
-    this.rowMargin = 15;
-    this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
-    this.options = {
-            title: '选择照片', //选择器的标题，可以设置为空来不显示标题
-            cancelButtonTitle: '取消',
-            takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
-            chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
-            mediaType: 'photo',
-            maxWidth: 1500,
-            maxHeight: 2000,
-            quality: 0.5,
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-                cameraRoll:true
-            }
-        };
+    this.carInfoData = [];
   }
+
+  async componentDidMount(){
+    // let info = StorageHelper.getCurrentCaseInfo();
+    let titles = [{name:'甲方', type:'30'}, {name:'乙方',type:'31'}, {name:'丙方',type:'32'}];
+    let info = {};
+    info.person = [{name:'王五',licensePlateNum:'冀CWA356'},{name:'王六',licensePlateNum:'冀CWA357'},{name:'王八',licensePlateNum:'冀CWA358'}]
+    this.carInfoData = [];
+    for(let i=0; i < info.person.length; i++){
+      let p = info.person[i];
+      let t = titles[i];
+      this.carInfoData.push({
+        name:t.name+'('+p.name+'  '+ p.licensePlateNum +')',
+        data:[{title:'驾驶证及行驶证',image:CredentialsIcon,photoData:null,photoType:t.type,photoDate:null}]
+      });
+    }
+    this.forceUpdate();
+  }
+
   //拍照
   takePhoto(index,ind){
     //点击其它是拍照
-    let that = this;
-    ImagePicker.showImagePicker(this.options, (response) => {
-        if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
-            let source;
-            if (Platform.OS === 'ios') {
-                source = {
-                    uri: response.uri.replace('file://', ''),
-                    isStatic: true
-                };
-            } else {
-                source = {
-                    uri: response.uri,
-                    isStatic: true
-                };
-            }
-            that.carInfoData[ind].data[index].imageURL = source;
-            that.setState({
-                refresh: true
-            })
-        }
+    let self = this;
+    ImagePicker.showImagePicker(photoOption, (response) => {
+      if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+        let p = self.carInfoData[ind].data[index];
+        p.photoData = response.data;
+        p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+        self.setState({refresh: true})
+      }
     });
   }
   //信息采集完成
   gotoNext(){
-    // for (var i = 0; i < this.carInfoData.length; i++) {
-    //   for (var j = 0; j < this.carInfoData[i].data.length; j++) {
-    //     if (!this.carInfoData[i].data[j].imageURL) {
-    //       Toast.showShortCenter(`请上传${this.carInfoData[i].name}的${this.carInfoData[i].data[j].title}`);
-    //       return;
-    //     }
-    //   }
-    // }
+    let photoList = [];
+    for (var i = 0; i < this.carInfoData.length; i++) {
+      for (var j = 0; j < this.carInfoData[i].data.length; j++) {
+        let data = this.carInfoData[i].data[j];
+        if (!data.photoData) {
+          Toast.showShortCenter(`请上传${this.carInfoData[i].name}的${data.title}`);
+          return;
+        }else{
+          let { photoData, photoDate, photoType } = data;
+          photoList.push({photoData, photoDate, photoType});
+        }
+      }
+    }
+
+    console.log(' the upload carInfoData -->> ', photoList);
+
     let self = this;
     self.setState({ showTip: true,
       tipParams:{
@@ -100,35 +110,21 @@ class GatheringCardPhotoView extends Component {
           self.setState({showTip: false});
         }},
         right:{label: '确认无误', event: async () => {
-          await StorageHelper.saveStep4(photoList)
+          let success = await StorageHelper.saveStep4(photoList)
           self.setState({showTip: false});
-          self.props.navigation.navigate('ConfirmInformationView');
-
+          if(success) self.props.navigation.navigate('ConfirmInformationView');
+          else Toast.showShortCenter('信息存储失败，请检查内存容量')
         }}
     }});
   }
   renderItem(item,index,ind) {
-    let innerImgae;
-    if (!item.imageURL) {
-      innerImgae = <Image style={{width: 40, height: 40, resizeMode: 'contain', alignSelf:'center'}} source={require('./image/personal_camera.png')}/>
-    } else {
-      innerImgae = null
-    }
+    let source=item.photoData?{uri:'data:image/png;base64,'+item.photoData}:item.image;
     return (
-      <TouchableHighlight style={{marginLeft:this.rowMargin,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(index,ind)} key={index}>
+      <TouchableHighlight style={{paddingLeft: 10, paddingRight: 10,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(index,ind)} key={index}>
         <View style={{flex:1}}>
-          {
-            item.imageURL?
-              <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
-                     source={item.imageURL ? item.imageURL:null}>
-                {innerImgae}
-              </Image>
-            :
-              <View style={{width: this.rowWH,height: this.rowWH * 0.5, justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}>
-                {innerImgae}
-              </View>
-          }
-
+          <Image source={source} style={{width: ImageW, height: ImageH, justifyContent:'center', alignItems: 'center'}}>
+            {item.photoData? null : <Image style={{height: 30, width: 30, resizeMode: 'contain'}} source={CameraIcon}/>}
+          </Image>
           <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.title}</Text>
         </View>
       </TouchableHighlight>
@@ -141,7 +137,7 @@ class GatheringCardPhotoView extends Component {
           <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
           <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{value.name}</Text>
         </View>
-        <View style={{flexDirection:'row',marginTop:10,flexWrap:'wrap'}}>
+        <View style={{flexDirection:'row',marginTop:10,justifyContent:'center'}}>
           {value.data.map((value,index) => this.renderItem(value,index,ind))}
         </View>
       </View>

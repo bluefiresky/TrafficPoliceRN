@@ -92,7 +92,7 @@ export class SelectCarNum extends Component {
   }
   //返回值
   returnValue(){
-    this.returnText = this.selectPro+this.selectLet+this.selectNum
+    this.returnText = this.selectPro+this.selectNum
     this.props.onChangeValue(this.returnText);
   }
   renderOneItem(value,index){
@@ -109,14 +109,20 @@ export class SelectCarNum extends Component {
   }
   render(){
     let { show, selectNum } = this.state;
-    let { style, provincialData, letterData, numberData, label } = this.props;
+    let { style, provincialData, letterData, numberData, label, hasStar, plateNum } = this.props;
+    if(plateNum && !this.selectPro && !this.selectNum){
+      this.selectPro = plateNum.substring(0,1);
+      this.selectNum = plateNum.substring(1,plateNum.length);
+    }
     return(
       <View style={[{},style]}>
         <View style={{flexDirection:'row'}}
               onLayout={(e) => {
                 this.viewWidth = e.nativeEvent.layout.width * 0.7;
               }}>
-          <Text style={{fontSize:12,color:'red',alignSelf:'center'}}>*</Text>
+          {
+            hasStar? <Text style={{fontSize:12,color:'red',alignSelf:'center'}}>*</Text> : null
+          }
           <Text style={{fontSize: 14, color: formLeftText, width: 80, alignSelf:'center',marginLeft:5}}>{label}</Text>
           <Text style={{borderColor:mainBule,borderWidth:1,fontWeight:'bold',fontSize:16,width:30,height:30,padding:5,textAlign:'center'}} onPress={() => this.showData('provincialData',provincialData)}>
             {this.selectPro}

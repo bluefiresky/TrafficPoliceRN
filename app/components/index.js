@@ -12,6 +12,8 @@ export { UploadImageView } from './custom/UploadImage.js'; /** 自定义可上�
 export { EmptyView } from './custom/EmptyView.js'; /** 自定义可上传服务器并返回上传后地址的ImageView */
 export { UpdateModal } from './custom/UpdateModal.js';
 export { TipModal } from './custom/TipModal.js';  /** 可自定义参数弹出提示框 */
+export { InsurancePicker} from './custom/InsurancePicker.js';  /** 保险Picker **/
+export { CarTypePicker} from './custom/CarTypePicker.js';      /** 车辆类型Picker **/
 
 
 /** Basic Component [注]可在custom逐渐集中对其进行自定义修改*/

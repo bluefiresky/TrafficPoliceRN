@@ -33,6 +33,7 @@ const photoOption = {
   quality: 0.5,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
+
 class PhotoEvidenceVeiw extends Component {
 
   constructor(props){
@@ -100,12 +101,18 @@ class PhotoEvidenceVeiw extends Component {
   }
   //取证完成
   commit() {
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < this.photoList.length; i++) {
       if (!this.photoList[i].photoData) {
         Toast.showShortCenter(`【${this.photoList[i].title}】必须拍照`);
         return
       }
     }
+    for(let i = 0; i < this.photoList.length; i++){
+      let p = this.photoList[i];
+      delete p.title;
+      delete p.image;
+    }
+
     let self = this;
     self.setState({ showTip: true,
       tipParams:{
