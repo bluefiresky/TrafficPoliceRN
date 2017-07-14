@@ -18,14 +18,17 @@ export class TipModal extends Component {
   }
 
   render(){
-    let { show, content, left, right } = this.props;
+    let { show, content, left, right, title } = this.props;
     return(
       <View>
         <Modal animationType="slide"  transparent={true} visible={show} onRequestClose={()=>{}}>
           <View style={styles.container}>
             <View style={{width: ComponentW, height: ComponentH, backgroundColor: 'white', borderRadius: 10}}>
-              <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10}}>
-                <Text>{content}</Text>
+              <View style={{flex: 1, paddingVertical:10, paddingHorizontal:15}}>
+                {title? <Text style={{marginBottom:10, fontWeight:'bold', fontSize:16, alignSelf:'center'}}>{title}</Text> : null}
+                <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                  <Text style={{color:formLeftText, fontSize:14}}>{content}</Text>
+                </View>
               </View>
               <View style={{height: 1, backgroundColor: (!left && !right)? 'transparent' : borderColor}} />
               {

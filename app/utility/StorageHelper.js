@@ -17,8 +17,7 @@ export class StorageHelper{
   */
   static create({basic}){
     let key = global.personal.mobile + 'uncompleted';
-    // let id = new Date().getTime();
-    let id = '1499771792020';
+    let id = String(new Date().getTime());
     let data = {id, basic};
     console.log('%c StorageHelper execute create -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 

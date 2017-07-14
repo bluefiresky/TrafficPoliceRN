@@ -15,21 +15,21 @@ import { create_service, getStore } from '../../redux/index.js'; /** 调用api�
 import { XButton, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
 import Tool from '../../utility/Tool';
 import { StorageHelper, Utility } from '../../utility/index.js';
-
-const personList = [
-    {
-        "name": "王五",
-        "phone": "15010955030",
-        "licensePlateNum": "冀CWA356",
-        "insureCompanyCode": "110000003003",
-        "insureCompanyName": "中国太平洋财产保险股份有限公司",
-        "driverNum": "111222121333636666",
-        "carType": "小型载客汽车",
-        "carInsureNumber": "223369",
-        "carInsureDueDate": "2018-04-10",
-        "carDamagedPart": "1,3"
-    }
-]
+//
+// const personList = [
+//     {
+//         "name": "王五",
+//         "phone": "15010955030",
+//         "licensePlateNum": "冀CWA356",
+//         "insureCompanyCode": "110000003003",
+//         "insureCompanyName": "中国太平洋财产保险股份有限公司",
+//         "driverNum": "111222121333636666",
+//         "carType": "小型载客汽车",
+//         "carInsureNumber": "223369",
+//         "carInsureDueDate": "2018-04-10",
+//         "carDamagedPart": "1,3"
+//     }
+// ]
 
 class GatheringPartyInformationView extends Component {
 
@@ -218,13 +218,13 @@ class GatheringPartyInformationView extends Component {
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'联系方式: '} placeholder={'请输入当事人联系方式'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
+          <Input label={'联系方式: '} placeholder={'请输入当事人联系方式'} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
+          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 

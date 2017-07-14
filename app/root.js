@@ -13,7 +13,7 @@ import { StackNavigator } from 'react-navigation';
 import { backgroundGrey, mainBule, W } from './configs/index.js';
 
 import {
-  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,
+  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,SignatureView,UploadProgressView,
   /** peoplePolice */ PpHomePageView,AccidentBasicInformationView,PhotoEvidenceVeiw,GatheringPartyInformationView,GatheringCardPhotoView,ConfirmInformationView,AccidentFactAndResponsibilityView,SignatureConfirmationView,
   /** assistPolice */ ApHomePageView,AAccidentBasicInformationView,APhotoEvidenceVeiw,SelectHandleTypeView,AGatheringPartyInformationView,AGatheringCardPhotoView,AConfirmInformationView,AccidentConditionView,AccidentConfirmResponView,ASignatureConfirmationView,AAccidentFactAndResponsibilityView,WaitRemoteResponsibleView,ResponsibleResultView,
   /** insuranceReport */
@@ -51,6 +51,8 @@ const PublicNavigator = StackNavigator({
   CaseDetailsView: { screen: CaseDetailsView, navigationOptions: { title: '案件详情'} },
   LookBigImageView: { screen: LookBigImageView, navigationOptions: { title: '查看大图'} },
   LookConclusionView: { screen: LookConclusionView, navigationOptions: { title: '案件详情'} },
+  SignatureView: {screen: SignatureView, navigationOptions: {title: '签名'} },
+  UploadProgressView: {screen: UploadProgressView, navigationOptions: {title: '进度'}},
   //协警
   ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} },
   AAccidentBasicInformationView: { screen: AAccidentBasicInformationView, navigationOptions: { title: '基本信息'} },
@@ -74,6 +76,7 @@ const PublicNavigator = StackNavigator({
   ConfirmInformationView: { screen: ConfirmInformationView, navigationOptions: { title: '确认信息'} },
   AccidentFactAndResponsibilityView: { screen: AccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实及责任'} },
   SignatureConfirmationView: { screen: SignatureConfirmationView, navigationOptions: { title: '签字确认'} },
+
   //保险报案
   ExploreSuccessView: { screen: ExploreSuccessView, navigationOptions: { title: '完成'} },
   ConfirmReportPartyInfoView: { screen: ConfirmReportPartyInfoView, navigationOptions: { title: '确认信息'} },

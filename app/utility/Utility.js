@@ -74,8 +74,10 @@ export async function zipFileByName(name){
   const sourcePath = RNFS.DocumentDirectoryPath + `/${name}`
 
   try {
-    let path = await zipToBase64(sourcePath, targetPath);
-    return path;
+    let base64Str = await zipToBase64(sourcePath, targetPath);
+    console.log('%c Utility execute zipFileByName and the base64 -->> ' , 'color:dodgerblue', base64Str);
+
+    return base64Str;
   } catch (e) {
     console.log('%c zipFileByName catch error -->> ' , 'color:red', e.message);
   }

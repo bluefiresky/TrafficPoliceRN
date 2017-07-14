@@ -30,9 +30,8 @@ class AccidentFactAndResponsibilityView extends Component {
 
   componentDidMount(){
     InteractionManager.runAfterInteractions(async () => {
-      // this.info = await StorageHelper.getCurrentCaseInfo();
-      // let { basic, person, localDutyList, supplementary, conciliation } = this.info;
-      let person = [{name:'张三', licensePlateNum:'京A123212', phone:'15811112222'},{name:'李四', licensePlateNum:'京B123212', phone:'15811112222'},{name:'王五', licensePlateNum:'京C123212', phone:'15811112222'}]
+      this.info = await StorageHelper.getCurrentCaseInfo();
+      let { basic, person, localDutyList, supplementary, conciliation } = this.info;
       let ldl = [];
       for(let i=0; i < person.length; i++){
         let p = person[i];
@@ -44,8 +43,6 @@ class AccidentFactAndResponsibilityView extends Component {
 
   //完成
   async gotoNext(){
-    console.log(' the AccidentFactAndResponsibilityView gotoNext and the state -->> ', this.state);
-
     let { supplementary, conciliation, localDutyList } = this.state;
     for (var i = 0; i < localDutyList.length; i++) {
       if (!localDutyList[i].dutyType) {
@@ -53,8 +50,10 @@ class AccidentFactAndResponsibilityView extends Component {
         return
       }
     }
-    await StorageHelper.saveStep6({supplementary, conciliation, localDutyList})
-    this.props.navigation.navigate('SignatureConfirmationView');
+
+    let success = await StorageHelper.saveStep6({supplementary, conciliation, localDutyList})
+    if(success) this.props.navigation.navigate('SignatureConfirmationView');
+    else Toast.showShortCenter('信息存储失败，请检查内存容量')
   }
   //输入框文字变化
   onChangeText(text,type,index){
@@ -133,7 +132,6 @@ class AccidentFactAndResponsibilityView extends Component {
 
   /** Private **/
   _convertInfoToAccidentContent(basic, person){
-    return '    【2017年5月25日  21时24分】，【张三】（驾驶证号：【110112345678900000】）驾驶车牌号为【京A2345】的【小型汽车】，在【北京市朝阳区百子湾南二路88号】与【李四】（驾驶证号：【220212345678900000】）驾驶车牌号为【苏B98765】的【中型越野汽车】，及【王五】（驾驶证号：【330312345678900000】）驾驶车牌号为【闽F56789】的【轻型货车】发生交通事故。'
     if(!basic) return '';
 
     let num = person.length;

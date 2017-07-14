@@ -13,18 +13,20 @@ import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton, Input } from '../../components/index.js';  /** 自定义组件 */
 import { StorageHelper, Utility } from '../../utility/index.js';
-
-const dutyList = [
-    {
-        "licensePlateNum": "冀CWA356",
-        "dutyType": "0",
-        "signData": "iVBORw0KGgoAAAANSUhEUgAAARgAAAH0CAYAAADmCDJ1AAAQiklEQVR4Xu3Ysevv4x/GcSYGyWQlKauymYxGViuz8hf4AyRllMGibEyyYbEpswWDMigWZVDcn/oqw0G+XKfrc3mod7/w+77OfT9e93mmc+89/iJAgEBI4N7QXGMJECBwj8B4BAQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAnN9b+CHc+SvzvfO+d68vuM78f9JQGCua9uXuDz0F0f+8fy7V4Xnupa6fFqBua7tvn2O++K/PPKv5+d/Od9r53vrfN/8y3l+nMCfCgjMdT6OR86xPzjfk6Hj/3zmvnu+l0Lzr3Xsy+fgz5/vsfM9ePNfk34P/cU24VzrU7/zud8///i5u3Sl724i997530/v0q/5X/8yvwfjiTP4p/M9fstfwO+jP4EDc8sXdSU/dvnzmo+D/6XzTxgufz70xfleufmhy99//U8G/OH/e7nX0zd/f4nC5b8qLm/52/O9cMuZt/2xS1yfue0Pr/+cwKxv+M73++T846fO98D/8/p3vPXlz6Yuvx8u4Xv9fA+f76Pzfcjo9gICc3u75Z/8u3fxxrn8s+d79Hz3FUFc/uzo/vN9f77Pz/fl+T67CcUlHP66ywJ/95Du8nH8cgQILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZwG+T8yr1AzqtpgAAAABJRU5ErkJggg==",
-        "signTime": "2017-07-08 08:39:20",
-        "refuseFlag": "01"
-    }
-]
+//
+// const dutyList = [
+//     {
+//         "licensePlateNum": "冀CWA356",
+//         "dutyType": "0",
+//         "signData": "iVBORw0KGgoAAAANSUhEUgAAARgAAAH0CAYAAADmCDJ1AAAQiklEQVR4Xu3Ysevv4x/GcSYGyWQlKauymYxGViuz8hf4AyRllMGibEyyYbEpswWDMigWZVDcn/oqw0G+XKfrc3mod7/w+77OfT9e93mmc+89/iJAgEBI4N7QXGMJECBwj8B4BAQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAuMNECAQExCYGK3BBAgIjDdAgEBMQGBitAYTICAw3gABAjEBgYnRGkyAgMB4AwQIxAQEJkZrMAECAnN9b+CHc+SvzvfO+d68vuM78f9JQGCua9uXuDz0F0f+8fy7V4Xnupa6fFqBua7tvn2O++K/PPKv5+d/Od9r53vrfN/8y3l+nMCfCgjMdT6OR86xPzjfk6Hj/3zmvnu+l0Lzr3Xsy+fgz5/vsfM9ePNfk34P/cU24VzrU7/zud8///i5u3Sl724i997530/v0q/5X/8yvwfjiTP4p/M9fstfwO+jP4EDc8sXdSU/dvnzmo+D/6XzTxgufz70xfleufmhy99//U8G/OH/e7nX0zd/f4nC5b8qLm/52/O9cMuZt/2xS1yfue0Pr/+cwKxv+M73++T846fO98D/8/p3vPXlz6Yuvx8u4Xv9fA+f76Pzfcjo9gICc3u75Z/8u3fxxrn8s+d79Hz3FUFc/uzo/vN9f77Pz/fl+T67CcUlHP66ywJ/95Du8nH8cgQILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZgMCULcRxCCwJCMzSNt2FQJmAwJQtxHEILAkIzNI23YVAmYDAlC3EcQgsCQjM0jbdhUCZwG+T8yr1AzqtpgAAAABJRU5ErkJggg==",
+//         "signTime": "2017-07-08 08:39:20",
+//         "refuseFlag": "01"
+//     }
+// ]
 
 const PersonalTitles = ['甲方', '乙方', '丙方'];
+const SignW = (W - 40);
+const SignH = (SignW * W)/H;
 
 class SignatureConfirmationView extends Component {
 
@@ -44,12 +46,8 @@ class SignatureConfirmationView extends Component {
 
   componentDidMount(){
     InteractionManager.runAfterInteractions(async () => {
-      // let info = await StorageHelper.getCurrentCaseInfo();
-      // let { localDutyList } = info;
-      let localDutyList = [
-        {name: '张三', phone:'15822221111', licensePlateNum: '京A123212', dutyName: '全责', dutyType: '0'},
-        {name: '李四', phone:'15822223333', licensePlateNum: '京A123213', dutyName: '无责', dutyType: '1'}
-      ];
+      let info = await StorageHelper.getCurrentCaseInfo();
+      let { localDutyList } = info;
       for(let i=0; i<localDutyList.length; i++){
         let l = localDutyList[i];
         this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码'})
@@ -60,26 +58,26 @@ class SignatureConfirmationView extends Component {
 
   //下一步
   async gotoNext(){
-    let mobileCodeMap = {};
-    for(let i=0; i<this.dutyList.length; i++){
-      let d = this.dutyList[i];
-      if(!d.phone){
-        Toast.showShortCenter(`请输入${d.title}的手机号`);
-        return;
-      }
-      if(!d.code){
-        Toast.showShortCenter(`${d.title}的验证码不正确`);
-        return;
-      }
-      mobileCodeMap[d.phone] = d.code;
-    }
-
-    this.setState({loading: true})
-    let checkCodeRes = await this.props.dispatch( create_service(Contract.POST_SMS_CODES_CHECK, {mobileCodeMap:JSON.stringify(mobileCodeMap)}));
-    if(!checkCodeRes){
-      this.setState({loading: false});
-      return;
-    }
+    // let mobileCodeMap = {};
+    // for(let i=0; i<this.dutyList.length; i++){
+    //   let d = this.dutyList[i];
+    //   if(!d.phone){
+    //     Toast.showShortCenter(`请输入${d.title}的手机号`);
+    //     return;
+    //   }
+    //   if(!d.code){
+    //     Toast.showShortCenter(`${d.title}的验证码不正确`);
+    //     return;
+    //   }
+    //   mobileCodeMap[d.phone] = d.code;
+    // }
+    //
+    // this.setState({loading: true})
+    // let checkCodeRes = await this.props.dispatch( create_service(Contract.POST_SMS_CODES_CHECK, {mobileCodeMap:JSON.stringify(mobileCodeMap)}));
+    // if(!checkCodeRes){
+    //   this.setState({loading: false});
+    //   return;
+    // }
 
     for(let i=0; i<this.dutyList.length; i++){
       let d = this.dutyList[i];
@@ -88,21 +86,12 @@ class SignatureConfirmationView extends Component {
       delete d.code;
       delete d.dutyName;
       delete d.codeText;
-      dutyList[i] = d;
+      this.dutyList[i] = d;
     }
 
-    console.log(' ###################3 the submit dutyList -->> ', dutyList);
-    this.success = await StorageHelper.saveStep7(dutyList);
-    this.setState({loading: false});
-    if(!this.success) return;
-    Toast.showShortCenter('以下流程开中');
-
-    let info = await StorageHelper.getCurrentCaseInfo();
-    if(info){
-      this.fileRes = await Utility.convertObjtoFile(info, info.id);
-      console.log(' @@@@@@@@@@@@@@@@@@@@@@@ convertObjtoFile fileRes -->> ', this.fileRes);
-    }
-
+    let success = await StorageHelper.saveStep7(this.dutyList);
+    if(success) this.props.navigation.navigate('UploadProgressView');
+    else Toast.showShortCenter('信息存储失败，请检查内存容量')
   }
   //获取验证码
   async getVerCode(phone,index){
@@ -190,9 +179,16 @@ class SignatureConfirmationView extends Component {
         </View>
 
         <View style={{marginBottom:20,marginTop:20}}>
-          <TouchableHighlight underlayColor={'transparent'} onPress={()=>{}}>
+          <TouchableHighlight underlayColor={'transparent'}
+            onPress={()=>{
+              this.props.navigation.navigate('SignatureView', {returnValue: (result)=>{
+                value.signData = result;
+                value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+                this.setState({refresh: true})
+              }})
+            }}>
             {
-              value.signData? <Image source={{uri:'data:image/png;base64,'+value.signData}} style={{width:W, height:(W*W/H), resizeMode:'contain'}} />
+              value.signData? <Image source={{uri:'data:image/png;base64,'+value.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
               :
               <View style={{width:W-30,height:50,backgroundColor:'#D4D4D4',justifyContent:'center',alignItems:'center',marginLeft:15}}>
                 <Text style={{fontSize:16, color:formLeftText}}>请签名</Text>
