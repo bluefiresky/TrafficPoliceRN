@@ -9,6 +9,8 @@ export const UPLOAD_IMAGE = 'upload_image';
  * Auth 相关接口名
  */
 export const POST_SEND_DYNAMIC_CHECK_CODE = 'post_send_dynamic_check_code';   // 发送手机验证码
+export const POST_SEND_DYNAMIC_CHECK_CODE_SESSION = 'post_send_dynamic_check_code_session';   // 发送手机验证码(需session)
+export const POST_SMS_CODES_CHECK = 'post_sms_codes_check';                    // 校验多个手机号和验证码
 // export const POST_USER_REGISTER = 'post_user_register';                       // 注册
 export const POST_USER_LOGIN_PHONE = 'post_user_login_phone';                 // 登录-手机
 // export const POST_USER_LOGIN_ACCOUNT = 'post_user_login_account';             // 登录-账号

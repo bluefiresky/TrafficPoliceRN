@@ -9,6 +9,17 @@ import { http_get, http_post, service_url } from "../service_helpers";
 export const post_send_dynamic_check_code = ({mobile, smsType, version}) => {
   return http_post( 'login.send.sms', {mobile, smsType}, {}, version )
 }
+
+/** 发送验证码 ## smsType -> 1:文字;2:语音 */
+export const post_send_dynamic_check_code_session = ({mobile, smsType, version}) => {
+  return http_post( 'send.sms', {mobile, smsType}, {}, version )
+}
+
+/** 校验多个手机号和验证码  */
+export const post_sms_codes_check = ({mobileCodeMap, version}) => {
+  return http_post( 'sms.codes.check', {mobileCodeMap}, {}, version )
+}
+
 /** 注册　## from: [] */
 // export const post_user_register = ({code, password, mobile, userSource, version}) => {
 //   return http_post( service_url('/user/register'), {code, password, mobile, userSource}, version )

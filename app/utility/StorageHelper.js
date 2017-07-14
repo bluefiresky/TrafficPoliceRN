@@ -202,7 +202,7 @@ export class StorageHelper{
             "dutyType": "0",
             "signData": "",
             "signTime": "2017-07-08 08:39:20",
-            "refuseFlag": "01"
+            "refuseFlag": "01"  01:签名，02:拒签
         }
     ]
   **/

@@ -19,10 +19,6 @@ class AccidentFactAndResponsibilityView extends Component {
   constructor(props){
     super(props);
     this.applyText = '';
-    this.partyResponsibility = [{name:'张三',carNum:'京A123212','responsibility':''},
-                                {name:'李四',carNum:'京B123212','responsibility':''},
-                                {name:'王五',carNum:'京C123212','responsibility':''}];
-    this.submitData = {supplyText:'',resultText:'',partyResponsibility:this.partyResponsibility};
     this.state = {
       refresh:false,
       supplementary:null,
@@ -36,11 +32,11 @@ class AccidentFactAndResponsibilityView extends Component {
     InteractionManager.runAfterInteractions(async () => {
       // this.info = await StorageHelper.getCurrentCaseInfo();
       // let { basic, person, localDutyList, supplementary, conciliation } = this.info;
-      let person = [{name:'张三', licensePlateNum:'京A123212'},{name:'李四', licensePlateNum:'京B123212'},{name:'王五', licensePlateNum:'京C123212'}]
+      let person = [{name:'张三', licensePlateNum:'京A123212', phone:'15811112222'},{name:'李四', licensePlateNum:'京B123212', phone:'15811112222'},{name:'王五', licensePlateNum:'京C123212', phone:'15811112222'}]
       let ldl = [];
       for(let i=0; i < person.length; i++){
         let p = person[i];
-        ldl.push({name: p.name, licensePlateNum: p.licensePlateNum, dutyName: '', dutyType: ''})
+        ldl.push({name: p.name, phone:p.phone, licensePlateNum: p.licensePlateNum, dutyName: '', dutyType: ''})
       }
       this.setState({localDutyList: ldl});
     })
