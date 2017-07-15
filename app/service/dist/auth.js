@@ -12,7 +12,7 @@ export const post_send_dynamic_check_code = ({mobile, smsType, version}) => {
 
 /** 发送验证码 ## smsType -> 1:文字;2:语音 */
 export const post_send_dynamic_check_code_session = ({mobile, smsType, version}) => {
-  return http_post( 'send.sms', {mobile, smsType}, {}, version )
+  return http_post( 'sms.send', {mobile, smsType}, {}, version )
 }
 
 /** 校验多个手机号和验证码  */
