@@ -1,5 +1,5 @@
 /**
-* 当事人信息页面
+* 交警当事人信息页面
 */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,Alert,InteractionManager } from "react-native";
@@ -9,10 +9,9 @@ import Picker from 'react-native-picker';
 import DatePicker from 'react-native-datepicker';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule,commonText,getProvincialData,getNumberData } from '../../configs/index.js';/** 自定义配置参数 */
-import { ProgressView, TipModal, Input, InsurancePicker, CarTypePicker, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
+import { XButton, ProgressView, TipModal, Input, InsurancePicker, CarTypePicker, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
-import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import { StorageHelper } from '../../utility/index.js';
 
 const ImageW = (W - 3 * 20) / 2;
@@ -29,6 +28,7 @@ class ConfirmInformationView extends Component {
       refresh:false,
       showTip: false,
       tipParams: {},
+      loading:false
     }
     this.currentCaseInfo = {};
     this.partyVerData = [{name:'甲方当事人',ver:''},{name:'乙方当事人',ver:''},{name:'丙方当事人',ver:''}];
@@ -37,74 +37,69 @@ class ConfirmInformationView extends Component {
 
   componentDidMount(){
     InteractionManager.runAfterInteractions(async ()=>{
+      this.setState({loading:true})
       this.currentCaseInfo = await StorageHelper.getCurrentCaseInfo();
-      // let basic = { address: '北京市朝阳区百子湾南二路78号院-3', latitude:'39.902099', longitude:'116.474151 ', weather: '1', accidentTime: '2017-07-08 08:30:01'};
-      // let photo = [
-      //   {photoData: testPhotoData, photoType: '0', photoDate:'2017-07-08 08:33:10'},
-      //   {photoData: testPhotoData, photoType: '1', photoDate:'2017-07-08 08:33:10'},
-      //   {photoData: testPhotoData, photoType: '2', photoDate:'2017-07-08 08:33:10'}
-      // ]
-      // let person = [
-      //   {name:'路人甲',phone:'15811112222',driverNum:'111222121333636666',carInsureNumber:'223369',carType:'小型载客汽车',insureCompanyCode:'110000003003',insureCompanyName: '中国太平洋财产保险股份有限公司',licensePlateNum:'冀CWA356',carInsureDueDate:'2018-04-10',carDamagedPart: ''},
-      //   {name:'路人乙',phone:'15833334444',driverNum:'111222121333636666',carInsureNumber:'223369',carType:'小型载客汽车',insureCompanyCode:'110000003003',insureCompanyName: '中国太平洋财产保险股份有限公司',licensePlateNum:'冀CWA356',carInsureDueDate:'2018-04-10',carDamagedPart: ''}
-      // ];
-      // let credentials = [
-      //   {photoData: testPhotoData, photoType: '30', photoDate:'2017-07-08 08:33:10'},
-      //   {photoData: testPhotoData, photoType: '31', photoDate:'2017-07-08 08:33:10'},
-      // ]
-      // this.currentCaseInfo = { basic, photo, person, credentials };
-      this.setState({refresh: true})
+      this.setState({loading:false})
     })
   }
   //下一步
   gotoNext(){
+    this.setState({loading:true})
+    let error = null;
     let data = this.currentCaseInfo.person;
     for (var i = 0; i < data.length; i++) {
       let title = this.partyVerData[i].name;
 
       if (!this.checkPhone(data[i].phone)) {
-        Toast.showShortCenter(`${title}手机号输入有误`)
-        return
+        error = `${title}手机号输入有误`
+        break;
       }
       if (!data[i].name) {
-        Toast.showShortCenter(`请输入${title}当事人姓名`)
-        return
+        error = `请输入${title}当事人姓名`
+        break;
       }
       if (!data[i].driverNum) {
-        Toast.showShortCenter(`请输入${title}驾驶证号`)
-        return
+        error = `请输入${title}驾驶证号`
+        break;
       }
       if (!data[i].licensePlateNum) {
-        Toast.showShortCenter(`请输入${title}车牌号`)
-        return
+        error = `请输入${title}车牌号`
+        break;
       }
       if (!data[i].insureCompanyName) {
-        Toast.showShortCenter(`请选择${title}保险公司`)
-        return
+        error = `请选择${title}保险公司`
+        break;
       }
       if (!data[i].carType) {
-        Toast.showShortCenter(`请输入${title}车辆类型`)
-        return
+        error = `请输入${title}车辆类型`
+        break;
       }
       if (!data[i].carInsureNumber) {
-        Toast.showShortCenter(`请输入${title}保险单号`)
-        return
+        error = `请输入${title}保险单号`
+        break;
       }
       if (!data[i].carInsureDueDate) {
-        Toast.showShortCenter(`请输入${title}保险到期日`)
-        return
+        error = `请输入${title}保险到期日`
+        break;
       }
     }
+    if(error){
+      this.setState({loading:false});
+      Toast.showShortCenter(error);
+      return;
+    }
+
     let self = this;
-    self.setState({ showTip: true,
+    self.setState({ showTip: true, loading:false,
       tipParams:{
         content: '请确认信息是否完整无误，提交后无法修改。',
         left:{label: '返回修改', event: () => {
           self.setState({showTip: false});
         }},
         right:{label: '确认无误', event: async () => {
+          self.setState({loading:true})
           let success = await StorageHelper.saveStep5(this.currentCaseInfo)
-          self.setState({showTip: false});
+          self.setState({showTip: false, loading:false});
           if(success) self.props.navigation.navigate('AccidentFactAndResponsibilityView');
         }}
     }});
@@ -114,16 +109,7 @@ class ConfirmInformationView extends Component {
     let reg = /^[0-9]+.?[0-9]*$/;
     return (!phone || phone.indexOf(1) !== 0 || phone.length !== 11 || !reg.test(phone)) ? false:true;
   }
-  renderImgaeItem(value,index,ind){
-    return (
-      <View style={{marginLeft:this.rowMargin,marginBottom:15}} key={index}>
-          <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
-                 source={value.imageURL ? value.imageURL:null}>
-          </Image>
-          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{value.title}</Text>
-      </View>
-    )
-  }
+
   renderOnePersonInfo(value,ind,credential){
     return (
       <View style={{backgroundColor:'#ffffff',marginTop:10}} key={ind}>
@@ -285,6 +271,7 @@ class ConfirmInformationView extends Component {
            </View>
         </ScrollView>
         <TipModal show={this.state.showTip} {...this.state.tipParams} />
+        <ProgressView show={this.state.loading} hasTitleBar={true} />
       </View>
 
     );
