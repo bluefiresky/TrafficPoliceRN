@@ -46,7 +46,7 @@ export class TipModal extends Component {
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity onPress={()=>{ left.event() }} activeOpacity={0.8}>
           <View style={{width: ComponentW, height: 40, alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{color: '#1174D9', fontSize: 16}}>{left.label}</Text>
+            <Text style={{color: '#1174D9', fontSize: 14}}>{left.label}</Text>
           </View>
         </TouchableOpacity>
       </View>

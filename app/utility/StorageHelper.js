@@ -236,6 +236,57 @@ export class StorageHelper{
     }
   }
 
+  // 获取未完成案件列表
+  static async getUnCompletedCaseList(){
+    try {
+      let list = await global.storage.getAllDataForKey(global.personal.mobile + 'uncompleted');
+      console.log('%c StorageHelper execute getUnCompletedCaseList -- the list -->> ' , 'color:dodgerblue', list);
+      return list;
+    } catch (e) {
+      console.log('%c StorageHelper getUnCompletedCaseList and catch error -->> ', 'color:red', e.message);
+    } finally {
+
+    }
+  }
+
+  static async getUnCompletedCaseSum(){
+    try {
+      let list = await global.storage.getIdsForKey(global.personal.mobile + 'uncompleted');
+      console.log('%c StorageHelper execute getUnCompletedCaseSum -- the list -->> ' , 'color:dodgerblue', list);
+      return list.length;
+    } catch (e) {
+      console.log('%c StorageHelper getUnCompletedCaseList and catch error -->> ', 'color:red', e.message);
+    } finally {
+
+    }
+  }
+
+  // 获取未上传案件列表
+  static async getUnUploadedCaseList(){
+    try {
+      let list = await global.storage.getAllDataForKey(global.personal.mobile + 'unuploaded');
+      console.log('%c StorageHelper execute getCurrentCaseInfo -- the list -->> ' , 'color:dodgerblue', list);
+      return list;
+    } catch (e) {
+      console.log('%c StorageHelper getUnUploadedCaseList and catch error -->> ', 'color:red', e.message);
+    } finally {
+
+    }
+  }
+
+  static async getUnUploadedCaseSum(){
+    try {
+      let list = await global.storage.getIdsForKey(global.personal.mobile + 'unuploaded');
+      console.log('%c StorageHelper execute getUnUploadedCaseSum -- the list -->> ' , 'color:dodgerblue', list);
+      return list.length;
+    } catch (e) {
+      console.log('%c StorageHelper getUnUploadedCaseList and catch error -->> ', 'color:red', e.message);
+    } finally {
+
+    }
+  }
+
+
   // 转存未完成的数据到未上传列表
   static async saveAsUnUploaded({ id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty }){
     try {

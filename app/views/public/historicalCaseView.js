@@ -10,6 +10,7 @@ import { W, H, backgroundGrey,formLeftText, formRightText, mainBule, borderColor
 import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
+import { StorageHelper, Utility } from '../../utility/index.js';
 import HistoricalCaseCellView from './historicalCaseCellView'
 
 class HistoricalCaseView extends Component {
@@ -33,6 +34,7 @@ class HistoricalCaseView extends Component {
     }
     this.height = 0;
     this.currentPage = 1;
+    this.totalPage = 0;
     this._onGetData = this._onGetData.bind(this);
   }
 
@@ -123,20 +125,26 @@ class HistoricalCaseView extends Component {
   }
 
   /** Private **/
-  _onGetData(){
+  async _onGetData(){
     this.setState({loading: true})
-    this.props.dispatch( create_service(Contract.POST_ACCIDENTS_SEARCH ,{page:1, pageNum:10}))
-      .then( res => {
-        console.log(' HistoricalCaseView and the componentDidMount res -->> ', res);
-        if(res){
-          this.setState({loading: false, data: res.accidents});
-        }else{
-          this.setState({loading: false, data: null})
-        }
-    })
+    let data = null;
+    let { type } = this.props.navigation.state.params;
+    console.log( ' the type -->> ', type);
+    if(type === 3){
+      let res = await this.props.dispatch( create_service(Contract.POST_ACCIDENTS_SEARCH ,{page:1, pageNum:10}));
+      data = res.accidents;
+    }else if(type === 2){
+      data = await StorageHelper.getUnCompletedCaseList();
+    }else if(type === 1){
+      data = await StorageHelper.getUnUploadedCaseList();
+    }
+    this.setState({loading: false, data});
   }
 
   _onScroll(e){
+    let { type } = this.props.navigation.state.params;
+    if(type != 3) return;
+
     const {height : contentHeight} = e.nativeEvent.contentSize
     const scrollHeight = e.nativeEvent.contentOffset.y
     const scrollerHeight = this.height
@@ -148,11 +156,19 @@ class HistoricalCaseView extends Component {
         if(distanceFromEnd < -60 && distanceFromEnd>-80) {
           console.log('加载更多 and the isLoadingMore -->> ', this.state.isLoadingMore)
           if (this.state.isLoadingMore === true) return;
+          else if(this.currentPage >= this.totalPage) {
+            this.setState({isLoadingMore: false})
+            return;
+          }
           InteractionManager.runAfterInteractions(()=>{ this._loadingMore() })
         }
       }else{
         if (distanceFromEnd < 1) {
           if (this.state.isLoadingMore === true) return;
+          else if(this.currentPage >= this.totalPage) {
+            this.setState({isLoadingMore: false})
+            return;
+          }
           InteractionManager.runAfterInteractions(()=>{ this._loadingMore() })
         }
       }
@@ -168,6 +184,7 @@ class HistoricalCaseView extends Component {
         console.log(' 第 ' + self.currentPage + ' 页的数据 res -->> ' ,res)
         if(res){
           let { totalPage, accidents } = res;
+          self.totalPage = totalPage;
           if(self.currentPage > totalPage){
             self.setState({isLoadingMore: false});
             setTimeout(() => { self.loadMoreRef.scrollToEnd(); }, 500);

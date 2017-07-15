@@ -75,7 +75,10 @@ class UploadProgressView extends Component {
     let right = null;
     let done;
     if(success){
-      left = {label: '确定', event:() => {Toast.showShortCenter('我也不知道接下来干啥')}};
+      left = {label: '返回首页', event:() => {
+        let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
+        this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
+      }};
     }else{
       left = {label: '重试', event:() => {
         self.setState({progress: 0, showTip: false, success: false, fail: false})

@@ -38,6 +38,8 @@ class PpHomePageView extends Component {
 
     this.forceUpdate = null;
     this.dictionary = null;
+    this.unCompleteSum = 0;
+    this.unUploadedSum = 0;
     this._getData = this._getData.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
   }
@@ -132,12 +134,8 @@ class PpHomePageView extends Component {
             <View style={{flexDirection:'row'}}>
              <Image source={require('./image/wait_for_upload.png')} style={{width:40,height:40,alignSelf:'center',marginLeft:15}}/>
              <View style={{flex:1,marginLeft:10}}>
-               <Text style={{fontSize:15,color:formLeftText}}>
-                 待上传案件
-               </Text>
-               <Text style={{fontSize:13,color:formRightText,marginTop:10}}>
-                 您有xx起案件未上传，请及时上传
-               </Text>
+               <Text style={{fontSize:15,color:formLeftText}}>待上传案件</Text>
+               <Text style={{fontSize:13,color:formRightText,marginTop:10}}>{`您有${this.unUploadedSum}起案件未上传，请及时上传`}</Text>
              </View>
              <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,marginRight:15,alignSelf:'center'}}/>
             </View>
@@ -152,12 +150,8 @@ class PpHomePageView extends Component {
            <View style={{flexDirection:'row'}}>
              <Image source={require('./image/no_complete_case.png')} style={{width:40,height:40,alignSelf:'center',marginLeft:15}}/>
              <View style={{flex:1,marginLeft:10}}>
-               <Text style={{fontSize:15,color:formLeftText}}>
-                 未完结案件
-               </Text>
-               <Text style={{fontSize:13,color:formRightText,marginTop:10}}>
-                 您有xx起案件未处理完，请及时处理
-               </Text>
+               <Text style={{fontSize:15,color:formLeftText}}>未完结案件</Text>
+               <Text style={{fontSize:13,color:formRightText,marginTop:10}}>{`您有${this.unCompleteSum}起案件未处理完，请及时处理`}</Text>
              </View>
              <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,marginRight:15,alignSelf:'center'}}/>
            </View>
@@ -209,6 +203,9 @@ class PpHomePageView extends Component {
     let v = getStore().getState().dictionary.version;
     this.dictionary = await this.props.dispatch( create_service(Contract.POST_ACHIEVE_DICTIONARY,{v}))
     // console.log('PpHomePageView execute _getData this.dictionary -->> ', this.dictionary);
+
+    this.unCompleteSum = await StorageHelper.getUnCompletedCaseSum();
+    this.unUploadedSum = await StorageHelper.getUnUploadedCaseSum();
 
     if(refresh) this.setState({isRefreshing: false});
     else this.setState({loading: false});
