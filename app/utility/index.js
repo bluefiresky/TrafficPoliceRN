@@ -10,3 +10,6 @@ export { StorageHelper } from './StorageHelper.js';
 
 import * as Utility from './Utility.js';
 export { Utility }
+
+import * as NetUtility from './NetUtility.js';
+export { NetUtility }

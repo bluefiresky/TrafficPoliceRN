@@ -32,7 +32,7 @@ export async function convertObjtoFile(obj, name){
     await RNFS.writeFile(path, convertObjToUploadJson(obj), 'utf8');
     return 'success';
   } catch (e) {
-    console.log('%c convertObjtoFile catch error -->> ' , 'color:red', e.message);
+    console.log('%c Utility convertObjtoFile catch error -->> ' , 'color:red', e.message);
   }
 }
 
@@ -46,7 +46,7 @@ export async function getFileByName(name){
     let success = await RNFS.readFile(path, 'utf8');
     return 'success';
   } catch (e) {
-    console.log('%c getFileByName catch error -->> ' , 'color:red', e.message);
+    console.log('%c Utility getFileByName catch error -->> ' , 'color:red', e.message);
   }
 
 }
@@ -64,7 +64,7 @@ export async function deleteFileByName(name, type){
     if(RNFS.exists(zipPath)) await RNFS.unlink(zipPath);
     return 'success';
   } catch (e) {
-    console.log('%c deleteFileByName catch error -->> ' , 'color:red', e.message);
+    console.log('%c Utility deleteFileByName catch error -->> ' , 'color:red', e.message);
   }
 }
 
@@ -79,7 +79,7 @@ export async function zipFileByName(name){
 
     return base64Str;
   } catch (e) {
-    console.log('%c zipFileByName catch error -->> ' , 'color:red', e.message);
+    console.log('%c Utility zipFileByName catch error -->> ' , 'color:red', e.message);
   }
 }
 

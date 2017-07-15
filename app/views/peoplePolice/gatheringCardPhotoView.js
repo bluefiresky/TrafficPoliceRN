@@ -95,7 +95,6 @@ class GatheringCardPhotoView extends Component {
           let success = await StorageHelper.saveStep4(photoList)
           self.setState({showTip: false});
           if(success) self.props.navigation.navigate('ConfirmInformationView');
-          else Toast.showShortCenter('信息存储失败，请检查内存容量')
         }}
     }});
   }

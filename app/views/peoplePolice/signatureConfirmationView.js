@@ -82,7 +82,6 @@ class SignatureConfirmationView extends Component {
     let success = await StorageHelper.saveStep7(this.dutyList);
     this.setState({loading: false})
     if(success) this.props.navigation.navigate('UploadProgressView');
-    else Toast.showShortCenter('信息存储失败，请检查内存容量')
   }
   //获取验证码
   async getVerCode(phone,index){

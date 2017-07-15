@@ -53,7 +53,6 @@ class AccidentFactAndResponsibilityView extends Component {
 
     let success = await StorageHelper.saveStep6({supplementary, conciliation, localDutyList})
     if(success) this.props.navigation.navigate('SignatureConfirmationView');
-    else Toast.showShortCenter('信息存储失败，请检查内存容量')
   }
   //输入框文字变化
   onChangeText(text,type,index){

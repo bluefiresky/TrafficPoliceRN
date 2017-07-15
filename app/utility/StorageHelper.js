@@ -3,6 +3,7 @@
  */
 
 'use strict';
+import Toast from '@remobile/react-native-toast';
 
 export class StorageHelper{
 
@@ -15,15 +16,22 @@ export class StorageHelper{
       weather: '1'
     }
   */
-  static create({basic}){
-    let key = global.personal.mobile + 'uncompleted';
-    // let id = String(new Date().getTime());
-    let id = '1500113507781';
-    let data = {id, basic};
-    console.log('%c StorageHelper execute create -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+  static async reate({basic}){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      // let id = String(new Date().getTime());
+      let id = '1500113507781';
+      let data = {id, basic};
+      console.log('%c StorageHelper execute create -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
-    // global.currentCaseId = id;
-    global.storage.save({ key, id, data })
+      // global.currentCaseId = id;
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on create and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
+    }
+
   }
 
   // 照片信息
@@ -52,6 +60,7 @@ export class StorageHelper{
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper catch error on saveStep1 and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
     }
   }
 
@@ -85,6 +94,7 @@ export class StorageHelper{
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper catch error on saveStep2_3 and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
     }
   }
 
@@ -101,6 +111,7 @@ export class StorageHelper{
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper catch error on saveStep2 and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
     }
 
   }
@@ -148,6 +159,7 @@ export class StorageHelper{
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper catch error on saveStep4 and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
     }
 
   }
@@ -173,6 +185,7 @@ export class StorageHelper{
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper catch error on saveStep5 and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
     }
 
   }
@@ -190,6 +203,7 @@ export class StorageHelper{
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper catch error on saveStep6 and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
     }
 
   }
@@ -219,6 +233,7 @@ export class StorageHelper{
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper catch error on saveStep7 and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
     }
 
   }

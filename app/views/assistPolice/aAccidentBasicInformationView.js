@@ -94,8 +94,8 @@ class AAccidentBasicInformationView extends Component {
     let { latitude, longitude } = this.locationData;
     let basic = { address: accidentSite, latitude:String(latitude), longitude:String(longitude), weather: weather.code, accidentTime: date+':00'};
     // create -> 对id做了 @@global.currentCaseId 绑定
-    await StorageHelper.create({ basic });
-    this.props.navigation.navigate('APhotoEvidenceVeiw');
+    let success = await StorageHelper.create({ basic });
+    if(success) this.props.navigation.navigate('APhotoEvidenceVeiw');
   }
 
   render(){

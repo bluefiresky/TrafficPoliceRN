@@ -124,10 +124,10 @@ class APhotoEvidenceVeiw extends Component {
             self.setState({showTip: false});
           }},
           right:{label: '采集当事人信息', event: async () => {
+            self.setState({loading: true})
             let success = await StorageHelper.saveStep1(this.photoList)
-            self.setState({showTip: false});
+            self.setState({showTip: false, loading: false});
             if(success) self.props.navigation.navigate('SelectHandleTypeView');
-            else Toast.showShortCenter('信息存储失败，请检查内存容量')
           }}
       }});
     }
@@ -174,8 +174,9 @@ class APhotoEvidenceVeiw extends Component {
                </TouchableOpacity>
              </Modal>
            </View>
+
            <TipModal show={this.state.showTip} {...this.state.tipParams} />
-           <ProgressView show={this.state.loading} />
+           <ProgressView show={this.state.loading} hasTitleBar={true}/>
         </View>
       );
     }

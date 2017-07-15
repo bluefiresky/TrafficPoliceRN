@@ -106,10 +106,10 @@ class GatheringPartyInformationView extends Component {
      //提交信息
      console.log('GatheringPartyInformationView submit and the submitDataArr -->> ', this.submitDataArr);
      let handleWay = (this.carInfoData.length) > 1?'01':'02';
-     await StorageHelper.saveStep2_3(handleWay, this.submitDataArr);
+     let success = await StorageHelper.saveStep2_3(handleWay, this.submitDataArr);
 
      //提交成功后跳转到下个页面
-     this.props.navigation.navigate('GatheringCardPhotoView');
+     if(success) this.props.navigation.navigate('GatheringCardPhotoView');
   }
   //验证手机号
   checkPhone(phone){

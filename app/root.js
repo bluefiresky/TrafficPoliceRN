@@ -44,21 +44,21 @@ const publicNavigationOptions = {
 /** App-public栈 */
 const PublicNavigator = StackNavigator({
   // //公共
-  LoginView: { screen: LoginView, navigationOptions: { title: '登录'} },
-  SettingView: { screen: SettingView, navigationOptions: { title: '设置'} },
-  FeedBackView: { screen: FeedBackView, navigationOptions: { title: '意见反馈'} },
-  HistoricalCaseView: { screen: HistoricalCaseView},
-  CaseDetailsView: { screen: CaseDetailsView, navigationOptions: { title: '案件详情'} },
-  LookBigImageView: { screen: LookBigImageView, navigationOptions: { title: '查看大图'} },
-  LookConclusionView: { screen: LookConclusionView, navigationOptions: { title: '案件详情'} },
-  SignatureView: {screen: SignatureView, navigationOptions: {title: '签名'} },
-  UploadProgressView: {screen: UploadProgressView, navigationOptions: {title: '进度'}},
-  UploadSuccessView: {screen: UploadSuccessView, navigationOptions: {title: '上传成功'}},
-
-  //协警
-  ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} },
-  AAccidentBasicInformationView: { screen: AAccidentBasicInformationView, navigationOptions: { title: '基本信息'} },
-  APhotoEvidenceVeiw: { screen: APhotoEvidenceVeiw, navigationOptions: { title: '拍照取证'} },
+  // LoginView: { screen: LoginView, navigationOptions: { title: '登录'} },
+  // SettingView: { screen: SettingView, navigationOptions: { title: '设置'} },
+  // FeedBackView: { screen: FeedBackView, navigationOptions: { title: '意见反馈'} },
+  // HistoricalCaseView: { screen: HistoricalCaseView},
+  // CaseDetailsView: { screen: CaseDetailsView, navigationOptions: { title: '案件详情'} },
+  // LookBigImageView: { screen: LookBigImageView, navigationOptions: { title: '查看大图'} },
+  // LookConclusionView: { screen: LookConclusionView, navigationOptions: { title: '案件详情'} },
+  // SignatureView: {screen: SignatureView, navigationOptions: {title: '签名'} },
+  // UploadProgressView: {screen: UploadProgressView, navigationOptions: {title: '进度'}},
+  // UploadSuccessView: {screen: UploadSuccessView, navigationOptions: {title: '上传成功'}},
+  //
+  // //协警
+  // ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} },
+  // AAccidentBasicInformationView: { screen: AAccidentBasicInformationView, navigationOptions: { title: '基本信息'} },
+  // APhotoEvidenceVeiw: { screen: APhotoEvidenceVeiw, navigationOptions: { title: '拍照取证'} },
   SelectHandleTypeView: { screen: SelectHandleTypeView, navigationOptions: { title: '选择处理方式'} },
   AGatheringPartyInformationView: { screen: AGatheringPartyInformationView, navigationOptions: { title: '采集当事人信息'} },
   AGatheringCardPhotoView: { screen: AGatheringCardPhotoView, navigationOptions: { title: '采集证件信息'} },
