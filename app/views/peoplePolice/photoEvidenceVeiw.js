@@ -1,5 +1,5 @@
 /**
-* 拍照取证页面
+* 交警拍照取证页面
 */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image,TouchableHighlight,FlatList,Platform,Alert,TouchableOpacity,Modal } from "react-native";

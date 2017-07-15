@@ -17,11 +17,12 @@ export class StorageHelper{
   */
   static create({basic}){
     let key = global.personal.mobile + 'uncompleted';
-    let id = String(new Date().getTime());
+    // let id = String(new Date().getTime());
+    let id = '1500113507781';
     let data = {id, basic};
     console.log('%c StorageHelper execute create -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
-    global.currentCaseId = id;
+    // global.currentCaseId = id;
     global.storage.save({ key, id, data })
   }
 
