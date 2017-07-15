@@ -13,6 +13,9 @@ export { LookConclusionView } from './public/lookConclusionView.js';            
 export { LookBigImageView } from './public/lookBigImageView.js';            /** 查看事故认定书 */
 export { SignatureView } from './public/signatureView.js';                  /** 签名页 */
 export { UploadProgressView } from './public/uploadProgressView.js';        /** 上传进度页 **/
+export { UploadSuccessView } from './public/uploadSuccessView.js';          /** 上传成功页 **/
+
+
 /** 民警 */
 export { PpHomePageView } from './peoplePolice/ppHomePageView.js';                            /** 民警首页 */
 export { AccidentBasicInformationView } from './peoplePolice/accidentBasicInformationView.js';/** 事故基本信息 */

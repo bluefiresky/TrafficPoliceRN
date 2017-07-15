@@ -25,7 +25,7 @@ export class XButton extends Component {
   }
 
   render(){
-    let { disabled, loading, title, onPress, style, textStyle } = this.props;
+    let { disabled, loading, title, onPress, style, textStyle, borderRadius } = this.props;
     let d = loading? true : (disabled? true : false);
     let t = loading? '' : title;
     return(
@@ -36,7 +36,7 @@ export class XButton extends Component {
         activityIndicatorStyle={styles.indicator}
         color={mainBule}
         large={false}
-        borderRadius={5}
+        borderRadius={borderRadius?borderRadius:5}
         disabled={d}
         loading={loading}
         title={t}
