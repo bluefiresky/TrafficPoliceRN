@@ -62,7 +62,7 @@ const PublicNavigator = StackNavigator({
   // SelectHandleTypeView: { screen: SelectHandleTypeView, navigationOptions: { title: '选择处理方式'} },
   // AGatheringPartyInformationView: { screen: AGatheringPartyInformationView, navigationOptions: { title: '采集当事人信息'} },
   // AGatheringCardPhotoView: { screen: AGatheringCardPhotoView, navigationOptions: { title: '采集证件信息'} },
-  AConfirmInformationView: { screen: AConfirmInformationView, navigationOptions: { title: '确认信息'} },
+  // AConfirmInformationView: { screen: AConfirmInformationView, navigationOptions: { title: '确认信息'} },
   AAccidentFactAndResponsibilityView: { screen: AAccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实'} },
   AccidentConditionView: { screen: AccidentConditionView, navigationOptions: { title: '事故形态及情形'} },
   WaitRemoteResponsibleView: { screen: WaitRemoteResponsibleView, navigationOptions: { title: '等待远程定责'} },
