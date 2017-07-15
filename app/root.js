@@ -60,7 +60,7 @@ const PublicNavigator = StackNavigator({
   // AAccidentBasicInformationView: { screen: AAccidentBasicInformationView, navigationOptions: { title: '基本信息'} },
   // APhotoEvidenceVeiw: { screen: APhotoEvidenceVeiw, navigationOptions: { title: '拍照取证'} },
   // SelectHandleTypeView: { screen: SelectHandleTypeView, navigationOptions: { title: '选择处理方式'} },
-  AGatheringPartyInformationView: { screen: AGatheringPartyInformationView, navigationOptions: { title: '采集当事人信息'} },
+  // AGatheringPartyInformationView: { screen: AGatheringPartyInformationView, navigationOptions: { title: '采集当事人信息'} },
   AGatheringCardPhotoView: { screen: AGatheringCardPhotoView, navigationOptions: { title: '采集证件信息'} },
   AConfirmInformationView: { screen: AConfirmInformationView, navigationOptions: { title: '确认信息'} },
   AAccidentFactAndResponsibilityView: { screen: AAccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实'} },

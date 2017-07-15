@@ -1,5 +1,5 @@
 /**
-* 当事人信息页面
+* 交警当事人信息页面
 */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView,TouchableHighlight,Platform,Alert,InteractionManager } from "react-native";
@@ -8,10 +8,9 @@ import Toast from '@remobile/react-native-toast';
 import ImagePicker from 'react-native-image-picker';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
-import { ProgressView, TipModal } from '../../components/index.js';  /** 自定义组件 */
+import { ProgressView, TipModal, XButton } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
-import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import { StorageHelper, Utility } from '../../utility/index.js';
 
 const CredentialsIcon = require('./image/e_credentials.png');
@@ -37,6 +36,7 @@ class GatheringCardPhotoView extends Component {
     this.state = {
       showTip: false,
       tipParams: {},
+      loading:false,
     }
     this.carInfoData = [];
   }
@@ -70,11 +70,13 @@ class GatheringCardPhotoView extends Component {
   }
   //信息采集完成
   gotoNext(){
+    this.setState({loading:true})
     let photoList = [];
     for (var i = 0; i < this.carInfoData.length; i++) {
       for (var j = 0; j < this.carInfoData[i].data.length; j++) {
         let data = this.carInfoData[i].data[j];
         if (!data.photoData) {
+          this.setState({loading:false})
           Toast.showShortCenter(`请上传${this.carInfoData[i].name}的${data.title}`);
           return;
         }else{
@@ -85,15 +87,16 @@ class GatheringCardPhotoView extends Component {
     }
 
     let self = this;
-    self.setState({ showTip: true,
+    self.setState({ showTip: true, loading:false,
       tipParams:{
         content: '请确保拍摄的证件照片清晰完整，提交之后无法修改',
         left:{label: '返回修改', event: () => {
           self.setState({showTip: false});
         }},
         right:{label: '确认无误', event: async () => {
+          self.setState({loading: true})
           let success = await StorageHelper.saveStep4(photoList)
-          self.setState({showTip: false});
+          self.setState({showTip: false, loading:false});
           if(success) self.props.navigation.navigate('ConfirmInformationView');
         }}
     }});
@@ -136,6 +139,7 @@ class GatheringCardPhotoView extends Component {
            </View>
         </ScrollView>
         <TipModal show={this.state.showTip} {...this.state.tipParams} />
+        <ProgressView show={this.state.loading} hasTitleBar={true} />
       </View>
 
     );
