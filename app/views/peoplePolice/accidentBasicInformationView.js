@@ -1,5 +1,5 @@
 /**
-* 确认事故信息
+* 交警处理事故基本信息
 */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, TouchableHighlight,TextInput,Image,NativeModules, InteractionManager } from "react-native";
@@ -22,7 +22,6 @@ class AccidentBasicInformationView extends Component {
     super(props);
 
     this.state = {
-      // date: Tool.handleTime(Tool.getTime("yyyy-MM-dd hh:mm a"),false,'time'),
       date: Tool.getTime('yyyy-MM-dd hh:mm'),
       weather: null,
       accidentSite: null,
