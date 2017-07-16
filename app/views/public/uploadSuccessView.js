@@ -23,7 +23,7 @@ class UploadSuccessView extends Component {
   constructor(props){
     super(props);
     this.state = {
-      content:'交通事故认定书稍后将以短信形式发送至当事人手机'
+      content:props.navigation.state.params.content
     }
   }
 

@@ -80,7 +80,7 @@ class SignatureConfirmationView extends Component {
 
     let success = await StorageHelper.saveStep7(this.dutyList);
     this.setState({loading: false})
-    if(success) this.props.navigation.navigate('UploadProgressView');
+    if(success) this.props.navigation.navigate('UploadProgressView', {content:'上传完成后《道路交通事故认定书（简易程序）》将发送至当事人手机'});
   }
   //获取验证码
   async getVerCode(phone,index){
@@ -150,10 +150,10 @@ class SignatureConfirmationView extends Component {
           <Text style={{color:mainBule}}>{value.dutyName}</Text>
         </View>
 
-        <View style={{flexDirection:'row',marginLeft:20}}>
+        <View style={{marginLeft:20}}>
           <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
           {this.state.showSpeekCode ?
-            <View style={{flexDirection:'row',justifyContent:'flex-end',marginTop:15}}>
+            <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
               <Text style={{marginRight:15}}>
                 收不到验证码？试试
                 <Text style={{color:'#267BD8'}} onPress={() => {

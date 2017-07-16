@@ -24,14 +24,16 @@ class UploadProgressView extends Component {
     super(props);
     this._done = this._done.bind(this);
     this._startUpload = this._startUpload.bind(this);
+
     this.state = {
       progress: 0,
       progressTip: '本次事故信息正在上传...',
-      content:'上传完成后《道路交通事故认定书（简易程序）》将发送至当事人手机',
+      content:props.navigation.state.params?this.props.navigation.state.params.content:'',
       success: false,
       fail: false,
       tipParams: {},
       showTip: false,
+      handleWay:null
     }
   }
 
@@ -61,11 +63,15 @@ class UploadProgressView extends Component {
   async _startUpload(){
     let info = await StorageHelper.getCurrentCaseInfo();
     if(info){
-      this.fileRes = await Utility.convertObjtoFile(info, info.id);
-      let base64Str = await Utility.zipFileByName(info.id);
-      this.res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:1, fileName:info.id, file:'zip@'+base64Str}));
-      if(this.res) this.setState({success: true});
-      else this.setState({fail: true})
+      let fileRes = await Utility.convertObjtoFile(info, info.id);
+      if(fileRes){
+        let base64Str = await Utility.zipFileByName(info.id);
+        this.res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:1, fileName:info.id, file:'zip@'+base64Str}));
+        if(this.res) this.setState({success: true});
+        else this.setState({fail: true, handleWay:info.handleWay})
+      }else{
+        this.setState({fail:true, handleWay:info.handleWay})
+      }
     }
   }
 
@@ -75,14 +81,16 @@ class UploadProgressView extends Component {
     let right = null;
     let done;
     if(success){
-      this.props.navigation.dispatch({ type: 'replace', routeName: 'UploadSuccessView', key: 'UploadSuccessView', params: {}});
+      let content = (this.state.handleWay != '04')?'交通事故认定书稍后将以短信形式发送至当事人手机':'交通事故协议书稍后将以短信形式发送至当事人手机';
+      this.props.navigation.dispatch({ type: 'replace', routeName: 'UploadSuccessView', key: 'UploadSuccessView', params: {content}});
       return;
     }else{
       left = {label: '重试', event:() => {
         self.setState({progress: 0, showTip: false, success: false, fail: false})
         self._startUpload();
       }};
-      right = {label: '查看离线认定书', event:() => { Toast.showShortCenter('待开发')}};
+      let label = (this.state.handleWay != '04')?'查看离线认定书':'查看离线协议书';
+      right = {label, event:() => { Toast.showShortCenter('待开发')}};
     }
     this.setState({ showTip: true, tipParams:{title, content, left, right}})
   }

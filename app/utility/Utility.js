@@ -85,21 +85,21 @@ export async function zipFileByName(name){
 
 // 根据本地数据生成上传数据格式
 function convertObjToUploadJson(obj){
-  let { id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty, taskModal, accidentDes } = obj;
+  let { id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty, taskModal, accidentDes, accidentOther } = obj;
   let uploadData = {
     processType: handleWay,
     longitude: basic.longitude,
     latitude: basic.latitude,
     address: basic.address,
     accidentTime: basic.accidentTime,
-    accidentDes: accidentDes,    // 事故情形
-    accidentOther: '',  // 情形描述
-    taskModal: taskModal,      // 事故形态
+    accidentDes: accidentDes?accidentDes:'',    // 事故情形
+    accidentOther: accidentOther?accidentOther:'',           // 情形描述
+    taskModal: taskModal?taskModal:'',        // 事故形态
     weather: basic.weather,
-    supplementary: supplementary,
-    conciliation: conciliation,
+    supplementary: supplementary?supplementary:'',
+    conciliation: conciliation?conciliation:'',
     personList: person,
-    photoList: Object.assign(photo, credentials),
+    photoList: photo.concat(credentials),
     dutyList: duty,
     signList: sign
   }

@@ -69,6 +69,10 @@ const PublicNavigator = StackNavigator({
   // ResponsibleResultView: { screen: ResponsibleResultView },
   // AccidentConfirmResponView: { screen: AccidentConfirmResponView, navigationOptions: { title: '事故定责'} },
   ASignatureConfirmationView: { screen: ASignatureConfirmationView, navigationOptions: { title: '签字确认'} },
+  SignatureView: {screen: SignatureView, navigationOptions: {title: '签名'} },
+  UploadProgressView: {screen: UploadProgressView, navigationOptions: {title: '进度'}},
+  UploadSuccessView: {screen: UploadSuccessView, navigationOptions: {title: '上传成功'}},
+
   //民警
   PpHomePageView: { screen: PpHomePageView, navigationOptions: { title: '首页'} },
   AccidentBasicInformationView: { screen: AccidentBasicInformationView, navigationOptions: { title: '事故基本信息'} },
