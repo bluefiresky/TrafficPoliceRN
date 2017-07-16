@@ -3,15 +3,33 @@
  */
 'use strict';
 import React, {Component} from 'react';
-import {
-    StyleSheet,
-    Image,
-    Text,
-    View,
-    TouchableHighlight
-} from 'react-native';
+import { StyleSheet, Image, Text, View, TouchableHighlight } from 'react-native';
 
 import {W, formLeftText, formRightText, mainBule} from '../../configs/index.js';
+
+const PStepToView = {
+  '0':'PhotoEvidenceVeiw',
+  '1':'GatheringPartyInformationView',
+  '2_3':'GatheringCardPhotoView',
+  '4':'ConfirmInformationView',
+  '5':'AccidentFactAndResponsibilityView',
+  '6':'SignatureConfirmationView',
+  '7':'UploadProgressView',
+}
+
+const AStepToView = {
+  '0':'APhotoEvidenceVeiw',
+  '1':'SelectHandleTypeView',
+  '2':'AGatheringPartyInformationView',
+  '3':'AGatheringCardPhotoView',
+  '4':'AConfirmInformationView',
+  '5':(handleWay) => { return handleWay != '04'? 'AAccidentFactAndResponsibilityView': 'AccidentConditionView'},
+  '5_6_1':'AccidentConfirmResponView',
+  '6':(handleWay) => { return handleWay != '04'? 'UploadProgressView' : 'ASignatureConfirmationView'},
+  '6_7_1':'WaitRemoteResponsibleView',
+  '7':'UploadProgressView'
+}
+
 export default class HistoricalCaseCellView extends Component {
 
   constructor(props){
@@ -19,8 +37,24 @@ export default class HistoricalCaseCellView extends Component {
     this.state = {
     }
   }
-  cellClick(taskNo) {
+
+  historyCellClick(taskNo) {
     this.props.navigation.navigate('CaseDetailsView', {taskNo})
+  }
+
+  caseCellClick(step, handleWay){
+    let routeName = null;
+    if(global.personal.policeType === 2){
+      routeName = PStepToView[step];
+    }else if(global.personal.policeType === 3){
+      let tmp = AStepToView[step];
+      if('string' === typeof tmp){
+        routeName = tmp;
+      }else{
+        routeName = tmp(handleWay);
+      }
+    }
+    if(routeName) this.props.navigation.navigate(routeName);
   }
 
   render() {
@@ -35,7 +69,7 @@ export default class HistoricalCaseCellView extends Component {
   _renderHistoryCell(rowData){
     let { accidentAddress, accidentTime, taskNo, cars } = rowData;
     return (
-      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.cellClick(taskNo)}>
+      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.historyCellClick(taskNo)}>
         <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
           <View style={styles.left}>
             <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
@@ -60,9 +94,9 @@ export default class HistoricalCaseCellView extends Component {
   }
 
   _renderLocalCell(rowData){
-    let { basic, person } = rowData;
+    let { basic, person, step, handleWay } = rowData;
     return (
-      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.cellClick(taskNo)}>
+      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.caseCellClick(step, handleWay)}>
         <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
           <View style={styles.left}>
             <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>

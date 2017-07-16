@@ -64,40 +64,38 @@ class AccidentConditionView extends Component {
     })
   }
 
-  gotoNext() {
+  async gotoNext() {
     this.setState({loading: true})
-    InteractionManager.runAfterInteractions(async() => {
-      if(this.state.loading) return;
+    if(this.state.loading) return;
 
-      let error = null;
-      if (!this.state.taskModal) error = `请选择事故形态`;
-      if (!this.state.accidentDes) error = `请选择事故情形`;
-      if(error){
-        this.setState({loading:false});
-        Toast.showShortCenter(error);
-        return;
+    let error = null;
+    if (!this.state.taskModal) error = `请选择事故形态`;
+    if (!this.state.accidentDes) error = `请选择事故情形`;
+    if(error){
+      this.setState({loading:false});
+      Toast.showShortCenter(error);
+      return;
+    }
+
+    for (let i = 0, max = this.personDamagedArray.length; i < max; i++) {
+      let pd = this.personDamagedArray[i];
+      let p = this.person[i];
+      if(pd.length == 0) {
+        Toast.showShortCenter(`请选择${p.name}的车损部位`)
+        this.setState({loading:false})
+        return
       }
+    }
 
-      for (let i = 0, max = this.personDamagedArray.length; i < max; i++) {
-        let pd = this.personDamagedArray[i];
-        let p = this.person[i];
-        if(pd.length == 0) {
-          Toast.showShortCenter(`请选择${p.name}的车损部位`)
-          this.setState({loading:false})
-          return
-        }
-      }
+    for(let i = 0, max = this.personDamagedArray.length; i < max; i++) {
+      let pd = this.personDamagedArray[i];
+      let p = this.person[i];
+      p.carDamagedPart = pd.toString();
+    }
 
-      for(let i = 0, max = this.personDamagedArray.length; i < max; i++) {
-        let pd = this.personDamagedArray[i];
-        let p = this.person[i];
-        p.carDamagedPart = pd.toString();
-      }
-
-      let success = await StorageHelper.saveStep5_6_1(this.state.taskModal.code, this.state.accidentDes.code, this.person);
-      this.setState({loading:false})
-      if(success) this.props.navigation.navigate('AccidentConfirmResponView');
-    })
+    let success = await StorageHelper.saveStep5_6_1(this.state.taskModal.code, this.state.accidentDes.code, this.person);
+    this.setState({loading:false})
+    if(success) this.props.navigation.navigate('AccidentConfirmResponView');
   }
 
   showDamageDataModal(index){

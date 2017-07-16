@@ -32,6 +32,7 @@ export const POST_ACCIDENTS_SEARCH = 'post_accidents_search';                 //
 export const POST_ACCIDENT_DETAILS = 'post_accident_details';                 // 获取历史案件详情
 export const GET_REMOTE_FIXDUTY_RESULT = 'get_remote_fixduty_result';         // 获取远程定责结果
 export const POST_GENERATE_DUTYCONFIRMATION = 'post_generate_dutyconfirmation'; // 协警生成认定书
+export const POST_UPLOAD_ACCIDENT_FILE = 'post_upload_accident_file';         // 上传离线zip
 /*
  * Common 相关接口名
  */

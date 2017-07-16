@@ -124,7 +124,7 @@ class AGatheringPartyInformationView extends Component {
   //增加其他车信息
   addOtherCarInfo(){
     if (this.carInfoData.length < 3) {
-      this.carInfoData.splice(this.carInfoData.length,0,{title:this.addOtherTitle[this.carInfoData.length - 1],carNumArr:[getProvincialData(),getLetterData(),getNumberData()]});
+      this.carInfoData.splice(this.carInfoData.length,0,{title:this.addOtherTitle[this.carInfoData.length - 1],carNumArr:[getProvincialData(),getNumberData()]});
       this.setState({
         refresh:true
       })

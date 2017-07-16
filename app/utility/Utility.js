@@ -92,16 +92,16 @@ function convertObjToUploadJson(obj){
     latitude: basic.latitude,
     address: basic.address,
     accidentTime: basic.accidentTime,
-    accidentDes: accidentDes?accidentDes:'',    // 事故情形
-    accidentOther: accidentOther?accidentOther:'',           // 情形描述
-    taskModal: taskModal?taskModal:'',        // 事故形态
+    accidentDes: accidentDes?accidentDes:'',          // 事故情形
+    accidentOther: accidentOther?accidentOther:'',    // 情形描述
+    taskModal: taskModal?taskModal:'',                // 事故形态
     weather: basic.weather,
     supplementary: supplementary?supplementary:'',
     conciliation: conciliation?conciliation:'',
     personList: person,
     photoList: photo.concat(credentials),
-    dutyList: duty,
-    signList: sign
+    dutyList: duty?duty:null,
+    signList: sign?sign:null
   }
 
   console.log('%c Utility execute convertObjToUploadJson and the uploadData -->> ' , 'color:dodgerblue', uploadData);

@@ -42,6 +42,7 @@ class ASignatureConfirmationView extends Component {
       this.taskNo = info.taskNo;
       this.handleWay = info.handleWay;
       let submitText = this.handleWay === '04'? '生成自行协商协议书':'生成交通事故认定书'
+
       if(this.props.navigation.state.params && this.props.navigation.state.params.dutyList){
         let dl = this.props.navigation.state.params.dutyList;
         for(let i=0; i<dl.length; i++){
@@ -55,6 +56,8 @@ class ASignatureConfirmationView extends Component {
           this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码'})
         }
       }
+      console.log(' the dutyList -->> ', this.dutyList);
+      console.log(' the submitText -->> ', submitText);
       this.setState({loading:false, submitText})
     })
   }
@@ -195,36 +198,43 @@ class ASignatureConfirmationView extends Component {
         </View>
 
         <View style={{marginBottom:20,marginTop:20}}>
-          <TouchableHighlight underlayColor={'transparent'}
-            onPress={()=>{
-              this.props.navigation.navigate('SignatureView', {returnValue: (result)=>{
-                value.signData = result;
-                value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
-                this.setState({refresh: true})
-              }})
-            }}>
-            {
-              value.signData? <Image source={{uri:'data:image/png;base64,'+value.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
-              :
-              <View style={{width:W-30,height:50,backgroundColor:'#D4D4D4',justifyContent:'center',alignItems:'center',marginLeft:15}}>
-                <Text style={{fontSize:16, color:formLeftText}}>请签名</Text>
-              </View>
-            }
-          </TouchableHighlight>
-          <TouchableHighlight style={{marginLeft:10, width:W/2}} underlayColor='transparent'
-            onPress={()=>{
-              if(value.refuseFlag === '02') value.refuseFlag = '01';
-              else value.refuseFlag = '02';
-              this.setState({refresh:true})
-            }}>
-            {
-              this.handleWay && this.handleWay === '04'? null :
-              <View style={{flexDirection:'row', alignItems:'center', padding:5}}>
-                <Image source={seleImage} style={{width:18,height:18}}/>
-                <Text style={{marginLeft:5,fontSize:14}}>当事人拒签</Text>
-              </View>
-            }
-          </TouchableHighlight>
+          {
+            value.refuseFlag === '02'? null :
+            <TouchableHighlight underlayColor={'transparent'}
+              onPress={()=>{
+                this.props.navigation.navigate('SignatureView', {returnValue: (result)=>{
+                  value.signData = result;
+                  value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+                  this.setState({refresh: true})
+                }})
+              }}>
+              {
+                value.signData? <Image source={{uri:'data:image/png;base64,'+value.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
+                :
+                <View style={{width:W-30,height:50,backgroundColor:'#D4D4D4',justifyContent:'center',alignItems:'center',marginLeft:15}}>
+                  <Text style={{fontSize:16, color:formLeftText}}>请签名</Text>
+                </View>
+              }
+            </TouchableHighlight>
+          }
+
+          {
+            this.handleWay && this.handleWay === '04'? null :
+            <TouchableHighlight style={{marginLeft:10, width:W/2}} underlayColor='transparent'
+              onPress={()=>{
+                if(value.refuseFlag === '02') value.refuseFlag = '01';
+                else value.refuseFlag = '02';
+                this.setState({refresh:true})
+              }}>
+              {
+                this.handleWay && this.handleWay === '04'? null :
+                <View style={{flexDirection:'row', alignItems:'center', padding:5}}>
+                  <Image source={seleImage} style={{width:18,height:18}}/>
+                  <Text style={{marginLeft:5,fontSize:14}}>当事人拒签</Text>
+                </View>
+              }
+            </TouchableHighlight>
+          }
         </View>
       </View>
     )
@@ -234,10 +244,12 @@ class ASignatureConfirmationView extends Component {
     return(
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-           {this.dutyList.map((value,index) => this.renderOnePersonInfo(value,index))}
-           <View style={{paddingBottom:50,paddingTop:50,backgroundColor:'white',alignItems:'center'}}>
-             <XButton title={this.state.submitText} onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
-           </View>
+          <View>
+            {this.dutyList.map((value,index) => this.renderOnePersonInfo(value,index))}
+          </View>
+          <View style={{paddingBottom:50,paddingTop:50,backgroundColor:'white',alignItems:'center'}}>
+            <XButton title={this.state.submitText} onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
+          </View>
         </ScrollView>
         <ProgressView show={this.state.loading} hasTitleBar={true}/>
       </View>
