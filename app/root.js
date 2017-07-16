@@ -64,9 +64,9 @@ const PublicNavigator = StackNavigator({
   // AGatheringCardPhotoView: { screen: AGatheringCardPhotoView, navigationOptions: { title: '采集证件信息'} },
   // AConfirmInformationView: { screen: AConfirmInformationView, navigationOptions: { title: '确认信息'} },
   // AAccidentFactAndResponsibilityView: { screen: AAccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实'} },
-  AccidentConditionView: { screen: AccidentConditionView, navigationOptions: { title: '事故形态及情形'} },
-  WaitRemoteResponsibleView: { screen: WaitRemoteResponsibleView, navigationOptions: { title: '等待远程定责'} },
-  ResponsibleResultView: { screen: ResponsibleResultView },
+  // AccidentConditionView: { screen: AccidentConditionView, navigationOptions: { title: '事故形态及情形'} },
+  // WaitRemoteResponsibleView: { screen: WaitRemoteResponsibleView, navigationOptions: { title: '等待远程定责'} },
+  // ResponsibleResultView: { screen: ResponsibleResultView },
   AccidentConfirmResponView: { screen: AccidentConfirmResponView, navigationOptions: { title: '事故定责'} },
   ASignatureConfirmationView: { screen: ASignatureConfirmationView, navigationOptions: { title: '签字确认'} },
   //民警

@@ -30,7 +30,8 @@ class ASignatureConfirmationView extends Component {
     console.log(this.submitPartyData);
   }
   render(){
-    let { index } = this.props.navigation.state.params;
+    // let { index } = this.props.navigation.state.params;
+    index = 0;
     let buttonText = (index == 0) ? '提交生成自行协商协议书' : '提交生成交通事故认定书'
     return(
       <ScrollView style={styles.container}

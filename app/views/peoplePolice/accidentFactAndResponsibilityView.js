@@ -44,7 +44,7 @@ class AccidentFactAndResponsibilityView extends Component {
   //完成
   async gotoNext(){
     let { supplementary, conciliation, localDutyList } = this.state;
-    for (var i = 0; i < localDutyList.length; i++) {
+    for (let i = 0, max = localDutyList.length; i < max; i++) {
       if (!localDutyList[i].dutyType) {
         Toast.showShortCenter(`请选择${localDutyList[i].name}的责任类型`)
         return
