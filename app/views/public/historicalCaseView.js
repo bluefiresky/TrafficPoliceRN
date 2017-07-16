@@ -30,7 +30,7 @@ class HistoricalCaseView extends Component {
       isLoadingMore: false,
       loadingMoreString: '',
       loading: false,
-      data: 'default'
+      data: 'default',
     }
     this.height = 0;
     this.currentPage = 1;
@@ -46,7 +46,7 @@ class HistoricalCaseView extends Component {
 
   _renderItem({item,index}) {
     return (
-      <HistoricalCaseCellView rowData={item} key={index} navigation={this.props.navigation}/>
+      <HistoricalCaseCellView type={this.state.currentType} rowData={item} key={index} navigation={this.props.navigation}/>
     )
   }
 
@@ -128,14 +128,12 @@ class HistoricalCaseView extends Component {
   async _onGetData(){
     this.setState({loading: true})
     let data = null;
-    let { type } = this.props.navigation.state.params;
-    console.log( ' the type -->> ', type);
-    if(type === 3){
+    if(this.state.currentType === 3){
       let res = await this.props.dispatch( create_service(Contract.POST_ACCIDENTS_SEARCH ,{page:1, pageNum:10}));
       data = res.accidents;
-    }else if(type === 2){
+    }else if(this.state.currentType === 2){
       data = await StorageHelper.getUnCompletedCaseList();
-    }else if(type === 1){
+    }else if(this.state.currentType === 1){
       data = await StorageHelper.getUnUploadedCaseList();
     }
     this.setState({loading: false, data});

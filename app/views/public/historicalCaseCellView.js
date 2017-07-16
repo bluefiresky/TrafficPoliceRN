@@ -22,8 +22,18 @@ export default class HistoricalCaseCellView extends Component {
   cellClick(taskNo) {
     this.props.navigation.navigate('CaseDetailsView', {taskNo})
   }
+
   render() {
-    let { accidentAddress, accidentTime, taskNo, cars } = this.props.rowData;
+    let { type } = this.props;
+    return(
+      <View>
+        {type === 3? this._renderHistoryCell(this.props.rowData) : this._renderLocalCell(this.props.rowData)}
+      </View>
+    )
+  }
+
+  _renderHistoryCell(rowData){
+    let { accidentAddress, accidentTime, taskNo, cars } = rowData;
     return (
       <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.cellClick(taskNo)}>
         <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
@@ -36,9 +46,38 @@ export default class HistoricalCaseCellView extends Component {
               <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
               <Text style={{color:formLeftText,fontSize:14}}>{accidentAddress}</Text>
             </View>
-            <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start'}}>
+            <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start',marginBottom:10}}>
               <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
               <Text style={{color:formLeftText,fontSize:14}}>{cars.map(car => car.ownerName + ' (' + car.licenseNo + ')\n')}</Text>
+            </View>
+          </View>
+          <View style={styles.right}>
+            <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
+          </View>
+        </View>
+      </TouchableHighlight>
+    )
+  }
+
+  _renderLocalCell(rowData){
+    let { basic, person } = rowData;
+    return (
+      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.cellClick(taskNo)}>
+        <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
+          <View style={styles.left}>
+            <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
+              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
+              <Text style={{color:formLeftText,fontSize:14}}>{basic.accidentTime}</Text>
+            </View>
+            <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
+              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
+              <Text style={{color:formLeftText,fontSize:14}}>{basic.address}</Text>
+            </View>
+            <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start',marginBottom:10}}>
+              <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
+              <Text style={{color:formLeftText,fontSize:14}}>
+                {person?person.map(p => p.name + ' (' + p.licensePlateNum + ')\n'):'\n'}
+              </Text>
             </View>
           </View>
           <View style={styles.right}>
