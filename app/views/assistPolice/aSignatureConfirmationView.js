@@ -30,6 +30,7 @@ class ASignatureConfirmationView extends Component {
 
     this.dutyList = [];
     this.handleWay = null;
+    this.taskNo = null;
     this.getVerCode = this.getVerCode.bind(this);
     this.getVerCodeVoice = this.getVerCodeVoice.bind(this);
   }
@@ -38,12 +39,21 @@ class ASignatureConfirmationView extends Component {
     this.setState({loading:true})
     InteractionManager.runAfterInteractions(async () => {
       let info = await StorageHelper.getCurrentCaseInfo();
+      this.taskNo = info.taskNo;
       this.handleWay = info.handleWay;
       let submitText = this.handleWay === '04'? '生成自行协商协议书':'生成交通事故认定书'
-      let { localDutyList } = info;
-      for(let i=0; i<localDutyList.length; i++){
-        let l = localDutyList[i];
-        this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码'})
+      if(this.props.navigation.state.params && this.props.navigation.state.params.dutyList){
+        let dl = this.props.navigation.state.params.dutyList;
+        for(let i=0; i<dl.length; i++){
+          let d = dl[i];
+          this.dutyList.push({title:PersonalTitles[i], phone:d.phone, code: '', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:d.licensePlateNum, dutyName:d.dutyName, dutyType:'', codeText:'获取验证码'})
+        }
+      }else{
+        let { localDutyList } = info;
+        for(let i=0; i<localDutyList.length; i++){
+          let l = localDutyList[i];
+          this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码'})
+        }
       }
       this.setState({loading:false, submitText})
     })
@@ -72,19 +82,30 @@ class ASignatureConfirmationView extends Component {
       return;
     }
 
-    for(let i=0; i<this.dutyList.length; i++){
-      let d = this.dutyList[i];
-      delete d.title;
-      delete d.phone;
-      delete d.code;
-      delete d.dutyName;
-      delete d.codeText;
-      this.dutyList[i] = d;
+    if(this.handleWay === '04'){
+      for(let i=0; i<this.dutyList.length; i++){
+        let d = this.dutyList[i];
+        delete d.title;
+        delete d.phone;
+        delete d.code;
+        delete d.dutyName;
+        delete d.codeText;
+        this.dutyList[i] = d;
+      }
+
+      let success = await StorageHelper.saveStep7(this.dutyList);
+      this.setState({loading: false})
+      if(success) this.props.navigation.navigate('UploadProgressView', {content:''});
+    }else if(this.handleWay === '03' || this.handleWay === '05'){
+      let signatureList = [];
+      for(let i = 0; i<this.dutyList.length; i++){
+        let d = this.dutyList[i];
+        signatureList.push({licensePlateNum:d.licensePlateNum, signContent:d.signData, refuseFlag:d.refuseFlag})
+      }
+      this.res = this.props.dispatch( create_service(Contract.POST_GENERATE_DUTYCONFIRMATION, {taskNo: this.taskNo, signatureList}))
+      if(res) Toast.showShortCenter('接下来该干什么？？')
     }
 
-    let success = await StorageHelper.saveStep7(this.dutyList);
-    this.setState({loading: false})
-    if(success) this.props.navigation.navigate('UploadProgressView', {content:''});
   }
   //获取验证码
   async getVerCode(phone,index){

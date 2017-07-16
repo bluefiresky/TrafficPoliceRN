@@ -33,7 +33,8 @@ class UploadProgressView extends Component {
       fail: false,
       tipParams: {},
       showTip: false,
-      handleWay:null
+      handleWay:null,
+      taskNo:null
     }
   }
 
@@ -66,8 +67,8 @@ class UploadProgressView extends Component {
       let fileRes = await Utility.convertObjtoFile(info, info.id);
       if(fileRes){
         let base64Str = await Utility.zipFileByName(info.id);
-        this.res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:1, fileName:info.id, file:'zip@'+base64Str}));
-        if(this.res) this.setState({success: true});
+        let res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:1, fileName:info.id, file:'zip@'+base64Str}));
+        if(this.res) this.setState({success: true, handleWay:info.handleWay, taskNo:res.taskNo});
         else this.setState({fail: true, handleWay:info.handleWay})
       }else{
         this.setState({fail:true, handleWay:info.handleWay})
@@ -75,14 +76,19 @@ class UploadProgressView extends Component {
     }
   }
 
-  _done(title, content, success){
+  async _done(title, content, success){
     let self = this;
     let left = null;
     let right = null;
     let done;
     if(success){
-      let content = (this.state.handleWay != '04')?'交通事故认定书稍后将以短信形式发送至当事人手机':'交通事故协议书稍后将以短信形式发送至当事人手机';
-      this.props.navigation.dispatch({ type: 'replace', routeName: 'UploadSuccessView', key: 'UploadSuccessView', params: {content}});
+      let handleWay = this.state.handleWay;
+      if(handleWay === '03' || handleWay === '05'){
+        let success = await StorageHelper.saveStep6_7_1(this.state.taskNo)
+        if(success) this.props.navigation.dispatch({ type: 'replace', routeName: 'WaitRemoteResponsibleView', key: 'WaitRemoteResponsibleView', params: {}});
+      }else{
+        this.props.navigation.dispatch({ type: 'replace', routeName: 'UploadSuccessView', key: 'UploadSuccessView', params: {content:'交通事故认定书稍后将以短信形式发送至当事人手机'}});
+      }
       return;
     }else{
       left = {label: '重试', event:() => {

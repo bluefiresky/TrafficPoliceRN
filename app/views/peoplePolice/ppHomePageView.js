@@ -98,7 +98,7 @@ class PpHomePageView extends Component {
         }
         showsVerticalScrollIndicator={false}
         >
-        <Image source={require('./image/home_bg.png')} style={{width:W, height:HomeBgH, resizeMode:'contain', overflow:'visible'}}>
+        <Image source={require('./image/home_bg.png')} style={{width:W, height:HomeBgH, overflow:'visible'}}>
           <Text style={{color:'#ffffff',fontSize:18,alignSelf:'center',marginTop:(Platform.OS === 'ios') ? 30 : 15,backgroundColor:'transparent'}}>首页</Text>
           <TouchableHighlight style={{top:Platform.OS === 'ios'? 20 : 5,right:5,position:'absolute', padding:10}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
             <Image source={require('./image/setting.png')} style={{width:18,height:18}}/>

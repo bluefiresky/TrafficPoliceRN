@@ -14,7 +14,8 @@ import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import { StorageHelper, Utility } from '../../utility/index.js';
 
 const AppType = Platform.OS === 'ios'?2:1;
-const HomeBgH = (W * 749)/1125;
+// const HomeBgH = (W * 749)/1125;
+const HomeBgH = (W * 749)/1200;
 const InfoH = Platform.OS === 'ios'?(HomeBgH-30-20):(HomeBgH-15-20)
 
 class ApHomePageView extends Component {
@@ -93,7 +94,7 @@ class ApHomePageView extends Component {
           />
         }
         showsVerticalScrollIndicator={false}>
-        <Image source={require('./image/home_bg.png')} style={{width:W, height:HomeBgH,overflow:'visible'}} resizeMode="contain">
+        <Image source={require('./image/home_bg.png')} style={{width:W, height:HomeBgH,overflow:'visible'}}>
           <Text style={{color:'#ffffff',fontSize:18,alignSelf:'center',marginTop:(Platform.OS === 'ios') ? 30 : 15,backgroundColor:'transparent'}}>首页</Text>
           <TouchableHighlight style={{top:Platform.OS === 'ios'? 30 : 10,right:15,position:'absolute'}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
             <Image source={require('./image/setting.png')} style={{width:20,height:20}}/>
@@ -105,7 +106,7 @@ class ApHomePageView extends Component {
              <View style={{flexDirection:'row',marginTop:20,marginLeft:20,marginBottom:20,justifyContent:'space-between'}}>
                <View style={{backgroundColor:'#ffffff'}}>
                {this.renderRowItem('手机号：', global.personal.mobile, 0)}
-               {this.renderRowItem('警员编号：', global.personal.policeNumber, 10)}
+               {/*this.renderRowItem('警员编号：', global.personal.policeNumber, 10)*/}
                {this.renderRowItem('所属城市：', global.personal.cityName, 10)}
                {this.renderRowItem('所属大队：', global.personal.depName, 10)}
                </View>
@@ -150,7 +151,7 @@ class ApHomePageView extends Component {
          </View>
        </TouchableHighlight>:null}
        <TouchableHighlight onPress={()=> this.handleCase()} underlayColor={'transparent'}>
-         <Image source={require('./image/handle_case.png')} style={{marginTop:20,alignSelf:'center',width:130,height:130}}>
+         <Image source={require('./image/handle_case.png')} style={{marginTop:20,alignSelf:'center',width:120,height:120}}>
           <Text style={{fontSize:14,color:'#ffffff',marginTop:72,backgroundColor:'transparent',alignSelf:'center'}}>
             处理案件
           </Text>

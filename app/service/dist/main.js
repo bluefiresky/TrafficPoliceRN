@@ -19,3 +19,13 @@ export const post_accident_details = ({taskNo, version}) => {
 export const post_upload_accident_file = ({appSource, fileName, file, version}) => {
   return http_post( 'upload.accident.file', {appSource, fileName}, {file}, version )
 }
+
+/** 获取远程定责结果 */
+export const get_remote_fixduty_result = ({taskNo, version}) => {
+  return http_get( 'remote.fixduty.result', {taskNo}, {}, version )
+}
+
+/** 协警生成责任认定书 */
+export const post_generate_dutyconfirmation = ({taskNo, signatureList, version}) => {
+  return http_post( 'generate.dutyconfirmation', {taskNo}, {signatureList}, version )
+}

@@ -5,91 +5,137 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TextInput,TouchableHighlight,InteractionManager} from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
+import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
+
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
-import { XButton } from '../../components/index.js';  /** 自定义组件 */
-import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
-import Picker from 'react-native-picker';
+import { ProgressView, XButton } from '../../components/index.js';  /** 自定义组件 */
 import { StorageHelper } from '../../utility/index.js';
 
 class AAccidentFactAndResponsibilityView extends Component {
 
   constructor(props){
     super(props);
-    this.applyText = '';
-    this.submitData = {supplyText:'',resultText:''};
     this.state = {
-      refresh:false
+      refresh:false,
+      supplementaryE:null,
+      supplementary:null,
+      conciliation:'经各方当事人共同申请调解，自愿达成协议如下：\n由当事人自行协商解决。此事故一次结清，签字生效。',
+      handleWay:'03',
     }
   }
 
   componentDidMount(){
-    InteractionManager.runAfterInteractions(()=>{
-
+    this.setState({loading:true})
+    InteractionManager.runAfterInteractions(async ()=>{
+      let info = await StorageHelper.getCurrentCaseInfo();
+      let { basic, person, supplementary, conciliation, handleWay } = info;
+      this.setState({
+        loading:false,
+        supplementaryE: this._convertInfoToAccidentContent(basic, person),
+        handleWay
+      });
     })
   }
   //完成
   gotoNext(){
-    let { index } = this.props.navigation.state.params
-    this.props.navigation.navigate('WaitRemoteResponsibleView', {index:index});
+    this.setState({loading:true})
+    if(this.loading) return;
+
+    InteractionManager.runAfterInteractions( async () => {
+      let { supplementary, conciliation, } = this.state;
+
+      let success = await StorageHelper.saveStep6({supplementary, conciliation, localDutyList:[]})
+      this.setState({loading:false})
+      // if(success) this.props.navigation.navigate('WaitRemoteResponsibleView');
+      if(success) this.props.navigation.navigate('UploadProgressView');
+    })
   }
   //输入框文字变化
   onChangeText(text,type){
     if (type == 'Supply') {
-      this.submitData.supplyText = text;
+      this.setState({supplementary: text});
     } else if (type == 'Result') {
-      this.submitData.resultText = text;
+      this.setState({conciliation: text})
     }
   }
-  renderHeader(title){
-    return(
-      <View style={{backgroundColor:'#ffffff'}}>
-        <View style={{flexDirection:'row',paddingTop:10,paddingBottom:10}}>
-          <View style={{marginLeft:15,width:2,height:15,backgroundColor:'blue'}}></View>
-          <Text style={{fontSize:15,color:formLeftText,marginLeft:10,width:W-30,alignSelf:'center'}}>{title}</Text>
-        </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey}}></View>
-      </View>
-    )
-  }
+
   render(){
-    // let { index } = this.props.navigation.state.params
-    let index = 2;
+    let { supplementary, conciliation, supplementaryE, handleWay } = this.state;
+
     return(
-      <ScrollView style={styles.container}
-                   showsVerticalScrollIndicator={false}>
-        <View style={{flexDirection:'row',paddingTop:10,backgroundColor:'#ffffff',marginTop:10}}>
-          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
-          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>事故事实及责任</Text>
-        </View>
-        <View style={{backgroundColor:'#ffffff'}}>
-          <Text style={{marginLeft:15,marginRight:15,marginTop:15,color:formLeftText,fontSize:13,lineHeight:20}}>
-            2017-09-08 12:35:27，测试驾驶车牌号为京A12537行驶至北京朝阳区百子湾南二路78号院88号时，的卡萨和大咖电话开始的骄傲和圣诞节啊，段时间打开；量较大开始点击啊。当事人测试负全责。
-          </Text>
-          <AutoGrowingTextInput style={{marginLeft:15,width:W-30,fontSize:13,padding:5,borderWidth:1,borderColor:'#D4D4D4',marginTop:15,backgroundColor:'#FBFBFE',marginBottom:10}}
-                                    placeholder={'补充事故事实（可不填）'}
-                                    placeholderTextColor={'#C8C8C8'}
-                                    maxLength={200}
-                                    onChangeText={(text) => this.onChangeText(text,'Supply')}
-                                    />
-        </View>
-        {(index !== 2)?<View style={{marginTop:10,backgroundColor:'#ffffff'}}>
-          <View style={{flexDirection:'row',marginTop:15}}>
+      <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{width:W, height:15, backgroundColor:backgroundGrey}} />
+          <View style={{flexDirection:'row',paddingTop:10,backgroundColor:'#ffffff',marginTop:10}}>
             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
-            <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>损害赔偿及调解结果（可自行修改）</Text>
+            <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>事故事实及责任</Text>
           </View>
-          <TextInput style={{height:100, fontSize: 14, marginLeft:15,marginTop:10, width: W - 30,borderWidth:1,borderColor:'#D4D4D4',backgroundColor:'#FBFBFE',padding:5,marginBottom:10}}
-                     onChangeText={(text) => { this.onChangeText(text,'Result') } }
-                     multiline = {true}
-                     maxLength={200}
-                     defaultValue={'经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。'}/>
-        </View>:null}
-        <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-          <XButton title='提交远程定责' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
-        </View>
-      </ScrollView>
+          <View style={{backgroundColor:'#ffffff'}}>
+            <Text style={{marginLeft:15,marginRight:15,marginTop:15,color:formRightText,fontSize:13,lineHeight:20}}>{supplementaryE}
+            </Text>
+            <AutoGrowingTextInput
+              style={{height:100,marginLeft:15,width:W-30,fontSize:13,padding:5,borderWidth:1,borderColor:'#D4D4D4',marginTop:15,backgroundColor:'#FBFBFE'}}
+              value={supplementary}
+              underlineColorAndroid={'transparent'}
+              placeholder={'补充事故事实（可不填）'}
+              placeholderTextColor={'#C8C8C8'}
+              maxLength={200}
+              onChangeText={(text) => this.onChangeText(text,'Supply')}
+            />
+            <View style={{height:10}} />
+          </View>
+
+          {
+            handleWay === '03'? null :
+            <View style={{flex:1,backgroundColor:'#ffffff'}}>
+              <View style={{width:W, height:15, backgroundColor:backgroundGrey}} />
+              <View style={{flexDirection:'row',backgroundColor:'#ffffff',marginTop:15}}>
+                <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
+                <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>损害赔偿及调解结果（可自行修改）</Text>
+              </View>
+              <TextInput
+                style={{height:100, fontSize: 14, marginLeft:15,marginTop:10, width: W - 30,borderWidth:1,borderColor:'#D4D4D4',backgroundColor:'#FBFBFE',padding:5}}
+                value={conciliation}
+                underlineColorAndroid={'transparent'}
+                onChangeText={(text) => { this.onChangeText(text,'Result') } }
+                multiline = {true}
+                maxLength={200}
+                />
+            </View>
+          }
+
+          <View style={{alignSelf:'center',marginBottom:50,marginTop:50}}>
+            <XButton title='提交远程定责' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
+          </View>
+        </ScrollView>
+
+        <ProgressView show={this.state.loading} hasTitleBar={true} />
+      </View>
     );
+  }
+  /** Private */
+  _convertInfoToAccidentContent(basic, person){
+    if(!basic) return '';
+
+    let num = person.length;
+    let content = '';
+    if(num === 1){
+      let p = person[0];
+      content = `    ${basic.accidentTime}, ${p.name}(驾驶证号:${p.driverNum})驾驶车牌号为${p.licensePlateNum}的${p.carType}, 在${basic.address}发生交通事故。`
+    }else if(num === 2){
+      let p1 = person[0];
+      let p2 = person[1];
+      content = `    ${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}，与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}发生交通事故。`
+    }else if(num === 3){
+      let p1 = person[0];
+      let p2 = person[1];
+      let p3 = person[2];
+      content = `    ${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}，及${p3.name}(驾驶证号:${p3.driverNum})驾驶车牌号为${p3.licensePlateNum}的${p3.carType}发生交通事故。`
+    }
+
+    return content;
   }
 
 }

@@ -36,8 +36,8 @@ class AConfirmInformationView extends Component {
   }
 
   componentDidMount(){
+    this.setState({loading:true})
     InteractionManager.runAfterInteractions(async ()=>{
-      this.setState({loading:true})
       this.currentCaseInfo = await StorageHelper.getCurrentCaseInfo();
       this.setState({loading:false})
     })
@@ -98,9 +98,13 @@ class AConfirmInformationView extends Component {
         }},
         right:{label: '确认无误', event: async () => {
           self.setState({loading:true})
-          let success = await StorageHelper.saveStep5(this.currentCaseInfo)
+          let success = await StorageHelper.saveStep5(self.currentCaseInfo)
           self.setState({showTip: false, loading:false});
-          if(success) self.props.navigation.navigate('AAccidentFactAndResponsibilityView');
+          if(success) {
+            let handleWay = self.currentCaseInfo.handleWay;
+            if(handleWay != '04') self.props.navigation.navigate('AAccidentFactAndResponsibilityView');
+            else self.props.navigation.navigate('AccidentConditionView');
+          }
         }}
     }});
   }

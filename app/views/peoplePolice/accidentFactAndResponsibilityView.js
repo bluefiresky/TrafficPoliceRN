@@ -6,7 +6,6 @@ import { View, Text, StyleSheet, ScrollView, Image, TextInput,TouchableHighlight
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
-import Picker from 'react-native-picker';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
@@ -22,7 +21,7 @@ class AccidentFactAndResponsibilityView extends Component {
     this.state = {
       refresh:false,
       supplementary:null,
-      conciliation:'经各方当事人共同申请调解，自愿达成协议如下：由当事人自行协商解决。此事故一次结清，签字生效。',
+      conciliation:'经各方当事人共同申请调解，自愿达成协议如下：\n由当事人自行协商解决。此事故一次结清，签字生效。',
       localDutyList:[]
     }
     this.info = {};
@@ -120,7 +119,8 @@ class AccidentFactAndResponsibilityView extends Component {
               multiline = {true}
               maxLength={200}
               />
-             <View style={{marginLeft:15,marginBottom:50,marginTop:50}}>
+              
+             <View style={{alignSelf:'center',marginBottom:50,marginTop:50}}>
                <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
              </View>
           </View>

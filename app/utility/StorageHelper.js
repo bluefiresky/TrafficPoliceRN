@@ -195,7 +195,7 @@ export class StorageHelper{
 
   }
 
-  // 协警描述事故形态及情形，包括为当时人增加车辆受损部位
+  // handleWay == 04, 协警多车无争议 - 协警描述事故形态及情形，包括为当时人增加车辆受损部位
   static async saveStep5_6_1(taskModal, accidentDes, person){
     try {
       let key = global.personal.mobile + 'uncompleted';
@@ -215,7 +215,7 @@ export class StorageHelper{
 
   }
 
-  // 事故事实
+  // 事故事实 - handleWay == 03||05||01||02, 交警 && 协警-单车-多车有争议<无localDutyList>，
   static async saveStep6({supplementary, conciliation, localDutyList}){
     try {
       let key = global.personal.mobile + 'uncompleted';
@@ -229,6 +229,25 @@ export class StorageHelper{
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper catch error on saveStep6 and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
+    }
+
+  }
+
+  // 保存远程定责返回的taskNum
+  static async saveStep6_7_1(taskNo){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      this.loadRes = await global.storage.load({key, id});
+      this.loadRes.step = '6_7_1';
+      let data = {...this.loadRes, taskNo}
+      console.log('%c StorageHelper execute saveStep6_7_1 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep6_7_1 and the message -->> ', 'color:red',e.message);
       Toast.showShortCenter('信息存储失败，请检查内存容量')
     }
 
