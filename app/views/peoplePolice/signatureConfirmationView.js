@@ -7,11 +7,9 @@ import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
-import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
+import { ProgressView, XButton, Input } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
-import { create_service } from '../../redux/index.js'; /** 调用api的Action */
-import { getStore } from '../../redux/index.js';       /** Redux的store */
-import { XButton, Input } from '../../components/index.js';  /** 自定义组件 */
+import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { StorageHelper, Utility } from '../../utility/index.js';
 
 const PersonalTitles = ['甲方', '乙方', '丙方'];
@@ -35,6 +33,7 @@ class SignatureConfirmationView extends Component {
   }
 
   componentDidMount(){
+    this.setState({loading:true})
     InteractionManager.runAfterInteractions(async () => {
       let info = await StorageHelper.getCurrentCaseInfo();
       let { localDutyList } = info;
@@ -42,7 +41,7 @@ class SignatureConfirmationView extends Component {
         let l = localDutyList[i];
         this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码'})
       }
-      this.forceUpdate();
+      this.setState({loading:false})
     })
   }
 

@@ -67,7 +67,7 @@ const PublicNavigator = StackNavigator({
   // AccidentConditionView: { screen: AccidentConditionView, navigationOptions: { title: '事故形态及情形'} },
   // WaitRemoteResponsibleView: { screen: WaitRemoteResponsibleView, navigationOptions: { title: '等待远程定责'} },
   // ResponsibleResultView: { screen: ResponsibleResultView },
-  AccidentConfirmResponView: { screen: AccidentConfirmResponView, navigationOptions: { title: '事故定责'} },
+  // AccidentConfirmResponView: { screen: AccidentConfirmResponView, navigationOptions: { title: '事故定责'} },
   ASignatureConfirmationView: { screen: ASignatureConfirmationView, navigationOptions: { title: '签字确认'} },
   //民警
   PpHomePageView: { screen: PpHomePageView, navigationOptions: { title: '首页'} },
