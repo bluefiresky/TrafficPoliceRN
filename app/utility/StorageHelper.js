@@ -16,12 +16,12 @@ export class StorageHelper{
       weather: '1'
     }
   */
-  static async reate({basic}){
+  static async create({basic}){
     try {
       let key = global.personal.mobile + 'uncompleted';
       // let id = String(new Date().getTime());
       let id = '1500113507781';
-      let data = {id, basic};
+      let data = {id, basic, step:'0'};
       console.log('%c StorageHelper execute create -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       // global.currentCaseId = id;
@@ -53,6 +53,7 @@ export class StorageHelper{
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
+      this.loadRes.step = '1';
       let data = {...this.loadRes, photo}
       console.log('%c StorageHelper execute saveStep1 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
@@ -87,6 +88,7 @@ export class StorageHelper{
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
+      this.loadRes.step = '2_3';
       let data = {...this.loadRes, handleWay, person}
       console.log('%c StorageHelper execute saveStep2_3 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
@@ -104,6 +106,7 @@ export class StorageHelper{
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
+      this.loadRes.step = '2';
       let data = {...this.loadRes, handleWay}
       console.log('%c StorageHelper execute saveStep2 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
@@ -122,6 +125,7 @@ export class StorageHelper{
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
+      this.loadRes.step = '3';
       let data = {...this.loadRes, person}
       console.log('%c StorageHelper execute saveStep3 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
@@ -152,6 +156,7 @@ export class StorageHelper{
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
+      this.loadRes.step = '4';
       let data = {...this.loadRes, credentials}
       console.log('%c StorageHelper execute saveStep4 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
@@ -178,7 +183,7 @@ export class StorageHelper{
     try {
       let key = global.personal.mobile + 'uncompleted';
       let itemId = global.currentCaseId;
-      let data = {id, basic, photo, handleWay, person, credentials}
+      let data = {id, basic, photo, handleWay, person, credentials, step:'5'}
       console.log('%c StorageHelper execute saveStep5 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id:itemId, data })
@@ -190,12 +195,33 @@ export class StorageHelper{
 
   }
 
+  // 协警描述事故形态及情形，包括为当时人增加车辆受损部位
+  static async saveStep5_6_1(taskModal, accidentDes, person){
+    try {
+      let key = global.personal.mobile + 'uncompleted';
+      let id = global.currentCaseId;
+      this.loadRes = await global.storage.load({key, id});
+      this.loadRes.person = person;
+      this.loadRes.step = '5_6_1';
+      let data = {...this.loadRes, taskModal, accidentDes}
+      console.log('%c StorageHelper execute saveStep5_6_1 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
+
+      await global.storage.save({ key, id, data })
+      return 'success'
+    } catch (e) {
+      console.log('%c StorageHelper catch error on saveStep5_6_1 and the message -->> ', 'color:red',e.message);
+      Toast.showShortCenter('信息存储失败，请检查内存容量')
+    }
+
+  }
+
   // 事故事实
   static async saveStep6({supplementary, conciliation, localDutyList}){
     try {
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
+      this.loadRes.step = '6';
       let data = {...this.loadRes, supplementary, conciliation, localDutyList}
       console.log('%c StorageHelper execute saveStep6 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
@@ -225,6 +251,7 @@ export class StorageHelper{
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
+      this.loadRes.step = '7';
       let data = {...this.loadRes, duty}
       console.log('%c StorageHelper execute saveStep7 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 

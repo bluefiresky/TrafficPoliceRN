@@ -32,7 +32,8 @@ class ConfirmInformationView extends Component {
     }
     this.currentCaseInfo = {};
     this.partyVerData = [{name:'甲方当事人',ver:''},{name:'乙方当事人',ver:''},{name:'丙方当事人',ver:''}];
-
+    this.carTypeData = getStore().getState().dictionary.carTypeList;
+    this.insuranceData = getStore().getState().dictionary.insureList;
   }
 
   componentDidMount(){
@@ -126,7 +127,7 @@ class ConfirmInformationView extends Component {
           </View>
           <View style={{width:W, height:1, backgroundColor:backgroundGrey}} />
           <CarTypePicker
-            data={getStore().getState().dictionary.carTypeList}
+            data={this.carTypeData}
             label={'交通方式'}
             value={value.carType}
             onChange={(res) => {
@@ -134,7 +135,7 @@ class ConfirmInformationView extends Component {
               this.onChangeText(res,ind,'CarType',value)
             }}/>
           <InsurancePicker
-            data={getStore().getState().dictionary.insureList}
+            data={this.insuranceData}
             label={'保险公司'}
             value={value.insureCompanyName}
             onChange={(res) => {

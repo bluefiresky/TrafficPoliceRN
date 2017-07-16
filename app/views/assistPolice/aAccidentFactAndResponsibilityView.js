@@ -11,6 +11,7 @@ import { create_service, getStore } from '../../redux/index.js'; /** 调用api�
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
 import Picker from 'react-native-picker';
+import { StorageHelper } from '../../utility/index.js';
 
 class AAccidentFactAndResponsibilityView extends Component {
 

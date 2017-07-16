@@ -85,16 +85,16 @@ export async function zipFileByName(name){
 
 // 根据本地数据生成上传数据格式
 function convertObjToUploadJson(obj){
-  let { id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty } = obj;
+  let { id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty, taskModal, accidentDes } = obj;
   let uploadData = {
     processType: handleWay,
     longitude: basic.longitude,
     latitude: basic.latitude,
     address: basic.address,
     accidentTime: basic.accidentTime,
-    accidentDes: '',    // 事故情形
+    accidentDes: accidentDes,    // 事故情形
     accidentOther: '',  // 情形描述
-    taskModal: '',      // 事故形态
+    taskModal: taskModal,      // 事故形态
     weather: basic.weather,
     supplementary: supplementary,
     conciliation: conciliation,

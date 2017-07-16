@@ -2,161 +2,171 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,Modal } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,Modal,InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
-import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
+import { ProgressView, SituationPicker, FormPicker } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
-import Picker from 'react-native-picker';
-import DatePicker from 'react-native-datepicker';
+import { StorageHelper } from '../../utility/index.js';
+
+
+const TitleList = ['甲方当事人：', '乙方当事人：', '丙方当事人：']
+const DamagedW = (W - 50)/3
 
 class AccidentConditionView extends Component {
 
   constructor(props){
     super(props);
-    this.accidentFormData = ['追尾碰撞','正面碰撞','侧面碰撞（同向）','侧面碰撞（对向）','侧面碰撞（直角）','侧面碰撞（角度不确定）','同向刮擦','对象刮擦','其它'];
-    this.carDamageData = [{name:'车头',isSel:false},{name:'左前角',isSel:false},{name:'右前脚',isSel:false},{name:'车尾',isSel:false},{name:'左后角',isSel:false},{name:'右后脚',isSel:false},{name:'车身左侧',isSel:false},{name:'车身右侧',isSel:false}];
-    this.accidentCondition = ['停车','倒车','逆行','溜车','开关车门','违法交通信号灯','变更车道与其他车辆刮擦','未保持安全车距与前车追尾','未按规定让行','其他'];
-    this.partyData = [{name:'甲方当事人：张三',carNum:'京A12345','carDamageData':[]},
-                      {name:'已方当事人：李四',carNum:'京B12345','carDamageData':[]},
-                      {name:'丙方当事人：王五',carNum:'京C12345','carDamageData':[]}];
-    this.submitData = {accidentFormData:'',accidentCondition:'',partyData:this.partyData};
     this.state = {
       refresh:false,
       showModalView: false,
-      currentDamageIndex: -1
+      currentDamageIndex: -1,
+      laoding:false,
+      accidentDes:null,  // 事故情形
+      taskModal:null,    // 事故形态
     }
+    this.accidentFormData = getStore().getState().dictionary.formList;       // 事故情形
+    this.accidentCondition = getStore().getState().dictionary.situationList;  // 事故形态
+
+    this.carDamageCodeData = []; // 受损部位code
+    this.carDamageNameData = []; // 受损部位name
+    this.personDamagedArray = []; // 当前当事人受损部分
+    this.person = [];
+    this.selectDamagedArray = [];
+    this.carDamageData = [];
   }
-  gotoNext() {
-    if (!this.submitData.accidentFormData) {
-       Toast.showShortCenter(`请选择事故形态`)
-       return
-    }
-    if (!this.submitData.accidentCondition) {
-      Toast.showShortCenter(`请选择事故情形`)
-      return
-    }
-    for (var i = 0; i < this.submitData.partyData.length; i++) {
-      if (this.submitData.partyData[i].carDamageData.length == 0) {
-        Toast.showShortCenter(`请选择${this.submitData.partyData[i].name}车损部位`)
-        return
-      }
-    }
-    let { index } = this.props.navigation.state.params
-    this.props.navigation.navigate('AccidentConfirmResponView',{index:index});
-  }
-  //车辆类型
-  showTypePicker(typeData,stateData) {
-      Picker.init({
-      pickerData: typeData,
-      pickerConfirmBtnText:'确定',
-      pickerCancelBtnText:'取消',
-      pickerTitleText:'请选择',
-      onPickerConfirm: data => {
-        if (stateData == 'accidentFormData') {
-          this.submitData.accidentFormData = data[0]
-        } else if (stateData == 'accidentCondition') {
-          this.submitData.accidentCondition = data[0]
-        }
-        this.setState({
-          refresh: true
-        })
-      }
-     });
-     Picker.show();
-  }
-  showDamageDataModal(index){
-    if (this.state.currentDamageIndex != index) {
-      for (var i = 0; i < this.carDamageData.length; i++) {
-        this.carDamageData[i].isSel = false
-      }
-    }
-    this.setState({
-      showModalView: true,
-      currentDamageIndex: index
+
+  componentDidMount(){
+    this.setState({loading:true})
+    InteractionManager.runAfterInteractions(async () => {
+      let info = await StorageHelper.getCurrentCaseInfo();
+      this.person = info.person;
+      this.person.forEach((p) => {
+        let carDamagedPardArray = p.carDamagedPart?p.carDamagedPart.split(','):[];
+        this.personDamagedArray.push(carDamagedPardArray)
+      })
+      console.log(' this.person -->> ', this.person);
+      this.carDamageData = getStore().getState().dictionary.damagedList;
+      this.carDamageData.forEach((d) => {
+        this.carDamageCodeData.push(d.code);
+        this.carDamageNameData.push(d.name);
+      })
+      this.setState({
+        loading:false,
+        taskModal:this._convertCodeToEntry(info.taskModal, this.accidentCondition),
+        accidentDes:this._convertCodeToEntry(info.accidentDes, this.accidentFormData)
+      })
     })
   }
-  renderDamageSeleteView(value,index){
-    let selBorderColor = value.isSel ? mainBule : backgroundGrey
-    let selFontColor = value.isSel ? mainBule : formRightText
-    let selCount = 0
+
+  gotoNext() {
+    this.setState({loading: true})
+    InteractionManager.runAfterInteractions(async() => {
+      if(this.state.loading) return;
+
+      let error = null;
+      if (!this.state.taskModal) error = `请选择事故形态`;
+      if (!this.state.accidentDes) error = `请选择事故情形`;
+      if(error){
+        this.setState({loading:false});
+        Toast.showShortCenter(error);
+        return;
+      }
+
+      for (let i = 0, max = this.personDamagedArray.length; i < max; i++) {
+        let pd = this.personDamagedArray[i];
+        let p = this.person[i];
+        if(pd.length == 0) {
+          Toast.showShortCenter(`请选择${p.name}的车损部位`)
+          this.setState({loading:false})
+          return
+        }
+      }
+
+      for(let i = 0, max = this.personDamagedArray.length; i < max; i++) {
+        let pd = this.personDamagedArray[i];
+        let p = this.person[i];
+        p.carDamagedPart = pd.toString();
+      }
+
+      let success = await StorageHelper.saveStep5_6_1(this.state.taskModal.code, this.state.accidentDes.code, this.person);
+      this.setState({loading:false})
+      if(success) this.props.navigation.navigate('AccidentConfirmResponView');
+    })
+  }
+
+  showDamageDataModal(index){
+    this.setState({ showModalView: true, currentDamageIndex: index })
+  }
+  renderDamageSeleteView(code,index){
+    let currentDamagedArray = this.personDamagedArray[this.state.currentDamageIndex];
+    if(!currentDamagedArray) return;
+
+    let check = currentDamagedArray.indexOf(code) != -1;
+    let selBorderColor =  check? mainBule : backgroundGrey
+    let selFontColor = check ? mainBule : formRightText
+
     return (
-      <TouchableHighlight style={{borderColor:selBorderColor, borderWidth:1,borderRadius:5,paddingTop:5,paddingBottom:5,paddingLeft:10,paddingRight:5,marginTop:15,marginLeft:10}} key={index} onPress={() => {
-        for (var i = 0; i < this.carDamageData.length; i++) {
-          if (this.carDamageData[i].isSel) {
-            selCount++
-          }
-        }
-        if (selCount < 3) {
-          value.isSel = !value.isSel
-          this.setState({
-            refresh:true
-          })
-        }
-      }} underlayColor='transparent'>
-          <Text style={{fontSize:16,color:selFontColor}}>{value.name}</Text>
+      <TouchableHighlight style={{borderColor:selBorderColor, borderWidth:1,borderRadius:5,paddingTop:5,paddingBottom:5,paddingLeft:10,paddingRight:5,marginTop:15,marginLeft:10}} key={index}
+        onPress={() => {
+          let i = currentDamagedArray.indexOf(code);
+          if(i === -1) currentDamagedArray.push(code);
+          else currentDamagedArray.splice(i,1);
+          this.setState({refresh:true})}}
+        underlayColor='transparent'>
+          <Text style={{fontSize:16,color:selFontColor}}>{this.carDamageNameData[index]}</Text>
       </TouchableHighlight>
     )
   }
   renderDamageView(value,index){
     return (
-      <View style={{borderColor:mainBule, borderWidth:1,borderRadius:10,paddingTop:5,paddingBottom:5,paddingLeft:15,paddingRight:15,marginTop:15,marginLeft:10}} key={index}>
-          <Text style={{fontSize:14,color:mainBule}}>{value}</Text>
+      <View style={{borderColor:mainBule, borderWidth:1,borderRadius:10,width:DamagedW,paddingVertical:5,marginHorizontal:5,alignItems:'center',marginBottom:10}} key={index}>
+        <Text style={{fontSize:14,color:mainBule}}>{this._convertDamagedCodeToName(value)}</Text>
       </View>
     )
   }
-  renderOneParty(value,index){
+  renderOneParty(p,index){
+    let currentDamagedArray = this.personDamagedArray[index];
     return (
-      <View style={{marginTop:15, marginLeft:15}} key={index}>
-        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-          <Text style={{fontSize:13,alignSelf:'center'}}>{`当事人${value.name}（${value.carNum}）`}</Text>
-          <TouchableHighlight style={{marginRight:15}} onPress={() => this.showDamageDataModal(index)} underlayColor='transparent'>
-            <Text style={{fontSize:13,color:mainBule,alignSelf:'center'}}>
+      <View key={index}>
+        <View style={{height:40, flexDirection:'row',justifyContent:'space-between'}}>
+          <Text style={{flex:1, paddingLeft:15, fontSize:13,alignSelf:'center'}}>{`${TitleList[index]+p.name}（${p.licensePlateNum}）`}</Text>
+          <TouchableHighlight style={{paddingRight:15,justifyContent:'center'}} onPress={() => this.showDamageDataModal(index,p)} underlayColor='transparent'>
+            <Text style={{fontSize:13,color:mainBule}}>
               选择受损部位
             </Text>
           </TouchableHighlight>
         </View>
-        {value.carDamageData.length > 0 ? <View style={{flexDirection:'row',flexWrap:'wrap',marginRight:15,}}>
-          {value.carDamageData.map((value,index) => this.renderDamageView(value,index))}
-        </View>:null}
-        <View style={{height:1,backgroundColor:backgroundGrey,marginTop:10,marginRight:15}}></View>
+        {
+          (currentDamagedArray.length > 0)?
+             <View style={{flexDirection:'row', flexWrap:'wrap', paddingHorizontal:10}}>
+              {currentDamagedArray.map((value,index) => this.renderDamageView(value,index))}
+             </View>
+            :
+            null
+          }
+        <View style={{height:1,backgroundColor:backgroundGrey,marginRight:15}}></View>
       </View>
     )
   }
 
-  //判断数组是否包含某一选项
-  isArrContainer(value){
-    Array.prototype.contains = function(item){
-      return RegExp(item).test(this);
-    };
-    return this.submitData.partyData[this.state.currentDamageIndex].carDamageData.contains(value);
-  }
   renderModalView(){
     return (
       <View>
-        <Modal animationType="none" transparent={true} visible={this.state.showModalView} onRequestClose={() => {}}>
+        <Modal animationType="fade" transparent={true} visible={this.state.showModalView} onRequestClose={() => {}}>
           <TouchableHighlight onPress={() => this.setState({showModalView:false})} style={styles.modalContainer} underlayColor='transparent'>
             <View style={{backgroundColor:'#ffffff',alignSelf:'center',marginLeft:60,marginRight:60,borderRadius:10}}>
               <View style={{flexDirection:'row',flexWrap:'wrap',padding:20}}>
-                 {this.carDamageData.map((value,index) => this.renderDamageSeleteView(value,index))}
+                 {this.carDamageCodeData.map((value,index) => this.renderDamageSeleteView(value,index))}
               </View>
               <View style={{height:1,backgroundColor:backgroundGrey}}></View>
-              <TouchableHighlight style={{paddingVertical:10,justifyContent:'center'}} underlayColor='transparent' onPress={()=>{
-                this.submitData.partyData[this.state.currentDamageIndex].carDamageData = []
-                for (var i = 0; i < this.carDamageData.length; i++) {
-                  if (this.carDamageData[i].isSel && !this.isArrContainer(this.carDamageData[i].name)) {
-                    this.submitData.partyData[this.state.currentDamageIndex].carDamageData.push(this.carDamageData[i].name)
-                  }
-                }
-                this.setState({
-                  showModalView: false
-                })
-              }}>
+              <TouchableHighlight style={{paddingVertical:10,justifyContent:'center'}} underlayColor='transparent'
+                onPress={()=>{ this.setState({ showModalView: false })}}>
                 <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>选好了</Text>
               </TouchableHighlight>
             </View>
@@ -166,49 +176,59 @@ class AccidentConditionView extends Component {
     )
   }
   render(){
+    let { accidentDes, taskModal } = this.state;
     return(
-      <ScrollView style={styles.container}
-                   showsVerticalScrollIndicator={false}>
-           <View style={{backgroundColor:'#ffffff',marginTop:15,paddingVertical:10}}>
-             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-               <Text style={{marginLeft:15,fontSize:15,color:formLeftText,alignSelf:'center'}}>本次事故形态</Text>
-               <TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={() => this.showTypePicker(this.accidentFormData,'accidentFormData')} underlayColor='transparent'>
-                 <View style={{flexDirection:'row'}}>
-                   <Text style={{alignSelf:'center',color: (this.submitData.accidentFormData ? formLeftText : formRightText)}}>
-                     {this.submitData.accidentFormData ? this.submitData.accidentFormData: '请选择事故形态'}
-                   </Text>
-                   <Image style={{width:7,height:12,marginLeft:30,alignSelf:'center'}} source={require('./image/right_arrow.png')}/>
-                 </View>
-               </TouchableHighlight>
-             </View>
-          </View>
-          <View style={{backgroundColor:'#ffffff',marginTop:15,paddingVertical:10}}>
-            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-              <Text style={{marginLeft:15,fontSize:15,color:formLeftText,alignSelf:'center'}}>本次事故情形</Text>
-              <TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={() => this.showTypePicker(this.accidentCondition,'accidentCondition')} underlayColor='transparent'>
-                <View style={{flexDirection:'row'}}>
-                  <Text style={{alignSelf:'center',color: (this.submitData.accidentCondition ? formLeftText : formRightText)}}>
-                    {this.submitData.accidentCondition ? this.submitData.accidentCondition: '请选择事故情形'}
-                  </Text>
-                  <Image style={{width:7,height:12,marginLeft:30,alignSelf:'center'}} source={require('./image/right_arrow.png')}/>
-                </View>
-              </TouchableHighlight>
+      <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{height:15, width:W}}/>
+          <FormPicker label={'本次事故形态'} placeholder={'请选择事故形态'} value={taskModal? taskModal.name:null} onChange={(res)=>{this.setState({taskModal:res})} } data={this.accidentCondition} noBorder={true}/>
+          <View style={{height:15, width:W}}/>
+          <SituationPicker label={'本次事故情形'} placeholder={'请选择事故情形'} value={accidentDes?accidentDes.name:null} onChange={(res)=>{this.setState({accidentDes:res})}} data={this.accidentFormData} noBorder={true}/>
+
+          <View style={{marginTop:15,backgroundColor:'#ffffff'}}>
+            <View style={{flexDirection:'row',backgroundColor:'#ffffff',marginTop:10}}>
+              <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
+              <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>车辆受损部位</Text>
             </View>
-         </View>
-         <View style={{marginTop:10,backgroundColor:'#ffffff'}}>
-           <View style={{flexDirection:'row',backgroundColor:'#ffffff',marginTop:10}}>
-             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
-             <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>车辆受损部位</Text>
-           </View>
-           <View style={{backgroundColor:backgroundGrey,height:1,marginTop:10,marginLeft:15}}></View>
-           {this.submitData.partyData.map((value,index) => this.renderOneParty(value,index))}
-         </View>
-         <View style={{marginLeft:15, marginTop:30,marginBottom:15}}>
-           <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
-         </View>
-         {this.renderModalView()}
-      </ScrollView>
+            <View style={{backgroundColor:backgroundGrey,height:1,marginTop:10,marginLeft:15}}></View>
+            {this.person.map((p,index) => this.renderOneParty(p,index))}
+          </View>
+
+          <XButton title='下一步' onPress={() => {
+            this.gotoNext()}
+          } style={{backgroundColor:'#267BD8',borderRadius:20,marginVertical:50,alignSelf:'center'}}/>
+
+        </ScrollView>
+
+        {this.renderModalView()}
+        <ProgressView show={this.state.loading} hasTitleBar={true} />
+      </View>
     );
+  }
+
+  /** Private */
+  _convertDamagedCodeToName(code){
+    let name = null;
+    for(let i=0,max=this.carDamageData.length; i<max; i++){
+      let cd = this.carDamageData[i];
+      if(cd.code == code){
+        name = cd.name;
+        break;
+      }
+    }
+    return name;
+  }
+
+  _convertCodeToEntry(code, array){
+    let entry = null;
+    for(let i=0,max=array.length; i<max; i++){
+      let v = array[i];
+      if(v.code == code){
+        entry = v;
+        break;
+      }
+    }
+    return entry;
   }
 
 }
