@@ -24,7 +24,8 @@ class ASignatureConfirmationView extends Component {
       loading:false,
       refresh:false,
       showSpeekCode: false,
-      codeSecondsLeft: 60
+      codeSecondsLeft: 60,
+      submitText:'';
     }
 
     this.dutyList = [];
@@ -38,12 +39,13 @@ class ASignatureConfirmationView extends Component {
     InteractionManager.runAfterInteractions(async () => {
       let info = await StorageHelper.getCurrentCaseInfo();
       this.handleWay = info.handleWay;
+      let submitText = this.handleWay === '04'? '生成自行协商协议书':'生成交通事故认定书'
       let { localDutyList } = info;
       for(let i=0; i<localDutyList.length; i++){
         let l = localDutyList[i];
         this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码'})
       }
-      this.setState({loading:false})
+      this.setState({loading:false, submitText})
     })
   }
 
@@ -211,7 +213,7 @@ class ASignatureConfirmationView extends Component {
         <ScrollView showsVerticalScrollIndicator={false}>
            {this.dutyList.map((value,index) => this.renderOnePersonInfo(value,index))}
            <View style={{paddingBottom:50,paddingTop:50,backgroundColor:'white',alignItems:'center'}}>
-             <XButton title='提交生成交通事故认定书' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
+             <XButton title={this.state.submitText} onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
            </View>
         </ScrollView>
         <ProgressView show={this.state.loading} hasTitleBar={true}/>
