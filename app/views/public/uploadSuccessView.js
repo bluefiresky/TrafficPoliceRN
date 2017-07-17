@@ -42,16 +42,22 @@ class UploadSuccessView extends Component {
         <Text style={{fontSize:18, color:formLeftText, marginTop:10}}>案件上传成功</Text>
         <Text style={{fontSize:16, color:formRightText, marginTop:44, width:ContentW}}>{this.state.content}</Text>
         <View style={{flexDirection:'row', marginTop:30}}>
-          <XButton title={'处理完成'} onPress={this._onPress.bind(1)} borderRadius={20} style={{backgroundColor:'#ffffff',width:ButtonW,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
-          <XButton title={'保险报案'} onPress={this._onPress.bind(2)} borderRadius={20} style={{backgroundColor:'#267BD8',width:ButtonW}} textStyle={{color:'#ffffff',fontSize:14}}/>
+          <XButton title={'处理完成'} onPress={this._onPress.bind(this, 1)} borderRadius={20} style={{backgroundColor:'#ffffff',width:ButtonW,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+          <XButton title={'保险报案'} onPress={this._onPress.bind(this, 2)} borderRadius={20} style={{backgroundColor:'#267BD8',width:ButtonW}} textStyle={{color:'#ffffff',fontSize:14}}/>
         </View>
       </View>
     );
   }
 
   /** Private **/
-  _onPress(type){
-    if(type === 1) {
+  async _onPress(type){
+    if(type == 1) {
+      Toast.showShortCenter('此处是否应该删除案件？？？');
+      let res = await StorageHelper.removeItem(global.personal.mobile+'unuploaded', global.currentCaseId)
+      if(!res){
+        res = await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
+      }
+      let deleteRes = Utility.deleteFileByName(global.currentCaseId)
       let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
       this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
     }else{

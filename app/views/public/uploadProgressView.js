@@ -17,6 +17,7 @@ import { StorageHelper, Utility } from '../../utility/index.js';
 const TitlebarHeight = Platform.select({ android: 44, ios: 64 });
 const ProgressBarW = 0.6 * W;
 const ContentW = 0.8 * W;
+const AppSource = Platform.select({android: 1, ios:2})
 
 class UploadProgressView extends Component {
 
@@ -25,22 +26,31 @@ class UploadProgressView extends Component {
     this._done = this._done.bind(this);
     this._startUpload = this._startUpload.bind(this);
 
+    let content = '', caseType = 2; // caseType===1:未上传，caseType===2:未完成
+    if(props.navigation.state.params){
+      let p = props.navigation.state.params;
+      content = p.content?p.content:'';
+      caseType = p.caseType?p.caseType:2;
+    }
     this.state = {
+      loading:false,
       progress: 0,
       progressTip: '本次事故信息正在上传...',
-      content:props.navigation.state.params?this.props.navigation.state.params.content:'',
+      content,
       success: false,
       fail: false,
       tipParams: {},
       showTip: false,
       handleWay:null,
-      taskNo:null
+      taskNo:null,
+      caseType
     }
+
+    this.info = null;
   }
 
   componentDidMount(){
     InteractionManager.runAfterInteractions(()=>{
-      this._animate();
       this._startUpload();
     })
   }
@@ -62,32 +72,42 @@ class UploadProgressView extends Component {
 
   /** Private **/
   async _startUpload(){
-    let info = await StorageHelper.getCurrentCaseInfo();
-    if(info){
-      let fileRes = await Utility.convertObjtoFile(info, info.id);
-      if(fileRes){
-        let base64Str = await Utility.zipFileByName(info.id);
-        let res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:1, fileName:info.id, file:'zip@'+base64Str}));
-        if(this.res) this.setState({success: true, handleWay:info.handleWay, taskNo:res.taskNo});
-        else this.setState({fail: true, handleWay:info.handleWay})
-      }else{
-        this.setState({fail:true, handleWay:info.handleWay})
-      }
+    let caseKey = (this.state.caseType == 1)? 'unuploaded':'uncompleted';
+    this.info = await StorageHelper.getCurrentCaseInfo(caseKey);
+    if(!this.info) return;
+
+    this._animate();
+    let fileRes = await Utility.convertObjtoFile(this.info, this.info.id);
+    if(fileRes){
+      let base64Str = await Utility.zipFileByName(this.info.id);
+      let res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:AppSource, fileName:this.info.id, file:'zip@'+base64Str}));
+      if(res) this.setState({success: true, handleWay:this.info.handleWay, taskNo:res.taskNo});
+      else this.setState({fail: true, handleWay:this.info.handleWay})
+    }else{
+      this.setState({fail:true, handleWay:this.info.handleWay})
     }
   }
 
   async _done(title, content, success){
+    this.timer && clearInterval(this.timer);
+
     let self = this;
     let left = null;
     let right = null;
     let done;
+    let handleWay = this.state.handleWay;
     if(success){
-      let handleWay = this.state.handleWay;
       if(handleWay === '03' || handleWay === '05'){
         let success = await StorageHelper.saveStep6_7_1(this.state.taskNo)
         if(success) this.props.navigation.dispatch({ type: 'replace', routeName: 'WaitRemoteResponsibleView', key: 'WaitRemoteResponsibleView', params: {}});
       }else{
-        this.props.navigation.dispatch({ type: 'replace', routeName: 'UploadSuccessView', key: 'UploadSuccessView', params: {content:'交通事故认定书稍后将以短信形式发送至当事人手机'}});
+        let content = (handleWay === '04')? '事故自行协商协议书稍后将以短信形式发送至当事人手机。':'交通事故认定书稍后将以短信形式发送至当事人手机';
+        this.props.navigation.dispatch({
+          type: 'replace',
+          routeName: 'UploadSuccessView',
+          key: 'UploadSuccessView',
+          params: {content}
+        });
       }
       return;
     }else{
@@ -95,8 +115,21 @@ class UploadProgressView extends Component {
         self.setState({progress: 0, showTip: false, success: false, fail: false})
         self._startUpload();
       }};
-      let label = (this.state.handleWay != '04')?'查看离线认定书':'查看离线协议书';
-      right = {label, event:() => { Toast.showShortCenter('待开发')}};
+      let label = (handleWay === '01' || handleWay === '02')?'查看离线认定书':(handleWay === '04'? '查看离线协议书':'返回首页');
+      right = {label, event: async () => {
+        this.setState({loading:true});
+        if(this.state.loading) return;
+        
+        if( handleWay === '03' || handleWay === '05'){
+          let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
+          this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
+        }else{
+          this.info.taskNo = this.state.taskNo;
+          let saveToUnUploadRes = await StorageHelper.saveAsUnUploaded(this.info);
+          if(!saveToUnUploadRes) return;
+          this.props.navigation.navigate('CertificateView', {handleWay})
+        }
+      }};
     }
     this.setState({ showTip: true, tipParams:{title, content, left, right}})
   }
@@ -116,7 +149,7 @@ class UploadProgressView extends Component {
           this.setState({ progress });
         }
       }
-    }, 500);
+    }, 1000);
   }
 
 }
@@ -132,7 +165,7 @@ const styles = StyleSheet.create({
 const ExportView = connect()(UploadProgressView);
 ExportView.navigationOptions = ({ navigation }) => {
   return {
-    header: null
+    headerLeft: null
   }
 }
 

@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, TouchableWithoutFeedback, TouchableHighlight, TouchableNativeFeedback, Platform } from 'react-native';
 import { InputH, W, borderColor, formLeftText, formRightText, commonText, placeholderColor } from '../../configs/index.js';
 
+const IconRightSize = Platform.OS === 'ios'? 15 : 0;
 export class InputWithIcon extends Component {
 
 
@@ -131,11 +132,11 @@ export class InputWithIcon extends Component {
 
     return(
       <View style={ [{paddingLeft: 20, flexDirection: 'row', height: InputH, backgroundColor: 'white'}, border, style && style] }>
-        <View style={{width: labelWidth? labelWidth : 60, justifyContent: 'center'}}>
-          <Image style={{height: 20, width: 20}} source={icon} resizeMode='contain'/>
+        <View style={{width: labelWidth? labelWidth : 60, justifyContent: 'center', marginRight:IconRightSize}}>
+          <Image style={{height: 20, width: 20, resizeMode:'contain'}} source={icon}/>
         </View>
         <TextInput
-          style={{flex: 1, fontSize: 16, color: commonText, textAlign: 'justify'}}
+          style={{flex: 1, fontSize: 16, color: commonText, textAlign:'justify', includeFontPadding:false, textAlignVertical:'center'}}
           onChangeText={ (text) => { this._onChangeText(text) } }
           value={value}
           autoFocus={autoFocus}

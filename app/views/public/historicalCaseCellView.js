@@ -25,11 +25,14 @@ const AStepToView = {
   '4':'AConfirmInformationView',
   '5':(handleWay) => { return handleWay != '04'? 'AAccidentFactAndResponsibilityView': 'AccidentConditionView'},
   '5_6_1':'AccidentConfirmResponView',
-  '6':(handleWay) => { return handleWay != '04'? 'UploadProgressView' : 'ASignatureConfirmationView'},
+  '6':(handleWay) => { return handleWay != '04'? 'AccidentConfirmResponView' : 'ASignatureConfirmationView'},
   '6_7_1':'WaitRemoteResponsibleView',
-  '7':'UploadProgressView'
+  '7':'ASignatureConfirmationView'
 }
 
+// 03 -> 0,1,2,3,4,5,6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
+// 05 -> 0,1,2,3,4,5,6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
+// 04 -> 0,1,2,3,4,5,5_6_1,6,7
 export default class HistoricalCaseCellView extends Component {
 
   constructor(props){
@@ -42,7 +45,7 @@ export default class HistoricalCaseCellView extends Component {
     this.props.navigation.navigate('CaseDetailsView', {taskNo})
   }
 
-  caseCellClick(step, handleWay){
+  caseCellClick(step, handleWay, currentCaseId, caseType){
     let routeName = null;
     if(global.personal.policeType === 2){
       routeName = PStepToView[step];
@@ -54,14 +57,18 @@ export default class HistoricalCaseCellView extends Component {
         routeName = tmp(handleWay);
       }
     }
-    if(routeName) this.props.navigation.navigate(routeName);
+    if(routeName) {
+      global.currentCaseId = currentCaseId;
+      // type === 1:未上传，type === 2:未完成
+      this.props.navigation.navigate(routeName, {caseType});
+    }
   }
 
   render() {
     let { type } = this.props;
     return(
       <View>
-        {type === 3? this._renderHistoryCell(this.props.rowData) : this._renderLocalCell(this.props.rowData)}
+        {type === 3? this._renderHistoryCell(this.props.rowData) : this._renderLocalCell(this.props.rowData, type)}
       </View>
     )
   }
@@ -93,10 +100,10 @@ export default class HistoricalCaseCellView extends Component {
     )
   }
 
-  _renderLocalCell(rowData){
-    let { basic, person, step, handleWay } = rowData;
+  _renderLocalCell(rowData, type){
+    let { basic, person, step, handleWay, id } = rowData;
     return (
-      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.caseCellClick(step, handleWay)}>
+      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.caseCellClick(step, handleWay, id, type)}>
         <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
           <View style={styles.left}>
             <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>

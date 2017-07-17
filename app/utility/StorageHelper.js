@@ -24,7 +24,7 @@ export class StorageHelper{
       let data = {id, basic, step:'0'};
       console.log('%c StorageHelper execute create -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
-      // global.currentCaseId = id;
+      global.currentCaseId = id;
       await global.storage.save({ key, id, data })
       return 'success'
     } catch (e) {
@@ -285,9 +285,12 @@ export class StorageHelper{
   }
 
   // 获取一条案件数据详情
-  static async getCurrentCaseInfo(){
+  static async getCurrentCaseInfo(caseType){
     try {
       let key = global.personal.mobile + 'uncompleted';
+      if(caseType){
+        key = global.personal.mobile + caseType;
+      }
       let id = global.currentCaseId;
       let data = await global.storage.load({key, id});
       console.log('%c StorageHelper execute getCurrentCaseInfo -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
@@ -350,15 +353,14 @@ export class StorageHelper{
 
 
   // 转存未完成的数据到未上传列表
-  static async saveAsUnUploaded({ id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty }){
+  static async saveAsUnUploaded(data){
     try {
       let key = global.personal.mobile + 'unuploaded';
-      let itemId = global.currentCaseId;
-      let data = { id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty }
+      let id = global.currentCaseId;
       console.log('%c StorageHelper execute saveAsUnUploaded -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
-      await global.storage.save({ key, id:itemId, data })
-      await global.storage.remove({key:global.personal.mobile + 'uncompleted', id:itemId})
+      await global.storage.save({ key, id, data })
+      await global.storage.remove({key:global.personal.mobile + 'uncompleted', id})
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper saveAsUnUploaded and catch error -->> ', 'color:red', e.message);
@@ -369,8 +371,9 @@ export class StorageHelper{
 
   static async removeItem(key, id){
     try {
-      console.log('%c StorageHelper execute saveAsUnUploaded -- the key -->> ## ' + key + ' ## id -->> ' + id , 'color:dodgerblue');
+      console.log('%c StorageHelper execute removeItem -- the key -->> ## ' + key + ' ## id -->> ' + id , 'color:dodgerblue');
       await global.storage.remove({key, id})
+
       return 'success'
     } catch (e) {
       console.log('%c StorageHelper removeItem and catch error -->> ', 'color:red', e.message);

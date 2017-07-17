@@ -57,11 +57,11 @@ class ResponsibleResultView extends Component {
           </View>
 
           <View style={{backgroundColor: 'white', marginTop:20, paddingHorizontal:15}}>
-            {this.remoteRes.list.map((value,index) => this.renderOneParty(value,index))}
+            {this.remoteRes.list?this.remoteRes.list.map((value,index) => this.renderOneParty(value,index)):null}
           </View>
 
           {
-            this.remoteRes.list.length === 1? null :
+            (this.remoteRes.list && this.remoteRes.list.length) === 1? null :
             <View style={{backgroundColor:'#ffffff',paddingBottom:20}}>
               <View style={{backgroundColor:backgroundGrey, height:20}} />
               <View style={{flexDirection:'row',paddingTop:10,marginTop:10}}>

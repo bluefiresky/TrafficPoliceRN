@@ -10,7 +10,7 @@ import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
-import { ProgressView, XButton } from '../../components/index.js';  /** 自定义组件 */
+import { ProgressView, XButton, TipModal } from '../../components/index.js';  /** 自定义组件 */
 import { StorageHelper } from '../../utility/index.js';
 
 class AAccidentFactAndResponsibilityView extends Component {
@@ -23,6 +23,8 @@ class AAccidentFactAndResponsibilityView extends Component {
       supplementary:null,
       conciliation:'经各方当事人共同申请调解，自愿达成协议如下：\n由当事人自行协商解决。此事故一次结清，签字生效。',
       handleWay:'03',
+      showTip:false,
+      tipParams:{},
     }
   }
 
@@ -41,15 +43,23 @@ class AAccidentFactAndResponsibilityView extends Component {
   //完成
   gotoNext(){
     this.setState({loading:true})
-    if(this.loading) return;
+    if(this.state.loading) return;
 
-    InteractionManager.runAfterInteractions( async () => {
+    InteractionManager.runAfterInteractions(() => {
       let { supplementary, conciliation, } = this.state;
-
-      let success = await StorageHelper.saveStep6({supplementary, conciliation, localDutyList:[]})
-      this.setState({loading:false})
-      // if(success) this.props.navigation.navigate('WaitRemoteResponsibleView');
-      if(success) this.props.navigation.navigate('UploadProgressView');
+      let self = this;
+      self.setState({ showTip: true, loading:false,
+        tipParams:{
+          content: '该案件将提交远程交警进行责任认定，案件提交后无法撤回，请确认是否继续提交？',
+          left:{label: '暂不提交', event: () => {
+            self.setState({showTip: false});
+          }},
+          right:{label: '继续提交', event: async () => {
+            let success = await StorageHelper.saveStep6({supplementary, conciliation, localDutyList:[]})
+            self.setState({showTip: false, loading:false});
+            if(success) self.props.navigation.navigate('UploadProgressView');
+          }}
+      }});
     })
   }
   //输入框文字变化
@@ -111,6 +121,7 @@ class AAccidentFactAndResponsibilityView extends Component {
           </View>
         </ScrollView>
 
+        <TipModal show={this.state.showTip} {...this.state.tipParams} />
         <ProgressView show={this.state.loading} hasTitleBar={true} />
       </View>
     );

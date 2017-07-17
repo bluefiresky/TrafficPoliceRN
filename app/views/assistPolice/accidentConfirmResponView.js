@@ -39,8 +39,8 @@ class AccidentConfirmResponView extends Component {
         loading:false,
         basic:info.basic,
         localDutyList:ldl,
-        taskModal:this._convertCodeToEntry(info.taskModal, getStore().getState().dictionary.situationList),
-        accidentDes:this._convertCodeToEntry(info.accidentDes, getStore().getState().dictionary.formList)
+        taskModal:this._convertCodeToEntry(info.taskModal, getStore().getState().dictionary.formList),
+        accidentDes:this._convertCodeToEntry(info.accidentDes, getStore().getState().dictionary.situationList)
       })
     })
   }

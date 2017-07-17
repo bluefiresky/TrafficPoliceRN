@@ -30,8 +30,8 @@ class AccidentConditionView extends Component {
       accidentDes:null,  // 事故情形
       taskModal:null,    // 事故形态
     }
-    this.accidentFormData = getStore().getState().dictionary.formList;       // 事故情形
-    this.accidentCondition = getStore().getState().dictionary.situationList;  // 事故形态
+    this.accidentFormData = getStore().getState().dictionary.formList;       // 事故形态
+    this.accidentCondition = getStore().getState().dictionary.situationList; // 事故情形
 
     this.carDamageCodeData = []; // 受损部位code
     this.carDamageNameData = []; // 受损部位name
@@ -58,8 +58,8 @@ class AccidentConditionView extends Component {
       })
       this.setState({
         loading:false,
-        taskModal:this._convertCodeToEntry(info.taskModal, this.accidentCondition),
-        accidentDes:this._convertCodeToEntry(info.accidentDes, this.accidentFormData)
+        taskModal:this._convertCodeToEntry(info.taskModal, this.accidentFormData),
+        accidentDes:this._convertCodeToEntry(info.accidentDes, this.accidentCondition)
       })
     })
   }
@@ -179,9 +179,9 @@ class AccidentConditionView extends Component {
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{height:15, width:W}}/>
-          <FormPicker label={'本次事故形态'} placeholder={'请选择事故形态'} value={taskModal? taskModal.name:null} onChange={(res)=>{this.setState({taskModal:res})} } data={this.accidentCondition} noBorder={true}/>
+          <FormPicker label={'本次事故形态'} placeholder={'请选择事故形态'} value={taskModal? taskModal.name:null} onChange={(res)=>{this.setState({taskModal:res})} } data={this.accidentFormData} noBorder={true}/>
           <View style={{height:15, width:W}}/>
-          <SituationPicker label={'本次事故情形'} placeholder={'请选择事故情形'} value={accidentDes?accidentDes.name:null} onChange={(res)=>{this.setState({accidentDes:res})}} data={this.accidentFormData} noBorder={true}/>
+          <SituationPicker label={'本次事故情形'} placeholder={'请选择事故情形'} value={accidentDes?accidentDes.name:null} onChange={(res)=>{this.setState({accidentDes:res})}} data={this.accidentCondition} noBorder={true}/>
 
           <View style={{marginTop:15,backgroundColor:'#ffffff'}}>
             <View style={{flexDirection:'row',backgroundColor:'#ffffff',marginTop:10}}>

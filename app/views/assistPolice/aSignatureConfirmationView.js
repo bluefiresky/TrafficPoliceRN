@@ -23,8 +23,6 @@ class ASignatureConfirmationView extends Component {
     this.state = {
       loading:false,
       refresh:false,
-      showSpeekCode: false,
-      codeSecondsLeft: 60,
       submitText:''
     }
 
@@ -33,6 +31,7 @@ class ASignatureConfirmationView extends Component {
     this.taskNo = null;
     this.getVerCode = this.getVerCode.bind(this);
     this.getVerCodeVoice = this.getVerCodeVoice.bind(this);
+    this.timerArray = [{timer: null}, {timer: null}, {timer: null}];
   }
 
   componentDidMount(){
@@ -47,13 +46,13 @@ class ASignatureConfirmationView extends Component {
         let dl = this.props.navigation.state.params.dutyList;
         for(let i=0; i<dl.length; i++){
           let d = dl[i];
-          this.dutyList.push({title:PersonalTitles[i], phone:d.phone, code: '', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:d.licensePlateNum, dutyName:d.dutyName, dutyType:'', codeText:'获取验证码'})
+          this.dutyList.push({title:PersonalTitles[i], phone:d.phone, code: '', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:d.licensePlateNum, dutyName:d.dutyName, dutyType:'', codeText:'获取验证码',codeSecondsLeft: 60,showSpeekCode: false, codeColor:''})
         }
       }else{
         let { localDutyList } = info;
         for(let i=0; i<localDutyList.length; i++){
           let l = localDutyList[i];
-          this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码'})
+          this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码',codeSecondsLeft: 60,showSpeekCode: false, codeColor:''})
         }
       }
       console.log(' the dutyList -->> ', this.dutyList);
@@ -106,39 +105,45 @@ class ASignatureConfirmationView extends Component {
         signatureList.push({licensePlateNum:d.licensePlateNum, signContent:d.signData, refuseFlag:d.refuseFlag})
       }
       this.res = this.props.dispatch( create_service(Contract.POST_GENERATE_DUTYCONFIRMATION, {taskNo: this.taskNo, signatureList}))
-      if(res) Toast.showShortCenter('接下来该干什么？？')
+      if(res) this.props.navigation.navigate('UploadSuccessView', {content:'案件信息上传成功，交通事故认定书稍后将以短信形式发送至当事人手机。'});
     }
 
   }
   //获取验证码
-  async getVerCode(phone,index){
-    if (this.state.codeSecondsLeft === 60) {
+  async getVerCode(value,index){
+    if (value.codeSecondsLeft === 60) {
       this.setState({loading: true});
-      let checkCodeRes = await this.props.dispatch(create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE_SESSION, {mobile:phone, smsType:1}))
+      let checkCodeRes = await this.props.dispatch(create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE_SESSION, {mobile:value.phone, smsType:1}))
       this.setState({loading: false});
       if(!checkCodeRes) return;
 
-      this.timer = setInterval(() => {
-        let t = this.state.codeSecondsLeft - 1;
+      this.timerArray[index] = setInterval(() => {
+        let t = value.codeSecondsLeft - 1;
         if (t === 0) {
-          this.timer && clearInterval(this.timer);
-          this.dutyList[index].codeText = '重新获取'
-          this.setState({codeSecondsLeft: 60, codeColor: '#4F4F4F'})
+          this.timerArray[index] && clearInterval(this.timerArray[index]);
+          value.codeText = '重新获取';
+          value.codeSecondsLeft = 60;
+          value.codeColor = '#4F4F4F';
+          this.setState({refresh: true})
         } else{
-          this.dutyList[index].codeText = `${t}s`
-          this.setState({codeSecondsLeft: t, codeColor: formRightText});
+          value.codeText = `${t}s`
+          value.codeSecondsLeft = t;
+          value.codeColor = formRightText;
+          this.setState({refresh: true});
           if (t === 30) {
-            this.setState({showSpeekCode: true})
+            value.showSpeekCode = true;
+            this.setState({refresh:true})
           }
         }
       }, 1000);
     }
   }
 
-  async getVerCodeVoice(phone){
+  async getVerCodeVoice(value){
     this.setState({loading: true});
-    await this.props.dispatch(create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE_SESSION, {mobile:phone, smsType:2}))
-    this.setState({loading: false, showSpeekCode: false})
+    await this.props.dispatch(create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE_SESSION, {mobile:value.phone, smsType:2}))
+    value.showSpeekCode = false
+    this.setState({loading: false})
 
   }
 
@@ -163,7 +168,7 @@ class ASignatureConfirmationView extends Component {
 
         <View style={{flexDirection:'row',marginTop:15,marginLeft:20,alignItems:'center'}}>
           <Input label={'手机号:'} value={value.phone} keyboardType={'numeric'} style={{flex:1, height: 35, paddingLeft:0}} hasClearButton={false} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
-          <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value.phone,index)} disabled={value.refuseFlag === '02'}>
+          <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value,index)} disabled={value.refuseFlag === '02'}>
             <Text style={{fontSize:14,color:mainBule}}>{value.codeText }</Text>
           </TouchableHighlight>
         </View>
@@ -182,18 +187,18 @@ class ASignatureConfirmationView extends Component {
           <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
 
           {
-          this.state.showSpeekCode ?
-            <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
-              <Text style={{marginRight:15}}>
-                收不到验证码？试试
-                <Text style={{color:'#267BD8'}} onPress={() => {
-                  Toast.showShortCenter('请注意接听电话');
-                  this.getVerCodeVoice(value.phone);
-                }}>语音验证码</Text>
-              </Text>
-            </View>
+            this.state.showSpeekCode ?
+              <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
+                <Text style={{marginRight:15}}>
+                  收不到验证码？试试
+                  <Text style={{color:'#267BD8'}} onPress={() => {
+                    Toast.showShortCenter('请注意接听电话');
+                    this.getVerCodeVoice(value.phone);
+                  }}>语音验证码</Text>
+                </Text>
+              </View>
             :
-            null
+              null
           }
         </View>
 

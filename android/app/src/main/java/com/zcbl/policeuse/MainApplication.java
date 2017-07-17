@@ -3,6 +3,7 @@ package com.zcbl.policeuse;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.yamill.orientation.OrientationPackage;
 import com.rnziparchive.RNZipArchivePackage;
 import com.rnfs.RNFSPackage;
 import com.rssignaturecapture.RSSignatureCapturePackage;
@@ -33,7 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNZipArchivePackage(),
+          new OrientationPackage(),
+          new RNZipArchivePackage(),
           new RNFSPackage(),
           new RSSignatureCapturePackage(),
           new VectorIconsPackage(),

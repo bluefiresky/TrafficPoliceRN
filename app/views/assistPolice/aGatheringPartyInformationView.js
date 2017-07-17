@@ -276,7 +276,7 @@ class AGatheringPartyInformationView extends Component {
           <Text style={{fontSize:14,color:formLeftText,marginLeft:10}}>保险到期日:</Text>
           <DatePicker
             style={{marginTop:-12,flex:1}}
-            date={this.state.carInsureDueDate}
+            date={this.submitDataArr[index].carInsureDueDate}
             mode="date"
             format="YYYY-MM-DD"
             confirmBtnText="确定"
@@ -299,8 +299,7 @@ class AGatheringPartyInformationView extends Component {
               console.log('#### date -->> ', date);
               this.submitDataArr[index].carInsureDueDate = date;
               this.setState({
-                // date: Tool.handleTime(date,true,'date')
-                carInsureDueDate: date
+                refresh: true
               })
             }}
           />

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
 import SignatureCapture from 'react-native-signature-capture';
+import Orientation from 'react-native-orientation';
 
 import { W, H, backgroundGrey,formLeftText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
@@ -15,6 +16,8 @@ import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 
 const TitlebarHeight = Platform.select({ android: 44, ios: 64 });
+const IsIos = Platform.OS === 'ios';
+const ButtonW = H/6
 
 class SignatureView extends Component {
 
@@ -25,6 +28,18 @@ class SignatureView extends Component {
     this.state = {
       viewMode: 'landscape',
     }
+  }
+
+  componentWillMount(){
+    // if(IsIos){
+      Orientation.lockToLandscape();
+    // }
+  }
+
+  componentWillUnmount(){
+    // if(IsIos){
+      Orientation.lockToPortrait();
+    // }
   }
 
   render(){
@@ -45,13 +60,13 @@ class SignatureView extends Component {
         </View>
 
         <SignatureCapture
-          style={{flex: 1, backgroundColor:'white'}}
+          style={{flex: 1, backgroundColor:'white', borderColor:'transparent'}}
           ref={(ref)=>{ this.ref = ref }}
           onSaveEvent={this._onSaveEvent}
           saveImageFileInExtStorage={false}
           showNativeButtons={false}
           showTitleLabel={false}
-          viewMode={this.state.viewMode}/>
+          viewMode={'landscape'}/>
 
       </View>
     );
@@ -63,12 +78,11 @@ class SignatureView extends Component {
   }
 
   _resetSign() {
-    if(!this.signData) return;
     this.ref.resetImage();
   }
 
   _goBack() {
-    this.setState({viewMode:'portrait'})
+    // this.setState({viewMode:'portrait'})
     this.props.navigation.goBack();
   }
 
@@ -92,10 +106,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   buttonStyle:{
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 20,
-    paddingRight: 20,
+    height: 40,
+    width: ButtonW,
     borderColor: mainBule,
     borderWidth: 1,
     borderRadius: 5,

@@ -13,7 +13,7 @@ import { StackNavigator } from 'react-navigation';
 import { backgroundGrey, mainBule, W } from './configs/index.js';
 
 import {
-  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,SignatureView,UploadProgressView,UploadSuccessView,
+  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,SignatureView,UploadProgressView,UploadSuccessView,CertificateView,
   /** peoplePolice */ PpHomePageView,AccidentBasicInformationView,PhotoEvidenceVeiw,GatheringPartyInformationView,GatheringCardPhotoView,ConfirmInformationView,AccidentFactAndResponsibilityView,SignatureConfirmationView,
   /** assistPolice */ ApHomePageView,AAccidentBasicInformationView,APhotoEvidenceVeiw,SelectHandleTypeView,AGatheringPartyInformationView,AGatheringCardPhotoView,AConfirmInformationView,AccidentConditionView,AccidentConfirmResponView,ASignatureConfirmationView,AAccidentFactAndResponsibilityView,WaitRemoteResponsibleView,ResponsibleResultView,
   /** insuranceReport */
@@ -52,8 +52,9 @@ const PublicNavigator = StackNavigator({
   LookBigImageView: { screen: LookBigImageView, navigationOptions: { title: '查看大图'} },
   LookConclusionView: { screen: LookConclusionView, navigationOptions: { title: '案件详情'} },
   SignatureView: {screen: SignatureView, navigationOptions: {title: '签名'} },
-  UploadProgressView: {screen: UploadProgressView, navigationOptions: {title: '进度'}},
+  UploadProgressView: {screen: UploadProgressView, navigationOptions: {title: '上传进度'}},
   UploadSuccessView: {screen: UploadSuccessView, navigationOptions: {title: '上传成功'}},
+  CertificateView: {screen: CertificateView },
 
   //协警
   ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} },
