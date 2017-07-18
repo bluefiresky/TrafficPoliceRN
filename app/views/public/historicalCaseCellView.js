@@ -60,7 +60,9 @@ export default class HistoricalCaseCellView extends Component {
     if(routeName) {
       global.currentCaseId = currentCaseId;
       // type === 1:未上传，type === 2:未完成
-      this.props.navigation.navigate(routeName, {caseType});
+      // this.props.navigation.navigate(routeName, {caseType});
+      this.props.navigation.navigate('UploadSuccessView', {caseType});
+
     }
   }
 

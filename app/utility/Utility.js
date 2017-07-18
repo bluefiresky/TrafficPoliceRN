@@ -56,12 +56,15 @@ export async function getFileByName(name){
 export async function deleteFileByName(name, type){
   let filePath = RNFS.DocumentDirectoryPath + `/${name}`;
   let zipPath = RNFS.DocumentDirectoryPath + `/${name}.zip`
-  // console.log('%c Utility execute deleteFileByName and the filePath -->> ' , 'color:dodgerblue', obj);
-  // console.log('%c Utility execute deleteFileByName and the zipPath -->> ' , 'color:dodgerblue', obj);
+  
+  let existsFilePath = RNFS.exists(filePath);
+  let existsZipPath = RNFS.exists(zipPath);
+  console.log(`%c Utility execute deleteFileByName and the filePath -->> ## ${filePath} ## is exists -> ` , 'color:dodgerblue', existsFilePath);
+  console.log(`%c Utility execute deleteFileByName and the zipPath -->> ## ${zipPath} ## is exists -> ` , 'color:dodgerblue', existsZipPath);
 
   try {
-    if(RNFS.exists(filePath)) await RNFS.unlink(filePath);
-    if(RNFS.exists(zipPath)) await RNFS.unlink(zipPath);
+    if(existsFilePath) await RNFS.unlink(filePath);
+    if(existsZipPath) await RNFS.unlink(zipPath);
     return 'success';
   } catch (e) {
     console.log('%c Utility deleteFileByName catch error -->> ' , 'color:red', e.message);

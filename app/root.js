@@ -82,11 +82,11 @@ const PublicNavigator = StackNavigator({
   SignatureConfirmationView: { screen: SignatureConfirmationView, navigationOptions: { title: '签字确认'} },
 
   //保险报案
+  InsuranceReportPartyInfoView: { screen: InsuranceReportPartyInfoView, navigationOptions: { title: '保险报案'} },
   ExploreSuccessView: { screen: ExploreSuccessView, navigationOptions: { title: '完成'} },
   ConfirmReportPartyInfoView: { screen: ConfirmReportPartyInfoView, navigationOptions: { title: '确认信息'} },
   ExploreTakePhotoView: { screen: ExploreTakePhotoView, navigationOptions: { title: '查勘拍照'} },
   PerfectInformantInfoView: { screen: PerfectInformantInfoView, navigationOptions: { title: '完善报案人信息'} },
-  InsuranceReportPartyInfoView: { screen: InsuranceReportPartyInfoView, navigationOptions: { title: '保险报案'} },
   InsuranceReportSuccessView: { screen: InsuranceReportSuccessView, navigationOptions: { title: '完成'} }
 },{
   headerMode: 'screen',
