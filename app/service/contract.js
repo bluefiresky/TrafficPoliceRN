@@ -37,3 +37,17 @@ export const POST_UPLOAD_ACCIDENT_FILE = 'post_upload_accident_file';         //
  * Common 相关接口名
  */
 export const POST_ADVICE_ADD = 'post_advice_add';                             // 意见反馈
+
+/*
+ * 保险报案 相关接口名
+ */
+ export const POST_ACCIDENT_PERSON = 'post_accident_person';        // 保险报案1-确认报案当事人信息
+ export const POST_INSURE_DICTIONARY = 'post_insure_dictionary';   //保险报案2-获取保险数据字典
+ export const POST_INSURE_INFO = 'post_insure_info';               //保险报案3-提交保险报案信息接口
+ export const POST_SURVEY_FLAG = 'post_survey_flag';               //保险报案4-获取保险报案信息是否需要查勘接口
+ export const POST_SURVEY_DETAIL = 'post_survey_detail';           //保险报案5-获取查勘详情接口
+ export const POST_SURVEY_INFO = 'post_survey_info';               //保险报案6-提交查勘基本信息接口
+ export const POST_SURVEYPHOTO_INFO = 'post_surveyphoto_info';     //保险报案7-提交查勘照片信息接口
+ export const POST_SURVEY_FINISH = 'post_survey_finish';           //保险报案8-提交确认查勘完成接口
+ export const POST_SURVEYCHO_INFO = 'post_surveyecho_info';        //保险报案9-获取查勘页面回显信息接口
+ export const POST_SURVEY_PHOTOS = 'post_survey_photos';           //保险报案10-获取查勘历史照片接口
