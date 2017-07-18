@@ -2,7 +2,7 @@
 * 设置页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager,BackHandler } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
@@ -32,7 +32,12 @@ class UploadSuccessView extends Component {
     })
   }
 
+  componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', function() {});
+  }
+
   componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', function() {});
   }
 
   render(){
@@ -53,7 +58,6 @@ class UploadSuccessView extends Component {
   async _onPress(type){
     // handleWay === '01'||'02'||'03'||'05'都会进入此页面
     if(type == 1) {
-      Toast.showShortCenter('此处是否应该删除案件？？？');
       await StorageHelper.removeItem(global.personal.mobile+'unuploaded', global.currentCaseId)
       await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
       await Utility.deleteFileByName(global.currentCaseId)
@@ -76,7 +80,9 @@ const styles = StyleSheet.create({
 
 const ExportView = connect()(UploadSuccessView);
 ExportView.navigationOptions = ({ navigation }) => {
-  return {}
+  return {
+    headerLeft:null,
+  }
 }
 
 module.exports.UploadSuccessView = ExportView;

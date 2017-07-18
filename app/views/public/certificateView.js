@@ -16,7 +16,6 @@ const ButtonW = (W - 60)/2
 
 class CertificateView extends Component {
 
-  static navigationOptions
   constructor(props){
     super(props);
     this.state = {}

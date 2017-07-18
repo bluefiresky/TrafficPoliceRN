@@ -2,7 +2,7 @@
 * 设置页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager,BackHandler } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
@@ -55,8 +55,13 @@ class UploadProgressView extends Component {
     })
   }
 
+  componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', function() {});
+  }
+
   componentWillUnmount(){
     this.timer && clearInterval(this.timer)
+    BackHandler.removeEventListener('hardwareBackPress', function() {});
   }
 
   render(){
@@ -117,21 +122,22 @@ class UploadProgressView extends Component {
       }};
       let label = (handleWay === '01' || handleWay === '02')?'查看离线认定书':(handleWay === '04'? '查看离线协议书':'返回首页');
       right = {label, event: async () => {
-        this.setState({loading:true});
-        if(this.state.loading) return;
-        
+        self.setState({loading:true});
+        if(self.state.loading) return;
+
         if( handleWay === '03' || handleWay === '05'){
           let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
-          this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
+          self.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
         }else{
-          this.info.taskNo = this.state.taskNo;
-          let saveToUnUploadRes = await StorageHelper.saveAsUnUploaded(this.info);
+          self.info.taskNo = self.state.taskNo;
+          let saveToUnUploadRes = await StorageHelper.saveAsUnUploaded(self.info);
           if(!saveToUnUploadRes) return;
-          this.props.navigation.navigate('CertificateView', {handleWay})
+          self.props.navigation.navigate('CertificateView', {handleWay})
         }
+        self.setState({showTip:false})
       }};
+      this.setState({ showTip: true, tipParams:{title, content, left, right}})
     }
-    this.setState({ showTip: true, tipParams:{title, content, left, right}})
   }
 
   _animate() {

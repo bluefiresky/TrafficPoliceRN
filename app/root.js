@@ -13,7 +13,7 @@ import { StackNavigator } from 'react-navigation';
 import { backgroundGrey, mainBule, W } from './configs/index.js';
 
 import {
-  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,SignatureView,UploadProgressView,UploadSuccessView,CertificateView,
+  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,SignatureView,UploadProgressView,UploadSuccessView,CertificateView,CommonWebView,
   /** peoplePolice */ PpHomePageView,AccidentBasicInformationView,PhotoEvidenceVeiw,GatheringPartyInformationView,GatheringCardPhotoView,ConfirmInformationView,AccidentFactAndResponsibilityView,SignatureConfirmationView,
   /** assistPolice */ ApHomePageView,AAccidentBasicInformationView,APhotoEvidenceVeiw,SelectHandleTypeView,AGatheringPartyInformationView,AGatheringCardPhotoView,AConfirmInformationView,AccidentConditionView,AccidentConfirmResponView,ASignatureConfirmationView,AAccidentFactAndResponsibilityView,WaitRemoteResponsibleView,ResponsibleResultView,
   /** insuranceReport */
@@ -55,6 +55,7 @@ const PublicNavigator = StackNavigator({
   UploadProgressView: {screen: UploadProgressView, navigationOptions: {title: '上传进度'}},
   UploadSuccessView: {screen: UploadSuccessView, navigationOptions: {title: '上传成功'}},
   CertificateView: {screen: CertificateView },
+  CommonWebView: {screen: CommonWebView },
 
   //协警
   ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} },
@@ -70,6 +71,7 @@ const PublicNavigator = StackNavigator({
   ResponsibleResultView: { screen: ResponsibleResultView },
   AccidentConfirmResponView: { screen: AccidentConfirmResponView, navigationOptions: { title: '事故定责'} },
   ASignatureConfirmationView: { screen: ASignatureConfirmationView, navigationOptions: { title: '签字确认'} },
+  SignatureView: {screen: SignatureView, navigationOptions: {title: '签名'} },
 
   //民警
   PpHomePageView: { screen: PpHomePageView, navigationOptions: { title: '首页'} },
