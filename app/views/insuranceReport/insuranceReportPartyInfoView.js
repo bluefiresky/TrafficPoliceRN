@@ -23,6 +23,14 @@ class InsuranceReportPartyInfoView extends Component {
     }
     this.partyData = [{carNum:'冀F12332',name:'123',responsibilityType:'全部责任',insuranceCompany:'',isReport:true},{carNum:'京F12332',name:'988',responsibilityType:'次要责任',insuranceCompany:'',isReport:false}];
   }
+  componentDidMount(){
+    this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: '1101201707171442378260000'}))
+      .then( res => {
+        if (res) {
+          console.log(res);
+        }
+    })
+  }
   //下一步
   gotoNext(){
     this.props.navigation.navigate('InsuranceReportSuccessView',{isHaveLookJurisdiction:true,isNeedLook:false,waitForLook:false});
