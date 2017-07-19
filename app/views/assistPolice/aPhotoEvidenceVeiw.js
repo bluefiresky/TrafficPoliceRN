@@ -16,7 +16,7 @@ import { StorageHelper, Utility } from '../../utility/index.js';
 
 const ImageW = (W - 3 * 20) / 2;
 const ImageH = (220 * ImageW)/340;
-const BigImageH = (220 * W)/340
+const BigImageH = H-200
 const EFrontIcon = require('./image/e_front.png');
 const EBackIcon = require('./image/e_back.png');
 const EKnockedIcon = require('./image/e_knocked.png');
@@ -28,9 +28,9 @@ const photoOption = {
   takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
   chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
   mediaType: 'photo',
-  maxWidth: 1920,
-  maxHeight: 1080,
-  quality: 0.5,
+  maxWidth: W,
+  maxHeight: H,
+  quality: 1,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
 
@@ -166,10 +166,12 @@ class APhotoEvidenceVeiw extends Component {
            <View>
              <Modal animationType="slide" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
                <TouchableOpacity onPress={() => this.setState({showBigImage:false})} style={styles.modalContainer} activeOpacity={1}>
-                 <Image source={{uri: 'data:image/png;base64,'+this.currentImgae}} style={{width:W,height:BigImageH}}/>
-                 <View style={{marginTop:100,flexDirection:'row', justifyContent: 'center'}}>
+                <View style={{flex:1, marginTop:60}}>
+                  <Image source={{uri: 'data:image/png;base64,'+this.currentImgae}} style={{width:W,height:BigImageH,resizeMode:'contain'}}/>
+                </View>
+                 <View style={{height:60, flexDirection:'row', alignItems: 'center', justifyContent:'center'}}>
                    <XButton title={'重拍'} onPress={() => this.reTakePhoto()} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
-                   <XButton title={'删除'} onPress={() => this.deletePhoto()} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}} disabled={this.currentImgaeIndex < 3}/>
+                   <XButton title={(this.currentImgaeIndex < 3)?'返回':'删除'} onPress={() => this.deletePhoto()} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}} disabled={this.currentImgaeIndex < 3}/>
                  </View>
                </TouchableOpacity>
              </Modal>
@@ -191,7 +193,6 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.9)'
   }
 });

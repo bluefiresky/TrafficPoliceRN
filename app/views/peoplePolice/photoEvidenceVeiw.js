@@ -28,9 +28,9 @@ const photoOption = {
   takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
   chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
   mediaType: 'photo',
-  maxWidth: 1920,
-  maxHeight: 1080,
-  quality: 0.5,
+  maxWidth: W,
+  maxHeight: H,
+  quality: 1,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
 
