@@ -4,9 +4,11 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  constructor(props){$/;"	function	line:19
-state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^    this.state = {$/;"	property	line:21
-gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  gotoNext(){$/;"	function	line:27
-renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:31
-renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderOneParty(value,index) {$/;"	function	line:42
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  render(){$/;"	function	line:113
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  constructor(props){$/;"	function	line:20
+state.data	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^    this.state = {$/;"	property	line:22
+componentWillMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  componentWillMount(){$/;"	function	line:55
+renderCell	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderCell(value){$/;"	function	line:66
+renderSectionItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderSectionItem(value){$/;"	function	line:79
+renderSectionHeader	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderSectionHeader(value){$/;"	function	line:86
+renderHearer	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderHearer(){$/;"	function	line:93
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  render(){$/;"	function	line:99

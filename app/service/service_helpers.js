@@ -58,7 +58,7 @@ function http_factory({method, paramsType}) {
       path += "?" + query
 
     }
-    
+
     /** 开始连网获并取返回数据 */
     console.log('%c service_helpers ## path: ## ' + path + ' ## meta -->> ', 'color:limegreen', meta);
     try{

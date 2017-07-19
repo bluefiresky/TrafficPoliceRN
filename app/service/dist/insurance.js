@@ -14,16 +14,16 @@ export const post_insure_dictionary = ({version}) => {
   return http_post( 'insure.dictionary', {}, {}, version )
 }
 /** 保险报案3-提交保险报案信息接口 */
-export const post_insure_info = ({taskno,operator,data,licenseno,insurecode,citycode,version}) => {
-  return http_post( 'insure.info', {taskno,operator,data,licenseno,insurecode,citycode}, {}, version )
+export const post_insure_info = ({taskno,data,version}) => {
+  return http_post( 'insure.info', {taskno,data}, {}, version )
 }
 /** 保险报案4-获取保险报案信息是否需要查勘接口 */
-export const post_survey_flag = ({taskno,operator,version}) => {
-  return http_post( 'survey.flag', {taskno,operator}, {}, version )
+export const post_survey_flag = ({taskno,version}) => {
+  return http_post( 'survey.flag', {taskno}, {}, version )
 }
 /** 保险报案5-获取查勘详情接口 */
-export const post_survey_detail = ({taskno,operator,version}) => {
-  return http_post( 'survey.detail', {taskno,operator}, {}, version )
+export const post_survey_detail = ({taskno,version}) => {
+  return http_post( 'survey.detail', {taskno}, {}, version )
 }
 /** 保险报案6-提交查勘基本信息接口 */
 export const post_survey_info = ({surveyno,taskno,surveytime,operator,groupname,policetypen,policename,policephone,data,person,licenseno,engineno,vinno,dutyname,driverflag,drivingflag,matchingflag,scenelist,scenecode,version}) => {

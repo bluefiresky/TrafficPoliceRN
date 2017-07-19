@@ -13,7 +13,7 @@ import track from './track.js'
 // reducers
 import { auth } from '../reducers/auth.js';
 import { personal } from '../reducers/personal.js';
-import { dictionary } from '../reducers/common.js'
+import { dictionary, insuranceDictionary } from '../reducers/common.js'
 /**
  * configure store params
  */
@@ -25,7 +25,7 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 // 合并 reducers
 const reducer = combineReducers({
-  auth, personal, dictionary
+  auth, personal, dictionary, insuranceDictionary
 });
 
 

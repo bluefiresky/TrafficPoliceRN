@@ -155,16 +155,6 @@ render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/
 constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportSuccessView.js	/^  constructor(props){$/;"	function	line:19
 cancleWait	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportSuccessView.js	/^  cancleWait(){$/;"	function	line:25
 render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportSuccessView.js	/^  render(){$/;"	function	line:28
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  constructor(props){$/;"	function	line:19
-state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^    this.state = {$/;"	property	line:21
-gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  gotoNext(){$/;"	function	line:27
-renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:30
-renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  renderOneParty(value,index) {$/;"	function	line:41
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  render(){$/;"	function	line:79
-const.headerStyle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^const publicNavigationOptions = {$/;"	property	line:37
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  constructor(props){$/;"	function	line:97
-state.statusBackColor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^    this.state={$/;"	property	line:99
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  render(){$/;"	function	line:104
 constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringPartyInformationView.js	/^  constructor(props){$/;"	function	line:21
 state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringPartyInformationView.js	/^    this.state = {$/;"	property	line:25
 state.date	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringPartyInformationView.js	/^      refresh:false,$/;"	property	line:26
@@ -208,3 +198,56 @@ gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceRe
 renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:31
 renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderOneParty(value,index) {$/;"	function	line:42
 render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  render(){$/;"	function	line:113
+http_factory	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function http_factory({method, paramsType}) {$/;"	function	line:25
+const.method	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^    const meta = {$/;"	property	line:32
+const.timeout	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      method : method,$/;"	property	line:33
+const.headers	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      timeout : XIN_REQ_TIMEOUT,$/;"	property	line:34
+h.method	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)};$/;"	property	line:44
+h.v	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)};$/;"	property	line:44
+h.sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)};$/;"	property	line:44
+h.method	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams, {sessionId: auth.token})}$/;"	property	line:51
+h.v	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams, {sessionId: auth.token})}$/;"	property	line:51
+h.sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams, {sessionId: auth.token})}$/;"	property	line:51
+h.method	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)}$/;"	property	line:55
+h.v	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)}$/;"	property	line:55
+h.sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)}$/;"	property	line:55
+object2pairs	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function object2pairs(api, version, signParams, extraParams){$/;"	function	line:97
+object2pairs	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function object2pairs(api, version, signParams, extraParams){$/;"	function	line:97
+sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function sign(api, version, signParams, extraParams){$/;"	function	line:112
+sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function sign(api, version, signParams, extraParams){$/;"	function	line:112
+login	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^ * @param name 在service类型的文件中的连网函数名：service\/user.js -->> function login(){...}$/;"	function	line:8
+create_service	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^export function create_service(name, ...params) {$/;"	function	line:32
+dispatch_reducers	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^function dispatch_reducers(dispatch, promise, name, params){$/;"	function	line:57
+filterDispatch	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^function filterDispatch(dispatch, name, params, data){$/;"	function	line:79
+dispatch_reducers.filterDispatch	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^function filterDispatch(dispatch, name, params, data){$/;"	function	line:79
+call_service	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^function call_service(name, ...params) {$/;"	function	line:92
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  constructor(props){$/;"	function	line:21
+state.date	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^    this.state = {$/;"	property	line:24
+componentDidMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  componentDidMount(){$/;"	function	line:39
+onChangeText	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  onChangeText(text){$/;"	function	line:54
+showWeatherPicker	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  showWeatherPicker() {$/;"	function	line:59
+let.address	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^    let basic = { address: accidentSite, latitude:String(latitude), longitude:String(longitude), weather: weather.code, accidentTime: date+':00'};$/;"	property	line:95
+let.latitude	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^    let basic = { address: accidentSite, latitude:String(latitude), longitude:String(longitude), weather: weather.code, accidentTime: date+':00'};$/;"	property	line:95
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  render(){$/;"	function	line:101
+const.headerStyle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^const publicNavigationOptions = {$/;"	property	line:37
+getStateForAction	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  getStateForAction(action, state){$/;"	function	line:100
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  constructor(props){$/;"	function	line:121
+state.statusBackColor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^    this.state={$/;"	property	line:123
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  render(){$/;"	function	line:129
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  constructor(props){$/;"	function	line:19
+state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^    this.state = {$/;"	property	line:21
+state.loading	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^      refresh: false,$/;"	property	line:22
+componentWillMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  componentWillMount(){$/;"	function	line:28
+componentDidMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  componentDidMount(){$/;"	function	line:39
+gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  gotoNext(){$/;"	function	line:61
+renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:82
+renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  renderOneParty(value,index) {$/;"	function	line:93
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  render(){$/;"	function	line:138
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  constructor(props){$/;"	function	line:20
+state.data	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^    this.state = {$/;"	property	line:22
+componentWillMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  componentWillMount(){$/;"	function	line:55
+renderCell	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderCell(value){$/;"	function	line:66
+renderSectionItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderSectionItem(value){$/;"	function	line:79
+renderSectionHeader	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderSectionHeader(value){$/;"	function	line:86
+renderHearer	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderHearer(){$/;"	function	line:93
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  render(){$/;"	function	line:99

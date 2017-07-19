@@ -2,7 +2,7 @@
  *
  * wuran on 17/1/10.
  */
-import { POST_ACHIEVE_DICTIONARY } from '../../service/contract.js';
+import { POST_ACHIEVE_DICTIONARY, POST_INSURE_DICTIONARY } from '../../service/contract.js';
 const CLEAR_USER_INFO = 'CLEAR_ACHIEVE_DICTIONARY';
 
 const initial = {
@@ -26,6 +26,25 @@ export const dictionary = (state = initial, action) => {
       else return state;
     case CLEAR_USER_INFO :
       return {...initial}
+  }
+  return state;
+}
+
+
+const insuranceInitial = {
+  insurecitylist: [],
+  scenelist:[],
+  phototypelist:[],
+  partlist:[]
+}
+
+export const insuranceDictionary = (state = insuranceInitial, action) => {
+  switch(action.type) {
+    case POST_INSURE_DICTIONARY :
+      if(action.data.data){
+        let { insurecitylist, scenelist, phototypelist,partlist } = action.data.data;
+        return { insurecitylist, scenelist, phototypelist,partlist }
+      }else return state;
   }
   return state;
 }

@@ -29,7 +29,7 @@ class ExploreSuccessView extends Component {
     return(
       <ScrollView style={styles.container}
                    showsVerticalScrollIndicator={false}>
-        <Image source={require('./image/confirm_response.png')} style={{width:100,height:100,marginTop:30,alignSelf:'center'}}/>
+        <Image source={require('./image/export_success.png')} style={{width:100,height:100,marginTop:30,alignSelf:'center'}}/>
         <View style={{marginTop:20,marginLeft:15,width:W-30}}>
           <Text style={{alignSelf:'center',fontSize:16,color:formLeftText}}>
             现场查勘完成！
