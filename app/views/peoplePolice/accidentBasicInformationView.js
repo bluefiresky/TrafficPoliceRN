@@ -105,7 +105,7 @@ class AccidentBasicInformationView extends Component {
           {/** 事故时间 */}
            <View style={{backgroundColor:'#ffffff',marginTop:15}}>
              <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-               <Text style={{marginLeft:15,fontSize:15,color:formLeftText,alignSelf:'center'}}>事故时间</Text>
+               <Text style={{marginLeft:15,fontSize:16,color:formLeftText,alignSelf:'center'}}>事故时间</Text>
                <DatePicker style={{flex:1}} date={this.state.date} mode="datetime" format="YYYY-MM-DD h:mm a" confirmBtnText="确定" cancelBtnText="取消"
                  iconSource={require('./image/right_arrow.png')}
                  customStyles={{dateInput: { alignItems:'flex-end', borderColor:'#ffffff' }, dateIcon: { width:7, height:12, marginRight:15 } }}
@@ -123,10 +123,10 @@ class AccidentBasicInformationView extends Component {
            {/** 天气 */}
            <View style={{backgroundColor:'#ffffff',marginTop:15,paddingVertical:10}}>
              <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-               <Text style={{marginLeft:15,fontSize:15,color:formLeftText,alignSelf:'center'}}>天气</Text>
+               <Text style={{marginLeft:15,fontSize:16,color:formLeftText,alignSelf:'center'}}>天气</Text>
                <TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={() => this.showWeatherPicker()} underlayColor='transparent'>
                  <View style={{flexDirection:'row'}}>
-                   <Text style={{alignSelf:'center',color: (this.state.weather ? formLeftText : formRightText)}}>
+                   <Text style={{fontSize:16, alignSelf:'center',color: (this.state.weather ? formLeftText : formRightText)}}>
                      {this.state.weather ? this.state.weather.name: '请选择事故现场天气'}
                    </Text>
                    <Image style={{width:7,height:12,marginLeft:5,alignSelf:'center'}} source={require('./image/right_arrow.png')}/>
@@ -137,12 +137,15 @@ class AccidentBasicInformationView extends Component {
 
           {/** 事故地点 */}
           <View style={{backgroundColor:'#ffffff',marginTop:15}}>
-            <Text style={{color:formLeftText,marginLeft:15,marginTop:10,fontSize:15}}>
+            <Text style={{color:formLeftText,marginLeft:15,marginTop:10,fontSize:16}}>
               事故地点
-              <Text style={{color:formRightText,fontSize:15}}>(可手动更改事故地点)</Text>
+              <Text style={{color:formRightText,fontSize:16}}>(可手动更改事故地点)</Text>
             </Text>
             <View style={{backgroundColor:'#EFF2F7',width:W,height:1,marginTop:10}}></View>
             <InputWithIcon labelWidth={20} style={{height: 55, paddingLeft:15}} icon={require('./image/location.png')} noBorder={true} value={this.state.accidentSite} onChange={this.onChangeText.bind(this)} multiline={true}/>
+            <TouchableOpacity onPress={()=>{this._onGetLocation()}} activeOpacity={0.8} style={{backgroundColor:'transparent', position:'absolute', width:50, height:50, top:45}}>
+              <View />
+            </TouchableOpacity>
           </View>
 
           {/** 拍照取证 */}

@@ -100,15 +100,15 @@ class ApHomePageView extends Component {
             <Image source={require('./image/setting.png')} style={{width:20,height:20}}/>
           </TouchableHighlight>
           <View style={{marginTop:15,marginLeft:15,width:W-30,backgroundColor:'#ffffff',borderRadius:10}}>
-             <View style={{flexDirection:'row',marginLeft:20,marginTop:20}}>
+             <View style={{flexDirection:'row',marginLeft:20,marginTop:30}}>
                <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
              </View>
-             <View style={{flexDirection:'row',marginTop:20,marginLeft:20,marginBottom:20,justifyContent:'space-between'}}>
+             <View style={{flexDirection:'row',marginTop:30,marginLeft:20,marginBottom:20,justifyContent:'space-between'}}>
                <View style={{backgroundColor:'#ffffff'}}>
                {this.renderRowItem('手机号：', global.personal.mobile, 0)}
                {/*this.renderRowItem('警员编号：', global.personal.policeNumber, 10)*/}
-               {this.renderRowItem('所属城市：', global.personal.cityName, 10)}
-               {this.renderRowItem('所属大队：', global.personal.depName, 10)}
+               {this.renderRowItem('所属城市：', global.personal.cityName, 15)}
+               {this.renderRowItem('所属大队：', global.personal.depName, 15)}
                </View>
              </View>
           </View>

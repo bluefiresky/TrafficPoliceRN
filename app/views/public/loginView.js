@@ -74,7 +74,7 @@ class LoginView extends Component {
   //获取验证码
   async sendVerificationCode(smsType){
     if (!this.checkPhone(this.phoneNum)) {
-      Toast.showShortCenter('手机号输入有误');
+      Toast.showShortCenter('请输入正确手机号');
       return;
     }
     this.setState({loading: true})
@@ -87,7 +87,7 @@ class LoginView extends Component {
         let t = this.state.codeSecondsLeft - 1;
         if (t === 0) {
           this.timer && clearInterval(this.timer);
-          this.setState({codeText: '重新获取', codeSecondsLeft: 60, codeColor: '#4F4F4F'})
+          this.setState({codeText: '重新发送', codeSecondsLeft: 60, codeColor: '#4F4F4F'})
         } else{
           this.setState({codeText: `${t}s`, codeSecondsLeft: t, codeColor: formRightText});
           if (t === 30) {
@@ -105,11 +105,11 @@ class LoginView extends Component {
     // this.props.navigation.navigate('ApHomePageView');
     // return
     if (!this.checkPhone(this.phoneNum)) {
-      Toast.showShortCenter('请输入手机号');
+      Toast.showShortCenter('请输入正确手机号');
       return;
     }
     if (!this.checkCode(this.verificationCode)) {
-      Toast.showShortCenter('验证码必须是6位');
+      Toast.showShortCenter('验证码输入不正确');
       return;
     }
     this.setState({loading: true})

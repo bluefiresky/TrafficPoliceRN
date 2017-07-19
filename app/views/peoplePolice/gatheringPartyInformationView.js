@@ -88,10 +88,10 @@ class GatheringPartyInformationView extends Component {
         error = `请选择${this.carInfoData[i].title}保险公司`
         break;
       }
-      if (!this.submitDataArr[i].carInsureNumber) {
-        error = `请输入${this.carInfoData[i].title}保单号`
-        break;
-      }
+      // if (!this.submitDataArr[i].carInsureNumber) {
+      //   error = `请输入${this.carInfoData[i].title}保单号`
+      //   break;
+      // }
     }
     if(error) {
       this.setState({loading:false});
@@ -263,8 +263,8 @@ class GatheringPartyInformationView extends Component {
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
-        <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
-          <Text style={{fontSize:12,color:'red'}}>*</Text>
+        <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 22}}>
+          <Text style={{fontSize:12,color:'red'}}></Text>
           <Input label={'保单号: '} placeholder={'请输入交强险保单号'} maxLength={40} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />

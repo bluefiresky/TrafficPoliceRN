@@ -12,6 +12,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "Orientation.h"
+#import <BaiduMapAPI_Base/BMKBaseComponent.h>
 
 @implementation AppDelegate
 
@@ -35,6 +36,12 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  [BMKMapManager setCoordinateTypeUsedInBaiduMapSDK:BMK_COORDTYPE_BD09LL];
+  BMKMapManager* mapManager = [[BMKMapManager alloc] init];
+  BOOL flag = [mapManager start:@"ouL4ZpqMYoGhpxxO8cZzOCbHtwknIpcg" generalDelegate:nil];
+  NSLog(@" manager start flag -->> %@", flag?@"start":@"failed");
+  
   return YES;
 }
 

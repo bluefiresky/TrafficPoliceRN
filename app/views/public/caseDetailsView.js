@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, FlatList, InteractionManager } from "react-native";
 import { connect } from 'react-redux';
+import Toast from '@remobile/react-native-toast';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, XButton } from '../../components/index.js';  /** 自定义组件 */
@@ -60,7 +61,6 @@ class CaseDetailsView extends Component {
     this.setState({loading: true});
     InteractionManager.runAfterInteractions(() => {
       let { taskNo, info } = this.props.navigation.state.params;
-      console.log('66666666---->>>', info);
       if(taskNo){
         /** 历史案件详情 **/
         this.props.dispatch( create_service(Contract.POST_ACCIDENT_DETAILS, {taskNo}))

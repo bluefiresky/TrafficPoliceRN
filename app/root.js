@@ -71,7 +71,6 @@ const PublicNavigator = StackNavigator({
   ResponsibleResultView: { screen: ResponsibleResultView },
   AccidentConfirmResponView: { screen: AccidentConfirmResponView, navigationOptions: { title: '事故定责'} },
   ASignatureConfirmationView: { screen: ASignatureConfirmationView, navigationOptions: { title: '签字确认'} },
-  SignatureView: {screen: SignatureView, navigationOptions: {title: '签名'} },
 
   //民警
   PpHomePageView: { screen: PpHomePageView, navigationOptions: { title: '首页'} },
