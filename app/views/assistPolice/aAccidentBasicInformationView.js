@@ -103,25 +103,30 @@ class AAccidentBasicInformationView extends Component {
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/** 事故时间 */}
-           <View style={{backgroundColor:'#ffffff',marginTop:15}}>
-             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-               <Text style={{marginLeft:15,fontSize:16,color:formLeftText,alignSelf:'center'}}>事故时间</Text>
-               <DatePicker style={{flex:1}} date={this.state.date} mode="datetime" format="YYYY-MM-DD h:mm a" confirmBtnText="确定" cancelBtnText="取消"
-                 iconSource={require('./image/right_arrow.png')}
-                 customStyles={{dateInput: { alignItems:'flex-end', borderColor:'#ffffff' }, dateIcon: { width:7, height:12, marginRight:15 } }}
-                 onDateChange={(date) => {
-                   console.log('########### date -->> ', date);
-                   let tmp;
-                   if(date.indexOf('am') != -1) tmp = date.replace('am','');
-                   if(date.indexOf('pm') != -1) tmp = date.replace('pm','');
-                   this.setState({date: tmp.trim()})
-                 }}
-               />
-             </View>
+           <View style={{backgroundColor:'white',marginTop:15,paddingVertical:4, flexDirection:'row',justifyContent:'space-between'}}>
+             <Text style={{marginLeft:15,fontSize:16,color:formLeftText,alignSelf:'center'}}>事故时间</Text>
+             <DatePicker style={{flex:1}} date={this.state.date} mode="datetime" format="YYYY-MM-DD h:mm a" confirmBtnText="确定" cancelBtnText="取消"
+               iconSource={require('./image/right_arrow.png')}
+               customStyles={{dateInput: { alignItems:'flex-end', borderColor:'#ffffff' }, dateIcon: { width:7, height:12, marginRight:15 } }}
+               onDateChange={(date) => {
+                 console.log('########### date -->> ', date);
+                 // 2017-07-19 7:18 am
+                 let tmp1 = date.split(' ');
+                 let tmp2 = tmp1[1].split(':');
+                 let tmp3;
+                 if(tmp1[2] === 'pm'){
+                   tmp3 = Number(tmp2[0])+12
+                 }else{
+                   tmp3 = tmp2[0];
+                 }
+                 let newDate = tmp1[0] + ' ' + tmp3 + ':' +tmp2[1]
+                 this.setState({date: newDate})
+               }}
+             />
            </View>
 
            {/** 天气 */}
-           <View style={{backgroundColor:'#ffffff',marginTop:15,paddingVertical:10}}>
+           <View style={{backgroundColor:'#ffffff',marginTop:15,paddingVertical:15}}>
              <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                <Text style={{marginLeft:15,fontSize:16,color:formLeftText,alignSelf:'center'}}>天气</Text>
                <TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={() => this.showWeatherPicker()} underlayColor='transparent'>
