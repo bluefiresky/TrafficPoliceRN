@@ -81,6 +81,16 @@ class PhotoEvidenceVeiw extends Component {
   reTakePhoto(){
     this.photoList[this.currentImgaeIndex].photoData = null;
     this.setState({ showBigImage: false })
+    let self = this;
+    ImagePicker.showImagePicker(photoOption, (response) => {
+      if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+        console.log(' the ImagePicker response -->> ', response);
+        let p = self.photoList[this.currentImgaeIndex];
+        p.photoData = response.data;
+        p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+        self.setState({reRender: true})
+      }
+    });
   }
   //删除照片
   deletePhoto(){
