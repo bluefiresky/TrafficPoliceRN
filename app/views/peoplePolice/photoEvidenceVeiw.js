@@ -102,12 +102,20 @@ class PhotoEvidenceVeiw extends Component {
     }
     this.setState({ showBigImage: false })
   }
+  
   //增加其他照片
   addOtherPhoto(){
-    let otherNum = this.photoList.length - 2;
-    let otherPhotoType = 50 + otherNum;
-    this.photoList.push({'title': `其它现场照片${otherNum}`,image:EOtherIcon,photoData:null,photoType:`${otherPhotoType}`,photoDate:''});
-    this.setState({reRender: true})
+    let self = this;
+    ImagePicker.showImagePicker(photoOption, (response) => {
+      if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+        console.log(' the ImagePicker response -->> ', response);
+        let otherNum = self.photoList.length - 2;
+        let otherPhotoType = 50 + otherNum;
+        self.photoList.push({'title': `其它现场照片${otherNum}`,image:EOtherIcon,photoData:response.data,photoType:`${otherPhotoType}`,photoDate:Utility.formatDate('yyyy-MM-dd hh:mm:ss')});
+        self.setState({reRender: true})
+      }
+    });
+
   }
   //取证完成
   commit() {
