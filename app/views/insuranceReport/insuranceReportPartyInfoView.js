@@ -31,7 +31,7 @@ class InsuranceReportPartyInfoView extends Component {
     this.setState({
       loading:true
     })
-    this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: '1101201707171442378260000'}))
+    this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: '1301201605100835281420003'}))
       .then( res => {
         if (res && res.personList.length > 0) {
           this.partyData = res.personList
@@ -63,7 +63,7 @@ class InsuranceReportPartyInfoView extends Component {
       this.setState({
         loading: true
       })
-      this.props.dispatch( create_service(Contract.POST_INSURE_INFO, {taskno:'1101201707171442378260000',data:JSON.stringify(data)}))
+      this.props.dispatch( create_service(Contract.POST_INSURE_INFO, {taskno:'1301201605100835281420003',data:JSON.stringify(data)}))
         .then( res => {
           this.setState({
             loading: false
@@ -73,7 +73,7 @@ class InsuranceReportPartyInfoView extends Component {
           }
       })
     } else {
-
+      Toast.showShortCenter('请选择要保险报案的当事人');
     }
   }
   renderRowItem(title,value){

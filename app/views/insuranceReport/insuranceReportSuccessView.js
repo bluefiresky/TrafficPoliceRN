@@ -32,7 +32,7 @@ class InsuranceReportSuccessView extends Component {
         this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
         break;
       case '需要查勘，点击继续':
-        this.props.navigation.navigate('PerfectInformantInfoView');
+        this.props.navigation.navigate('PerfectInformantInfoView',{surveyno:this.surveyno});
         break;
       case '无需查勘，返回首页':
         this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
@@ -52,7 +52,7 @@ class InsuranceReportSuccessView extends Component {
   async _startFetchRemoteRes(){
     let self = this;
     this.timer = setInterval(async () => {
-      let res = await self.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: '1101201707171442378260000'}))
+      let res = await self.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: '1301201605100835281420003'}))
       if(res){
         self.waitForLook = false
         self.surveyflag = res.data.surveyflag

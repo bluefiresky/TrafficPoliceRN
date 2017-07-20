@@ -47,16 +47,20 @@ class PerfectInformantInfoView extends Component {
     }
   }
   componentDidMount(){
+    let { surveyno } = this.props.navigation.state.params
     this.setState({
       loading: true
     })
-    this.props.dispatch( create_service(Contract.POST_SURVEY_DETAIL, {taskno:'1101201707171442378260000'}))
+    this.props.dispatch( create_service(Contract.POST_SURVEYCHO_INFO, {surveyno:surveyno}))
       .then( res => {
         this.setState({
           loading: false
         })
         if (res && res.data) {
           this.partyData = res.data
+        } else {
+          //获取本地存储的数据
+
         }
     })
   }
@@ -72,6 +76,7 @@ class PerfectInformantInfoView extends Component {
     )
   }
   renderOneParty(value,index) {
+    let { scenelist } = getStore().getState().insuranceDictionary
     let selImage1 = value.driverflag ? require('./image/selected.png') : require('./image/unselected.png')
     let selImage2 = value.drivingflag ? require('./image/selected.png') : require('./image/unselected.png')
     let selImage3 = value.matchingflag ? require('./image/selected.png') : require('./image/unselected.png')
@@ -144,7 +149,7 @@ class PerfectInformantInfoView extends Component {
             请确认现场是否存在以下情况：
           </Text>
           <View style={{marginTop:15}}>
-            {value.scenelist.map((value,index) => this.renderSeleteRow(value,index))}
+            {scenelist.map((value,index) => this.renderSeleteRow(value,index))}
           </View>
         </View>
       </View>
@@ -162,7 +167,7 @@ class PerfectInformantInfoView extends Component {
         <View style={{flexDirection:'row',marginBottom:15}}>
           <Image source={selImage} style={{width:19,height:19,alignSelf:'center'}}/>
           <Text style={{marginLeft:10,width:W-60,lineHeight:20}}>
-            {value.scenename}
+            {value.name}
           </Text>
         </View>
       </TouchableHighlight>
