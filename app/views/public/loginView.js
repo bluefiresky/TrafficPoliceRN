@@ -3,7 +3,7 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
@@ -79,7 +79,7 @@ class LoginView extends Component {
     }
     this.setState({loading: true})
     if(this.state.loading) return;
-    
+
     let codeData = await this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType}) );
     this.setState({loading: false})
     if(!codeData) return;
@@ -175,20 +175,25 @@ class LoginView extends Component {
                 <Text style={{color:codeColor,fontSize:13,alignSelf:'center'}}>{codeText}</Text>
               </TouchableHighlight>
             </View>
-            {this.state.showSpeekCode ? <View style={{flexDirection:'row',justifyContent:'flex-end',marginTop:15}}>
-              <Text style={{marginRight:15}}>
-                收不到验证码？试试
-                <Text style={{color:'#267BD8'}} onPress={() => {
+            {
+              !this.state.showSpeekCode? null :
+              <TouchableOpacity activeOpacity={0.8} style={{alignSelf:'flex-end',padding:10}}
+                onPress={()=>{
                   this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType:2}) )
-                    .then(res => {
+                    .then(res =>{
                       this.setState({showSpeekCode: false})
                       if(res){
                         Toast.showShortCenter('请注意接听电话');
                       }
-                  })
-                }}>语音验证码</Text>
-              </Text>
-            </View>:null}
+                    })
+                }}>
+                <View style={{flexDirection:'row'}}>
+                  <Text style={{marginRight:15}} >收不到验证码？试试
+                  <Text style={{color:'#267BD8'}}>语音验证码</Text>
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            }
             <View style={{marginLeft:15, marginTop:50}}>
               <XButton title='登录' onPress={() => this.loginBtnClick()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
             </View>

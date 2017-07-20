@@ -18,6 +18,7 @@ class SettingView extends Component {
   constructor(props){
     super(props);
     this.state = {
+      loading:false,
     }
   }
   //使用帮助
@@ -32,9 +33,13 @@ class SettingView extends Component {
   exitLogin(){
     //检测是否存在未完结及未上传案件，如果存在则提示。如果不存在或者继续退出，则退出到登录页，清空APP缓存及未完结、未上传案件
     //退出登录要清空路由栈
+    this.setState({loading:true})
+    if(this.state.loading) return;
+    
     this.props.dispatch( create_service(Contract.POST_USER_LOGOUT, {}))
       .then( res => {
         console.log(' SettingView execute exitLogin and the res -->> ', res);
+        this.setState({loading:false})
         if(res){
           this.props.dispatch({ type : 'CLEAR_USER_INFO' })
           this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName: 'LoginView'}) ]}) )
@@ -60,6 +65,7 @@ class SettingView extends Component {
         </View>
 
         <XButton title='退出登录' onPress={() => {this.exitLogin()}} style={{alignSelf:'center', marginBottom:100,backgroundColor:'#ffffff',borderRadius:20}} textStyle={{color:'#FC0042'}}/>
+        <ProgressView show={this.state.loading} hasTitleBar={true} />
       </View>
     );
   }
