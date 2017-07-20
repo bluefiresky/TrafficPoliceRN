@@ -50,15 +50,15 @@ class AConfirmInformationView extends Component {
     for (var i = 0; i < data.length; i++) {
       let title = this.partyVerData[i].name;
 
+      if (this.checkName(data[i].name)) {
+        error = `请输入${title}当事人姓名`
+        break;
+      }
       if (!this.checkPhone(data[i].phone)) {
         error = `${title}手机号输入有误`
         break;
       }
-      if (!data[i].name) {
-        error = `请输入${title}当事人姓名`
-        break;
-      }
-      if (!data[i].driverNum) {
+      if (this.checkDriveNunm(data[i].driverNum)) {
         error = `请输入${title}驾驶证号`
         break;
       }
@@ -74,14 +74,14 @@ class AConfirmInformationView extends Component {
         error = `请输入${title}车辆类型`
         break;
       }
-      if (!data[i].carInsureNumber) {
-        error = `请输入${title}保险单号`
-        break;
-      }
-      if (!data[i].carInsureDueDate) {
-        error = `请输入${title}保险到期日`
-        break;
-      }
+      // if (!data[i].carInsureNumber) {
+      //   error = `请输入${title}保险单号`
+      //   break;
+      // }
+      // if (!data[i].carInsureDueDate) {
+      //   error = `请输入${title}保险到期日`
+      //   break;
+      // }
     }
     if(error){
       this.setState({loading:false});
@@ -113,6 +113,14 @@ class AConfirmInformationView extends Component {
     let reg = /^[0-9]+.?[0-9]*$/;
     return (!phone || phone.indexOf(1) !== 0 || phone.length !== 11 || !reg.test(phone)) ? false:true;
   }
+  //验证驾驶证号
+  checkDriveNunm(driverNum){
+    return(!driverNum || driverNum.length < 6 || driverNum.length > 18)
+  }
+  //验证姓名
+  checkName(name){
+    return(!name || name.length < 2 || name.length > 10)
+  }
 
   renderOnePersonInfo(value,ind,credential){
     return (
@@ -123,10 +131,17 @@ class AConfirmInformationView extends Component {
         </View>
         <View style={{marginTop:10}}>
           {this.renderRowItem('姓名',value.name,ind,'Name',value)}
-          {this.renderRowItem('联系方式',value.phone,ind,'Phone',value)}
-          {this.renderRowItem('驾驶证号',value.driverNum,ind,'DrivingLicense',value)}
+          {this.renderRowItem('联系方式',value.phone,ind,'Phone',value,11)}
+          {this.renderRowItem('驾驶证号',value.driverNum,ind,'DrivingLicense',value,18)}
           <View style={{flexDirection:'row',marginLeft:20,paddingTop:5,paddingBottom:5, alignItems: 'center'}}>
-            <SelectCarNum label={'车牌号'} style={{flex:1,marginRight:15}} plateNum={value.licensePlateNum} provincialData={ProvincialData} numberData={NumberData} onChangeValue={(text)=> { value.licensePlateNum = text; }}/>
+            <SelectCarNum
+              label={'车牌号'}
+              plateNum={value.licensePlateNum}
+              style={{flex:1,marginRight:15}}
+              onChangeValue={(text)=> {
+                value.licensePlateNum = text;
+                this.setState({refresh:true})
+              }}/>
           </View>
           <View style={{width:W, height:1, backgroundColor:backgroundGrey}} />
           <CarTypePicker
@@ -202,11 +217,11 @@ class AConfirmInformationView extends Component {
     this.setState({refresh: true})
   }
 
-  renderRowItem(title,value,index,type,item){
+  renderRowItem(title,value,index,type,item,maxLength){
     let keyboardType = (type === 'Phone' || type === 'DrivingLicense')?'numeric':'default';
     return (
       <View style={{flex:1}}>
-        <Input label={title} value={value} placeholder={`请输入${title}`} keyboardType={keyboardType} style={{flex:1, height: 40}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,type,item) }}/>
+        <Input label={title} value={value} placeholder={`请输入${title}`} maxLength={maxLength} keyboardType={keyboardType} style={{flex:1, height: 40}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,type,item) }}/>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
       </View>
     )
@@ -247,7 +262,10 @@ class AConfirmInformationView extends Component {
              <View style={{marginTop:10,marginLeft:20}}>
                {this.renderBasicItem('事故时间', basic?basic.accidentTime:'', 'AccidentTime')}
                {this.renderBasicItem('天气', basic?basic.weather:'', 'Weather')}
-               {this.renderBasicItem('事故地点', basic?basic.address:'')}
+               <View style={{flex: 1, flexDirection:'row', paddingBottom:5}}>
+                 <Text style={{width:80, fontSize: 14, color: formRightText}}>事故地点</Text>
+                 <Text style={{flex:1, fontSize: 14, color: formRightText}}>{ basic?basic.address :''}</Text>
+               </View>
              </View>
            </View>
 

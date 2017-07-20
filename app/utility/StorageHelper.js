@@ -332,7 +332,7 @@ export class StorageHelper{
       return list;
     } catch (e) {
       console.log('%c StorageHelper getUnUploadedCaseList and catch error -->> ', 'color:red', e.message);
-    } 
+    }
   }
 
   static async getUnUploadedCaseSum(){
