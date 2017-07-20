@@ -4,15 +4,22 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, FlatList, InteractionManager } from "react-native";
 import { connect } from 'react-redux';
+import Toast from '@remobile/react-native-toast';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
-import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
+import { ProgressView, XButton } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
-import { create_service } from '../../redux/index.js'; /** 调用api的Action */
-import { getStore } from '../../redux/index.js';       /** Redux的store */
-import { XButton } from '../../components/index.js';  /** 自定义组件 */
+import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 
-let textColor = '#767676';
+const textColor = '#767676';
+const ImageW = (W - 3 * 20) / 2;
+const ImageH = (220 * ImageW)/340;
+const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}
+const Titles = ['甲方', '乙方', '丙方'];
+
+const SignW = (W - 30);
+const SignH = (SignW * W)/H;
+
 class CaseDetailsView extends Component {
 
   static navigationOptions = ({ navigation }) => {
@@ -33,121 +40,319 @@ class CaseDetailsView extends Component {
   constructor(props){
     super(props);
     this.state = {
-      data: [{'title': '侧前方',imageURL:''},{'title': '侧后方',imageURL:''},{'title': '碰撞部位',imageURL:''},{'title': '其他现场照片',imageURL:''}],
       loading: false,
+      button1Text:null,
+      button2Text:null,
+      pageFlag:null,
+      pageUrl:null,
+      handleWay:null,
     }
-    this.rowNum = 3;
-    this.rowMargin = 10;
-    this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
-    this.carInfoData = ['甲方', '乙方','丙方'];
+
+    this.type = 0;  // 1 历史案件; 2 未上传案件
+    this.basic = null;
+    this.photoList = null;
+    this.personList = null;
+    this.signList = null;
+    this.factAndResponsibility = null; // 事故事实及责任
+    this.compensationAndResult = null;  // 损害赔偿及调解结果
   }
 
   componentDidMount(){
+    this.setState({loading: true});
     InteractionManager.runAfterInteractions(() => {
-      this.setState({loading: true});
-      let { taskNo } = this.props.navigation.state.params;
-      this.props.dispatch( create_service(Contract.POST_ACCIDENT_DETAILS, {taskNo}))
-        .then( res => {
-          console.log(' CaseDetailsView execute componentDidMount fetch and the res -->> ', res);
-          this.setState({loading: false})
-      })
+      let { taskNo, info } = this.props.navigation.state.params;
+      if(taskNo){
+        /** 历史案件详情 **/
+        this.props.dispatch( create_service(Contract.POST_ACCIDENT_DETAILS, {taskNo}))
+          .then( res => {
+            let { accidentTime, weather, accidentAddress, accidentPhotos, accidentPersons, accidentFact, conciliationResult, pageFlag, pageUrl } = res;
+            this.type = 1;
+            this.basic = {accidentTime:this._convertAccidentTime(accidentTime), weather, address:accidentAddress};
+
+            this.photoList = [];
+            for(let i = 0; i < accidentPhotos.length; i++){
+              let p = accidentPhotos[i];
+              this.photoList.push({photoData:p.photoUrl, photoType:p.photoTypeName})
+            }
+
+            this.personList = [];
+            for(let i = 0; i < accidentPersons.length; i++){
+              let { name, phone, driverNum, licensePlateNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl, drivingUrl} = accidentPersons[i];
+              this.personList.push({name, phone, licensePlateNum, driverNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl:{uri:driverUrl}, drivingUrl:driverUrl?{uri:driverUrl}:null/*行驶证url**/})
+            }
+
+            this.factAndResponsibility = accidentFact;
+            this.compensationAndResult = conciliationResult;
+
+            let bl = (pageFlag === '01')?'认定书':'协议书';
+            this.setState({loading: false, button1Text:`交通事故${bl}`, button2Text:'保险报案', pageFlag, pageUrl})
+        })
+      }else if(info){
+        console.log(' jajlsjfa  and info -->> ', info);
+        /*  本地待上传详情  **/
+        let { id, basic, photo, person, credentials, duty, conciliation, handleWay } = info;
+        global.currentCaseId = id;
+        this.type = 2;
+        this.basic = {accidentTime:basic.accidentTime, weather:this._convertWeather(basic.weather), address:basic.address};
+
+        this.photoList = [];
+        for(let i = 0; i < photo.length; i++){
+          let p = photo[i];
+          this.photoList.push({photoData:'data:image/png;base64,'+p.photoData, photoType:this._convertPhotoType(p.photoType)})
+        }
+
+        this.personList = [];
+        for(let i = 0; i < person.length; i++){
+          let { name, phone, driverNum, licensePlateNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate } = person[i];
+          let { photoData, photoType } = credentials[i];
+          this.personList.push({name, phone, driverNum, licensePlateNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl:{uri: 'data:image/png;base64,'+photoData}, drivingUrl:null})
+        }
+
+        this.signList = duty;
+        this.factAndResponsibility = this._convertInfoToAccidentContent(basic, person);
+        this.compensationAndResult = conciliation?conciliation : ' ';
+
+        this.setState({loading: false, button1Text:'查看离线协议书', button2Text:'上传案件', handleWay})
+      }
     })
   }
 
   renderItem({item,index}) {
     return (
-      <View style={{marginLeft:this.rowMargin,marginBottom:15}}>
-        <Image style={{width: this.rowWH,height: this.rowWH,backgroundColor:'green'}}
-               source={this.state.data[index].imageURL ? this.state.data[index].imageURL:null} />
-        <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.title}</Text>
+      <View style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
+        <Image source={{uri:item.photoData}} style={{width: ImageW, height: ImageH, justifyContent:'center', alignItems: 'center'}} />
+        <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.photoType}</Text>
       </View>
     )
   }
+
   renderRowItem(title,value){
     return (
-      <View style={{flexDirection:'row',marginLeft:15,marginTop:10,marginBottom:10}}>
-        <Text style={{fontSize:13,color:formLeftText}}>{title}</Text>
-        <Text style={{fontSize:13,color:formLeftText}}>{value}</Text>
+      <View style={{flexDirection:'row',paddingVertical:3,marginLeft:12}}>
+        <Text style={{fontSize:16,color:textColor, width:100}}>{title}</Text>
+        <Text style={{fontSize:16,color:textColor}} numberOfLines={1} >{value}</Text>
       </View>
     )
   }
-  renderOnePersonInfo(value,index){
+  renderOnePersonInfo(person, index){
     return (
-      <View style={{marginTop:10,backgroundColor:'#ffffff'}} key={index}>
-        <View style={{flexDirection:'row',marginLeft:15,paddingTop:10,paddingBottom:10}}>
-          <View style={{width:2,height:15,backgroundColor:'blue',alignSelf:'center'}}></View>
-          <Text style={{fontSize:15,color:formLeftText,marginLeft:10,alignSelf:'center'}}>{`${value}当事人`}</Text>
+      <View style={{marginTop:15, paddingHorizontal:15, paddingVertical:10, backgroundColor:'#ffffff'}} key={index}>
+        <View style={{flexDirection:'row', marginVertical:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+          <Text style={{fontSize:18,color:formLeftText,marginLeft:10}}>{`${Titles[index]}当事人`}</Text>
         </View>
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey}}></View>
-        {this.renderRowItem('姓名：','哈哈')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('联系方式：','13876543267')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('驾驶证号：','7464890864')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('车牌号：','京A12345')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('交通方式：','驾驶小型轿车')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('保险公司：','太平洋')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('保单号：','N298432647236472')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('保险到期日：','2017年2月8日')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        <View style={{marginLeft:40,marginRight:40,marginTop:10,marginBottom:10,flexDirection:'row'}}>
-          <View style = {{justifyContent:'center'}}>
-            <Image style={{width:(W-120)/2,height:(W-120)/3,backgroundColor:'blue'}}/>
-            <Text style={{fontSize:12,color:textColor,marginTop:10,alignSelf:'center'}}>驾驶证</Text>
+        {this.renderRowItem('姓名：', person.name)}
+        {this.renderRowItem('联系方式：', person.phone)}
+        {this.renderRowItem('驾驶证号：', person.driverNum)}
+        {this.renderRowItem('车牌号：', person.licensePlateNum)}
+        {this.renderRowItem('交通方式：', person.carType)}
+        <View style={{flexDirection:'row',paddingVertical:3,marginLeft:12,marginRight:5}}>
+          <Text style={{fontSize:16,color:textColor, width:100}}>保险公司：</Text>
+          <Text style={{fontSize:16,color:textColor, flex:1}} >{person.insureCompanyName}</Text>
+        </View>
+        {this.renderRowItem('保单号：', person.carInsureNumber)}
+        {this.renderRowItem('保险到期日：', person.carInsureDueDate)}
+
+        <View style={{marginVertical:10, flexDirection:'row', justifyContent:'center'}}>
+          <View style = {{alignItems:'center'}}>
+            <Image source={person.driverUrl} style={{width:ImageW,height:ImageH}}/>
+            <Text style={{fontSize:12,color:textColor,marginTop:10}}>{person.drivingUrl?'驾驶证':'证件照'}</Text>
           </View>
-          <View style={{justifyContent:'center',marginLeft:40}}>
-            <Image style={{width:(W-120)/2,height:(W-120)/3,backgroundColor:'blue'}}/>
-            <Text style={{fontSize:12,color:textColor,marginTop:10,alignSelf:'center'}}>行驶证</Text>
-          </View>
+          {
+            !person.drivingUrl? null :
+            <View style={{alignItems:'center',marginLeft:20}}>
+              <Image source={person.drivingUrl} style={{width:ImageW,height:ImageH}}/>
+              <Text style={{fontSize:12,color:textColor,marginTop:10,alignSelf:'center'}}>行驶证</Text>
+            </View>
+          }
         </View>
       </View>
     )
   }
   //下一步
-  gotoNext(){
-    this.props.navigation.navigate('LookConclusionView');
+  gotoNext(t){
+    if(this.type === 1){ // 历史案件
+      if(t === 1){
+        let { button1Text, pageUrl } = this.state;
+        this.props.navigation.navigate('CommonWebView', {title:button1Text, url:pageUrl})
+      }else{
+        Toast.showShortCenter('此功能暂未开通');
+      }
+    }else if(this.type === 2){  // 本地案件
+      if(t === 1){
+        this.props.navigation.navigate('CertificateView', {handleWay:this.state.handleWay});
+      }else{
+        this.props.navigation.navigate('UploadProgressView', {caseType:1});
+      }
+    }
   }
-  renderHeader(){
+
+  renderBasic(basic){
+    if(!basic) return null;
+
     return (
-      <View style={{marginTop:10, backgroundColor:'#ffffff'}}>
-        {this.renderRowItem('事故时间：','2017-06-03 18:27')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('天气：','晴')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('事故地点：','北京市朝阳区')}
-        <View style={{width:W,height:1,backgroundColor:backgroundGrey,marginLeft:15}}></View>
-        {this.renderRowItem('事故照片：','')}
-        <View style={{marginRight:this.rowMargin,marginTop:10}}>
-          <FlatList
-            keyExtractor={(data,index) => {return index}}
-            showsVerticalScrollIndicator={false}
-            data={this.state.data}
-            numColumns={this.rowNum}
-            renderItem={this.renderItem.bind(this)}
-          />
+      <View style={{marginTop:15, paddingHorizontal:15, paddingVertical:10, backgroundColor:'#ffffff'}}>
+        <View style={{flexDirection:'row', marginVertical:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+          <Text style={{fontSize:18,color:formLeftText,marginLeft:10}}>基本信息</Text>
+        </View>
+        {this.renderRowItem('事故时间：', basic.accidentTime)}
+        {this.renderRowItem('天气：', basic.weather)}
+        <View style={{flexDirection:'row',paddingVertical:3,marginLeft:12,marginRight:15}}>
+          <Text style={{fontSize:16,color:textColor, width:100}}>事故地点: </Text>
+          <Text style={{fontSize:16,color:textColor, flex:1}} >{basic.address}</Text>
         </View>
       </View>
     )
   }
+
+  renderFactAndResponsibility(content){
+    if(!content) return null;
+
+    return (
+      <View style={{marginTop:15, paddingHorizontal:15, paddingVertical:10, backgroundColor:'#ffffff'}}>
+        <View style={{flexDirection:'row', marginVertical:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+          <Text style={{fontSize:18,color:formLeftText,marginLeft:10}}>事故事实及责任</Text>
+        </View>
+        <Text style={{color:textColor, fontSize:16}}>{'   '+content}</Text>
+      </View>
+    )
+  }
+
+  renderConciliation(content){
+    if(!content) return null;
+
+    return (
+      <View style={{marginTop:15, paddingHorizontal:15, paddingVertical:10, backgroundColor:'#ffffff'}}>
+        <View style={{flexDirection:'row', marginVertical:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+          <Text style={{fontSize:18,color:formLeftText,marginLeft:10}}>损害赔偿及调解结果</Text>
+        </View>
+        <Text style={{color:textColor, fontSize:16}}>{'      '+content}</Text>
+      </View>
+    )
+  }
+
+  renderPhotos(photos){
+    if(!photos) return null;
+
+    return(
+      <View style={{marginTop:15, paddingHorizontal:15, paddingVertical:10, backgroundColor:'white'}}>
+        <View style={{flexDirection:'row', marginVertical:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+          <Text style={{fontSize:18,color:formLeftText,marginLeft:10}}>现场照片</Text>
+        </View>
+        <FlatList
+          keyExtractor={(data,index) => {return index}}
+          showsVerticalScrollIndicator={false}
+          data={photos}
+          numColumns={2}
+          renderItem={this.renderItem.bind(this)}
+          extraData={this.state}
+        />
+      </View>
+    )
+  }
+
+  renderSignList(signList){
+    if(!signList) return null;
+
+    return(
+      <View style={{marginTop:15, paddingHorizontal:15, paddingVertical:10, backgroundColor:'#ffffff'}}>
+        <View style={{flexDirection:'row', marginVertical:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+          <Text style={{fontSize:18,color:formLeftText,marginLeft:10}}>当事人签字</Text>
+        </View>
+        {signList.map((sign, index) => {
+          let p = this.personList[index];
+          let text = Titles[index]+'当事人 - '+p.name+`(${p.licensePlateNum})`
+          return(
+            <View key={index}>
+              <Text style={{fontSize:14, color:textColor, marginTop:10}}>{text}</Text>
+              <Image source={{uri:'data:image/png;base64,'+sign.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
+            </View>
+          )
+        })}
+      </View>
+    )
+  }
+
   render(){
     return(
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {this.renderHeader()}
-          {this.carInfoData.map((value,index) => this.renderOnePersonInfo(value,index))}
-          <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-            <XButton title='查看交通事故认定书' onPress={() => this.gotoNext()}/>
-          </View>
+          {this.renderBasic(this.basic)}
+          {this.renderPhotos(this.photoList)}
+          {this.personList? this.personList.map((value,index) => this.renderOnePersonInfo(value,index)) : null}
+          {this.renderFactAndResponsibility(this.factAndResponsibility)}
+          {this.renderConciliation(this.compensationAndResult)}
+          {this.renderSignList(this.signList)}
+
+          {
+            this.type === 0? null :
+            <View style={{backgroundColor:'white', paddingVertical:50, alignItems:'center'}}>
+              <XButton title={'查看'+this.state.button1Text} onPress={() => this.gotoNext(1)} style={{backgroundColor:'#267BD8',borderRadius:20}} textStyle={{color:'#ffffff',fontSize:14}}/>
+              <View style={{height: 30}} />
+              <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+            </View>
+          }
         </ScrollView>
         <ProgressView show={this.state.loading} hasTitleBar={true} />
       </View>
 
     );
+  }
+
+  /** Private */
+  _convertInfoToAccidentContent(basic, person){
+    if(!basic) return '';
+
+    let num = person.length;
+    let content = '';
+    if(num === 1){
+      let p = person[0];
+      content = `    ${basic.accidentTime}, ${p.name}(驾驶证号:${p.driverNum})驾驶车牌号为${p.licensePlateNum}的${p.carType}, 在${basic.address}发生交通事故。`
+    }else if(num === 2){
+      let p1 = person[0];
+      let p2 = person[1];
+      content = `    ${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}，与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}发生交通事故。`
+    }else if(num === 3){
+      let p1 = person[0];
+      let p2 = person[1];
+      let p3 = person[2];
+      content = `    ${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}，及${p3.name}(驾驶证号:${p3.driverNum})驾驶车牌号为${p3.licensePlateNum}的${p3.carType}发生交通事故。`
+    }
+
+    return content;
+  }
+
+  /** Private **/
+  _convertWeather(code){
+    let weatherList = getStore().getState().dictionary.weatherList;
+    let name = null;
+    for(let i = 0; i < weatherList.length; i++){
+      let w = weatherList[i];
+      if(w.code == code){
+        name = w.name;
+        break;
+      }
+    }
+    return name;
+  }
+
+  _convertPhotoType(typeCode){
+    let code = Number(typeCode);
+    if(code < 50){
+      return PhotoTypes[typeCode];
+    }else{
+      return '其他现场照' + String(code-50);
+    }
+  }
+
+  _convertAccidentTime(time){
+    if(time) return time.substring(0, time.length - 3);
+    return ''
   }
 
 }

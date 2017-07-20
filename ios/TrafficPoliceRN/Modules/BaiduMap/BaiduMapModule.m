@@ -33,19 +33,9 @@ RCT_REMAP_METHOD(location,
   self.reject = reject;
   
   dispatch_async(dispatch_get_main_queue(), ^{
-    // 先初始化BaiduMapManager
-     self.mapManager = [[BMKMapManager alloc] init];
-    
-    // 默认百度坐标系是BD09（BMK_COORDTYPE_BD09LL）坐标.
-    [BMKMapManager setCoordinateTypeUsedInBaiduMapSDK:BMK_COORDTYPE_BD09LL];
-    
-    // 启动BaiduMapManger, 配置百度地图应用AK, 授权成功后才能开始定位，授权回调在下边
-    BOOL flag = [self.mapManager start:@"ouL4ZpqMYoGhpxxO8cZzOCbHtwknIpcg" generalDelegate:self];
-    if(!flag){
-      NSMutableDictionary *map = [[NSMutableDictionary alloc] initWithCapacity:1];
-      [map setValue:@(-98) forKey:@"errorCode"];
-      self.resolve(map);
-    }
+    self.locService = [[BMKLocationService alloc]init];
+    self.locService.delegate = self;
+    [self.locService startUserLocationService];
   });
   
 }
@@ -101,15 +91,18 @@ RCT_REMAP_METHOD(location,
     [map setValue:@(error) forKey:@"errorCode"];
     self.resolve(map);
   }
+  
+  location2D = nil;
+  [self.locService stopUserLocationService];
 }
 
 
 - (void)didStopLocatingUser
 {
-  NSLog(@"--- 停止定位");
-  NSMutableDictionary *map = [[NSMutableDictionary alloc] initWithCapacity:1];
-  [map setValue:@(-100) forKey:@"errorCode"];
-  self.resolve(map);
+//  NSLog(@"--- 停止定位");
+//  NSMutableDictionary *map = [[NSMutableDictionary alloc] initWithCapacity:1];
+//  [map setValue:@(-100) forKey:@"errorCode"];
+//  self.resolve(map);
 }
 
 - (void)didFailToLocateUserWithError:(NSError *)error

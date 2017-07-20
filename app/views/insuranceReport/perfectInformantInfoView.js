@@ -13,6 +13,7 @@ import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import Picker from 'react-native-picker';
+import Tool from '../../utility/Tool'
 
 class PerfectInformantInfoView extends Component {
 
@@ -27,12 +28,21 @@ class PerfectInformantInfoView extends Component {
                        {title:'现场发现驾驶员有饮酒迹象',isSel:false},
                        {title:'当事车辆有改变使用性质情况',isSel:false},
                        {title:'当事车辆有超长、超宽、超高、超重情况',isSel:false}];
-    // this.partyData = [{carNum:'冀F12332',name:'123',drivingLicence:'13217788765456556',engineNumber:'',frameNumber:'',drivingLicenceValidte:true,drivingPermitValidte:true,isMatching:true,selDataArr:this.selDataArr},{carNum:'京F12332',name:'988',drivingLicence:'13217788765456556',engineNumber:'',frameNumber:'',drivingLicenceValidte:true,drivingPermitValidte:true,isMatching:true,selDataArr:this.selDataArr}];
-    this.partyData = null
+    this.partyData = null;
+  }
+  componentWillMount(){
+    let surveyno = this.props.navigation.state.params
+    let surveytime = Tool.getTime('yyyy-MM-dd HH:mm:ss')
+    let groupname = global.personal.depName
+    let policetypen = global.personal.policeType
+    let policename = global.personal.policeName
+    let policephone = global.personal.mobile
+    this.submitData = {surveyno:surveyno,taskno:'1301201605100835281420003',surveytime:surveytime,groupname:groupname,policetypen:policetypen}
   }
   //下一步
   gotoNext(){
 
+    this.props.navigation.navigate('ExploreTakePhotoView');
   }
   onChangeText(text,index,type){
     switch (type) {
@@ -47,21 +57,17 @@ class PerfectInformantInfoView extends Component {
     }
   }
   componentDidMount(){
-    let { surveyno } = this.props.navigation.state.params
     this.setState({
       loading: true
     })
-    this.props.dispatch( create_service(Contract.POST_SURVEYCHO_INFO, {surveyno:surveyno}))
+    this.props.dispatch( create_service(Contract.POST_SURVEYCHO_INFO, {taskno:'1301201605100835281420003'}))
       .then( res => {
+        if (res && res.data) {
+          this.partyData = res.data
+        }
         this.setState({
           loading: false
         })
-        if (res && res.data) {
-          this.partyData = res.data
-        } else {
-          //获取本地存储的数据
-
-        }
     })
   }
   renderRowItem(title,value){
@@ -175,21 +181,21 @@ class PerfectInformantInfoView extends Component {
   }
   render(){
     return(
-      <ScrollView style={styles.container}
-                   showsVerticalScrollIndicator={false}>
-         <View style={{paddingVertical:10}}>
-           <Text style={{fontSize:13,color:'#717171',marginLeft:15}}>
-             请完善当事人及现场情况信息：
-           </Text>
-         </View>
-         {this.partyData ? <View style={{flex:1}}>
-           {this.partyData.surveylist.map((value,index) => this.renderOneParty(value,index))}
-         </View>:null}
-         <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-           <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
-         </View>
-         <ProgressView show={this.state.loading}/>
-      </ScrollView>
+        <ScrollView style={styles.container}
+                     showsVerticalScrollIndicator={false}>
+           <View style={{paddingVertical:10}}>
+             <Text style={{fontSize:13,color:'#717171',marginLeft:15}}>
+               请完善当事人及现场情况信息：
+             </Text>
+           </View>
+           {this.partyData ? <View style={{flex:1}}>
+             {this.partyData.surveylist.map((value,index) => this.renderOneParty(value,index))}
+           </View>:null}
+           <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
+             <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
+           </View>
+           <ProgressView show={this.state.loading}/>
+        </ScrollView>
     );
   }
 

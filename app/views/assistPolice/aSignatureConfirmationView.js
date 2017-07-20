@@ -49,7 +49,7 @@ class ASignatureConfirmationView extends Component {
           this.dutyList.push({title:PersonalTitles[i], phone:d.phone, code: '', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:d.licensePlateNum, dutyName:d.dutyName, dutyType:'', codeText:'获取验证码',codeSecondsLeft: 60,showSpeekCode: false, codeColor:''})
         }
       }else{
-        let { localDutyList } = info;
+        let { localDutyList, dutyList, person } = info;
         for(let i=0; i<localDutyList.length; i++){
           let l = localDutyList[i];
           this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码',codeSecondsLeft: 60,showSpeekCode: false, codeColor:''})
@@ -92,6 +92,9 @@ class ASignatureConfirmationView extends Component {
         delete d.code;
         delete d.dutyName;
         delete d.codeText;
+        delete d.codeColor;
+        delete d.codeSecondsLeft;
+        delete d.showSpeekCode;
         this.dutyList[i] = d;
       }
 

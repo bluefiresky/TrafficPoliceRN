@@ -15,6 +15,7 @@ export { SignatureView } from './public/signatureView.js';                  /** 
 export { UploadProgressView } from './public/uploadProgressView.js';        /** 上传进度页 **/
 export { UploadSuccessView } from './public/uploadSuccessView.js';          /** 上传成功页 **/
 export { CertificateView } from './public/certificateView.js';              /** 离线认定书或协议书 **/
+export { CommonWebView } from './public/commonWebView.js';                  /** 通用网页 **/
 
 /** 民警 */
 export { PpHomePageView } from './peoplePolice/ppHomePageView.js';                            /** 民警首页 */

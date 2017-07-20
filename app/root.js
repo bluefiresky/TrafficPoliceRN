@@ -13,7 +13,7 @@ import { StackNavigator } from 'react-navigation';
 import { backgroundGrey, mainBule, W } from './configs/index.js';
 
 import {
-  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,SignatureView,UploadProgressView,UploadSuccessView,CertificateView,
+  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,SignatureView,UploadProgressView,UploadSuccessView,CertificateView,CommonWebView,
   /** peoplePolice */ PpHomePageView,AccidentBasicInformationView,PhotoEvidenceVeiw,GatheringPartyInformationView,GatheringCardPhotoView,ConfirmInformationView,AccidentFactAndResponsibilityView,SignatureConfirmationView,
   /** assistPolice */ ApHomePageView,AAccidentBasicInformationView,APhotoEvidenceVeiw,SelectHandleTypeView,AGatheringPartyInformationView,AGatheringCardPhotoView,AConfirmInformationView,AccidentConditionView,AccidentConfirmResponView,ASignatureConfirmationView,AAccidentFactAndResponsibilityView,WaitRemoteResponsibleView,ResponsibleResultView,
   /** insuranceReport */
@@ -55,6 +55,7 @@ const PublicNavigator = StackNavigator({
   // UploadProgressView: {screen: UploadProgressView, navigationOptions: {title: '上传进度'}},
   // UploadSuccessView: {screen: UploadSuccessView, navigationOptions: {title: '上传成功'}},
   // CertificateView: {screen: CertificateView },
+  // CommonWebView: {screen: CommonWebView },
   //
   // //协警
   // ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} },
@@ -80,16 +81,16 @@ const PublicNavigator = StackNavigator({
   // ConfirmInformationView: { screen: ConfirmInformationView, navigationOptions: { title: '确认信息'} },
   // AccidentFactAndResponsibilityView: { screen: AccidentFactAndResponsibilityView, navigationOptions: { title: '事故事实及责任'} },
   // SignatureConfirmationView: { screen: SignatureConfirmationView, navigationOptions: { title: '签字确认'} },
-  //
-  // //保险报案
+
+  //保险报案
   InsuranceReportPartyInfoView: { screen: InsuranceReportPartyInfoView, navigationOptions: { title: '保险报案'} },
-  SelectInInsuranceCompanyView: { screen: SelectInInsuranceCompanyView, navigationOptions: { title: '保险报案'} },
-  SelectCityView: { screen: SelectCityView, navigationOptions: { title: '保险报案'} },
-  PerfectInformantInfoView: { screen: PerfectInformantInfoView, navigationOptions: { title: '完善报案人信息'} },
-  ExploreTakePhotoView: { screen: ExploreTakePhotoView, navigationOptions: { title: '查勘拍照'} },
-  ConfirmReportPartyInfoView: { screen: ConfirmReportPartyInfoView, navigationOptions: { title: '确认信息'} },
   ExploreSuccessView: { screen: ExploreSuccessView, navigationOptions: { title: '完成'} },
-  InsuranceReportSuccessView: { screen: InsuranceReportSuccessView, navigationOptions: { title: '完成'} }
+  ConfirmReportPartyInfoView: { screen: ConfirmReportPartyInfoView, navigationOptions: { title: '确认信息'} },
+  ExploreTakePhotoView: { screen: ExploreTakePhotoView, navigationOptions: { title: '查勘拍照'} },
+  PerfectInformantInfoView: { screen: PerfectInformantInfoView, navigationOptions: { title: '完善报案人信息'} },
+  InsuranceReportSuccessView: { screen: InsuranceReportSuccessView, navigationOptions: { title: '完成'} },
+  SelectInInsuranceCompanyView: { screen: SelectInInsuranceCompanyView, navigationOptions: { title: '保险报案'} },
+  SelectCityView: { screen: SelectCityView, navigationOptions: { title: '保险报案'} }
 },{
   headerMode: 'screen',
   navigationOptions: () => (publicNavigationOptions)

@@ -45,7 +45,12 @@ export default class HistoricalCaseCellView extends Component {
     this.props.navigation.navigate('CaseDetailsView', {taskNo})
   }
 
-  caseCellClick(step, handleWay, currentCaseId, caseType){
+  caseCellClick(step, handleWay, currentCaseId, caseType, rowData){
+    if(caseType === 1){
+      this.props.navigation.navigate('CaseDetailsView', {info:rowData});
+      return;
+    }
+    
     let routeName = null;
     if(global.personal.policeType === 2){
       routeName = PStepToView[step];
@@ -103,7 +108,7 @@ export default class HistoricalCaseCellView extends Component {
   _renderLocalCell(rowData, type){
     let { basic, person, step, handleWay, id } = rowData;
     return (
-      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.caseCellClick(step, handleWay, id, type)}>
+      <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.caseCellClick(step, handleWay, id, type, rowData)}>
         <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
           <View style={styles.left}>
             <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>

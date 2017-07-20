@@ -38,8 +38,8 @@ export const post_survey_finish = ({surveyno,version}) => {
   return http_post( 'survey.finish', {surveyno}, {}, version )
 }
 /** 保险报案9-获取查勘页面回显信息接口 */
-export const post_surveyecho_info = ({surveyno,version}) => {
-  return http_post( 'surveyecho.info', {surveyno}, {}, version )
+export const post_surveyecho_info = ({taskno,version}) => {
+  return http_post( 'surveyecho.info', {taskno}, {}, version )
 }
 /** 保险报案10-获取查勘历史照片接口 */
 export const post_survey_photos = ({taskno,version}) => {

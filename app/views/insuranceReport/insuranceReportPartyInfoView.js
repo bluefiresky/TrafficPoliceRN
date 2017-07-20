@@ -13,7 +13,7 @@ import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import Picker from 'react-native-picker';
-
+import Tool from '../../utility/Tool'
 class InsuranceReportPartyInfoView extends Component {
 
   constructor(props){

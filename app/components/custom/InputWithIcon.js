@@ -7,7 +7,12 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, TouchableWithoutFeedback, TouchableHighlight, TouchableNativeFeedback, Platform } from 'react-native';
 import { InputH, W, borderColor, formLeftText, formRightText, commonText, placeholderColor } from '../../configs/index.js';
 
-const IconRightSize = Platform.OS === 'ios'? 15 : 0;
+const IconRightSize = Platform.select({ android: 0, ios: 15 });
+const TextInputStyle = Platform.select({
+  android: {includeFontPadding:false,textAlignVertical:'center'},
+  ios: {textAlign:'justify', paddingBottom:4}
+});
+
 export class InputWithIcon extends Component {
 
 
@@ -132,24 +137,27 @@ export class InputWithIcon extends Component {
 
     return(
       <View style={ [{paddingLeft: 20, flexDirection: 'row', height: InputH, backgroundColor: 'white'}, border, style && style] }>
-        <View style={{width: labelWidth? labelWidth : 60, justifyContent: 'center', marginRight:IconRightSize}}>
+        <View style={{width: labelWidth? labelWidth : 60, justifyContent: 'center', alignItems:'center'}}>
           <Image style={{height: 20, width: 20, resizeMode:'contain'}} source={icon}/>
         </View>
-        <TextInput
-          style={{flex: 1, fontSize: 16, color: commonText, textAlign:'justify', includeFontPadding:false, textAlignVertical:'center'}}
-          onChangeText={ (text) => { this._onChangeText(text) } }
-          value={value}
-          autoFocus={autoFocus}
-          editable={editable === false? false : true}
-          keyboardType={keyboardType? keyboardType : 'default'}
-          placeholder={placeholder}
-          placeholderTextColor={placeholderColor}
-          selectTextOnFocus={selectTextOnFocus}
-          secureTextEntry={secure}
-          underlineColorAndroid={'transparent'}
-          maxLength={maxLength}
-          multiline={multiline}
-        />
+        {/** 兼容ios，ios在多行情况下垂直居中，而android默认填充整个view **/}
+        <View style={{flex:1, justifyContent:'center'}}>
+          <TextInput
+            style={[{fontSize:16, color:commonText, paddingLeft:10}, TextInputStyle]}
+            onChangeText={ (text) => { this._onChangeText(text) } }
+            value={value}
+            autoFocus={autoFocus}
+            editable={editable === false? false : true}
+            keyboardType={keyboardType? keyboardType : 'default'}
+            placeholder={placeholder}
+            placeholderTextColor={placeholderColor}
+            selectTextOnFocus={selectTextOnFocus}
+            secureTextEntry={secure}
+            underlineColorAndroid={'transparent'}
+            maxLength={maxLength}
+            multiline={multiline}
+          />
+        </View>
         {ClearButton}
       </View>
     );

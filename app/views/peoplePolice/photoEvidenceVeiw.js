@@ -28,9 +28,9 @@ const photoOption = {
   takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
   chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
   mediaType: 'photo',
-  maxWidth: 1920,
-  maxHeight: 1080,
-  quality: 0.5,
+  maxWidth: W,
+  maxHeight: H,
+  quality: 1,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
 
@@ -81,6 +81,16 @@ class PhotoEvidenceVeiw extends Component {
   reTakePhoto(){
     this.photoList[this.currentImgaeIndex].photoData = null;
     this.setState({ showBigImage: false })
+    let self = this;
+    ImagePicker.showImagePicker(photoOption, (response) => {
+      if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+        console.log(' the ImagePicker response -->> ', response);
+        let p = self.photoList[this.currentImgaeIndex];
+        p.photoData = response.data;
+        p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+        self.setState({reRender: true})
+      }
+    });
   }
   //删除照片
   deletePhoto(){
@@ -92,12 +102,20 @@ class PhotoEvidenceVeiw extends Component {
     }
     this.setState({ showBigImage: false })
   }
+  
   //增加其他照片
   addOtherPhoto(){
-    let otherNum = this.photoList.length - 2;
-    let otherPhotoType = 50 + otherNum;
-    this.photoList.push({'title': `其它现场照片${otherNum}`,image:EOtherIcon,photoData:null,photoType:`${otherPhotoType}`,photoDate:''});
-    this.setState({reRender: true})
+    let self = this;
+    ImagePicker.showImagePicker(photoOption, (response) => {
+      if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+        console.log(' the ImagePicker response -->> ', response);
+        let otherNum = self.photoList.length - 2;
+        let otherPhotoType = 50 + otherNum;
+        self.photoList.push({'title': `其它现场照片${otherNum}`,image:EOtherIcon,photoData:response.data,photoType:`${otherPhotoType}`,photoDate:Utility.formatDate('yyyy-MM-dd hh:mm:ss')});
+        self.setState({reRender: true})
+      }
+    });
+
   }
   //取证完成
   commit() {
