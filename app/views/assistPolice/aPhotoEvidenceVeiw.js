@@ -127,10 +127,11 @@ class APhotoEvidenceVeiw extends Component {
           return
         }
       }
+
+      let submitList = [];
       for(let i = 0; i < this.photoList.length; i++){
         let p = this.photoList[i];
-        delete p.title;
-        delete p.image;
+        submitList.push({photoData: p.photoData, photoType: p.photoType, photoDate: p.photoDate})
       }
 
       let self = this;
@@ -142,7 +143,7 @@ class APhotoEvidenceVeiw extends Component {
           }},
           right:{label: '采集当事人信息', event: async () => {
             self.setState({loading: true})
-            let success = await StorageHelper.saveStep1(this.photoList)
+            let success = await StorageHelper.saveStep1(submitList)
             self.setState({showTip: false, loading: false});
             if(success) self.props.navigation.navigate('SelectHandleTypeView');
           }}

@@ -112,8 +112,9 @@ class ASignatureConfirmationView extends Component {
         let d = this.dutyList[i];
         signatureList.push({licensePlateNum:d.licensePlateNum, signContent:d.signData, refuseFlag:d.refuseFlag})
       }
-      this.res = this.props.dispatch( create_service(Contract.POST_GENERATE_DUTYCONFIRMATION, {taskNo: this.taskNo, signatureList}))
-      if(res) this.props.navigation.navigate('UploadSuccessView', {content:'案件信息上传成功，交通事故认定书稍后将以短信形式发送至当事人手机。'});
+      this.res = await this.props.dispatch( create_service(Contract.POST_GENERATE_DUTYCONFIRMATION, {taskNo: this.taskNo, signatureList:JSON.stringify(signatureList)}))
+      this.setState({loading: false});
+      if(this.res) this.props.navigation.navigate('UploadSuccessView', {content:'案件信息上传成功，交通事故认定书稍后将以短信形式发送至当事人手机。'});
     }
 
   }
@@ -239,7 +240,7 @@ class ASignatureConfirmationView extends Component {
           }
 
           {
-            this.handleWay && this.handleWay != '04'? null :
+            this.handleWay && this.handleWay === '04'? null :
             <TouchableHighlight style={{marginLeft:10, width:W/2}} underlayColor='transparent'
               onPress={()=>{
                 if(value.refuseFlag === '02') value.refuseFlag = '01';
@@ -258,6 +259,7 @@ class ASignatureConfirmationView extends Component {
                   takeSnapshot(tmp, {format: "jpeg",quality: 0.8,result:'base64'})
                     .then(uri => {
                       value.signData = uri;
+                      value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss');
                       self.setState({refresh:true})
                     });
                 }

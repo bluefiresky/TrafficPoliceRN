@@ -222,6 +222,7 @@ class SignatureConfirmationView extends Component {
                 takeSnapshot(tmp, {format: "jpeg",quality: 0.8,result:'base64'})
                   .then(uri => {
                     value.signData = uri;
+                    value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss');
                     self.setState({refresh:true})
                   });
               }
