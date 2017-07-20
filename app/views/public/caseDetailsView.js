@@ -67,7 +67,7 @@ class CaseDetailsView extends Component {
           .then( res => {
             let { accidentTime, weather, accidentAddress, accidentPhotos, accidentPersons, accidentFact, conciliationResult, pageFlag, pageUrl } = res;
             this.type = 1;
-            this.basic = {accidentTime, weather, address:accidentAddress};
+            this.basic = {accidentTime:this._convertAccidentTime(accidentTime), weather, address:accidentAddress};
 
             this.photoList = [];
             for(let i = 0; i < accidentPhotos.length; i++){
@@ -146,7 +146,10 @@ class CaseDetailsView extends Component {
         {this.renderRowItem('驾驶证号：', person.driverNum)}
         {this.renderRowItem('车牌号：', person.licensePlateNum)}
         {this.renderRowItem('交通方式：', person.carType)}
-        {this.renderRowItem('保险公司：', person.insureCompanyName)}
+        <View style={{flexDirection:'row',paddingVertical:3,marginLeft:12,marginRight:5}}>
+          <Text style={{fontSize:16,color:textColor, width:100}}>保险公司：</Text>
+          <Text style={{fontSize:16,color:textColor, flex:1}} >{person.insureCompanyName}</Text>
+        </View>
         {this.renderRowItem('保单号：', person.carInsureNumber)}
         {this.renderRowItem('保险到期日：', person.carInsureDueDate)}
 
@@ -195,8 +198,10 @@ class CaseDetailsView extends Component {
         </View>
         {this.renderRowItem('事故时间：', basic.accidentTime)}
         {this.renderRowItem('天气：', basic.weather)}
-        {this.renderRowItem('事故地点：', basic.address)}
-
+        <View style={{flexDirection:'row',paddingVertical:3,marginLeft:12,marginRight:15}}>
+          <Text style={{fontSize:16,color:textColor, width:100}}>事故地点: </Text>
+          <Text style={{fontSize:16,color:textColor, flex:1}} >{basic.address}</Text>
+        </View>
       </View>
     )
   }
@@ -343,6 +348,11 @@ class CaseDetailsView extends Component {
     }else{
       return '其他现场照' + String(code-50);
     }
+  }
+
+  _convertAccidentTime(time){
+    if(time) return time.substring(0, time.length - 3);
+    return ''
   }
 
 }
