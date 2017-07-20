@@ -232,7 +232,7 @@ export class StorageHelper{
       this.loadRes.step = '6';
       this.loadRes.supplementary = supplementary;
       this.loadRes.conciliation = conciliation;
-      this.localDutyList = localDutyList;
+      this.loadRes.localDutyList = localDutyList;
       let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep6 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 

@@ -32,9 +32,9 @@ class AGatheringPartyInformationView extends Component {
     this.partyDrivingLicense = '';
     this.partyInsuranceCertificateNum = '';
     //提交的内容
-    this.jiafangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:'',carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
-    this.yifangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:'',carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
-    this.bingfangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:'',carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.jiafangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.yifangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.bingfangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
     this.carInfoData = [{title:'甲方',carNumArr:[getProvincialData(),getNumberData()]}];
     this.addOtherTitle = ['乙方','丙方'];
     this.addOtherInfo = [this.yifangInfo,this.bingfangInfo];

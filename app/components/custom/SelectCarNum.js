@@ -19,15 +19,21 @@ export class SelectCarNum extends Component {
       show: false,
       showData:null,
     }
-    this.currSeleIndex = -1;
+    this.currSeleIndex = 1;
     this.viewWidth = 0;
     this.returnText = '';
   }
   showData(type){
     if(!type){
       if(!this.state.show){
-        if(this.currSeleIndex == 0 || this.currSeleIndex == -1) this.setState({showData: provincialData, show:true});
-        if(this.currSeleIndex == 1) this.setState({showData: numberData, show:true})
+        let { plateNum } = this.props;
+        if(!plateNum){
+          this.currSeleIndex = 0;
+          this.setState({showData: provincialData, show:true});
+        }else{
+          if(this.currSeleIndex == 0) this.setState({showData: provincialData, show:true});
+          if(this.currSeleIndex == 1) this.setState({showData: numberData, show:true})
+        }
       }else{
         this.setState({show:false})
       }
@@ -61,8 +67,8 @@ export class SelectCarNum extends Component {
   //返回值
   itemClick(value, index){
     let { plateNum } = this.props;
-    console.log(' itemClick and the value -->> ', value);
-    console.log(' itemClick and the plateNum -->> ', plateNum);
+    // console.log(' itemClick and the value -->> ', value);
+    // console.log(' itemClick and the plateNum -->> ', plateNum);
     if(plateNum){
       if(plateNum.length >= 9) this.props.onChangeValue(plateNum);
       else this.props.onChangeValue(plateNum + value);

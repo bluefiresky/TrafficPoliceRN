@@ -53,7 +53,7 @@ class WaitRemoteResponsibleView extends Component {
           </View>
           <View style={{marginTop:20,marginLeft:15,width:W-30}}>
             <Text style={{alignSelf:'center',fontSize:14,color:formLeftText,lineHeight:20}}>
-              {'若较长时间未接收到后台民警的定责结果，请拨打以下电话咨询：' + global.personal.depTelephone}
+              若较长时间未接收到后台民警的定责结果，请拨打以下电话咨询：
               <Text style={{color:mainBule}} onPress={()=>{Tool.callPhoneNum(global.personal.depTelephone,true)}}>
                 {global.personal.depTelephone}
               </Text>

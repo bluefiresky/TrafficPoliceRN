@@ -45,7 +45,7 @@ class SignatureView extends Component {
   render(){
     return(
       <View style={styles.container}>
-        <View style={{height:TitlebarHeight, flexDirection: 'row', paddingLeft:20, paddingTop:10 }}>
+        <View style={{flexDirection: 'row', paddingLeft:20, paddingVertical:10}}>
           <TouchableHighlight style={styles.buttonStyle} onPress={() => { this._goBack() }} underlayColor={'transparent'}>
             <Text style={{color:mainBule, fontSize: 14}}>返回</Text>
           </TouchableHighlight>
