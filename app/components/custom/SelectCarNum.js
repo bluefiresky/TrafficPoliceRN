@@ -7,6 +7,10 @@ import React, { Component } from 'react';
 
 import { View, Text, StyleSheet, TextInput, TouchableHighlight } from 'react-native';
 import { W, formLeftText, formRightText,backgroundGrey, mainBule } from '../../configs/index.js';
+import { getProvincialData, getNumberData } from '../../configs/index.js';
+
+const provincialData = getProvincialData();
+const numberData = getNumberData();
 
 export class SelectCarNum extends Component {
   constructor(props) {
@@ -18,136 +22,117 @@ export class SelectCarNum extends Component {
     this.currSeleIndex = -1;
     this.viewWidth = 0;
     this.returnText = '';
-    this.selectPro = '';
-    this.selectNum = ''
   }
-  showData(type,data){
-    if(this.currSeleIndex == -1){
-      if(type === 'provincialData') this.currSeleIndex = 0;
-      if(type === 'numberData') this.currSeleIndex = 1;
-      this.setState({showData: data, show:true})
-    }else{
-      let show;
-      if (type == 'provincialData') {
-        show = (this.currSeleIndex === 0)?false:true;
-        this.currSeleIndex = show?0:-1;
-      } else if (type == 'numberData') {
-        show = (this.currSeleIndex === 1)?false:true;
-        this.currSeleIndex = show?1:-1;
+  showData(type){
+    if(!type){
+      if(!this.state.show){
+        if(this.currSeleIndex == 0 || this.currSeleIndex == -1) this.setState({showData: provincialData, show:true});
+        if(this.currSeleIndex == 1) this.setState({showData: numberData, show:true})
+      }else{
+        this.setState({show:false})
       }
-      this.setState({ showData:data, show })
+      return;
     }
 
-
-  }
-  clickItem(value,index){
-    let { style, provincialData, numberData } = this.props;
-    if (this.currSeleIndex == 0) {
-      this.setState({
-        showData:numberData
-      })
-      this.selectPro = value;
+    // 当前以显示的切换装填
+    if(type === 'province') {
+      this.currSeleIndex = 0;
+      this.setState({showData: provincialData, show:true})
+    }
+    if(type === 'number'){
       this.currSeleIndex = 1;
-      for (var i = 0; i < provincialData.length; i++) {
-         provincialData[i].isSelcted = (i == index ? true : false)
-      }
-      this.selectNum = '';
-      this.returnValue()
-    } else if (this.currSeleIndex == 1) {
-      this.setState({
-        showData:numberData
-      })
-      this.selectNum = this.selectNum + value;
-      this.returnValue()
-      for (var i = 0; i < numberData.length; i++) {
-        numberData[i].isSelcted = (i == index)
-      }
-      if (this.selectNum.length == 8) {
-        this.setState({
-          show:false
-        })
-      }
+      this.setState({showData: numberData, show:true})
     }
   }
+
   //删除
   deleteClick() {
-    let { numberData } = this.props;
-    if (this.selectNum.length > 0) {
-      this.selectNum = this.selectNum.substring(0,this.selectNum.length-1);
-      this.returnValue()
-      for (var i = 0; i < numberData.length; i++) {
-        let lastStr = this.selectNum.substr(this.selectNum.length-1,1)
-        numberData[i].isSelcted = (lastStr == numberData[i].title)
-      }
-      this.setState({
-        show:true
-      })
+    let { plateNum, onChangeValue } = this.props;
+    if(plateNum){
+      let len = plateNum.length;
+      plateNum = plateNum.substring(0, len-1);
+      onChangeValue(plateNum);
     }
   }
   //确定
   confirmClick(){
-    this.currSeleIndex = -1;
     this.setState({ show: false })
-    this.returnValue()
   }
   //返回值
-  returnValue(){
-    this.returnText = this.selectPro+this.selectNum
-    this.props.onChangeValue(this.returnText);
+  itemClick(value, index){
+    let { plateNum } = this.props;
+    console.log(' itemClick and the value -->> ', value);
+    console.log(' itemClick and the plateNum -->> ', plateNum);
+    if(plateNum){
+      if(plateNum.length >= 9) this.props.onChangeValue(plateNum);
+      else this.props.onChangeValue(plateNum + value);
+    }else{
+      this.props.onChangeValue(value);
+      this.showData('number')
+    }
   }
+
   renderOneItem(value,index){
     let width = (this.viewWidth - 60) / 5;
     return (
       <TouchableHighlight
-        style={{width:width, height: width,alignItems:'center',justifyContent: 'center',marginLeft:10,borderColor:'#D4D4D4',borderWidth:1,marginTop:10,backgroundColor:(value.isSelcted ? 'orange':'white')}}
+        style={{width:width, height: width,alignItems:'center',justifyContent: 'center',marginLeft:10,borderColor:'#D4D4D4',borderWidth:1,marginTop:10,backgroundColor:'white'}}
         key={index}
-        onPress={this.clickItem.bind(this,value.title,index)}
+        onPress={this.itemClick.bind(this,value.title,index)}
         underlayColor={'transparent'}>
         <Text style={{fontSize:14}}>{value.title}</Text>
       </TouchableHighlight>
     )
   }
   render(){
-    let { show, selectNum } = this.state;
-    let { style, provincialData, letterData, numberData, label, hasStar, plateNum } = this.props;
-    if(plateNum && !this.selectPro && !this.selectNum){
-      this.selectPro = plateNum.substring(0,1);
-      this.selectNum = plateNum.substring(1,plateNum.length);
-    }
+    let { show } = this.state;
+    let { style, label, hasStar, plateNum } = this.props;
+
     return(
       <View style={[{},style]}>
-        <View style={{flexDirection:'row'}}
-              onLayout={(e) => {
-                this.viewWidth = e.nativeEvent.layout.width * 0.7;
-              }}>
+        <View
+          style={{flexDirection:'row'}}
+          onLayout={(e) => { this.viewWidth = e.nativeEvent.layout.width * 0.7; }}>
           {
             hasStar? <Text style={{fontSize:12,color:'red',alignSelf:'center'}}>*</Text> : null
           }
           <Text style={{fontSize: 14, color: formLeftText, width: 80, alignSelf:'center',marginLeft:5}}>{label}</Text>
-          <Text style={{borderColor:mainBule,borderWidth:1,fontWeight:'bold',fontSize:16,width:30,height:30,padding:5,textAlign:'center'}} onPress={() => this.showData('provincialData',provincialData)}>
-            {this.selectPro}
-          </Text>
-          <Text style={{flex:1,borderColor:mainBule,borderWidth:1,fontSize:14,height:30,marginLeft:10,textAlign:'center',paddingTop:7}} onPress={() => this.showData('numberData',numberData)}>
-            {this.selectNum}
-          </Text>
+          <TouchableHighlight style={{flex:1, height:30, alignItems:'center', justifyContent:'center', borderColor:mainBule, borderWidth:1}} underlayColor={'transparent'} onPress={this.showData.bind(this, null)}>
+            <Text style={{fontSize:16, fontWeight:'bold'}}>{plateNum}</Text>
+          </TouchableHighlight>
         </View>
-        {this.state.show?<View style={{borderColor:'#D4D4D4',borderWidth:1,marginTop:10}}>
-            <View style={{marginBottom:10,flexDirection:'row',flexWrap:'wrap',}}>
-              {this.state.showData.map((value,index) => this.renderOneItem(value,index))}
+        {
+          this.state.show?
+            <View style={{borderColor:'#D4D4D4',borderWidth:1,marginTop:10}}>
+              <View style={{flexDirection:'row',height:30}}>
+                <TouchableHighlight onPress={this.showData.bind(this, 'province')} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                  <Text style={{fontSize:14}}>省</Text>
+                </TouchableHighlight>
+                <View style={{width:1, backgroundColor:'#D4D4D4'}} />
+                <TouchableHighlight onPress={this.showData.bind(this, 'number')} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                  <Text style={{fontSize:14}}>数字</Text>
+                </TouchableHighlight>
+              </View>
+              <View style={{height:1, backgroundColor:'#D4D4D4'}} />
+
+              <View style={{flexDirection:'row',flexWrap:'wrap'}}>
+                {this.state.showData.map((value,index) => this.renderOneItem(value,index))}
+              </View>
+
+              <View style={{height:1, backgroundColor:'#D4D4D4', marginTop:10}} />
+              <View style={{flexDirection:'row',justifyContent: 'center',height:30}}>
+                <TouchableHighlight onPress={() => this.deleteClick()} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                  <Text style={{fontSize:14}}>删除</Text>
+                </TouchableHighlight>
+                <View style={{width:1, backgroundColor:'#D4D4D4'}} />
+                <TouchableHighlight onPress={() => this.confirmClick()} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                  <Text style={{fontSize:14}}>确定</Text>
+                </TouchableHighlight>
+              </View>
             </View>
-            {this.currSeleIndex == 1 ? <View style={{flexDirection:'row',justifyContent: 'center',flex:1,marginBottom:10}}>
-              <TouchableHighlight style={{borderColor:'#D4D4D4',borderWidth:1,alignSelf:'center',padding:10}} onPress={() => this.deleteClick()} underlayColor='transparent'>
-                <Text style={{textAlign:'center',fontSize:14}}>
-                  删除
-                </Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={{justifyContent: 'center',borderColor:'#D4D4D4',borderWidth:1,marginLeft:10,alignSelf:'center',padding:10}}>
-                <Text style={{textAlign:'center',fontSize:14}} onPress={() => this.confirmClick()} underlayColor='transparent'>
-                  确定
-                </Text>
-              </TouchableHighlight>
-            </View>:null}
-          </View>:null}
+          :
+            null
+        }
       </View>
     )
   }

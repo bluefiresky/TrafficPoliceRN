@@ -241,7 +241,16 @@ class AGatheringPartyInformationView extends Component {
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
         <View style={{flexDirection:'row',marginLeft:20, paddingVertical:5, alignItems: 'center'}}>
-          <SelectCarNum label={'车牌号: '} hasStar={true} style={{flex:1,marginRight:15}} provincialData={value.carNumArr[0]} numberData={value.carNumArr[1]} onChangeValue={(text)=> { this.submitDataArr[index].licensePlateNum = text; }}/>
+          <SelectCarNum
+            label={'车牌号: '}
+            plateNum={this.submitDataArr[index].licensePlateNum}
+            hasStar={true}
+            style={{flex:1,marginRight:15}}
+            onChangeValue={(text)=> {
+              console.log(' execute SelectCarNum and the return value -->> ', text);
+              this.submitDataArr[index].licensePlateNum = text;
+              this.setState({refresh:true})
+            }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
