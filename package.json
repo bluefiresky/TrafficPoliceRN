@@ -27,6 +27,7 @@
     "react-native-storage": "0.2.2",
     "react-native-swiper": "1.5.4",
     "react-native-vector-icons": "4.1.1",
+    "react-native-view-shot": "^1.10.1",
     "react-native-zip-archive": "^2.0.0",
     "react-navigation": "git+https://github.com/bluefiresky/react-navigation.git#wr-trunk",
     "react-redux": "5.0.4",

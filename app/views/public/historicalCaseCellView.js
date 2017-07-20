@@ -14,7 +14,7 @@ const PStepToView = {
   '4':'ConfirmInformationView',
   '5':'AccidentFactAndResponsibilityView',
   '6':'SignatureConfirmationView',
-  '7':'UploadProgressView',
+  '7':'SignatureConfirmationView',
 }
 
 const AStepToView = {
@@ -50,7 +50,7 @@ export default class HistoricalCaseCellView extends Component {
       this.props.navigation.navigate('CaseDetailsView', {info:rowData});
       return;
     }
-    
+
     let routeName = null;
     if(global.personal.policeType === 2){
       routeName = PStepToView[step];

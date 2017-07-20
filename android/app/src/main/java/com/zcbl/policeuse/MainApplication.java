@@ -3,6 +3,7 @@ package com.zcbl.policeuse;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.rnziparchive.RNZipArchivePackage;
 import com.rnfs.RNFSPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNViewShotPackage(),
           new OrientationPackage(),
           new RNZipArchivePackage(),
           new RNFSPackage(),

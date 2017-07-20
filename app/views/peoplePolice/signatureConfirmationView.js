@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
+import { takeSnapshot } from "react-native-view-shot";
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, XButton, Input } from '../../components/index.js';  /** 自定义组件 */
@@ -28,8 +29,10 @@ class SignatureConfirmationView extends Component {
     }
 
     this.dutyList = [];
+    this.taskNo = null;
     this.getVerCode = this.getVerCode.bind(this);
     this.getVerCodeVoice = this.getVerCodeVoice.bind(this);
+    this.timerArray = [{timer: null}, {timer: null}, {timer: null}];
   }
 
   componentDidMount(){
@@ -39,7 +42,7 @@ class SignatureConfirmationView extends Component {
       let { localDutyList } = info;
       for(let i=0; i<localDutyList.length; i++){
         let l = localDutyList[i];
-        this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码'})
+        this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码',codeSecondsLeft: 60,showSpeekCode: false, codeColor:''})
       }
       this.setState({loading:false})
     })
@@ -50,67 +53,78 @@ class SignatureConfirmationView extends Component {
     let mobileCodeMap = {};
     for(let i=0; i<this.dutyList.length; i++){
       let d = this.dutyList[i];
-      if(!d.phone){
-        Toast.showShortCenter(`请输入${d.title}的手机号`);
-        return;
+      if(!(d.refuseFlag === '02')){
+        if(!d.phone){
+          Toast.showShortCenter(`请输入${d.title}的手机号`);
+          return;
+        }
+        if(!d.code){
+          Toast.showShortCenter(`${d.title}的验证码不正确`);
+          return;
+        }
+        if(!d.signData){
+          Toast.showShortCenter(`${d.title}的签名信息不正确`);
+          return;
+        }
+        mobileCodeMap[d.phone] = d.code;
       }
-      if(!d.code){
-        Toast.showShortCenter(`${d.title}的验证码不正确`);
-        return;
-      }
-      mobileCodeMap[d.phone] = d.code;
     }
 
     this.setState({loading: true})
-    let checkCodeRes = await this.props.dispatch( create_service(Contract.POST_SMS_CODES_CHECK, {mobileCodeMap:JSON.stringify(mobileCodeMap)}));
-    if(!checkCodeRes){
-      this.setState({loading: false});
-      return;
+    let keysArray = Object.keys(mobileCodeMap);
+    if(keysArray.length > 0){
+      let checkCodeRes = await this.props.dispatch( create_service(Contract.POST_SMS_CODES_CHECK, {mobileCodeMap:JSON.stringify(mobileCodeMap)}));
+      if(!checkCodeRes){
+        this.setState({loading: false});
+        return;
+      }
     }
 
+    let saveDutyList = [];
     for(let i=0; i<this.dutyList.length; i++){
       let d = this.dutyList[i];
-      delete d.title;
-      delete d.phone;
-      delete d.code;
-      delete d.dutyName;
-      delete d.codeText;
-      this.dutyList[i] = d;
+      saveDutyList.push({dutyType:d.dutyType,licensePlateNum:d.licensePlateNum,refuseFlag:d.refuseFlag,signData:d.signData,signTime:d.signTime})
     }
-
-    let success = await StorageHelper.saveStep7(this.dutyList);
+    let success = await StorageHelper.saveStep7(saveDutyList);
     this.setState({loading: false})
     if(success) this.props.navigation.navigate('UploadProgressView', {content:'上传完成后《道路交通事故认定书（简易程序）》将发送至当事人手机'});
   }
   //获取验证码
-  async getVerCode(phone,index){
+  async getVerCode(value,index){
+    if(this.state.loading) return;
+
     if (this.state.codeSecondsLeft === 60) {
       this.setState({loading: true});
-      let checkCodeRes = await this.props.dispatch(create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE_SESSION, {mobile:phone, smsType:1}))
+      let checkCodeRes = await this.props.dispatch(create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE_SESSION, {mobile:value.phone, smsType:1}))
       this.setState({loading: false});
       if(!checkCodeRes) return;
 
-      this.timer = setInterval(() => {
-        let t = this.state.codeSecondsLeft - 1;
+      this.timerArray[index] = setInterval(() => {
+        let t = value.codeSecondsLeft - 1;
         if (t === 0) {
-          this.timer && clearInterval(this.timer);
-          this.dutyList[index].codeText = '重新获取'
-          this.setState({codeSecondsLeft: 60, codeColor: '#4F4F4F'})
-        } else{
-          this.dutyList[index].codeText = `${t}s`
-          this.setState({codeSecondsLeft: t, codeColor: formRightText});
-          if (t === 30) {
-            this.setState({showSpeekCode: true})
+          this.timerArray[index] && clearInterval(this.timerArray[index]);
+          value.codeText = '重新获取';
+          value.codeSecondsLeft = 60;
+          value.codeColor = '#4F4F4F';
+          this.setState({refresh: true})
+        }else{
+          value.codeText = `${t}s`
+          value.codeSecondsLeft = t;
+          value.codeColor = formRightText;
+          if(t === 30){
+            value.showSpeekCode = true;
           }
+          this.setState({refresh: true});
         }
       }, 1000);
     }
   }
 
-  async getVerCodeVoice(phone){
+  async getVerCodeVoice(value){
     this.setState({loading: true});
-    await this.props.dispatch(create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE_SESSION, {mobile:phone, smsType:2}))
-    this.setState({loading: false, showSpeekCode: false})
+    await this.props.dispatch(create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE_SESSION, {mobile:value.phone, smsType:2}))
+    value.showSpeekCode = false;
+    this.setState({loading: false})
 
   }
 
@@ -135,9 +149,12 @@ class SignatureConfirmationView extends Component {
 
         <View style={{flexDirection:'row',marginTop:15,marginLeft:20,alignItems:'center'}}>
           <Input label={'手机号:'} value={value.phone} keyboardType={'numeric'} style={{flex:1, height: 35, paddingLeft:0}} hasClearButton={false} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
-          <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value.phone,index)} disabled={value.refuseFlag === '02'}>
-            <Text style={{fontSize:14,color:mainBule}}>{value.codeText }</Text>
-          </TouchableHighlight>
+          {
+            value.refuseFlag === '02'?null:
+            <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value,index)} disabled={value.refuseFlag === '02'}>
+              <Text style={{fontSize:14,color:mainBule}}>{value.codeText }</Text>
+            </TouchableHighlight>
+          }
         </View>
 
         <View style={{flexDirection:'row', height:30, marginLeft:20, alignItems:'center'}}>
@@ -151,14 +168,17 @@ class SignatureConfirmationView extends Component {
         </View>
 
         <View style={{marginLeft:20}}>
-          <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
-          {this.state.showSpeekCode ?
+          {
+            value.refuseFlag === '02'?null:
+            <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
+          }
+          {value.showSpeekCode ?
             <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
               <Text style={{marginRight:15}}>
                 收不到验证码？试试
                 <Text style={{color:'#267BD8'}} onPress={() => {
                   Toast.showShortCenter('请注意接听电话');
-                  this.getVerCodeVoice(value.phone);
+                  this.getVerCodeVoice(value);
                 }}>语音验证码</Text>
               </Text>
             </View>
@@ -168,27 +188,43 @@ class SignatureConfirmationView extends Component {
         </View>
 
         <View style={{marginBottom:20,marginTop:20}}>
-          <TouchableHighlight underlayColor={'transparent'}
-            onPress={()=>{
-              this.props.navigation.navigate('SignatureView', {returnValue: (result)=>{
-                value.signData = result;
-                value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
-                this.setState({refresh: true})
-              }})
-            }}>
-            {
-              value.signData? <Image source={{uri:'data:image/png;base64,'+value.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
-              :
-              <View style={{width:W-30,height:50,backgroundColor:'#D4D4D4',justifyContent:'center',alignItems:'center',marginLeft:15}}>
-                <Text style={{fontSize:16, color:formLeftText}}>请签名</Text>
-              </View>
-            }
-          </TouchableHighlight>
+          {
+            value.refuseFlag === '02'? null :
+            <TouchableHighlight underlayColor={'transparent'}
+              onPress={()=>{
+                this.props.navigation.navigate('SignatureView', {returnValue: (result)=>{
+                  value.signData = result;
+                  value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+                  this.setState({refresh: true})
+                }})
+              }}>
+              {
+                value.signData? <Image source={{uri:'data:image/png;base64,'+value.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
+                :
+                <View style={{width:W-30,height:50,backgroundColor:'#D4D4D4',justifyContent:'center',alignItems:'center',marginLeft:15}}>
+                  <Text style={{fontSize:16, color:formLeftText}}>请签名</Text>
+                </View>
+              }
+            </TouchableHighlight>
+          }
           <TouchableHighlight style={{marginLeft:10, width:W/2}} underlayColor='transparent'
             onPress={()=>{
               if(value.refuseFlag === '02') value.refuseFlag = '01';
-              else value.refuseFlag = '02';
-              this.setState({refresh:true})
+              else {
+                let tmp;
+                if(index === 0) {
+                  tmp = this.refs.refuse0;
+                }else if(index === 1){
+                  tmp = this.refs.refuse1;
+                }else if(index === 2){
+                  tmp = this.refs.refuse2;
+                }
+                takeSnapshot(tmp, {format: "jpeg",quality: 0.8,result:'base64'})
+                  .then(uri => {
+                    value.signData = uri;
+                    self.setState({refresh:true})
+                  });
+              }
             }}>
             <View style={{flexDirection:'row', alignItems:'center', padding:5}}>
               <Image source={seleImage} style={{width:18,height:18}}/>
@@ -209,6 +245,17 @@ class SignatureConfirmationView extends Component {
            </View>
         </ScrollView>
         <ProgressView show={this.state.loading} hasTitleBar={true}/>
+
+        <View collapsable={false} ref="refuse0" style={{backgroundColor:'white', top:-100, position:'absolute', padding:20, justifyContent:'center', alignItems:'center'}}>
+          <Text style={{fontSize:22, fontWeight:'bold'}}>{this.personList?this.personList[0].name+'拒签':''}</Text>
+        </View>
+        <View collapsable={false} ref="refuse1" style={{backgroundColor:'white', top:-100, position:'absolute', padding:20, justifyContent:'center', alignItems:'center'}}>
+          <Text style={{fontSize:22, fontWeight:'bold'}}>{this.personList?(this.personList[1]?this.personList[1].name+'拒签':''):''}</Text>
+        </View>
+        <View collapsable={false} ref="refuse2" style={{backgroundColor:'white', top:-100, position:'absolute', padding:20, justifyContent:'center', alignItems:'center'}}>
+          <Text style={{fontSize:22, fontWeight:'bold'}}>{this.personList?(this.personList[2]?this.personList[2].name+'拒签':''):''}</Text>
+        </View>
+
       </View>
 
     );

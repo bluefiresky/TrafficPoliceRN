@@ -78,6 +78,8 @@ class LoginView extends Component {
       return;
     }
     this.setState({loading: true})
+    if(this.state.loading) return;
+    
     let codeData = await this.props.dispatch( create_service(Contract.POST_SEND_DYNAMIC_CHECK_CODE, {mobile: this.phoneNum, smsType}) );
     this.setState({loading: false})
     if(!codeData) return;

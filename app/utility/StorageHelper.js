@@ -54,7 +54,8 @@ export class StorageHelper{
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.step = '1';
-      let data = {...this.loadRes, photo}
+      this.loadRes.photo = photo;
+      let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep1 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id, data })
@@ -89,7 +90,9 @@ export class StorageHelper{
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.step = '2_3';
-      let data = {...this.loadRes, handleWay, person}
+      this.loadRes.handleWay = handleWay;
+      this.loadRes.person = person;
+      let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep2_3 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id, data })
@@ -107,7 +110,8 @@ export class StorageHelper{
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.step = '2';
-      let data = {...this.loadRes, handleWay}
+      this.loadRes.handleWay = handleWay;
+      let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep2 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id, data })
@@ -126,7 +130,8 @@ export class StorageHelper{
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.step = '3';
-      let data = {...this.loadRes, person}
+      this.loadRes.person = person;
+      let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep3 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id, data })
@@ -157,7 +162,8 @@ export class StorageHelper{
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.step = '4';
-      let data = {...this.loadRes, credentials}
+      this.loadRes.credentials = credentials;
+      let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep4 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id, data })
@@ -203,7 +209,9 @@ export class StorageHelper{
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.person = person;
       this.loadRes.step = '5_6_1';
-      let data = {...this.loadRes, taskModal, accidentDes}
+      this.loadRes.taskModal = taskModal;
+      this.accidentDes = accidentDes;
+      let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep5_6_1 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id, data })
@@ -222,7 +230,10 @@ export class StorageHelper{
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.step = '6';
-      let data = {...this.loadRes, supplementary, conciliation, localDutyList}
+      this.loadRes.supplementary = supplementary;
+      this.loadRes.conciliation = conciliation;
+      this.localDutyList = localDutyList;
+      let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep6 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id, data })
@@ -241,7 +252,8 @@ export class StorageHelper{
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.step = '6_7_1';
-      let data = {...this.loadRes, taskNo}
+      this.loadRes.taskNo = taskNo;
+      let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep6_7_1 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
       await global.storage.save({ key, id, data })
@@ -271,7 +283,8 @@ export class StorageHelper{
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.step = '7';
-      let data = {...this.loadRes, duty}
+      this.loadRes.duty = duty;
+      let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep7 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
 
