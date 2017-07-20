@@ -150,7 +150,7 @@ class UploadProgressView extends Component {
         if(fail){
           this._done('上传案件失败', '.....', false);
         }else{
-          progress += Math.random() / 10;
+          progress += Math.random() / 30;
           if(progress > 0.9) progress = 0.9;
           this.setState({ progress });
         }

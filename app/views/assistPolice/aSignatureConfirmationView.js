@@ -196,27 +196,27 @@ class ASignatureConfirmationView extends Component {
           <Text style={{color:mainBule}}>{value.dutyName}</Text>
         </View>
 
-        <View style={{marginLeft:20}}>
-          {
-            value.refuseFlag === '02'?null:
+        {
+          value.refuseFlag === '02'?null:
+          <View style={{marginLeft:20}}>
             <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
-          }
+            {
+              value.showSpeekCode ?
+                <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
+                  <Text style={{marginRight:15}}>
+                    收不到验证码？试试
+                    <Text style={{color:'#267BD8'}} onPress={() => {
+                      Toast.showShortCenter('请注意接听电话');
+                      this.getVerCodeVoice(value);
+                    }}>语音验证码</Text>
+                  </Text>
+                </View>
+              :
+                null
+            }
+          </View>
+        }
 
-          {
-            value.showSpeekCode ?
-              <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
-                <Text style={{marginRight:15}}>
-                  收不到验证码？试试
-                  <Text style={{color:'#267BD8'}} onPress={() => {
-                    Toast.showShortCenter('请注意接听电话');
-                    this.getVerCodeVoice(value);
-                  }}>语音验证码</Text>
-                </Text>
-              </View>
-            :
-              null
-          }
-        </View>
 
         <View style={{marginBottom:20,marginTop:20}}>
           {

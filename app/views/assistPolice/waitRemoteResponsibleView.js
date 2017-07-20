@@ -98,4 +98,11 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports.WaitRemoteResponsibleView = connect()(WaitRemoteResponsibleView)
+const ExportView = connect()(WaitRemoteResponsibleView);
+ExportView.navigationOptions = ({ navigation }) => {
+  return {
+    headerLeft:null,
+  }
+}
+
+module.exports.WaitRemoteResponsibleView = ExportView
