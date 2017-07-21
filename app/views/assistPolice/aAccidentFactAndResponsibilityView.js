@@ -55,6 +55,9 @@ class AAccidentFactAndResponsibilityView extends Component {
             self.setState({showTip: false});
           }},
           right:{label: '继续提交', event: async () => {
+            self.setState({loading:true});
+            if(self.state.loading) return;
+            
             let success = await StorageHelper.saveStep6({supplementary, conciliation, localDutyList:[]})
             self.setState({showTip: false, loading:false});
             if(success) self.props.navigation.navigate('UploadProgressView');

@@ -94,16 +94,16 @@ class ApHomePageView extends Component {
           />
         }
         showsVerticalScrollIndicator={false}>
-        <Image source={require('./image/home_bg.png')} style={{width:W, height:HomeBgH,overflow:'visible'}}>
+        <Image source={require('./image/home_bg.png')} style={{width:W, height:HomeBgH}}>
           <Text style={{color:'#ffffff',fontSize:18,alignSelf:'center',marginTop:(Platform.OS === 'ios') ? 30 : 15,backgroundColor:'transparent'}}>首页</Text>
           <TouchableHighlight style={{top:Platform.OS === 'ios'? 30 : 10,right:15,position:'absolute'}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
             <Image source={require('./image/setting.png')} style={{width:20,height:20}}/>
           </TouchableHighlight>
-          <View style={{marginTop:15,marginLeft:15,width:W-30,backgroundColor:'#ffffff',borderRadius:10}}>
-             <View style={{flexDirection:'row',marginLeft:20,marginTop:30}}>
+          <View style={{flex:1, justifyContent:'center',marginTop:15,marginLeft:15,width:W-30,backgroundColor:'#ffffff',borderRadius:10}}>
+             <View style={{flexDirection:'row',marginLeft:20}}>
                <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
              </View>
-             <View style={{flexDirection:'row',marginTop:30,marginLeft:20,marginBottom:20,justifyContent:'space-between'}}>
+             <View style={{flexDirection:'row',marginTop:30,marginLeft:20,justifyContent:'space-between'}}>
                <View style={{backgroundColor:'#ffffff'}}>
                {this.renderRowItem('手机号：', global.personal.mobile, 0)}
                {/*this.renderRowItem('警员编号：', global.personal.policeNumber, 10)*/}

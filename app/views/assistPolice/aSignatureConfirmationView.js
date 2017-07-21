@@ -88,6 +88,8 @@ class ASignatureConfirmationView extends Component {
     }
 
     this.setState({loading: true})
+    if(this.state.loading) return;
+
     let keysArray = Object.keys(mobileCodeMap);
     if(keysArray.length > 0){
       let checkCodeRes = await this.props.dispatch( create_service(Contract.POST_SMS_CODES_CHECK, {mobileCodeMap:JSON.stringify(mobileCodeMap)}));
@@ -105,7 +107,7 @@ class ASignatureConfirmationView extends Component {
       }
       let success = await StorageHelper.saveStep7(this.dutyList);
       this.setState({loading: false})
-      if(success) this.props.navigation.navigate('UploadProgressView', {content:''});
+      if(success) this.props.navigation.navigate('UploadProgressView', {content:'案件信息上传成功，交通事故自行协商协议书稍后将以短信形式发送至当事人手机。'});
     }else if(this.handleWay === '03' || this.handleWay === '05'){
       let signatureList = [];
       for(let i = 0; i<this.dutyList.length; i++){

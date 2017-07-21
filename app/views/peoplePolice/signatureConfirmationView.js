@@ -73,6 +73,8 @@ class SignatureConfirmationView extends Component {
     }
 
     this.setState({loading: true})
+    if(this.state.loading) return;
+    
     let keysArray = Object.keys(mobileCodeMap);
     if(keysArray.length > 0){
       let checkCodeRes = await this.props.dispatch( create_service(Contract.POST_SMS_CODES_CHECK, {mobileCodeMap:JSON.stringify(mobileCodeMap)}));
@@ -214,7 +216,7 @@ class SignatureConfirmationView extends Component {
               if(value.refuseFlag === '02') value.refuseFlag = '01';
               else {
                 value.refuseFlag = '02';
-                
+
                 let self = this;
                 let tmp;
                 if(index === 0) {

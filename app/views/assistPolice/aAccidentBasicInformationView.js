@@ -180,7 +180,7 @@ class AAccidentBasicInformationView extends Component {
         if(this.locationData.errorCode != -100){
           self.setState({ loading: false, showTip: true,
             tipParams:{
-              content: '无法获取当前位置，请重试',
+              content: '无法获取当前位置，请开启定位功能后点击重试，或手动填写事故地点',
               left:{label: '确认', event: () => {
                 self.setState({showTip: false});
               }},
