@@ -234,13 +234,13 @@ class GatheringPartyInformationView extends Component {
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'联系方式: '} placeholder={'请输入当事人联系方式'} maxLength={11} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
+          <Input label={'联系方式: '} placeholder={'请输入当事人联系方式'} value={this.submitDataArr[index].phone} maxLength={11} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} maxLength={18} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
+          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} value={this.submitDataArr[index].driverNum} maxLength={18} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
@@ -320,7 +320,7 @@ class GatheringPartyInformationView extends Component {
               }
             }}
             onDateChange={(date) => {
-              console.log('#### date -->> ', date);
+              // console.log('#### date -->> ', date);
               this.submitDataArr[index].carInsureDueDate = date;
               this.setState({
                 // date: Tool.handleTime(date,true,'date')
