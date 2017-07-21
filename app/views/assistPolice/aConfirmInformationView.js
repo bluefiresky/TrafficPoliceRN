@@ -62,7 +62,7 @@ class AConfirmInformationView extends Component {
         error = `${title}驾驶证号输入有误`
         break;
       }
-      if (!TextUtility.checkLength(data[i].licensePlateNum, 9, 6)) {
+      if (!TextUtility.checkLength(data[i].licensePlateNum, 9, 7)) {
         error = `${title}车牌号输入有误`
         break;
       }

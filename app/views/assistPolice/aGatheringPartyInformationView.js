@@ -85,7 +85,7 @@ class AGatheringPartyInformationView extends Component {
          error = `请输入正确的${this.carInfoData[i].title}驾驶证号`
          break;
        }
-       if (!TextUtility.checkLength(this.submitDataArr[i].licensePlateNum, 9, 6)) {
+       if (!TextUtility.checkLength(this.submitDataArr[i].licensePlateNum, 9, 7)) {
          error = `请输入正确的${this.carInfoData[i].title}车牌号`
          break;
        }

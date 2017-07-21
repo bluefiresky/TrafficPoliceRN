@@ -23,10 +23,13 @@ const AStepToView = {
   '2':'AGatheringPartyInformationView',
   '3':'AGatheringCardPhotoView',
   '4':'AConfirmInformationView',
+
   '5':(handleWay) => { return handleWay != '04'? 'AAccidentFactAndResponsibilityView': 'AccidentConditionView'},
-  '5_6_1':'AccidentConfirmResponView',
-  '6':(handleWay) => { return handleWay != '04'? 'AccidentConfirmResponView' : 'ASignatureConfirmationView'},
+  '6':(handleWay) => { return handleWay != '04'? 'AAccidentFactAndResponsibilityView' : 'ASignatureConfirmationView'},
+
   '6_7_1':'WaitRemoteResponsibleView',
+
+  '5_6_1':'AccidentConfirmResponView',
   '7':'ASignatureConfirmationView'
 }
 
