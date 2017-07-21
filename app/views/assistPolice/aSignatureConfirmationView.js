@@ -168,7 +168,7 @@ class ASignatureConfirmationView extends Component {
     } else {
       if(TextUtility.checkNumber(text)){
         this.dutyList[index].phone = text;
-      }    
+      }
     }
     this.forceUpdate();
   }
@@ -250,7 +250,10 @@ class ASignatureConfirmationView extends Component {
             this.handleWay && this.handleWay === '04'? null :
             <TouchableHighlight style={{marginLeft:10, width:W/2}} underlayColor='transparent'
               onPress={()=>{
-                if(value.refuseFlag === '02') value.refuseFlag = '01';
+                if(value.refuseFlag === '02') {
+                  value.refuseFlag = '01';
+                  this.setState({refuse:true})
+                }
                 else {
                   value.refuseFlag = '02'
                   let self = this;
