@@ -14,7 +14,7 @@ import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
 import Tool from '../../utility/Tool';
-import { StorageHelper, Utility } from '../../utility/index.js';
+import { StorageHelper, Utility, TextUtility } from '../../utility/index.js';
 
 class GatheringPartyInformationView extends Component {
 
@@ -84,7 +84,7 @@ class GatheringPartyInformationView extends Component {
         error = `请输入正确的${this.carInfoData[i].title}驾驶证号`
         break;
       }
-      if (!this.submitDataArr[i].licensePlateNum) {
+      if (!TextUtility.checkLength(this.submitDataArr[i].licensePlateNum, 9, 6)) {
         error = `请输入${this.carInfoData[i].title}车牌号`
         break;
       }
@@ -160,10 +160,14 @@ class GatheringPartyInformationView extends Component {
         this.submitDataArr[index].name = text;
         break;
       case 'Phone':
-        this.submitDataArr[index].phone = text;
+        if(TextUtility.checkNumber(text)){
+          this.submitDataArr[index].phone = text;
+        }
         break;
       case 'DrivingLicense':
-        this.submitDataArr[index].driverNum = text;
+        if(TextUtility.checkNumber(text)){
+          this.submitDataArr[index].driverNum = text;
+        }
         break;
       case 'InsuranceCertificateNum':
         this.submitDataArr[index].carInsureNumber = text;
@@ -173,6 +177,7 @@ class GatheringPartyInformationView extends Component {
         break;
       default:
     }
+    this.forceUpdate();
   }
   //下拉选择
   showTypePicker(typeData,index,type) {
@@ -258,8 +263,7 @@ class GatheringPartyInformationView extends Component {
             <Text style={{fontSize:14,color:formLeftText,marginLeft:5}}>车辆类型:</Text>
             <TouchableHighlight onPress={() => this.showTypePicker(this.carTypeData,index,'carTypeData')} underlayColor='transparent' style={{flex:1}}>
               <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-                <View style={{flex:1}}/>
-                <Text style={{fontSize:14,color:formLeftText,marginLeft:10,marginRight:10}} >{this.state.showOtherCarTextInput?'其他':this.submitDataArr[index].carType}</Text>
+                <Text style={{fontSize:14,paddingLeft:13,color:formLeftText,marginLeft:10,marginRight:10}} >{this.state.showOtherCarTextInput?'其他':this.submitDataArr[index].carType}</Text>
                 <Image style={{width:7,height:12,resizeMode:'contain'}} source={require('./image/right_arrow.png')}/>
               </View>
             </TouchableHighlight>
@@ -279,9 +283,8 @@ class GatheringPartyInformationView extends Component {
           <Text style={{fontSize:14,color:formLeftText,marginLeft:5}}>保险公司:</Text>
           <TouchableHighlight onPress={() => this.showTypePicker(this.insuranceCompanyLabel,index,'insuranceCompanyData')} underlayColor='transparent' style={{flex:1}}>
             <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{flex:1}}></View>
-              <Text style={{fontSize:14,color:formLeftText,marginLeft:10,marginRight:10}}>{this.submitDataArr[index].insureCompanyName}</Text>
-              <Image style={{width:7,height:12,resizeMode:'center'}} source={require('./image/right_arrow.png')}/>
+              <Text style={{fontSize:14,paddingLeft:13,color:formLeftText,marginLeft:10,marginRight:10}}>{this.submitDataArr[index].insureCompanyName}</Text>
+              <Image style={{width:7,height:12,resizeMode:'contain'}} source={require('./image/right_arrow.png')}/>
             </View>
           </TouchableHighlight>
         </View>

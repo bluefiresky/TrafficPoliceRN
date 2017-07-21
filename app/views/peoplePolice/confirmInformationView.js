@@ -12,7 +12,7 @@ import { W, H, backgroundGrey,formLeftText, formRightText,mainBule,commonText,ge
 import { XButton, ProgressView, TipModal, Input, InsurancePicker, CarTypePicker, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
-import { StorageHelper } from '../../utility/index.js';
+import { StorageHelper, TextUtility } from '../../utility/index.js';
 
 const ImageW = (W - 3 * 20) / 2;
 const ImageH = (220 * ImageW)/340;
@@ -52,7 +52,7 @@ class ConfirmInformationView extends Component {
       let title = this.partyVerData[i].name;
 
       if (this.checkName(data[i].name)) {
-        error = `请输入${title}当事人姓名`
+        error = `${title}当事人姓名输入有误`
         break;
       }
       if (!this.checkPhone(data[i].phone)) {
@@ -60,11 +60,11 @@ class ConfirmInformationView extends Component {
         break;
       }
       if (this.checkDriveNunm(data[i].driverNum)) {
-        error = `请输入${title}驾驶证号`
+        error = `${title}驾驶证号输入有误`
         break;
       }
-      if (!data[i].licensePlateNum) {
-        error = `请输入${title}车牌号`
+      if (!TextUtility.checkLength(data[i].licensePlateNum, 9, 6)) {
+        error = `${title}车牌号输入有误`
         break;
       }
       if (!data[i].insureCompanyName) {
@@ -118,7 +118,6 @@ class ConfirmInformationView extends Component {
   checkName(name){
     return(!name || name.length < 2 || name.length > 10)
   }
-
 
   renderOnePersonInfo(value,ind,credential){
     return (
@@ -190,10 +189,14 @@ class ConfirmInformationView extends Component {
         item.name = text;
         break;
       case 'Phone':
-        item.phone = text;
+        if(TextUtility.checkNumber(text)){
+          item.phone = text;
+        }
         break;
       case 'DrivingLicense':
-        item.driverNum = text;
+        if(TextUtility.checkNumber(text)){
+          item.driverNum = text;
+        }
         break;
       // case 'CarNum':
       //   item.licensePlateNum = text;

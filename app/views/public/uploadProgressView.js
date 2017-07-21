@@ -56,12 +56,16 @@ class UploadProgressView extends Component {
   }
 
   componentWillMount(){
-    BackHandler.addEventListener('hardwareBackPress', function() {});
+    if (Platform.OS === 'android') {
+      BackHandler.addEventListener('hardwareBackPress', () => { return true; });
+    }
   }
 
   componentWillUnmount(){
     this.timer && clearInterval(this.timer)
-    BackHandler.removeEventListener('hardwareBackPress', function() {});
+    if (Platform.OS === 'android') {
+      BackHandler.removeEventListener('hardwareBackPress');
+    }
   }
 
   render(){
@@ -81,7 +85,7 @@ class UploadProgressView extends Component {
     this.info = await StorageHelper.getCurrentCaseInfo(caseKey);
     if(!this.info) return;
 
-    this._animate();
+    this._animate(this.info.handleWay);
     let fileRes = await Utility.convertObjtoFile(this.info, this.info.id);
     if(fileRes){
       let base64Str = await Utility.zipFileByName(this.info.id);
@@ -140,7 +144,7 @@ class UploadProgressView extends Component {
     }
   }
 
-  _animate() {
+  _animate(handleWay) {
     this.timer = setInterval(() => {
       let { success, fail, progress } = this.state;
       if(success){
@@ -148,7 +152,13 @@ class UploadProgressView extends Component {
         this._done('上传案件成功', '.....', true)
       }else{
         if(fail){
-          this._done('上传案件失败', '.....', false);
+          let errorTip = '';
+          if(handleWay === '04'){
+            errorTip = '案件信息已存储在手机中，并已离线生成《道路交通事故自行协商协议书》。请告知当事人待网络信号良好时，案件信息将上传后台，然后当事人可收到包含本次事故认定书的短信。'
+          }else{
+            errorTip = '案件信息已存储在手机中，并已离线生成《道路交通事故认定书（简易程序）》。请告知当事人待网络信号良好时，案件信息将上传后台，然后当事人可收到包含本次事故认定书的短信。'
+          }
+          this._done('上传案件失败', errorTip, false);
         }else{
           progress += Math.random() / 30;
           if(progress > 0.9) progress = 0.9;

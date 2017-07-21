@@ -11,7 +11,7 @@ import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../..
 import { ProgressView, XButton, Input } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
-import { StorageHelper, Utility } from '../../utility/index.js';
+import { StorageHelper, Utility, TextUtility } from '../../utility/index.js';
 
 const PersonalTitles = ['甲方', '乙方', '丙方'];
 const SignW = (W - 40);
@@ -104,8 +104,9 @@ class ASignatureConfirmationView extends Component {
       for(let i=0; i<this.dutyList.length; i++){
         let d = this.dutyList[i];
         saveDutyList.push({dutyType:d.dutyType,licensePlateNum:d.licensePlateNum,refuseFlag:d.refuseFlag,signData:d.signData,signTime:d.signTime});
+        this.personList[i].phone = d.phone;
       }
-      let success = await StorageHelper.saveStep7(this.dutyList);
+      let success = await StorageHelper.saveStep7(saveDutyList, this.personList);
       this.setState({loading: false})
       if(success) this.props.navigation.navigate('UploadProgressView', {content:'案件信息上传成功，交通事故自行协商协议书稍后将以短信形式发送至当事人手机。'});
     }else if(this.handleWay === '03' || this.handleWay === '05'){
@@ -161,9 +162,13 @@ class ASignatureConfirmationView extends Component {
 
   onChangeText(text,index,type){
     if (type == 'Code') {
-      this.dutyList[index].code = text;
+      if(TextUtility.checkNumber(text)){
+        this.dutyList[index].code = text;
+      }
     } else {
-      this.dutyList[index].phone = text;
+      if(TextUtility.checkNumber(text)){
+        this.dutyList[index].phone = text;
+      }    
     }
     this.forceUpdate();
   }

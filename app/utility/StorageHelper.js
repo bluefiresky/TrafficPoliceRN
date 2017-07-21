@@ -210,7 +210,7 @@ export class StorageHelper{
       this.loadRes.person = person;
       this.loadRes.step = '5_6_1';
       this.loadRes.taskModal = taskModal;
-      this.accidentDes = accidentDes;
+      this.loadRes.accidentDes = accidentDes;
       let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep5_6_1 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 
@@ -277,13 +277,14 @@ export class StorageHelper{
         }
     ]
   **/
-  static async saveStep7(duty){
+  static async saveStep7(duty, person){
     try {
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
       this.loadRes.step = '7';
       this.loadRes.duty = duty;
+      this.loadRes.person = person;
       let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep7 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
 

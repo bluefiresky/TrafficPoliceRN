@@ -13,3 +13,6 @@ export { Utility }
 
 import * as NetUtility from './NetUtility.js';
 export { NetUtility }
+
+import * as TextUtility from './TextUtility.js';
+export { TextUtility }

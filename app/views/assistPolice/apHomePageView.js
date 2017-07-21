@@ -103,7 +103,7 @@ class ApHomePageView extends Component {
              <View style={{flexDirection:'row',marginLeft:20}}>
                <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
              </View>
-             <View style={{flexDirection:'row',marginTop:30,marginLeft:20,justifyContent:'space-between'}}>
+             <View style={{flexDirection:'row',marginTop:20,marginLeft:20,justifyContent:'space-between'}}>
                <View style={{backgroundColor:'#ffffff'}}>
                {this.renderRowItem('手机号：', global.personal.mobile, 0)}
                {/*this.renderRowItem('警员编号：', global.personal.policeNumber, 10)*/}
