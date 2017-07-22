@@ -12,19 +12,6 @@ gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolic
 renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/gatheringCardPhotoView.js	/^  renderItem(item,index,ind) {$/;"	function	line:90
 renderOnePersonInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/gatheringCardPhotoView.js	/^  renderOnePersonInfo(value,ind){$/;"	function	line:109
 render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/gatheringCardPhotoView.js	/^  render(){$/;"	function	line:122
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  constructor(props){$/;"	function	line:20
-state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^    this.state = {$/;"	property	line:22
-accidentData.basicInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^    this.accidentData = {basicInfo:{accidentTime:'2017年6月4日 17时8分',weather:'晴',accidentSite:'北京市朝 阳区'}, accidentPhoto:[{'title': '侧前方',imageURL:''},{'title': '侧后方',imageURL:''},{'title': '碰撞部位',imageURL:''},{'title': '其它现场照片',imageURL:''}],$/;"	property	line:30
-gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  gotoNext(){$/;"	function	line:36
-checkPhone	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  checkPhone(phone){$/;"	function	line:96
-renderImgaeItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  renderImgaeItem(value,index,ind){$/;"	function	line:100
-renderOnePersonInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  renderOnePersonInfo(value,ind){$/;"	function	line:110
-onChangeText	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  onChangeText(text,index,type){$/;"	function	line:133
-switch	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^    switch (type) {$/;"	function	line:134
-renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  renderRowItem(title,value,index,type){$/;"	function	line:171
-renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  renderItem({item,index}) {$/;"	function	line:188
-renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  renderOneParty(value,index) {$/;"	function	line:198
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  render(){$/;"	function	line:207
 constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/public/feedBackView.js	/^  constructor(props){$/;"	function	line:17
 onChangeText	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/public/feedBackView.js	/^  onChangeText(text,type){$/;"	function	line:24
 checkPhone	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/public/feedBackView.js	/^  checkPhone(phone){$/;"	function	line:32
@@ -55,20 +42,6 @@ renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assist
 renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aConfirmInformationView.js	/^  renderItem({item,index}) {$/;"	function	line:193
 renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aConfirmInformationView.js	/^  renderOneParty(value,index) {$/;"	function	line:203
 render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aConfirmInformationView.js	/^  render(){$/;"	function	line:212
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  constructor(props){$/;"	function	line:19
-options.title	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^    this.options = {$/;"	property	line:29
-options.cancelButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^            title: '选择照片', \/\/选择器的标题，可以设置为空来不显示标题$/;"	property	line:30
-options.takePhotoButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^            cancelButtonTitle: '取消',$/;"	property	line:31
-options.chooseFromLibraryButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^            takePhotoButtonTitle: '拍照', \/\/调取摄像头的按钮，可以设置为空使用户不可选择拍照$/;"	property	line:32
-options.mediaType	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^            chooseFromLibraryButtonTitle: '从手机相册选择', \/\/调取相册的按钮，可以设置为空使用户不可选择相册照片$/;"	property	line:33
-options.maxWidth	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^            mediaType: 'photo',$/;"	property	line:34
-options.maxHeight	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^            maxWidth: 1500,$/;"	property	line:35
-options.quality	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^            maxHeight: 2000,$/;"	property	line:36
-takePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  takePhoto(index,ind){$/;"	function	line:46
-gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  gotoNext(){$/;"	function	line:71
-renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  renderItem(item,index,ind) {$/;"	function	line:92
-renderOnePersonInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  renderOnePersonInfo(value,ind){$/;"	function	line:111
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  render(){$/;"	function	line:124
 constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/gatheringPartyInformationView.js	/^  constructor(props){$/;"	function	line:21
 state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/gatheringPartyInformationView.js	/^    this.state = {$/;"	property	line:25
 state.date	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/gatheringPartyInformationView.js	/^      refresh:false,$/;"	property	line:26
@@ -106,25 +79,6 @@ switch	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/
 showTypePicker	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/gatheringPartyInformationView.js	/^  showTypePicker(typeData,index,type) {$/;"	function	line:130
 renderOnePersonInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/gatheringPartyInformationView.js	/^  renderOnePersonInfo(value,index){$/;"	function	line:158
 render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/gatheringPartyInformationView.js	/^  render(){$/;"	function	line:287
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  constructor(props){$/;"	function	line:19
-state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^    this.state = {$/;"	property	line:21
-state.showBigImage	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^      refresh:false,$/;"	property	line:22
-state.data	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^      showBigImage:false,$/;"	property	line:23
-options.title	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^    this.options = {$/;"	property	line:31
-options.cancelButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^            title: '选择照片', \/\/选择器的标题，可以设置为空来不显示标题$/;"	property	line:32
-options.takePhotoButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^            cancelButtonTitle: '取消',$/;"	property	line:33
-options.chooseFromLibraryButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^            takePhotoButtonTitle: '拍照', \/\/调取摄像头的按钮，可以设置为空使用户不可选择拍照$/;"	property	line:34
-options.mediaType	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^            chooseFromLibraryButtonTitle: '从手机相册选择', \/\/调取相册的按钮，可以设置为空使用户不可选择相册照片$/;"	property	line:35
-options.maxWidth	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^            mediaType: 'photo',$/;"	property	line:36
-options.maxHeight	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^            maxWidth: 1500,$/;"	property	line:37
-options.quality	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^            maxHeight: 2000,$/;"	property	line:38
-takePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  takePhoto(item,index){$/;"	function	line:48
-reTakePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  reTakePhoto(){$/;"	function	line:82
-deletePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  deletePhoto(){$/;"	function	line:92
-addOtherPhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  addOtherPhoto(){$/;"	function	line:105
-commit	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  commit() {$/;"	function	line:114
-renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  renderItem({item,index}) {$/;"	function	line:132
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  render(){$/;"	function	line:145
 constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentFactAndResponsibilityView.js	/^  constructor(props){$/;"	function	line:18
 submitData.supplyText	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentFactAndResponsibilityView.js	/^    this.submitData = {supplyText:'',resultText:''};$/;"	property	line:21
 submitData.resultText	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentFactAndResponsibilityView.js	/^    this.submitData = {supplyText:'',resultText:''};$/;"	property	line:21
@@ -155,16 +109,6 @@ render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/
 constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportSuccessView.js	/^  constructor(props){$/;"	function	line:19
 cancleWait	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportSuccessView.js	/^  cancleWait(){$/;"	function	line:25
 render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportSuccessView.js	/^  render(){$/;"	function	line:28
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  constructor(props){$/;"	function	line:19
-state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^    this.state = {$/;"	property	line:21
-gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  gotoNext(){$/;"	function	line:27
-renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:30
-renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  renderOneParty(value,index) {$/;"	function	line:41
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  render(){$/;"	function	line:79
-const.headerStyle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^const publicNavigationOptions = {$/;"	property	line:37
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  constructor(props){$/;"	function	line:97
-state.statusBackColor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^    this.state={$/;"	property	line:99
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  render(){$/;"	function	line:104
 constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringPartyInformationView.js	/^  constructor(props){$/;"	function	line:21
 state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringPartyInformationView.js	/^    this.state = {$/;"	property	line:25
 state.date	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringPartyInformationView.js	/^      refresh:false,$/;"	property	line:26
@@ -202,9 +146,151 @@ switch	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/
 showTypePicker	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringPartyInformationView.js	/^  showTypePicker(typeData,index,type) {$/;"	function	line:131
 renderOnePersonInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringPartyInformationView.js	/^  renderOnePersonInfo(value,index){$/;"	function	line:160
 render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringPartyInformationView.js	/^  render(){$/;"	function	line:285
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  constructor(props){$/;"	function	line:19
-state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^    this.state = {$/;"	property	line:21
-gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  gotoNext(){$/;"	function	line:27
-renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:31
-renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderOneParty(value,index) {$/;"	function	line:42
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  render(){$/;"	function	line:113
+http_factory	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function http_factory({method, paramsType}) {$/;"	function	line:25
+const.method	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^    const meta = {$/;"	property	line:32
+const.timeout	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      method : method,$/;"	property	line:33
+const.headers	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      timeout : XIN_REQ_TIMEOUT,$/;"	property	line:34
+h.method	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)};$/;"	property	line:44
+h.v	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)};$/;"	property	line:44
+h.sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^      h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)};$/;"	property	line:44
+h.method	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams, {sessionId: auth.token})}$/;"	property	line:51
+h.v	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams, {sessionId: auth.token})}$/;"	property	line:51
+h.sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams, {sessionId: auth.token})}$/;"	property	line:51
+h.method	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)}$/;"	property	line:55
+h.v	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)}$/;"	property	line:55
+h.sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^        h = {method: api, appKey, format, v: version, sign: sign(api, version, signParams)}$/;"	property	line:55
+object2pairs	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function object2pairs(api, version, signParams, extraParams){$/;"	function	line:97
+object2pairs	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function object2pairs(api, version, signParams, extraParams){$/;"	function	line:97
+sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function sign(api, version, signParams, extraParams){$/;"	function	line:112
+sign	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/service/service_helpers.js	/^function sign(api, version, signParams, extraParams){$/;"	function	line:112
+login	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^ * @param name 在service类型的文件中的连网函数名：service\/user.js -->> function login(){...}$/;"	function	line:8
+create_service	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^export function create_service(name, ...params) {$/;"	function	line:32
+dispatch_reducers	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^function dispatch_reducers(dispatch, promise, name, params){$/;"	function	line:57
+filterDispatch	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^function filterDispatch(dispatch, name, params, data){$/;"	function	line:79
+dispatch_reducers.filterDispatch	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^function filterDispatch(dispatch, name, params, data){$/;"	function	line:79
+call_service	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/redux/actions/service.js	/^function call_service(name, ...params) {$/;"	function	line:92
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  constructor(props){$/;"	function	line:21
+state.date	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^    this.state = {$/;"	property	line:24
+componentDidMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  componentDidMount(){$/;"	function	line:39
+onChangeText	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  onChangeText(text){$/;"	function	line:54
+showWeatherPicker	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  showWeatherPicker() {$/;"	function	line:59
+let.address	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^    let basic = { address: accidentSite, latitude:String(latitude), longitude:String(longitude), weather: weather.code, accidentTime: date+':00'};$/;"	property	line:95
+let.latitude	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^    let basic = { address: accidentSite, latitude:String(latitude), longitude:String(longitude), weather: weather.code, accidentTime: date+':00'};$/;"	property	line:95
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aAccidentBasicInformationView.js	/^  render(){$/;"	function	line:101
+const.headerStyle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^const publicNavigationOptions = {$/;"	property	line:37
+getStateForAction	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  getStateForAction(action, state){$/;"	function	line:100
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  constructor(props){$/;"	function	line:121
+state.statusBackColor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^    this.state={$/;"	property	line:123
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/root.js	/^  render(){$/;"	function	line:129
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  constructor(props){$/;"	function	line:19
+state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^    this.state = {$/;"	property	line:21
+state.loading	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^      refresh: false,$/;"	property	line:22
+componentWillMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  componentWillMount(){$/;"	function	line:28
+componentDidMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  componentDidMount(){$/;"	function	line:39
+gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  gotoNext(){$/;"	function	line:61
+renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:82
+renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  renderOneParty(value,index) {$/;"	function	line:93
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/insuranceReportPartyInfoView.js	/^  render(){$/;"	function	line:138
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  constructor(props){$/;"	function	line:20
+state.data	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^    this.state = {$/;"	property	line:22
+componentWillMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  componentWillMount(){$/;"	function	line:55
+renderCell	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderCell(value){$/;"	function	line:66
+renderSectionItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderSectionItem(value){$/;"	function	line:79
+renderSectionHeader	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderSectionHeader(value){$/;"	function	line:86
+renderHearer	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  renderHearer(){$/;"	function	line:93
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/selectInInsuranceCompanyView.js	/^  render(){$/;"	function	line:99
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  constructor(props){$/;"	function	line:20
+state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^    this.state = {$/;"	property	line:22
+componentWillMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  componentWillMount(){$/;"	function	line:28
+gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  gotoNext(){$/;"	function	line:38
+onChangeText	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  onChangeText(text,index,type){$/;"	function	line:68
+switch	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^    switch (type) {$/;"	function	line:69
+componentDidMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  componentDidMount(){$/;"	function	line:80
+renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:105
+renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderOneParty(value,ind) {$/;"	function	line:116
+removeByValue	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  removeByValue(arr, val) {$/;"	function	line:199
+renderSeleteRow	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderSeleteRow(value,index,ind){$/;"	function	line:207
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  render(){$/;"	function	line:230
+const.title	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^const photoOption = {$/;"	property	line:20
+const.cancelButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  title: '选择照片', \/\/选择器的标题，可以设置为空来不显示标题$/;"	property	line:21
+const.takePhotoButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  cancelButtonTitle: '取消',$/;"	property	line:22
+const.chooseFromLibraryButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  takePhotoButtonTitle: '拍照', \/\/调取摄像头的按钮，可以设置为空使用户不可选择拍照$/;"	property	line:23
+const.mediaType	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  chooseFromLibraryButtonTitle: '从手机相册选择', \/\/调取相册的按钮，可以设置为空使用户不可选择相册照片$/;"	property	line:24
+const.maxWidth	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  mediaType: 'photo',$/;"	property	line:25
+const.maxHeight	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  maxWidth: W,$/;"	property	line:26
+const.quality	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  maxHeight: H,$/;"	property	line:27
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  constructor(props){$/;"	function	line:34
+state.showTip	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^    this.state = {$/;"	property	line:36
+state.tipParams	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^      showTip: false,$/;"	property	line:37
+takePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  takePhoto(index,ind){$/;"	function	line:59
+gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  gotoNext(){$/;"	function	line:72
+renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  renderItem(item,index,ind) {$/;"	function	line:104
+renderOnePersonInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  renderOnePersonInfo(value,ind){$/;"	function	line:117
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/assistPolice/aGatheringCardPhotoView.js	/^  render(){$/;"	function	line:130
+const.title	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^const photoOption = {$/;"	property	line:25
+const.cancelButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  title: '选择照片', \/\/选择器的标题，可以设置为空来不显示标题$/;"	property	line:26
+const.takePhotoButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  cancelButtonTitle: '取消',$/;"	property	line:27
+const.chooseFromLibraryButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  takePhotoButtonTitle: '拍照', \/\/调取摄像头的按钮，可以设置为空使用户不可选择拍照$/;"	property	line:28
+const.mediaType	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  chooseFromLibraryButtonTitle: '从手机相册选择', \/\/调取相册的按钮，可以设置为空使用户不可选择相册照片$/;"	property	line:29
+const.maxWidth	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  mediaType: 'photo',$/;"	property	line:30
+const.maxHeight	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  maxWidth: W,$/;"	property	line:31
+const.quality	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  maxHeight: H,$/;"	property	line:32
+const.storageOptions	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  quality: 1,$/;"	property	line:33
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  constructor(props){$/;"	function	line:39
+state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^    this.state = {$/;"	property	line:41
+state.showBigImage	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^      refresh:false,$/;"	property	line:42
+state.showTip	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^      showBigImage:false,$/;"	property	line:43
+state.tipParams	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^      showTip: false,$/;"	property	line:44
+takePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  takePhoto(item,index){$/;"	function	line:61
+reTakePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  reTakePhoto(){$/;"	function	line:81
+deletePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  deletePhoto(){$/;"	function	line:96
+addOtherPhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  addOtherPhoto(){$/;"	function	line:107
+commit	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  commit() {$/;"	function	line:121
+renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  renderItem({item,index}) {$/;"	function	line:149
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/photoEvidenceVeiw.js	/^  render(){$/;"	function	line:163
+const.0	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}$/;"	property	line:19
+const.1	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}$/;"	property	line:19
+const.2	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}$/;"	property	line:19
+const.30	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}$/;"	property	line:19
+const.31	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}$/;"	property	line:19
+const.32	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}$/;"	property	line:19
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  constructor(props){$/;"	function	line:25
+state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^    this.state = {$/;"	property	line:27
+state.showTip	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^      refresh:false,$/;"	property	line:28
+state.tipParams	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^      showTip: false,$/;"	property	line:29
+componentDidMount	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  componentDidMount(){$/;"	function	line:39
+gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  gotoNext(){$/;"	function	line:47
+checkPhone	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  checkPhone(phone){$/;"	function	line:109
+renderOnePersonInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  renderOnePersonInfo(value,ind,credential){$/;"	function	line:114
+onChangeText	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  onChangeText(text,index,type,item){$/;"	function	line:171
+switch	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^    switch (type) {$/;"	function	line:172
+renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  renderRowItem(title,value,index,type,item){$/;"	function	line:202
+renderBasicItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  renderBasicItem(title, value, type){$/;"	function	line:212
+renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  renderItem({item,index}) {$/;"	function	line:224
+renderItem.uri	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^    let source = {uri: 'data:image\/png;base64,' + item.photoData}$/;"	property	line:225
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  render(){$/;"	function	line:234
+_convertWeather	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  _convertWeather(code){$/;"	function	line:282
+_convertAccidentTime	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  _convertAccidentTime(time){$/;"	function	line:295
+_convertPhotoType	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/peoplePolice/confirmInformationView.js	/^  _convertPhotoType(typeCode){$/;"	function	line:300
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  constructor(props){$/;"	function	line:19
+state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^    this.state = {$/;"	property	line:21
+state.showBigImage	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^      refresh:false,$/;"	property	line:22
+state.showDamageModalView	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^      showBigImage:false,$/;"	property	line:23
+options.title	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^    this.options = {$/;"	property	line:46
+options.cancelButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            title: '选择照片', \/\/选择器的标题，可以设置为空来不显示标题$/;"	property	line:47
+options.takePhotoButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            cancelButtonTitle: '取消',$/;"	property	line:48
+options.chooseFromLibraryButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            takePhotoButtonTitle: '拍照', \/\/调取摄像头的按钮，可以设置为空使用户不可选择拍照$/;"	property	line:49
+options.mediaType	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            chooseFromLibraryButtonTitle: '从手机相册选择', \/\/调取相册的按钮，可以设置为空使用户不可选择相册照片$/;"	property	line:50
+options.maxWidth	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            mediaType: 'photo',$/;"	property	line:51
+options.maxHeight	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            maxWidth: 1500,$/;"	property	line:52
+options.quality	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            maxHeight: 2000,$/;"	property	line:53
+convertPhotoType	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  convertPhotoType(typeCode){$/;"	function	line:62
+takePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  takePhoto(item,index,ind){$/;"	function	line:71
+reTakePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  reTakePhoto(){$/;"	function	line:140
+deletePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  deletePhoto(){$/;"	function	line:149
+commit	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  commit() {$/;"	function	line:161
+renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  renderItem(item,index,ind) {$/;"	function	line:181
+renderOnePersonInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  renderOnePersonInfo(value,ind){$/;"	function	line:204
+renderDamageSeleteView	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  renderDamageSeleteView(value,index){$/;"	function	line:218
+renderDamageModalView	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  renderDamageModalView(){$/;"	function	line:234
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  render(){$/;"	function	line:263

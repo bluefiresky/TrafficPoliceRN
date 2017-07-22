@@ -4,9 +4,25 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  constructor(props){$/;"	function	line:19
-state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^    this.state = {$/;"	property	line:21
-gotoNext	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  gotoNext(){$/;"	function	line:27
-renderRowItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderRowItem(title,value){$/;"	function	line:31
-renderOneParty	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  renderOneParty(value,index) {$/;"	function	line:42
-render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/perfectInformantInfoView.js	/^  render(){$/;"	function	line:113
+constructor	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  constructor(props){$/;"	function	line:19
+state.refresh	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^    this.state = {$/;"	property	line:21
+state.showBigImage	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^      refresh:false,$/;"	property	line:22
+state.showDamageModalView	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^      showBigImage:false,$/;"	property	line:23
+options.title	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^    this.options = {$/;"	property	line:46
+options.cancelButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            title: '选择照片', \/\/选择器的标题，可以设置为空来不显示标题$/;"	property	line:47
+options.takePhotoButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            cancelButtonTitle: '取消',$/;"	property	line:48
+options.chooseFromLibraryButtonTitle	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            takePhotoButtonTitle: '拍照', \/\/调取摄像头的按钮，可以设置为空使用户不可选择拍照$/;"	property	line:49
+options.mediaType	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            chooseFromLibraryButtonTitle: '从手机相册选择', \/\/调取相册的按钮，可以设置为空使用户不可选择相册照片$/;"	property	line:50
+options.maxWidth	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            mediaType: 'photo',$/;"	property	line:51
+options.maxHeight	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            maxWidth: 1500,$/;"	property	line:52
+options.quality	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^            maxHeight: 2000,$/;"	property	line:53
+convertPhotoType	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  convertPhotoType(typeCode){$/;"	function	line:62
+takePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  takePhoto(item,index,ind){$/;"	function	line:71
+reTakePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  reTakePhoto(){$/;"	function	line:140
+deletePhoto	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  deletePhoto(){$/;"	function	line:149
+commit	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  commit() {$/;"	function	line:161
+renderItem	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  renderItem(item,index,ind) {$/;"	function	line:181
+renderOnePersonInfo	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  renderOnePersonInfo(value,ind){$/;"	function	line:204
+renderDamageSeleteView	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  renderDamageSeleteView(value,index){$/;"	function	line:218
+renderDamageModalView	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  renderDamageModalView(){$/;"	function	line:234
+render	/Users/renhanyi/Desktop/trafficRN/TrafficPoliceRN/app/views/insuranceReport/exploreTakePhotoView.js	/^  render(){$/;"	function	line:263

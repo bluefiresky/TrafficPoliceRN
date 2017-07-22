@@ -2,7 +2,7 @@
 * 设置页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager,BackHandler } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
@@ -32,12 +32,7 @@ class UploadSuccessView extends Component {
     })
   }
 
-  componentWillMount(){
-    BackHandler.addEventListener('hardwareBackPress', function() {});
-  }
-
   componentWillUnmount(){
-    BackHandler.removeEventListener('hardwareBackPress', function() {});
   }
 
   render(){
@@ -56,12 +51,13 @@ class UploadSuccessView extends Component {
 
   /** Private **/
   async _onPress(type){
-    // handleWay === '01'||'02'||'03'||'05'都会进入此页面
     if(type == 1) {
-      await StorageHelper.removeItem(global.personal.mobile+'unuploaded', global.currentCaseId)
-      await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
-      await Utility.deleteFileByName(global.currentCaseId)
-
+      Toast.showShortCenter('此处是否应该删除案件？？？');
+      let res = await StorageHelper.removeItem(global.personal.mobile+'unuploaded', global.currentCaseId)
+      if(!res){
+        res = await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
+      }
+      let deleteRes = Utility.deleteFileByName(global.currentCaseId)
       let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
       this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
     }else{
@@ -80,9 +76,7 @@ const styles = StyleSheet.create({
 
 const ExportView = connect()(UploadSuccessView);
 ExportView.navigationOptions = ({ navigation }) => {
-  return {
-    headerLeft:null,
-  }
+  return {}
 }
 
 module.exports.UploadSuccessView = ExportView;

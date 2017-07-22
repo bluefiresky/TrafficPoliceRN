@@ -14,40 +14,37 @@ import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 
 class SelectCityView extends Component {
-
+   
   constructor(props){
     super(props);
     this.state = {
     }
-    this.data = [{pro:'河北省',city:['北京','呼和浩特','呼和浩特','呼和浩特','呼和浩特','呼和浩特','呼和浩特']},
-                 {pro:'广东省',city:['天津','呼和浩特','呼和浩特','呼和浩特','呼和浩特','呼和浩特','呼和浩特']}];
   }
   renderOneCity(value,index,ind) {
-    let selBorderColor = value.isSel ? mainBule : backgroundGrey
-    let selFontColor = value.isSel ? mainBule : formRightText
+    let { data } = this.props.navigation.state.params
     return (
-      <TouchableHighlight style={{borderColor:selBorderColor, borderWidth:1,borderRadius:5,paddingTop:5,paddingBottom:5,marginTop:15,marginLeft:15,width:(W-90)/3}} key={index} onPress={() => {
-        let selectCity = this.data[ind].city[index];
-        this.props.navigation.state.params.selData(`${selectCity}-${this.props.navigation.state.params.selCompany}`)
+      <TouchableHighlight style={{borderColor:backgroundGrey, borderWidth:1,borderRadius:5,paddingTop:5,paddingBottom:5,marginTop:15,marginLeft:15,width:(W-90)/3}} key={index} onPress={() => {
+        this.props.navigation.state.params.selData({showData:`${value.name}-${data.name}`,insurecode:data.code,citycode:value.code})
         this.props.navigation.goBack(global.stackKeys.SelectInInsuranceCompanyView)
       }} underlayColor='transparent'>
-          <Text style={{fontSize:14,color:selFontColor,alignSelf:'center'}} numberOfLines={1}>{value}</Text>
+          <Text style={{fontSize:14,color:formRightText,alignSelf:'center'}} numberOfLines={1}>{value.name}</Text>
       </TouchableHighlight>
     )
   }
   renderOnePro(value,ind){
     return (
-      <View style={{marginTop:15}} key={ind}>
+      <View style={{marginTop:15,marginBottom:10}} key={ind}>
         <Text style={{fontSize:15,color:formLeftText,marginLeft:15}}>
-          {`${value.pro}：`}
+          {`${value.name}：`}
         </Text>
         <View style={{flexDirection:'row',flexWrap:'wrap'}}>
-           {value.city.map((value,index) => this.renderOneCity(value,index,ind))}
+           {value.citylist.map((value,index) => this.renderOneCity(value,index,ind))}
         </View>
       </View>
     )
   }
   render(){
+    let { data } = this.props.navigation.state.params
     return(
       <View style={styles.container}>
         <View style={{paddingVertical:10,backgroundColor:backgroundGrey}}>
@@ -60,12 +57,15 @@ class SelectCityView extends Component {
            <Text style={{marginTop:10,marginLeft:15,fontSize:15,color:formLeftText}}>
              当前定位城市：
            </Text>
-           <View style={{backgroundColor:'#298FE2',paddingVertical:10,marginLeft:15,width:100,marginTop:10,borderRadius:10}}>
+           <TouchableHighlight style={{backgroundColor:'#298FE2',paddingTop:5,paddingBottom:5,marginLeft:15,width:(W-90)/3,marginTop:10,borderRadius:5}} underlayColor='#298FE2' onPress={()=>{
+             this.props.navigation.state.params.selData({showData:`${global.personal.cityName}-${data.name}`,insurecode:data.code,citycode:''})
+             this.props.navigation.goBack(global.stackKeys.SelectInInsuranceCompanyView)
+           }}>
              <Text style={{fontSize:15,color:'#ffffff',alignSelf:'center'}}>
-               北京市
+               {global.personal.cityName}
              </Text>
-           </View>
-           {this.data.map((value,index) => this.renderOnePro(value,index))}
+           </TouchableHighlight>
+           {data.provincelist.map((value,index) => this.renderOnePro(value,index))}
         </ScrollView>
       </View>
     );

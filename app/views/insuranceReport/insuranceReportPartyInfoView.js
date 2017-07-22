@@ -13,27 +13,67 @@ import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import Picker from 'react-native-picker';
-
+import Tool from '../../utility/Tool'
 class InsuranceReportPartyInfoView extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      refresh:false
+      refresh: false,
+      loading: false
     }
-    this.partyData = [{carNum:'冀F12332',name:'123',responsibilityType:'全部责任',insuranceCompany:'',isReport:true},{carNum:'京F12332',name:'988',responsibilityType:'次要责任',insuranceCompany:'',isReport:false}];
+    this.partyData = [];
+  }
+  componentWillMount(){
+    this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {}));
   }
   componentDidMount(){
-    this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: '1101201707171442378260000'}))
+    let { taskno } = this.props.navigation.state.params
+    this.setState({
+      loading:true
+    })
+    this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: taskno}))
       .then( res => {
-        if (res) {
-          console.log(res);
+        if (res && res.personList.length > 0) {
+          this.partyData = res.personList
+          for (var i = 0; i < this.partyData.length; i++) {
+            //1代表无责
+            this.partyData[i].isReport = (this.partyData[i].dutyCode != '1')
+          }
         }
+        this.setState({
+          loading:false
+        })
     })
   }
   //下一步
   gotoNext(){
-    this.props.navigation.navigate('InsuranceReportSuccessView',{isHaveLookJurisdiction:true,isNeedLook:false,waitForLook:false});
+    let data = [];
+    for (var i = 0; i < this.partyData.length; i++) {
+      if (this.partyData[i].isReport && !this.partyData[i].insuranceCompany) {
+        Toast.showShortCenter(`请选择${this.partyData[i].name}的保险报案公司`);
+        return
+      } else if (this.partyData[i].isReport && this.partyData[i].insuranceCompany) {
+        data.push({licenseno:this.partyData[i].licensePlateNum,insurecode:this.partyData[i].insurecode,citycode:this.partyData[i].citycode})
+      }
+    }
+    let { taskno } = this.props.navigation.state.params
+    if (data.length > 0) {
+      this.setState({
+        loading: true
+      })
+      this.props.dispatch( create_service(Contract.POST_INSURE_INFO, {taskno:taskno,data:JSON.stringify(data)}))
+        .then( res => {
+          this.setState({
+            loading: false
+          })
+          if (res) {
+            this.props.navigation.navigate('InsuranceReportSuccessView',{openflag:res.data.openflag,partyData:this.partyData,taskno:taskno});
+          }
+      })
+    } else {
+      Toast.showShortCenter('请选择要保险报案的当事人');
+    }
   }
   renderRowItem(title,value){
     return (
@@ -52,17 +92,19 @@ class InsuranceReportPartyInfoView extends Component {
       <View style={{backgroundColor:'#ffffff',marginBottom:10}} key={index}>
         <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
           <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.carNum}】`}</Text>
+          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.licensePlateNum}】`}</Text>
         </View>
         <View style={{backgroundColor:backgroundGrey,height:1,marginTop:10}}></View>
         {this.renderRowItem('当事人姓名',value.name)}
-        {this.renderRowItem('当事人车牌号',value.carNum)}
-        {this.renderRowItem('当事人责任类型',value.responsibilityType)}
+        {this.renderRowItem('当事人车牌号',value.licensePlateNum)}
+        {this.renderRowItem('当事人责任类型',value.dutyName)}
         {value.isReport ? <View>
             <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:15}}>
             <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>保险公司</Text>
               <TouchableHighlight style={{marginRight:15}} underlayColor='transparent' onPress={()=>{this.props.navigation.navigate('SelectInInsuranceCompanyView',{selData:(selData)=>{
-                value.insuranceCompany = selData;
+                value.insuranceCompany = selData.showData;
+                value.insurecode = selData.insurecode;
+                value.citycode = selData.citycode
                 this.setState({
                   refresh: true
                 })
@@ -78,10 +120,12 @@ class InsuranceReportPartyInfoView extends Component {
         <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:15,marginBottom:15}}>
           <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>是否保险报案</Text>
           <TouchableHighlight style={{marginRight:15}} underlayColor={'transparent'} onPress={()=>{
-            value.isReport = !value.isReport
-            this.setState({
-              refresh: true
-            })
+            if (value.dutyCode != '1') {
+              value.isReport = !value.isReport
+              this.setState({
+                refresh: true
+              })
+            }
           }}>
             <Image source={selImage} style={{width:19,height:19,alignSelf:'center'}}/>
           </TouchableHighlight>
@@ -90,21 +134,28 @@ class InsuranceReportPartyInfoView extends Component {
     )
   }
   render(){
-    return(
-      <ScrollView style={styles.container}
+    let content = null;
+    if (this.partyData && this.partyData.length > 0) {
+      content = <ScrollView style={styles.container}
                    showsVerticalScrollIndicator={false}>
-         <View style={{paddingVertical:10}}>
-           <Text style={{fontSize:13,color:'#717171',marginLeft:15}}>
-             请确认保险报案当事人信息
-           </Text>
-         </View>
-         <View style={{flex:1}}>
-           {this.partyData.map((value,index) => this.renderOneParty(value,index))}
-         </View>
-         <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-           <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
-         </View>
-      </ScrollView>
+                 <View style={{paddingVertical:10}}>
+                   <Text style={{fontSize:13,color:'#717171',marginLeft:15}}>
+                     请确认保险报案当事人信息
+                   </Text>
+                 </View>
+                 <View style={{flex:1}}>
+                   {this.partyData.map((value,index) => this.renderOneParty(value,index))}
+                 </View>
+                 <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
+                   <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
+                 </View>
+              </ScrollView>
+    }
+    return(
+      <View style={styles.container}>
+        {content}
+        <ProgressView show={this.state.loading}/>
+      </View>
     );
   }
 

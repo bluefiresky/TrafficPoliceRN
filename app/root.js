@@ -84,11 +84,13 @@ const PublicNavigator = StackNavigator({
 
   //保险报案
   InsuranceReportPartyInfoView: { screen: InsuranceReportPartyInfoView, navigationOptions: { title: '保险报案'} },
-  ExploreSuccessView: { screen: ExploreSuccessView, navigationOptions: { title: '完成'} },
-  ConfirmReportPartyInfoView: { screen: ConfirmReportPartyInfoView, navigationOptions: { title: '确认信息'} },
-  ExploreTakePhotoView: { screen: ExploreTakePhotoView, navigationOptions: { title: '查勘拍照'} },
+  SelectInInsuranceCompanyView: { screen: SelectInInsuranceCompanyView, navigationOptions: { title: '保险报案'} },
+  SelectCityView: { screen: SelectCityView, navigationOptions: { title: '保险报案'} },
+  InsuranceReportSuccessView: { screen: InsuranceReportSuccessView, navigationOptions: { title: '完成'} },
   PerfectInformantInfoView: { screen: PerfectInformantInfoView, navigationOptions: { title: '完善报案人信息'} },
-  InsuranceReportSuccessView: { screen: InsuranceReportSuccessView, navigationOptions: { title: '完成'} }
+  ExploreTakePhotoView: { screen: ExploreTakePhotoView, navigationOptions: { title: '查勘拍照'} },
+  ConfirmReportPartyInfoView: { screen: ConfirmReportPartyInfoView, navigationOptions: { title: '确认信息'} },
+  ExploreSuccessView: { screen: ExploreSuccessView, navigationOptions: { title: '完成'} }
 },{
   headerMode: 'screen',
   navigationOptions: () => (publicNavigationOptions)
