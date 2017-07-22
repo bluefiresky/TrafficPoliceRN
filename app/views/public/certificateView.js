@@ -12,6 +12,8 @@ import { ProgressView, XButton } from '../../components/index.js';  /** 自定�
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 
+import { generateRDS } from './html/rendingshu.js';
+
 const ButtonW = (W - 60)/2
 
 class CertificateView extends Component {
@@ -19,7 +21,7 @@ class CertificateView extends Component {
   constructor(props){
     super(props);
     this.state = {
-      html:null,
+      source:null,
       jsCode:''
     }
 
@@ -29,25 +31,14 @@ class CertificateView extends Component {
   componentDidMount(){
     InteractionManager.runAfterInteractions(()=>{
       // this.props.navigation.state.params.handleWay === '04'?'离线协议书':'离线认定书'
-      let html = require('./html/rendingshu.html');
+      let rendingshu = generateRDS();
       // let html = require('./html/xieyishu.html');
-      this.jsCode = `
-        function test(){
-          var t1 = document.getElementById("d1");
-          var t2 = document.getElementById("d2");
-          t1.innerHTML = 'wokao'
-          t2.innerHTML = 'woqu';
-        }
-        test();
-      `;
-      this.setState({html})
+      this.setState({source:{html:rendingshu, baseUrl:''}})
     })
   }
 
   render(){
-    let { html, jsCode } = this.state;
-
-    // if(!html) return <View style={styles.container} />;
+    let { source } = this.state;
     return(
       <View style={styles.container}>
         <View style={{flex:1}}>
@@ -55,7 +46,7 @@ class CertificateView extends Component {
             ref={(ref) => this.ref = ref}
             automaticallyAdjustContentInsets={true}
             style={{flex:1}}
-            source={html}
+            source={source}
             javaScriptEnabled={true}
             scalesPageToFit={true}
             startInLoadingState={true}/>
@@ -70,14 +61,11 @@ class CertificateView extends Component {
 
   /**  Private  */
   _onPress(type){
-    console.log(' the ref -->> ', this.ref);
-    this.ref.injectJavaScript(this.jsCode)
-    // this.forceUpdate();
     if(type === 1){
       Toast.showShortCenter('开发中')
     }else{
       let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
-      this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
+      this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName }) ]}) )
     }
   }
 }

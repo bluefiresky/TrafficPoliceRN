@@ -120,8 +120,9 @@ class ApHomePageView extends Component {
              <Text style={{fontSize:15,color:formLeftText}}>
                待上传案件
              </Text>
-             <Text style={{fontSize:13,color:formRightText,marginTop:10}}>
-               {`您有${this.unUploadedSum}起案件未上传，请及时上传`}
+             <Text style={{fontSize:13,color:formRightText,marginTop:10}}>您有
+               <Text style={{color:'red'}}>{this.unUploadedSum}</Text>
+               起案件未上传，请及时上传
              </Text>
            </View>
            <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,marginRight:15,alignSelf:'center'}}/>
@@ -134,8 +135,9 @@ class ApHomePageView extends Component {
              <Text style={{fontSize:15,color:formLeftText}}>
                未完结案件
              </Text>
-             <Text style={{fontSize:13,color:formRightText,marginTop:10}}>
-               {`您有${this.unCompleteSum}起案件未处理完，请及时处理`}
+             <Text style={{fontSize:13,color:formRightText,marginTop:10}}>您有
+               <Text style={{color:'red'}}>{this.unCompleteSum}</Text>
+               起案件未处理完，请及时处理
              </Text>
            </View>
            <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,marginRight:15,alignSelf:'center'}}/>
