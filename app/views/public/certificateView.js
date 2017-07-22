@@ -10,10 +10,13 @@ import { NavigationActions } from 'react-navigation'
 import { W, H, backgroundGrey,formLeftText } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, XButton } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
-import { create_service } from '../../redux/index.js'; /** 调用api的Action */
+import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
+import { StorageHelper, Utility } from '../../utility/index.js';
 
 import { generateRDS } from './html/rendingshu.js';
+import { generateXYS } from './html/xieyishu.js';
 
+const DutyTypeList = [{name:'全责',code:'0'},{name:'无责',code:'1'},{name:'同等责任',code:'2'},{name:'主责',code:'3'},{name:'次责',code:'4'}];
 const ButtonW = (W - 60)/2
 
 class CertificateView extends Component {
@@ -21,19 +24,35 @@ class CertificateView extends Component {
   constructor(props){
     super(props);
     this.state = {
+      loading:false,
       source:null,
       jsCode:''
     }
 
     this.ref = null;
+    this._generateRenDingShu = this._generateRenDingShu.bind(this);
   }
 
   componentDidMount(){
+    // this.setState({loading:true})
     InteractionManager.runAfterInteractions(()=>{
+      this._getInfo((info) => {
+        console.log(' the info -->>', info);
+        if(info){
+          let html;
+          let { handleWay } = info;
+          if(handleWay === '04'){
+            html = this._generateXieYiShu(info)
+          }else{
+            html = this._generateRenDingShu(info)
+          }
+          console.log(' the html -->> ', html);
+          this.setState({loading:false, source:{html, baseUrl:''}})
+        }else{
+          // this.setState({loading:false})
+        }
+      });
       // this.props.navigation.state.params.handleWay === '04'?'离线协议书':'离线认定书'
-      let rendingshu = generateRDS();
-      // let html = require('./html/xieyishu.html');
-      this.setState({source:{html:rendingshu, baseUrl:''}})
     })
   }
 
@@ -67,6 +86,123 @@ class CertificateView extends Component {
       let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
       this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName }) ]}) )
     }
+  }
+
+  async _getInfo(callback){
+    let info = await StorageHelper.getCurrentCaseInfo('unuploaded');
+    callback(info)
+  }
+
+  _generateRenDingShu(info){
+    let {basic, person, duty } = info;
+    let nBasic = {accidentTime:this._convertAccidentTime(basic.accidentTime), weather:this._convertWeather(basic.weather), address:basic.address};
+
+    let nPersonList = [];
+    for(let i=0; i < person.length; i++){
+      let p = person[i];
+      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+duty[i].signData})
+    }
+    if(nPersonList.length === 2){
+      nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
+    }else if(nPersonList.length === 3){
+      nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
+      nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
+    }
+
+    let factAndResponsibility = this._convertInfoToAccidentContent(basic, person) + this._convertResponsebilityContent(person, duty);
+
+    return generateRDS(nBasic, nPersonList, factAndResponsibility)
+  }
+
+  _generateXieYiShu(info){
+    let {basic, person, duty } = info;
+    let nBasic = {accidentTime:this._convertAccidentTime(basic.accidentTime), weather:this._convertWeather(basic.weather), address:basic.address};
+
+    let nPersonList = [];
+    for(let i=0; i < person.length; i++){
+      let p = person[i];
+      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureDueDate:p.carInsureDueDate, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+duty[i].signData, signTime:duty[i].signTime, insureCompanyName:p.insureCompanyName})
+    }
+    if(nPersonList.length === 2){
+      nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureDueDate:'', carInsureNumber:'', signData:'', signTime:'', insureCompanyName:''})
+    }else if(nPersonList.length === 3){
+      nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureDueDate:'', carInsureNumber:'', signData:'', signTime:'', insureCompanyName:''})
+      nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureDueDate:'', carInsureNumber:'', signData:'', signTime:'', insureCompanyName:''})
+    }
+
+    return generateXYS(nBasic, nPersonList)
+  }
+
+  _convertAccidentTime(time){
+    if(time) return time.substring(0, time.length - 3);
+    return ''
+  }
+
+  _convertWeather(code){
+    let weatherList = getStore().getState().dictionary.weatherList;
+    let name = null;
+    for(let i = 0; i < weatherList.length; i++){
+      let w = weatherList[i];
+      if(w.code == code){
+        name = w.name;
+        break;
+      }
+    }
+    return name;
+  }
+
+  _convertInfoToAccidentContent(basic, person){
+    if(!basic) return '';
+
+    let num = person.length;
+    let content = '';
+    if(num === 1){
+      let p = person[0];
+      content = `\t\t${basic.accidentTime}, ${p.name}(驾驶证号:${p.driverNum})驾驶车牌号为${p.licensePlateNum}的${p.carType}, 在${basic.address}发生交通事故。`
+    }else if(num === 2){
+      let p1 = person[0];
+      let p2 = person[1];
+      content = `\t\t${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}，与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}发生交通事故。`
+    }else if(num === 3){
+      let p1 = person[0];
+      let p2 = person[1];
+      let p3 = person[2];
+      content = `\t\t${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}，及${p3.name}(驾驶证号:${p3.driverNum})驾驶车牌号为${p3.licensePlateNum}的${p3.carType}发生交通事故。`
+    }
+
+    return content;
+  }
+
+  _convertResponsebilityContent(person, duty){
+    if(!person) return '';
+
+    let num = person.length;
+    let content = '';
+    if(duty){
+      if(num === 1){
+        content = `\n${person[0].name}应负此次事故的${this._convertCodeToEntry(duty[0].dutyType, DutyTypeList).name}。`
+      }else if(num === 2){
+        content = `\n${person[0].name}应负此次事故的${this._convertCodeToEntry(duty[0].dutyType, DutyTypeList).name}，${person[1].name}应负此次事故的${this._convertCodeToEntry(duty[1].dutyType, DutyTypeList).name}。`
+      }else if(num === 3){
+        content = `\n${person[0].name}应负此次事故的${this._convertCodeToEntry(duty[0].dutyType, DutyTypeList).name}，${person[1].name}应负此次事故的${this._convertCodeToEntry(duty[1].dutyType, DutyTypeList).name}，${person[2].name}应负此次事故的${this._convertCodeToEntry(duty[2].dutyType, DutyTypeList).name}。`
+      }
+    }
+
+    return content;
+  }
+
+  _convertCodeToEntry(code, array){
+    if(!code) return;
+
+    let entry = null;
+    for(let i=0,max=array.length; i<max; i++){
+      let v = array[i];
+      if(v.code == code){
+        entry = v;
+        break;
+      }
+    }
+    return entry;
   }
 }
 

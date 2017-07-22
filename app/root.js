@@ -125,7 +125,7 @@ class RootView extends Component {
     this.state={
       statusBackColor: isIos? 'transparent' : '#1C79D9'
     };
-    global.currentCaseId = '1500564210020';
+    // global.currentCaseId = '1500564210020';
   }
 
   render(){
