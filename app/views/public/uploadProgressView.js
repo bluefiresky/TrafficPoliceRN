@@ -155,8 +155,10 @@ class UploadProgressView extends Component {
           let errorTip = '';
           if(handleWay === '04'){
             errorTip = '案件信息已存储在手机中，并已离线生成《道路交通事故自行协商协议书》。请告知当事人待网络信号良好时，案件信息将上传后台，然后当事人可收到包含本次事故认定书的短信。'
-          }else{
+          }else if(handleWay === '01' || handleWay === '02'){
             errorTip = '案件信息已存储在手机中，并已离线生成《道路交通事故认定书（简易程序）》。请告知当事人待网络信号良好时，案件信息将上传后台，然后当事人可收到包含本次事故认定书的短信。'
+          }else{
+            errorTip = '当前网络差，案件信息上传失败，请寻找网络良好的位置点击重试！';
           }
           this._done('上传案件失败', errorTip, false);
         }else{
