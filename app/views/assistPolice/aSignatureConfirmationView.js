@@ -6,6 +6,7 @@ import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { takeSnapshot } from "react-native-view-shot";
+import Orientation from 'react-native-orientation';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, XButton, Input } from '../../components/index.js';  /** 自定义组件 */
@@ -37,6 +38,7 @@ class ASignatureConfirmationView extends Component {
   }
 
   componentDidMount(){
+    Orientation.lockToPortrait();
     this.setState({loading:true})
     InteractionManager.runAfterInteractions(async () => {
       let info = await StorageHelper.getCurrentCaseInfo();
@@ -58,8 +60,7 @@ class ASignatureConfirmationView extends Component {
           this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码',codeSecondsLeft: 60,showSpeekCode: false, codeColor:''})
         }
       }
-      console.log(' the dutyList -->> ', this.dutyList);
-      console.log(' the submitText -->> ', submitText);
+
       this.setState({loading:false, submitText})
     })
   }
@@ -252,6 +253,8 @@ class ASignatureConfirmationView extends Component {
               onPress={()=>{
                 if(value.refuseFlag === '02') {
                   value.refuseFlag = '01';
+                  value.signData = null;
+
                   this.setState({refuse:true})
                 }
                 else {

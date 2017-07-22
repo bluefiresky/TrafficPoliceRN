@@ -43,7 +43,7 @@ const publicNavigationOptions = {
 
 /** App-public栈 */
 const PublicNavigator = StackNavigator({
-  // //公共
+  //公共
   LoginView: { screen: LoginView, navigationOptions: { title: '登录'} },
   SettingView: { screen: SettingView, navigationOptions: { title: '设置'} },
   FeedBackView: { screen: FeedBackView, navigationOptions: { title: '意见反馈'} },
@@ -123,13 +123,12 @@ class RootView extends Component {
     this.state={
       statusBackColor: isIos? 'transparent' : '#1C79D9'
     };
-    // global.currentCaseId = '1500190113932';
+    // global.currentCaseId = '1500564210020';
   }
 
   render(){
     let { statusBackColor } = this.state;
     let { guide, navigation } = this.props;
-
     return(
       <View style={styles.container}>
         <StatusBar backgroundColor={statusBackColor} />

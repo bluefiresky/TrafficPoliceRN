@@ -33,8 +33,8 @@ const AStepToView = {
   '7':'ASignatureConfirmationView'
 }
 
-// 03 -> 0,1,2,3,4,5,6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
-// 05 -> 0,1,2,3,4,5,6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
+// 03 -> 0,1,2,3,4,5,      6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
+// 05 -> 0,1,2,3,4,5,      6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
 // 04 -> 0,1,2,3,4,5,5_6_1,6,7
 export default class HistoricalCaseCellView extends Component {
 

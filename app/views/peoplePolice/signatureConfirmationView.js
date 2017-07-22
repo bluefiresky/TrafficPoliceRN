@@ -6,6 +6,7 @@ import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { takeSnapshot } from "react-native-view-shot";
+import Orientation from 'react-native-orientation';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, XButton, Input } from '../../components/index.js';  /** 自定义组件 */
@@ -37,6 +38,7 @@ class SignatureConfirmationView extends Component {
   }
 
   componentDidMount(){
+    Orientation.lockToPortrait();
     this.setState({loading:true})
     InteractionManager.runAfterInteractions(async () => {
       let info = await StorageHelper.getCurrentCaseInfo();
@@ -46,6 +48,7 @@ class SignatureConfirmationView extends Component {
         let l = localDutyList[i];
         this.dutyList.push({title:PersonalTitles[i], phone:l.phone, code:'', signData:'', signTime:'', refuseFlag:'01', licensePlateNum:l.licensePlateNum, dutyName:l.dutyName, dutyType:l.dutyType, codeText:'获取验证码',codeSecondsLeft: 60,showSpeekCode: false, codeColor:''})
       }
+
       this.setState({loading:false})
     })
   }
@@ -199,14 +202,14 @@ class SignatureConfirmationView extends Component {
         <View style={{marginBottom:20,marginTop:20}}>
           {
             value.refuseFlag === '02'? null :
-            <TouchableHighlight underlayColor={'transparent'}
-              onPress={()=>{
-                this.props.navigation.navigate('SignatureView', {returnValue: (result)=>{
-                  value.signData = result;
-                  value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
-                  this.setState({refresh: true})
-                }})
-              }}>
+            <TouchableHighlight underlayColor={'transparent'} onPress={()=>{
+              let self = this;
+              this.props.navigation.navigate('SignatureView', {returnValue: (result)=>{
+                value.signData = result;
+                value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+                self.setState({refresh: true})
+              }})
+            }} >
               {
                 value.signData? <Image source={{uri:'data:image/png;base64,'+value.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
                 :
@@ -218,7 +221,12 @@ class SignatureConfirmationView extends Component {
           }
           <TouchableHighlight style={{marginLeft:10, width:W/2}} underlayColor='transparent'
             onPress={()=>{
-              if(value.refuseFlag === '02') value.refuseFlag = '01';
+              if(value.refuseFlag === '02') {
+                value.refuseFlag = '01';
+                value.signData = null;
+
+                this.setState({refuse:true})
+              }
               else {
                 value.refuseFlag = '02';
 
@@ -273,6 +281,8 @@ class SignatureConfirmationView extends Component {
 
     );
   }
+
+  /** Private **/
 
 }
 const styles = StyleSheet.create({
