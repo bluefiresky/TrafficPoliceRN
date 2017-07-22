@@ -63,7 +63,7 @@ function http_factory({method, paramsType}) {
     console.log('%c service_helpers ## path: ## ' + path + ' ## meta -->> ', 'color:limegreen', meta);
     try{
       const response = await fetch(path, meta);
-      console.log('%c service_helpers resopnse-stauts -->> ', 'color:limegreen', response.status );
+      // console.log('%c service_helpers resopnse-stauts -->> ', 'color:limegreen', response.status );
 
       if(response.status == 200){
         const text = await response.text()

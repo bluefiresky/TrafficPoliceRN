@@ -147,7 +147,7 @@ class AAccidentBasicInformationView extends Component {
               <Text style={{color:formRightText,fontSize:16}}>(可手动更改事故地点)</Text>
             </Text>
             <View style={{backgroundColor:'#EFF2F7',width:W,height:1,marginTop:10}}></View>
-            <InputWithIcon labelWidth={20} style={{height: 55, paddingLeft:15}} icon={require('./image/location.png')} noBorder={true} value={this.state.accidentSite} onChange={this.onChangeText.bind(this)} multiline={true}/>
+            <InputWithIcon labelWidth={20} style={{height: 55, paddingLeft:15}} maxLength={50} icon={require('./image/location.png')} noBorder={true} value={this.state.accidentSite} onChange={this.onChangeText.bind(this)} multiline={true}/>
             <TouchableOpacity onPress={()=>{this._onGetLocation()}} activeOpacity={0.8} style={{backgroundColor:'transparent', position:'absolute', width:50, height:50, top:45}}>
               <View />
             </TouchableOpacity>
@@ -180,10 +180,9 @@ class AAccidentBasicInformationView extends Component {
         if(this.locationData.errorCode != -100){
           self.setState({ loading: false, showTip: true,
             tipParams:{
-              content: '无法获取当前位置，请重试',
-              left:{label: '返回首页', event: () => {
+              content: '无法获取当前位置，请开启定位功能后点击重试，或手动填写事故地点',
+              left:{label: '确认', event: () => {
                 self.setState({showTip: false});
-                self.props.navigation.goBack();
               }},
               right:{label: '重试', event: () => {
                 self.setState({showTip: false});

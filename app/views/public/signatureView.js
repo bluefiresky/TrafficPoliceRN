@@ -2,7 +2,7 @@
 * 设置页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
@@ -25,18 +25,23 @@ class SignatureView extends Component {
     super(props);
     this.signData = null;
     this._onSaveEvent = this._onSaveEvent.bind(this);
+    this._orientationDidChange = this._orientationDidChange.bind(this);
     this.state = {
       viewMode: 'landscape',
+      show:false,
     }
   }
 
   componentWillMount(){
-    // if(IsIos){
-      Orientation.lockToLandscape();
-    // }
+    Orientation.addOrientationListener(this._orientationDidChange);
+  }
+
+  componentDidMount(){
+    Orientation.lockToLandscape();
   }
 
   componentWillUnmount(){
+    Orientation.removeOrientationListener(this._orientationDidChange)
     // if(IsIos){
       Orientation.lockToPortrait();
     // }
@@ -45,34 +50,43 @@ class SignatureView extends Component {
   render(){
     return(
       <View style={styles.container}>
-        <View style={{height:TitlebarHeight, flexDirection: 'row', paddingLeft:20, paddingTop:10 }}>
+        <View style={{flexDirection: 'row', paddingHorizontal:20, paddingVertical:10}}>
           <TouchableHighlight style={styles.buttonStyle} onPress={() => { this._goBack() }} underlayColor={'transparent'}>
             <Text style={{color:mainBule, fontSize: 14}}>返回</Text>
-          </TouchableHighlight>
-          <View style={{width: 20}} />
-          <TouchableHighlight style={styles.buttonStyle} onPress={() => { this._saveSign() }} underlayColor={'transparent'}>
-            <Text style={{color:mainBule, fontSize: 14}}>保存</Text>
           </TouchableHighlight>
           <View style={{width: 20}} />
           <TouchableHighlight style={styles.buttonStyle} onPress={() => { this._resetSign() }} underlayColor={'transparent'}>
             <Text style={{color:mainBule, fontSize: 14}}>重置</Text>
           </TouchableHighlight>
+          <View style={{flex:1}} />
+          <TouchableHighlight style={styles.buttonStyle} onPress={() => { this._saveSign() }} underlayColor={'transparent'}>
+            <Text style={{color:mainBule, fontSize: 14}}>保存</Text>
+          </TouchableHighlight>
         </View>
 
-        <SignatureCapture
-          style={{flex: 1, backgroundColor:'white', borderColor:'transparent'}}
-          ref={(ref)=>{ this.ref = ref }}
-          onSaveEvent={this._onSaveEvent}
-          saveImageFileInExtStorage={false}
-          showNativeButtons={false}
-          showTitleLabel={false}
-          viewMode={'landscape'}/>
+        {
+          !this.state.show? null :
+          <SignatureCapture
+            style={{flex: 1, backgroundColor:'red', borderColor:'transparent'}}
+            ref={(ref)=>{ this.ref = ref }}
+            onSaveEvent={this._onSaveEvent}
+            saveImageFileInExtStorage={false}
+            showNativeButtons={false}
+            showTitleLabel={false}
+            viewMode={'landscape'}/>
+        }
 
       </View>
     );
   }
 
   /** Private **/
+  _orientationDidChange(orientation){
+    if (orientation === 'LANDSCAPE') {
+      this.setState({show:true})
+    }
+  }
+
   _saveSign() {
     this.ref.saveImage();
   }

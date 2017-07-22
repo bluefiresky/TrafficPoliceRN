@@ -55,6 +55,9 @@ class AAccidentFactAndResponsibilityView extends Component {
             self.setState({showTip: false});
           }},
           right:{label: '继续提交', event: async () => {
+            self.setState({loading:true});
+            if(self.state.loading) return;
+            
             let success = await StorageHelper.saveStep6({supplementary, conciliation, localDutyList:[]})
             self.setState({showTip: false, loading:false});
             if(success) self.props.navigation.navigate('UploadProgressView');
@@ -106,7 +109,7 @@ class AAccidentFactAndResponsibilityView extends Component {
                 <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>损害赔偿及调解结果（可自行修改）</Text>
               </View>
               <TextInput
-                style={{height:100, fontSize: 14, marginLeft:15,marginTop:10, width: W - 30,borderWidth:1,borderColor:'#D4D4D4',backgroundColor:'#FBFBFE',padding:5}}
+                style={{height:100, fontSize: 14, marginLeft:15,marginTop:10, marginBottom:10, width: W - 30,borderWidth:1,borderColor:'#D4D4D4',backgroundColor:'#FBFBFE',padding:5}}
                 value={conciliation}
                 underlineColorAndroid={'transparent'}
                 onChangeText={(text) => { this.onChangeText(text,'Result') } }

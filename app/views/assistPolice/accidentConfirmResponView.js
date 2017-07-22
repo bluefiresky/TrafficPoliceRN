@@ -24,6 +24,8 @@ class AccidentConfirmResponView extends Component {
       taskModal:null,
       accidentDes:null,
     }
+
+    this.dutyDataList = null;
   }
 
   componentDidMount(){
@@ -34,6 +36,9 @@ class AccidentConfirmResponView extends Component {
       for(let i = 0; i<info.person.length; i++){
         let p = info.person[i];
         ldl.push({name: p.name, phone:p.phone, licensePlateNum: p.licensePlateNum, dutyName: '', dutyType: ''})
+      }
+      if(info.handleWay === '04'){
+        this.dutyDataList = [{label:'全责',code:'0'},{label:'无责',code:'1'},{label:'同等责任',code:'2'}];
       }
       this.setState({
         loading:false,
@@ -76,6 +81,7 @@ class AccidentConfirmResponView extends Component {
     return (
       <View style={{marginLeft:15}} key={index}>
         <DutyTypePicker label={`当事人${value.name}(${value.licensePlateNum})`} placeholder={'请选择责任类型'} value={value.dutyName}
+          data={this.dutyDataList}
           onChange={(res)=>{
             let { localDutyList } = this.state;
             let d = localDutyList[index];

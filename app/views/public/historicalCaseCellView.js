@@ -14,7 +14,7 @@ const PStepToView = {
   '4':'ConfirmInformationView',
   '5':'AccidentFactAndResponsibilityView',
   '6':'SignatureConfirmationView',
-  '7':'UploadProgressView',
+  '7':'SignatureConfirmationView',
 }
 
 const AStepToView = {
@@ -23,15 +23,18 @@ const AStepToView = {
   '2':'AGatheringPartyInformationView',
   '3':'AGatheringCardPhotoView',
   '4':'AConfirmInformationView',
+
   '5':(handleWay) => { return handleWay != '04'? 'AAccidentFactAndResponsibilityView': 'AccidentConditionView'},
-  '5_6_1':'AccidentConfirmResponView',
-  '6':(handleWay) => { return handleWay != '04'? 'AccidentConfirmResponView' : 'ASignatureConfirmationView'},
+  '6':(handleWay) => { return handleWay != '04'? 'AAccidentFactAndResponsibilityView' : 'ASignatureConfirmationView'},
+
   '6_7_1':'WaitRemoteResponsibleView',
+
+  '5_6_1':'AccidentConfirmResponView',
   '7':'ASignatureConfirmationView'
 }
 
-// 03 -> 0,1,2,3,4,5,6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
-// 05 -> 0,1,2,3,4,5,6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
+// 03 -> 0,1,2,3,4,5,      6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
+// 05 -> 0,1,2,3,4,5,      6(提交远程定责),6_7_1(上传成功),WaitRemoteResponsibleView,ResponsibleResultView,ASignatureConfirmationView,UploadSuccessView
 // 04 -> 0,1,2,3,4,5,5_6_1,6,7
 export default class HistoricalCaseCellView extends Component {
 
@@ -50,7 +53,7 @@ export default class HistoricalCaseCellView extends Component {
       this.props.navigation.navigate('CaseDetailsView', {info:rowData});
       return;
     }
-    
+
     let routeName = null;
     if(global.personal.policeType === 2){
       routeName = PStepToView[step];

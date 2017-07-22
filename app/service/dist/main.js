@@ -27,5 +27,5 @@ export const get_remote_fixduty_result = ({taskNo, version}) => {
 
 /** 协警生成责任认定书 */
 export const post_generate_dutyconfirmation = ({taskNo, signatureList, version}) => {
-  return http_post( 'generate.dutyconfirmation', {taskNo}, {signatureList}, version )
+  return http_post( 'generate.dutyconfirmation', {taskNo, signatureList}, {}, version )
 }

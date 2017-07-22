@@ -14,7 +14,7 @@ import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
 import Tool from '../../utility/Tool';
-import { StorageHelper, Utility } from '../../utility/index.js';
+import { StorageHelper, Utility, TextUtility } from '../../utility/index.js';
 
 class AGatheringPartyInformationView extends Component {
 
@@ -32,9 +32,9 @@ class AGatheringPartyInformationView extends Component {
     this.partyDrivingLicense = '';
     this.partyInsuranceCertificateNum = '';
     //提交的内容
-    this.jiafangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:'',carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
-    this.yifangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:'',carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
-    this.bingfangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:'',carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.jiafangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.yifangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.bingfangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
     this.carInfoData = [{title:'甲方',carNumArr:[getProvincialData(),getNumberData()]}];
     this.addOtherTitle = ['乙方','丙方'];
     this.addOtherInfo = [this.yifangInfo,this.bingfangInfo];
@@ -46,7 +46,8 @@ class AGatheringPartyInformationView extends Component {
     this.setState({loading: true})
     InteractionManager.runAfterInteractions(async ()=>{
       let info = await StorageHelper.getCurrentCaseInfo();
-      this.handleWay = info.handleWay;
+      // this.handleWay = info.handleWay;
+      this.handleWay = '03'
       if(this.handleWay != '03'){
         this.carInfoData.push({title:'乙方',carNumArr:[getProvincialData(),getNumberData()]})
         this.submitDataArr.push(this.yifangInfo)
@@ -85,8 +86,8 @@ class AGatheringPartyInformationView extends Component {
          error = `请输入正确的${this.carInfoData[i].title}驾驶证号`
          break;
        }
-       if (!this.submitDataArr[i].licensePlateNum) {
-         error = `请输入${this.carInfoData[i].title}车牌号`
+       if (!TextUtility.checkLength(this.submitDataArr[i].licensePlateNum, 9, 7)) {
+         error = `请输入正确的${this.carInfoData[i].title}车牌号`
          break;
        }
        if (!this.submitDataArr[i].carType) {
@@ -102,6 +103,31 @@ class AGatheringPartyInformationView extends Component {
       //    break;
       //  }
      }
+
+     if(this.submitDataArr.length === 2){
+       if(this.submitDataArr[0].phone === this.submitDataArr[1].phone){
+         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的手机号不能相同`;
+       }else if(this.submitDataArr[0].driverNum === this.submitDataArr[1].driverNum){
+         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的驾驶证号不能相同`;
+       }
+     }
+
+     if(this.submitDataArr.length === 3){
+       if(this.submitDataArr[0].phone === this.submitDataArr[1].phone){
+         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的手机号不能相同`;
+       }else if(this.submitDataArr[0].phone === this.submitDataArr[2].phone){
+         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[2].title} 的手机号不能相同`;
+       }else if(this.submitDataArr[1].phone === this.submitDataArr[2].phone){
+         error = `${this.carInfoData[1].title} 与 ${this.carInfoData[2].title} 的手机号不能相同`;
+       }else if(this.submitDataArr[0].driverNum === this.submitDataArr[1].driverNum){
+         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的驾驶证号不能相同`;
+       }else if(this.submitDataArr[0].driverNum === this.submitDataArr[2].driverNum){
+         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[2].title} 的驾驶证号不能相同`;
+       }else if(this.submitDataArr[1].driverNum === this.submitDataArr[2].driverNum){
+         error = `${this.carInfoData[1].title} 与 ${this.carInfoData[2].title} 的驾驶证号不能相同`;
+       }
+     }
+
      if(error) {
        this.setState({loading:false});
        Toast.showShortCenter(error);
@@ -161,10 +187,14 @@ class AGatheringPartyInformationView extends Component {
         this.submitDataArr[index].name = text;
         break;
       case 'Phone':
-        this.submitDataArr[index].phone = text;
+        if(TextUtility.checkNumber(text)){
+          this.submitDataArr[index].phone = text;
+        }
         break;
       case 'DrivingLicense':
-        this.submitDataArr[index].driverNum = text;
+        if(TextUtility.checkNumber(text)){
+          this.submitDataArr[index].driverNum = text;
+        }
         break;
       case 'InsuranceCertificateNum':
         this.submitDataArr[index].carInsureNumber = text;
@@ -174,6 +204,7 @@ class AGatheringPartyInformationView extends Component {
         break;
       default:
     }
+    this.forceUpdate();
   }
   //下拉选择
   showTypePicker(typeData,index,type) {
@@ -230,13 +261,13 @@ class AGatheringPartyInformationView extends Component {
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'联系方式: '} placeholder={'请输入当事人联系方式'} maxLength={11} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
+          <Input label={'联系方式: '} value={this.submitDataArr[index].phone} placeholder={'请输入当事人联系方式'} maxLength={11} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
+          <Input label={'驾驶证号: '} value={this.submitDataArr[index].driverNum} placeholder={'请输入当事人驾驶证号'} maxLength={18} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
@@ -247,7 +278,7 @@ class AGatheringPartyInformationView extends Component {
             hasStar={true}
             style={{flex:1,marginRight:15}}
             onChangeValue={(text)=> {
-              console.log(' execute SelectCarNum and the return value -->> ', text);
+              // console.log(' execute SelectCarNum and the return value -->> ', text);
               this.submitDataArr[index].licensePlateNum = text;
               this.setState({refresh:true})
             }}/>
@@ -259,8 +290,7 @@ class AGatheringPartyInformationView extends Component {
             <Text style={{fontSize:12,color:'red'}}>*</Text>
             <Text style={{fontSize:14,color:formLeftText,marginLeft:5}}>车辆类型:</Text>
             <TouchableHighlight onPress={() => this.showTypePicker(this.carTypeData,index,'carTypeData')} underlayColor='transparent' style={{flex:1}}>
-              <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-                <View style={{flex:1}}/>
+              <View style={{flex:1,paddingLeft:13, flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                 <Text style={{fontSize:14,color:formLeftText,marginLeft:10,marginRight:10}} >{this.state.showOtherCarTextInput?'其他':(this.submitDataArr.length > 0?(this.submitDataArr[index].carType) : '')}</Text>
                 <Image style={{width:7,height:12,resizeMode:'contain'}} source={require('./image/right_arrow.png')}/>
               </View>
@@ -280,10 +310,9 @@ class AGatheringPartyInformationView extends Component {
           <Text style={{fontSize:12,color:'red'}}>*</Text>
           <Text style={{fontSize:14,color:formLeftText,marginLeft:5}}>保险公司:</Text>
           <TouchableHighlight onPress={() => this.showTypePicker(this.insuranceCompanyLabel,index,'insuranceCompanyData')} underlayColor='transparent' style={{flex:1}}>
-            <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{flex:1}}></View>
+            <View style={{flex:1,paddingLeft:13, flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
               <Text style={{fontSize:14,color:formLeftText,marginLeft:10,marginRight:10}}>{this.submitDataArr.length>0?(this.submitDataArr[index].insureCompanyName):''}</Text>
-              <Image style={{width:7,height:12,resizeMode:'center'}} source={require('./image/right_arrow.png')}/>
+              <Image style={{width:7,height:12,resizeMode:'contain'}} source={require('./image/right_arrow.png')}/>
             </View>
           </TouchableHighlight>
         </View>
@@ -319,7 +348,7 @@ class AGatheringPartyInformationView extends Component {
               }
             }}
             onDateChange={(date) => {
-              console.log('#### date -->> ', date);
+              // console.log('#### date -->> ', date);
               this.submitDataArr[index].carInsureDueDate = date;
               this.setState({
                 refresh: true

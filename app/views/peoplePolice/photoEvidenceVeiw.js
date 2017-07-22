@@ -28,8 +28,8 @@ const photoOption = {
   takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
   chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
   mediaType: 'photo',
-  maxWidth: W,
-  maxHeight: H,
+  maxWidth: 750,
+  maxHeight: 1334,
   quality: 1,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
@@ -79,15 +79,13 @@ class PhotoEvidenceVeiw extends Component {
   }
   //重拍
   reTakePhoto(){
-    this.photoList[this.currentImgaeIndex].photoData = null;
-    this.setState({ showBigImage: false })
     let self = this;
     ImagePicker.showImagePicker(photoOption, (response) => {
+      this.setState({ showBigImage: false });
       if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
-        console.log(' the ImagePicker response -->> ', response);
-        let p = self.photoList[this.currentImgaeIndex];
-        p.photoData = response.data;
-        p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+        // console.log(' the ImagePicker response -->> ', response);
+        self.photoList[self.currentImgaeIndex].photoData = response.data;
+        self.photoList[self.currentImgaeIndex].photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss');
         self.setState({reRender: true})
       }
     });
@@ -125,10 +123,11 @@ class PhotoEvidenceVeiw extends Component {
         return
       }
     }
+
+    let submitList = [];
     for(let i = 0; i < this.photoList.length; i++){
       let p = this.photoList[i];
-      delete p.title;
-      delete p.image;
+      submitList.push({photoData: p.photoData, photoType: p.photoType, photoDate: p.photoDate});
     }
 
     let self = this;
@@ -140,7 +139,7 @@ class PhotoEvidenceVeiw extends Component {
         }},
         right:{label: '采集当事人信息', event: async () => {
           self.setState({loading: true})
-          let success = await StorageHelper.saveStep1(this.photoList)
+          let success = await StorageHelper.saveStep1(submitList)
           self.setState({showTip: false, loading: false});
           if(success) self.props.navigation.navigate('GatheringPartyInformationView');
         }}

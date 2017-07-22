@@ -125,13 +125,12 @@ class RootView extends Component {
     this.state={
       statusBackColor: isIos? 'transparent' : '#1C79D9'
     };
-    // global.currentCaseId = '1500190113932';
+    // global.currentCaseId = '1500564210020';
   }
 
   render(){
     let { statusBackColor } = this.state;
     let { guide, navigation } = this.props;
-
     return(
       <View style={styles.container}>
         <StatusBar backgroundColor={statusBackColor} />
