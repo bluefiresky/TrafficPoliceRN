@@ -52,7 +52,7 @@ class HistoricalCaseView extends Component {
 
   render(){
     let { currentType, data } = this.state;
-
+    console.log(' HistoricalCaseView render and the currentType -->> ', currentType);
     return(
       <View style={{flex:1, backgroundColor: backgroundGrey}}>
         {
@@ -131,6 +131,8 @@ class HistoricalCaseView extends Component {
     if(this.state.currentType === 3){
       let res = await this.props.dispatch( create_service(Contract.POST_ACCIDENTS_SEARCH ,{page:1, pageNum:10}));
       data = res.accidents;
+      this.totalPage = res.totalPage;
+      this.currentPage = 1;
     }else if(this.state.currentType === 2){
       data = await StorageHelper.getUnCompletedCaseList();
     }else if(this.state.currentType === 1){
@@ -149,6 +151,9 @@ class HistoricalCaseView extends Component {
     const distanceFromEnd = contentHeight - (scrollerHeight + scrollHeight)
     const offsetY = e.nativeEvent.contentOffset.y;
     // console.log('contentHeight',contentHeight,scrollHeight)
+    console.log('加载更多 and the currentPage -->> ', this.currentPage);
+    console.log('加载更多 and the totalPage -->> ', this.totalPage);
+
     if(contentHeight >= scrollerHeight) {
       if(Platform.OS === 'ios'){
         if(distanceFromEnd < -60 && distanceFromEnd>-80) {
