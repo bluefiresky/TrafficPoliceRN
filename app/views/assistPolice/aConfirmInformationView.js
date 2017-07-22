@@ -83,6 +83,31 @@ class AConfirmInformationView extends Component {
       //   break;
       // }
     }
+
+    if(data.length === 2){
+      if(data[0].phone === data[1].phone){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的手机号不能相同`;
+      }else if(data[0].driverNum === data[1].driverNum){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的驾驶证号不能相同`;
+      }
+    }
+
+    if(data.length === 3){
+      if(data[0].phone === data[1].phone){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的手机号不能相同`;
+      }else if(data[0].phone === data[2].phone){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[2].name} 的手机号不能相同`;
+      }else if(data[1].phone === data[2].phone){
+        error = `${this.partyVerData[1].name} 与 ${this.partyVerData[2].name} 的手机号不能相同`;
+      }else if(data[0].driverNum === data[1].driverNum){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的驾驶证号不能相同`;
+      }else if(data[0].driverNum === data[2].driverNum){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[2].name} 的驾驶证号不能相同`;
+      }else if(data[1].driverNum === data[2].driverNum){
+        error = `${this.partyVerData[1].name} 与 ${this.partyVerData[2].name} 的驾驶证号不能相同`;
+      }
+    }
+
     if(error){
       this.setState({loading:false});
       Toast.showShortCenter(error);
