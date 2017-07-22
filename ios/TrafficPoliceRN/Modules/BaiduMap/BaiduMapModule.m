@@ -64,11 +64,11 @@ RCT_REMAP_METHOD(location,
     self.geosearch = [[BMKGeoCodeSearch alloc]init];
     self.geosearch.delegate = self;
     BOOL flag = [self.geosearch reverseGeoCode:reverseGeocodeSearchOption];
-    if(!flag){
-      NSMutableDictionary *map = [[NSMutableDictionary alloc] initWithCapacity:1];
-      [map setValue:@(-99) forKey:@"errorCode"];
-      self.resolve(map);
-    }
+//    if(!flag){
+//      NSMutableDictionary *map = [[NSMutableDictionary alloc] initWithCapacity:1];
+//      [map setValue:@(-99) forKey:@"errorCode"];
+//      self.resolve(map);
+//    }
   }
 }
 
@@ -92,8 +92,8 @@ RCT_REMAP_METHOD(location,
     self.resolve(map);
   }
   
-  location2D = nil;
   [self.locService stopUserLocationService];
+  location2D = nil;
 }
 
 

@@ -77,7 +77,11 @@ public class BaiduMapModule extends ReactContextBaseJavaModule implements Activi
             Log.i(TAG, "onReceiveLocation: and the BDLocation -->> "+new Gson().toJson(location));
             int errorCode = location.getLocType();
             WritableMap map = Arguments.createMap();
-            if(errorCode == BDLocation.TypeGpsLocation || errorCode == BDLocation.TypeNetWorkLocation || errorCode == BDLocation.TypeOffLineLocation){
+            if(errorCode == BDLocation.TypeOffLineLocation){
+                map.putInt("errorCode", 62);
+                BaiduMapModule.this.promise.resolve(map);
+                BaiduMapModule.this.mLocationClient.stop();
+            }else if(errorCode == BDLocation.TypeGpsLocation || errorCode == BDLocation.TypeNetWorkLocation){
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 String address = location.getAddrStr();

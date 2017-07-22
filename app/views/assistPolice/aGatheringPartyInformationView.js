@@ -98,10 +98,10 @@ class AGatheringPartyInformationView extends Component {
          error = `请选择${this.carInfoData[i].title}保险公司`
          break;
        }
-      //  if (!this.submitDataArr[i].carInsureNumber) {
-      //    error = `请输入${this.carInfoData[i].title}保单号`
-      //    break;
-      //  }
+       if (this.submitDataArr[i].carInsureNumber && this.submitDataArr[i].carInsureNumber.length < 10) {
+         error = `${this.carInfoData[i].title}的保单号输入不正确`
+         break;
+       }
      }
 
      if(this.submitDataArr.length === 2){
