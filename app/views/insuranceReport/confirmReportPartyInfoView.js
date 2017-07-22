@@ -20,30 +20,44 @@ class ConfirmReportPartyInfoView extends Component {
   constructor(props){
     super(props);
     this.state = {
-      refresh:false
+      refresh:false,
+      loading:false
     }
-    this.selDataArr = [{title:'行驶证及驾驶证的有效性及真实性存在可疑',isSel:false},
-                       {title:'驾驶座及周围发现血迹而驾驶员没有受伤',isSel:false},
-                       {title:'驾驶员的年龄、性别、身份、职业与驾驶车型不适配',isSel:false},
-                       {title:'现场发现驾驶员有饮酒迹象',isSel:false},
-                       {title:'当事车辆有改变使用性质情况',isSel:false},
-                       {title:'当事车辆有超长、超宽、超高、超重情况',isSel:false}];
-    this.partyData = [{carNum:'冀F12332',name:'123',drivingLicence:'13217788765456556',engineNumber:'12321321',frameNumber:'3213123',responsibilityType:'全部责任',insuranceCompany:'太平洋',drivingLicenceValidte:true,drivingPermitValidte:false,isMatching:true,selDataArr:['行驶证及驾驶证的有效性及真实性存在可疑','驾驶座及周围发现血迹而驾驶员没有受伤'],
-    photoArr:[{'title': '45度车辆前景照片',imageURL:''},{'title': '当事人和车辆合影',imageURL:''},{'title': '当事车辆车架号',imageURL:''}]},
-    {carNum:'京F12332',name:'988',drivingLicence:'13217788765456556',engineNumber:'12313',
-    frameNumber:'321321',
-    responsibilityType:'全部责任',insuranceCompany:'太平洋',
-    drivingLicenceValidte:true,drivingPermitValidte:true,isMatching:false,selDataArr:[],photoArr:[]}];
-    this.segDatas = ['甲方当事人', '乙方当事人','丙方当事人']
-    this.segArrays = [];
-    this.contentArrs = [];
+    this.segDatas = ['当事人甲方', '当事人乙方','当事人丙方','当事人丁方']
     this.rowNum = 2;
     this.rowMargin = 20;
     this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
+    this.partyData = [];
+  }
+  componentDidMount(){
+    this.setState({
+      loading:true
+    })
+    let { taskno } = this.props.navigation.state.params
+    this.props.dispatch( create_service(Contract.POST_SURVEY_DETAIL, {taskno:taskno}))
+      .then( res => {
+        if (res) {
+          this.partyData = res.data.surveylist
+        }
+        this.setState({
+          loading:false
+        })
+    })
   }
   //下一步
   gotoNext(){
-    this.props.navigation.navigate('InsuranceReportSuccessView',{isHaveLookJurisdiction:true,isNeedLook:false,waitForLook:false});
+    this.setState({
+      loading:true
+    })
+    this.props.dispatch( create_service(Contract.POST_SURVEY_FINISH, {surveyno:'1101201707171432180F0825DA40D7A9AB4150476E6C3D'}))
+      .then( res => {
+        if (res) {
+          this.props.navigation.navigate('ExploreSuccessView');
+        }
+        this.setState({
+          loading:false
+        })
+    })
   }
   renderRowItem(title,value){
     return (
@@ -60,9 +74,9 @@ class ConfirmReportPartyInfoView extends Component {
     return (
       <View style={{marginLeft:this.rowMargin,marginBottom:15}} key={index}>
           <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
-                 source={value.imageURL ? value.imageURL:null}>
+                 source={{uri: value.url}}>
           </Image>
-          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{value.title}</Text>
+          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{value.phototypename}</Text>
       </View>
     )
   }
@@ -71,25 +85,25 @@ class ConfirmReportPartyInfoView extends Component {
       <View style={{backgroundColor:'#ffffff',marginBottom:10}}>
         <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
           <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.carNum}】`}</Text>
+          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.licenseno}】`}</Text>
         </View>
         <View style={{backgroundColor:backgroundGrey,height:1,marginTop:10}}></View>
-        {this.renderRowItem('当事人姓名：',value.name)}
-        {this.renderRowItem('驾驶证号：',value.drivingLicence)}
-        {this.renderRowItem('当事人车牌号：',value.carNum)}
-        {this.renderRowItem('当事人责任类型：',value.responsibilityType)}
-        {this.renderRowItem('保险公司：',value.insuranceCompany)}
-        {this.renderRowItem('发动机号：',value.engineNumber)}
-        {this.renderRowItem('车架号：',value.frameNumber)}
-        {this.renderRowItem('驾驶证有效期是否正常：',value.drivingLicenceValidte ? '正常':'不正常')}
-        {this.renderRowItem('行驶证有效期是否正常：',value.drivingPermitValidte ? '正常':'不正常')}
-        {this.renderRowItem('准驾车型与车辆类型是否匹配：',value.isMatching ? '匹配' : '不匹配')}
-        {value.selDataArr.length > 0 ? <View style={{marginTop:20,marginLeft:15}}>
+        {this.renderRowItem('当事人姓名：',value.person)}
+        {this.renderRowItem('驾驶证号：',value.driverlicenseno)}
+        {this.renderRowItem('当事人车牌号：',value.licenseno)}
+        {this.renderRowItem('当事人责任类型：',value.dutyname)}
+        {this.renderRowItem('保险公司：',value.insurename)}
+        {/* {this.renderRowItem('发动机号：',value.engineno)}
+        {this.renderRowItem('车架号：',value.vinno)} */}
+        {this.renderRowItem('驾驶证有效期是否正常：',value.driverflag ? '正常':'不正常')}
+        {this.renderRowItem('行驶证有效期是否正常：',value.drivingflag ? '正常':'不正常')}
+        {this.renderRowItem('准驾车型与车辆类型是否匹配：',value.matchingflag ? '匹配' : '不匹配')}
+        {value.scenelist.length > 0 ? <View style={{marginTop:20,marginLeft:15,marginBottom:15}}>
           <Text style={{fontSize:16,color:formLeftText}}>现场情况：</Text>
-          {value.selDataArr.map((value,index) => this.renderOtherTypeView(value,index))}
+          {value.scenelist.map((value,index) => this.renderOtherTypeView(value,index))}
         </View>:null}
-        {value.photoArr.length > 0 ? <View style={{flexDirection:'row',marginTop:15,flexWrap:'wrap'}}>
-          {value.photoArr.map((value,index) => this.renderPhotoItem(value,index))}
+        {value.photolist.length > 0 ? <View style={{flexDirection:'row',flexWrap:'wrap',marginBottom:15}}>
+          {value.photolist.map((value,index) => this.renderPhotoItem(value,index))}
         </View>:null}
       </View>
     )
@@ -97,7 +111,7 @@ class ConfirmReportPartyInfoView extends Component {
   renderOtherTypeView(value,index){
     return (
       <Text style={{marginTop:10,lineHeight:18,fontSize:14,color:formLeftText}} key={index}>
-        {value}
+        {value.scenename}
       </Text>
     )
   }
@@ -120,13 +134,20 @@ class ConfirmReportPartyInfoView extends Component {
     )
   }
   render(){
-    for (var i = 0; i < this.partyData.length; i++) {
-      this.segArrays.push(this.segDatas[i])
-      this.contentArrs.push(this.renderOneItem(i,this.partyData[i]));
+    this.segArrays = [];
+    this.contentArrs = [];
+    let content = null;
+    if (this.partyData && this.partyData.length > 0) {
+      for (var i = 0; i < this.partyData.length; i++) {
+        this.segArrays.push(this.segDatas[i])
+        this.contentArrs.push(this.renderOneItem(i,this.partyData[i]));
+      }
+      content = <ScrollerSegment segDatas = {this.segArrays} contentDatas={this.contentArrs} />
     }
     return(
       <View style={styles.container}>
-        <ScrollerSegment segDatas = {this.segArrays} contentDatas={this.contentArrs} />
+        {content}
+        <ProgressView show={this.state.loading}/>
        </View>
     );
   }

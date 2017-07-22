@@ -24,15 +24,15 @@ class InsuranceReportSuccessView extends Component {
     }
     this.waitForLook = true
   }
-  //取消远程定责
   next(buttonText){
+    let { taskno } = this.props.navigation.state.params
     let routeName = global.personal.policeType === 2 ? 'PpHomePageView':'ApHomePageView';
     switch (buttonText) {
       case '返回首页':
         this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
         break;
       case '需要查勘，点击继续':
-        this.props.navigation.navigate('PerfectInformantInfoView',{surveyno:this.surveyno});
+        this.props.navigation.navigate('PerfectInformantInfoView',{surveyno:this.surveyno,partyData:this.props.navigation.state.params.partyData,taskno:taskno});
         break;
       case '无需查勘，返回首页':
         this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
@@ -49,10 +49,14 @@ class InsuranceReportSuccessView extends Component {
       this._startFetchRemoteRes();
     })
   }
+  componentWillUnmount(){
+    this.timer && clearInterval(this.timer);
+  }
   async _startFetchRemoteRes(){
     let self = this;
+    let { taskno } = this.props.navigation.state.params
     this.timer = setInterval(async () => {
-      let res = await self.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: '1301201605100835281420003'}))
+      let res = await self.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno}))
       if(res){
         self.waitForLook = false
         self.surveyflag = res.data.surveyflag
@@ -66,6 +70,7 @@ class InsuranceReportSuccessView extends Component {
     }, 30000);
     //3分钟内未进行审核，则系统自动返回需要查勘服务
   }
+  componentWillMount
   render(){
     let tipMsg;
     let detailMsg;

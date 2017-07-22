@@ -13,6 +13,7 @@ import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import ImagePicker from 'react-native-image-picker';
+import Tool from '../../utility/Tool'
 
 class ExploreTakePhotoView extends Component {
 
@@ -20,14 +21,27 @@ class ExploreTakePhotoView extends Component {
     super(props);
     this.state = {
       refresh:false,
+      loading:false,
       showBigImage:false,
       showDamageModalView: false
     }
-    this.partyInfoData = [{carNum:'京A12345',carPhotoData:[{'title': '45度车辆前景照片',imageURL:''},{'title': '当事人和车辆合影',imageURL:''},{'title': '当事车辆车架号',imageURL:''},{'title': '当事车辆受损细节（1）',imageURL:''},{'title': '当事车辆受损细节（2）',imageURL:''},
-    {'title': '保单照片',imageURL:''},{'title': '银行卡照片',imageURL:''},{'title': '其它现场照片',imageURL:''}]},{carNum:'京B94484',carPhotoData:[{'title': '45度车辆前景照片',imageURL:''},{'title': '当事人和车辆合影',imageURL:''},{'title': '当事车辆车架号',imageURL:''},{'title': '当事车辆受损细节（1）',imageURL:''},{'title': '当事车辆受损细节（2）',imageURL:''},
-    {'title': '保单照片',imageURL:''},{'title': '银行卡照片',imageURL:''},{'title': '其它现场照片',imageURL:''}]}]
-
-    this.carDamageData = [{name:'左前部',isSel:false},{name:'正前部',isSel:false},{name:'右前部',isSel:false},{name:'左中部',isSel:false},{name:'右中部',isSel:false},{name:'左后部',isSel:false},{name:'正后部',isSel:false},{name:'右后部',isSel:false}];
+    let { phototypelist,partlist } = getStore().getState().insuranceDictionary
+    let { personData } = props.navigation.state.params
+    this.partyInfoData = personData
+    for (var i = 0; i < this.partyInfoData.length; i++) {
+      this.partyInfoData[i].carPhotoData = []
+    }
+    for (var i = 0; i < phototypelist.length; i++) {
+      phototypelist[i].imageURL = ''
+      for (var j = 0; j < this.partyInfoData.length; j++) {
+        this.partyInfoData[j].carPhotoData.push({title:phototypelist[i].name,imageURL:phototypelist[i].imageURL,code:phototypelist[i].code})
+      }
+    }
+    for (var i = 0; i < partlist.length; i++) {
+      partlist[i].isSel = false
+    }
+    this.carDamageData = partlist;
+    this.partcode = ''
     this.rowNum = 2;
     this.rowMargin = 20;
     this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
@@ -72,8 +86,7 @@ class ExploreTakePhotoView extends Component {
         this.setState({
           refresh: true
         })
-      } else if ((index == 3 || index == 4) && this.partyInfoData[ind].carPhotoData[index].title.indexOf('（') > 0 ) {
-        let a = this.partyInfoData[ind].carPhotoData[index].title.indexOf('（')
+      } else if ((index == 3 || index == 4) && this.partyInfoData[ind].carPhotoData[index].title.indexOf('(') > 0 ) {
         this.currentImgaeIndex = index;
         this.currentImgaeInSection = ind;
         this.setState({
@@ -84,23 +97,32 @@ class ExploreTakePhotoView extends Component {
         let that = this;
         ImagePicker.showImagePicker(this.options, (response) => {
             if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
-                let source;
-                if (Platform.OS === 'ios') {
-                    source = {
-                        uri: response.uri.replace('file://', ''),
-                        isStatic: true
-                    };
-                } else {
-                    source = {
-                        uri: response.uri,
-                        isStatic: true
-                    };
-                }
+                let source = { uri: 'data:image/png;base64,' + response.data }
                 this.partyInfoData[ind].carPhotoData[index].imageURL = source;
                 let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].carPhotoData))
                 this.partyInfoData[ind].carPhotoData = temp
                 this.setState({
-                  refresh: true
+                  loading:true
+                })
+                let { surveyno } = this.props.navigation.state.params
+                let licenseno = this.partyInfoData[ind].licenseno
+                let typecode =  this.partyInfoData[ind].carPhotoData[index].code ?  this.partyInfoData[ind].carPhotoData[index].code : '7'
+                let plat = response.longitude
+                let plng = response.latitude
+                let pfrom = 0
+                let uploadtime = Tool.getTime('yyyy-MM-dd hh:mm:ss')
+                let params =  {licenseno:licenseno,photodata:encodeURI(JSON.stringify(response.data)),pid:'',typecode:typecode,partcode:this.partcode,plat:plat,plng:plng,uploadtime:uploadtime,pfrom:pfrom,surveyno:surveyno}
+                this.setState({
+                  loading:true
+                })
+                this.props.dispatch( create_service(Contract.POST_SURVEYPHOTO_INFO,params))
+                  .then( res => {
+                    if (res) {
+
+                    }
+                    this.setState({
+                      loading:false
+                    })
                 })
             }
         });
@@ -133,21 +155,13 @@ class ExploreTakePhotoView extends Component {
     for (var i = 0; i < this.partyInfoData.length; i++) {
       for (var j = 0; j < 6; j++) {
         if (!this.partyInfoData[i].carPhotoData[j].imageURL) {
-          Toast.showShortCenter(`当事人【${this.partyInfoData[i].carNum}】的 “${this.partyInfoData[i].carPhotoData[j].title}”必须拍摄`);
+          Toast.showShortCenter(`当事人【${this.partyInfoData[i].licenseno}】的 “${this.partyInfoData[i].carPhotoData[j].title}”必须拍摄`);
           return
         }
       }
     }
-    let that = this;
-    Alert.alert('提示', '事故现场照片采集完成，请立即指引当事人挪车。' ,[{
-            text : "返回修改",
-            onPress : () => {}
-          },{
-            text : "采集当事人信息",
-            onPress : () => {
-              that.props.navigation.navigate('GatheringPartyInformationView');
-            }
-          }])
+    let { taskno } = this.props.navigation.state.params
+    this.props.navigation.navigate('ConfirmReportPartyInfoView',{taskno:taskno});
   }
   renderItem(item,index,ind) {
     let innerImgae;
@@ -177,7 +191,7 @@ class ExploreTakePhotoView extends Component {
       <View style={{flex:1,backgroundColor:'#ffffff',marginTop:10}} key={ind}>
         <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
           <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.carNum}】`}</Text>
+          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.licenseno}】`}</Text>
         </View>
         <View style={{marginTop:10,backgroundColor:backgroundGrey,height:1}}></View>
         <View style={{flexDirection:'row',marginTop:10,flexWrap:'wrap'}}>
@@ -216,6 +230,7 @@ class ExploreTakePhotoView extends Component {
                 for (var i = 0; i < this.carDamageData.length; i++) {
                   if (this.carDamageData[i].isSel) {
                     this.partyInfoData[this.currentImgaeInSection].carPhotoData[this.currentImgaeIndex].title = this.carDamageData[i].name;
+                    this.partcode = this.carDamageData[i].code
                   }
                   this.carDamageData[i].isSel = false
                 }
@@ -233,30 +248,33 @@ class ExploreTakePhotoView extends Component {
   }
   render(){
     return(
-      <ScrollView style={{flex:1}}
-                  showsVerticalScrollIndicator={false}>
-        <View style={{paddingTop:10}}>
-          <Text style={{fontSize:13,color:'#717171',marginLeft:15}}>
-            请按以下要求采集事故现场照片
-          </Text>
-        </View>
-        {this.partyInfoData.map((value,index) => this.renderOnePersonInfo(value,index))}
-        <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-          <XButton title='下一步' onPress={() => this.commit()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
-        </View>
-        <View>
-          <Modal animationType="none" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
-            <TouchableOpacity onPress={() => this.setState({showBigImage:false})} style={styles.modalContainer} underlayColor={'#ffffff'}>
-              <Image source={this.currentImgae} style={{width:W,height:W * 0.7,alignSelf:'center'}}/>
-              <View style={{marginLeft:15,marginBottom:20,marginTop:100,flexDirection:'row'}}>
-                <XButton title={'重拍'} onPress={() => this.reTakePhoto()} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
-                <XButton title={'删除'} onPress={() => this.deletePhoto()} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}} disabled={this.currentImgaeIndex < 7}/>
-              </View>
-            </TouchableOpacity>
-          </Modal>
-        </View>
-        {this.renderDamageModalView()}
-      </ScrollView>
+      <View style={{flex:1}}>
+        <ScrollView style={{flex:1}}
+                    showsVerticalScrollIndicator={false}>
+          <View style={{paddingTop:10}}>
+            <Text style={{fontSize:13,color:'#717171',marginLeft:15}}>
+              请按以下要求采集事故现场照片
+            </Text>
+          </View>
+          {this.partyInfoData.map((value,index) => this.renderOnePersonInfo(value,index))}
+          <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
+            <XButton title='下一步' onPress={() => this.commit()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
+          </View>
+          <View>
+            <Modal animationType="none" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
+              <TouchableOpacity onPress={() => this.setState({showBigImage:false})} style={styles.modalContainer} underlayColor={'#ffffff'}>
+                <Image source={this.currentImgae} style={{width:W,height:W * 0.7,alignSelf:'center'}}/>
+                <View style={{marginLeft:15,marginBottom:20,marginTop:100,flexDirection:'row'}}>
+                  <XButton title={'重拍'} onPress={() => this.reTakePhoto()} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+                  <XButton title={'删除'} onPress={() => this.deletePhoto()} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}} disabled={this.currentImgaeIndex < 7}/>
+                </View>
+              </TouchableOpacity>
+            </Modal>
+          </View>
+          {this.renderDamageModalView()}
+        </ScrollView>
+        <ProgressView show={this.state.loading}/>
+      </View>
     );
   }
 

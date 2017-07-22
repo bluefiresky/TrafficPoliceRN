@@ -51,7 +51,7 @@ class SelectInInsuranceCompanyView extends Component {
       for (var j = 0; j < this.commonData.length; j++) {
         if (this.commonData[j].code == insurecitylist[i].code) {
           this.commonData[j].data = insurecitylist[i];
-        }
+        } 
       }
     }
   }

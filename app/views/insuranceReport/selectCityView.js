@@ -14,7 +14,7 @@ import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 
 class SelectCityView extends Component {
-
+   
   constructor(props){
     super(props);
     this.state = {

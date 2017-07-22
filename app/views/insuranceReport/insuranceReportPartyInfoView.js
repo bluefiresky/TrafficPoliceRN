@@ -28,19 +28,17 @@ class InsuranceReportPartyInfoView extends Component {
     this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {}));
   }
   componentDidMount(){
+    let { taskno } = this.props.navigation.state.params
     this.setState({
       loading:true
     })
-    this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: '1301201605100835281420003'}))
+    this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: taskno}))
       .then( res => {
         if (res && res.personList.length > 0) {
           this.partyData = res.personList
           for (var i = 0; i < this.partyData.length; i++) {
-            if (this.partyData[i].dutyName == '无责') {
-              this.partyData[i].isReport = false
-            } else {
-              this.partyData[i].isReport = true
-            }
+            //1代表无责
+            this.partyData[i].isReport = (this.partyData[i].dutyCode != '1')
           }
         }
         this.setState({
@@ -59,17 +57,18 @@ class InsuranceReportPartyInfoView extends Component {
         data.push({licenseno:this.partyData[i].licensePlateNum,insurecode:this.partyData[i].insurecode,citycode:this.partyData[i].citycode})
       }
     }
+    let { taskno } = this.props.navigation.state.params
     if (data.length > 0) {
       this.setState({
         loading: true
       })
-      this.props.dispatch( create_service(Contract.POST_INSURE_INFO, {taskno:'1301201605100835281420003',data:JSON.stringify(data)}))
+      this.props.dispatch( create_service(Contract.POST_INSURE_INFO, {taskno:taskno,data:JSON.stringify(data)}))
         .then( res => {
           this.setState({
             loading: false
           })
           if (res) {
-            this.props.navigation.navigate('InsuranceReportSuccessView',{openflag:res.data.openflag});
+            this.props.navigation.navigate('InsuranceReportSuccessView',{openflag:res.data.openflag,partyData:this.partyData,taskno:taskno});
           }
       })
     } else {
@@ -121,7 +120,7 @@ class InsuranceReportPartyInfoView extends Component {
         <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:15,marginBottom:15}}>
           <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>是否保险报案</Text>
           <TouchableHighlight style={{marginRight:15}} underlayColor={'transparent'} onPress={()=>{
-            if (value.dutyName != '无责') {
+            if (value.dutyCode != '1') {
               value.isReport = !value.isReport
               this.setState({
                 refresh: true

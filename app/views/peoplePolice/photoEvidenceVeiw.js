@@ -102,7 +102,7 @@ class PhotoEvidenceVeiw extends Component {
     }
     this.setState({ showBigImage: false })
   }
-  
+
   //增加其他照片
   addOtherPhoto(){
     let self = this;
