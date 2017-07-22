@@ -23,7 +23,11 @@ export class DutyTypePicker extends Component {
 
     this._onPress = this._onPress.bind(this);
     this._onChangeText = this._onChangeText.bind(this);
-    this.data = DutyTypeList;
+    if(this.props.data){
+      this.data = this.props.data;
+    }else{
+      this.data = DutyTypeList;
+    }
     this.labelArray = [];
   }
 
