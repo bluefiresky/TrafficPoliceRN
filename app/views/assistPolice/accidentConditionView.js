@@ -50,7 +50,7 @@ class AccidentConditionView extends Component {
         let carDamagedPardArray = p.carDamagedPart?p.carDamagedPart.split(','):[];
         this.personDamagedArray.push(carDamagedPardArray)
       })
-      console.log(' this.person -->> ', this.person);
+      // console.log(' this.person -->> ', this.person);
       this.carDamageData = getStore().getState().dictionary.damagedList;
       this.carDamageData.forEach((d) => {
         this.carDamageCodeData.push(d.code);
@@ -113,7 +113,13 @@ class AccidentConditionView extends Component {
       <TouchableHighlight style={{borderColor:selBorderColor, borderWidth:1,borderRadius:5,paddingTop:5,paddingBottom:5,paddingLeft:10,paddingRight:5,marginTop:15,marginLeft:10}} key={index}
         onPress={() => {
           let i = currentDamagedArray.indexOf(code);
-          if(i === -1) currentDamagedArray.push(code);
+          if(i === -1) {
+            if(currentDamagedArray.length === 3){
+              Toast.showShortCenter('受损部位不能超过3个');
+              return;
+            }
+            currentDamagedArray.push(code);
+          }
           else currentDamagedArray.splice(i,1);
           this.setState({refresh:true})}}
         underlayColor='transparent'>
@@ -206,6 +212,8 @@ class AccidentConditionView extends Component {
 
   /** Private */
   _convertDamagedCodeToName(code){
+    if(!code) return '';
+
     let name = null;
     for(let i=0,max=this.carDamageData.length; i<max; i++){
       let cd = this.carDamageData[i];
@@ -218,6 +226,8 @@ class AccidentConditionView extends Component {
   }
 
   _convertCodeToEntry(code, array){
+    if(!code) return;
+
     let entry = null;
     for(let i=0,max=array.length; i<max; i++){
       let v = array[i];
