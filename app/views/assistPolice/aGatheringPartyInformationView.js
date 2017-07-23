@@ -46,8 +46,7 @@ class AGatheringPartyInformationView extends Component {
     this.setState({loading: true})
     InteractionManager.runAfterInteractions(async ()=>{
       let info = await StorageHelper.getCurrentCaseInfo();
-      // this.handleWay = info.handleWay;
-      this.handleWay = '03'
+      this.handleWay = info.handleWay;
       if(this.handleWay != '03'){
         this.carInfoData.push({title:'乙方',carNumArr:[getProvincialData(),getNumberData()]})
         this.submitDataArr.push(this.yifangInfo)
