@@ -202,7 +202,7 @@ class CaseDetailsView extends Component {
       }
     }else if(this.type === 2){  // 本地案件
       if(t === 1){
-        this.props.navigation.navigate('CertificateView', {handleWay:this.state.handleWay});
+        this.props.navigation.navigate('CertificateView', {handleWay:this.state.handleWay, canBack:true});
       }else{
         this.props.navigation.navigate('UploadProgressView', {caseType:1});
       }

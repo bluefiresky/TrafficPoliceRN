@@ -1,4 +1,4 @@
-export function generateXYS(basic, personList){
+export function generateXYS(basic, personList, taskModal, damagedList, accidentDes, dutyList){
   return(
     `<!DOCTYPE html>
     <html lang="en">
@@ -65,15 +65,15 @@ export function generateXYS(basic, personList){
           <td></td>
          </tr>
          <tr>
-          <td>丙</td>
-          <td>${personList[2].name}</td>
-          <td>${personList[2].driverNum}</td>
-          <td>${personList[2].phone}</td>
-          <td>${personList[2].licensePlateNum}</td>
-          <td>${personList[2].carType}</td>
-          <td>${personList[2].insureCompanyName}</td>
-          <td>${personList[2].carInsureNumber}</td>
-          <td>${personList[2].carInsureDueDate}</td>
+          <td>${personList[2]?'丙':''}</td>
+          <td>${personList[2]?(personList[2].name):''}</td>
+          <td>${personList[2]?(personList[2].driverNum):''}</td>
+          <td>${personList[2]?(personList[2].phone):''}</td>
+          <td>${personList[2]?(personList[2].licensePlateNum):''}</td>
+          <td>${personList[2]?(personList[2].carType):''}</td>
+          <td>${personList[2]?(personList[2].insureCompanyName):''}</td>
+          <td>${personList[2]?(personList[2].carInsureNumber):''}</td>
+          <td>${personList[2]?(personList[2].carInsureDueDate):''}</td>
           <td></td>
          </tr>
         </tbody>
@@ -86,28 +86,35 @@ export function generateXYS(basic, personList){
          <tr class="pad">
           <td colspan="2" style="text-align:center;">甲</td>
           <td colspan="2" style="text-align:center;">乙</td>
+          ${!personList[2]?'':'<td colspan="2" style="text-align:center;">丙</td>'}
          </tr>
          <tr class="borT">
           <th width="3%">事故形态</th>
-          <th colspan="5" class="borNo"><p style="width:900px;"><span>√追尾碰撞</span><span>□正面碰撞</span><span>□侧面碰撞（同向）</span><span>□侧面碰撞（对向）</span><span>□侧面碰撞（直角）</span><span>□侧面碰撞（角度不确定）</span><span>□同向刮擦</span><span>□对向刮擦</span><span>□其他</span></p></th>
+          <th colspan="5" class="borNo"><p style="width:900px;">${taskModal}</p></th>
          </tr>
          <tr class="borT">
           <th width="3%">车损部分</th>
-          <th class="borNo"><p style="width:240px;"><span>□车头</span><span>√左前角</span><span>□右前角</span><span>√车身左侧</span><span>□车尾</span><span>□左后角</span><span>□右后角</span><span>□车身右侧</span></p></th>
+          <th class="borNo"><p style="width:240px;">${damagedList[0]}</p></th>
           <th width="3%">车损部分</th>
-          <th class="borR"><p style="width:240px;"><span>□车头</span><span>□左前角</span><span>□右前角</span><span>□车身左侧</span><span>□车尾</span><span>□左后角</span><span>√右后角</span><span>√车身右侧</span></p></th>
+          <th class="borR"><p style="width:240px;">${damagedList[1]}</p></th>
+          ${
+            !damagedList[2]?'':
+            '<th width="3%">车损部分</th><th class="borR"><p style="width:240px;">'+damagedList[2]+'</p></th>'
+          }
          </tr>
          <tr class="borT">
-          <th>事故情形</th>
-          <th class="borNo"><p style="width:320px;"><span>√未保持安全车距与前车追尾</span><span>□逆行</span><span>□倒车</span><span>□溜车</span><span>□开关车门</span><span>□违反交通信号灯</span><span>□未按规定让行</span><span>□停车</span><span>□变更车道与其他车辆刮擦</span><span>□其他</span></p></th>
-          <th>事故情形</th>
-          <th class="borR"><p style="width:320px;"><span>√未保持安全车距与前车追尾</span><span>□逆行</span><span>□倒车</span><span>□溜车</span><span>□开关车门</span><span>□违反交通信号灯</span><span>□未按规定让行</span><span>□停车</span><span>□变更车道与其他车辆刮擦</span><span>□其他</span></p></th>
+          <th width="3%">事故情形</th>
+          <th colspan="5" class="borNo"><p style="width:900px;">${accidentDes}</p></th>
          </tr>
          <tr class="borT">
           <th>事故责任</th>
-          <th class="borNo"><span>□全部责任</span><span>√无责任</span><span>□同等责任</span></th>
+          <th class="borNo">${dutyList[0]}</th>
           <th>事故责任</th>
-          <th class="borR"><span>√全部责任</span><span>□无责任</span><span>□同等责任</span></th>
+          <th class="borR">${dutyList[1]}</th>
+          ${
+            !dutyList[2]?'':
+            '<th>事故责任</th><th class="borR">'+dutyList[1]+'</th>'
+          }
          </tr>
         </tbody>
        </table>
@@ -118,12 +125,11 @@ export function generateXYS(basic, personList){
          <p class="padR">
           甲：<span class="wid"><img src=${personList[0].signData} alt="" /></span>，<span>${personList[0].signTime}</span>
          </p>
-         ${
-           !personList[1].signData?'':
-            '<p class="padR">乙：<span class="wid"><img src=' + personList[1].signData + ' alt="" /></span>，<span>' + personList[1].signTime + '</span></p>'
-          }
+         <p class="padR">
+          乙：<span class="wid"><img src=${personList[1].signData} alt="" /></span>，<span>${personList[1].signTime}</span>
+         </p>
           ${
-            !personList[2].signData?'':
+            !personList[2]?'':
              '<p class="padR">乙：<span class="wid"><img src=' + personList[2].signData + ' alt="" /></span>，<span>' + personList[2].signTime + '</span></p>'
            }
 

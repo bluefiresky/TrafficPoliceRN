@@ -46,7 +46,6 @@ class CertificateView extends Component {
           }else{
             html = this._generateRenDingShu(info)
           }
-          console.log(' the html -->> ', html);
           this.setState({loading:false, source:{html, baseUrl:''}})
         }else{
           // this.setState({loading:false})
@@ -115,7 +114,7 @@ class CertificateView extends Component {
   }
 
   _generateXieYiShu(info){
-    let {basic, person, duty } = info;
+    let {basic, person, duty, taskModal, accidentDes } = info;
     let nBasic = {accidentTime:this._convertAccidentTime(basic.accidentTime), weather:this._convertWeather(basic.weather), address:basic.address};
 
     let nPersonList = [];
@@ -123,14 +122,57 @@ class CertificateView extends Component {
       let p = person[i];
       nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureDueDate:p.carInsureDueDate, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+duty[i].signData, signTime:duty[i].signTime, insureCompanyName:p.insureCompanyName})
     }
-    if(nPersonList.length === 2){
-      nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureDueDate:'', carInsureNumber:'', signData:'', signTime:'', insureCompanyName:''})
-    }else if(nPersonList.length === 3){
-      nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureDueDate:'', carInsureNumber:'', signData:'', signTime:'', insureCompanyName:''})
-      nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureDueDate:'', carInsureNumber:'', signData:'', signTime:'', insureCompanyName:''})
+
+    let formList = getStore().getState().dictionary.formList;
+    let nTaskModal = '';
+    for(let i=0; i<formList.length; i++){
+      if(formList[i].code === taskModal){
+        nTaskModal += '  <span>√'+formList[i].name+'</span>';
+      }else{
+        nTaskModal += '  <span>□'+formList[i].name+'</span>';
+      }
     }
 
-    return generateXYS(nBasic, nPersonList)
+    let damagedList = getStore().getState().dictionary.damagedList;
+    let nDamagedList = [];
+    for(let i=0; i<person.length; i++){
+      let tmp = person[i].carDamagedPart.split(',');
+      let tmpDamaged = '';
+      for(let j=0; j<damagedList.length; j++){
+        if(tmp.indexOf(damagedList[j].code) != -1){
+          tmpDamaged+='  <span>√'+damagedList[j].name+'</span>'
+        }else{
+          tmpDamaged+='  <span>□'+damagedList[j].name+'</span>'
+        }
+      }
+      nDamagedList.push(tmpDamaged);
+    }
+
+    let situationList = getStore().getState().dictionary.situationList;
+    let nAccidentDes = '';
+    for(let i=0; i<situationList.length; i++){
+      if(situationList[i].code === accidentDes){
+        nAccidentDes += '  <span>√'+situationList[i].name+'</span>';
+      }else{
+        nAccidentDes += '  <span>□'+situationList[i].name+'</span>';
+      }
+    }
+
+    let nDutyList = [];
+    for(let i=0; i<duty.length; i++){
+      let tmp = duty[i].dutyType;
+      let tmpDuty = '';
+      for(let j=0; j<DutyTypeList.length; j++){
+        if(tmp === DutyTypeList[j].code){
+          tmpDuty+='  <span>√'+DutyTypeList[j].name+'</span>'
+        }else{
+          tmpDuty+='  <span>□'+DutyTypeList[j].name+'</span>'
+        }
+      }
+      nDutyList.push(tmpDuty);
+    }
+
+    return generateXYS(nBasic, nPersonList, nTaskModal, nDamagedList, nAccidentDes, nDutyList)
   }
 
   _convertAccidentTime(time){
@@ -215,9 +257,13 @@ const styles = StyleSheet.create({
 
 const ExportView = connect()(CertificateView);
 ExportView.navigationOptions = ({ navigation }) => {
-  return {
-    headerLeft:null,
-    // title: navigation.state.params.handleWay === '04'?'离线协议书':'离线认定书',
+  let params = navigation.state.params;
+  if(params && params.canBack) {
+    return {};
+  }else{
+    return {
+      headerLeft:null,
+    }
   }
 }
 
