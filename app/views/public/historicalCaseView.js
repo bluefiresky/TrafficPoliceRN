@@ -151,13 +151,13 @@ class HistoricalCaseView extends Component {
     const distanceFromEnd = contentHeight - (scrollerHeight + scrollHeight)
     const offsetY = e.nativeEvent.contentOffset.y;
     // console.log('contentHeight',contentHeight,scrollHeight)
-    console.log('加载更多 and the currentPage -->> ', this.currentPage);
-    console.log('加载更多 and the totalPage -->> ', this.totalPage);
+    // console.log('加载更多 and the currentPage -->> ', this.currentPage);
+    // console.log('加载更多 and the totalPage -->> ', this.totalPage);
 
     if(contentHeight >= scrollerHeight) {
       if(Platform.OS === 'ios'){
         if(distanceFromEnd < -60 && distanceFromEnd>-80) {
-          console.log('加载更多 and the isLoadingMore -->> ', this.state.isLoadingMore)
+          // console.log('加载更多 and the isLoadingMore -->> ', this.state.isLoadingMore)
           if (this.state.isLoadingMore === true) return;
           else if(this.currentPage >= this.totalPage) {
             this.setState({isLoadingMore: false})

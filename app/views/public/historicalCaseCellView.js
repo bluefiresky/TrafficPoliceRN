@@ -82,32 +82,76 @@ export default class HistoricalCaseCellView extends Component {
   }
 
   _renderHistoryCell(rowData){
-    let { accidentAddress, accidentTime, taskNo, cars } = rowData;
+    let { accidentAddress, accidentTime, taskNo, cars, status } = rowData;
     return (
       <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.historyCellClick(taskNo)}>
-        <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
-          <View style={styles.left}>
-            <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
-              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
-              <Text style={{color:formLeftText,fontSize:14}}>{accidentTime}</Text>
+        <View style={{flex:1}}>
+          <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
+            <View style={styles.left}>
+              <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
+                <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
+                <Text style={{color:formLeftText,fontSize:14}}>{accidentTime}</Text>
+              </View>
+              <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
+                <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
+                <Text style={{color:formLeftText,fontSize:14}}>{accidentAddress}</Text>
+              </View>
+              <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start',marginBottom:10}}>
+                <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
+                <Text style={{color:formLeftText,fontSize:14}}>{cars.map(car => car.ownerName + ' (' + car.licenseNo + ')\n')}</Text>
+              </View>
             </View>
-            <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
-              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
-              <Text style={{color:formLeftText,fontSize:14}}>{accidentAddress}</Text>
-            </View>
-            <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start',marginBottom:10}}>
-              <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
-              <Text style={{color:formLeftText,fontSize:14}}>{cars.map(car => car.ownerName + ' (' + car.licenseNo + ')\n')}</Text>
+            <View style={styles.right}>
+              <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
             </View>
           </View>
-          <View style={styles.right}>
-            <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
-          </View>
+          {(status == '2' || status == '3' || status == '10') ? this._renderButton(status,taskNo):null}
         </View>
       </TouchableHighlight>
     )
   }
 
+  _renderButton(status,taskNo){
+    let secondButton;
+    let thirdButton;
+    secondButton = <TouchableHighlight
+                     style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:(status == '2' ? '#267BD8':'#ffffff')}} underlayColor={(status == '2' ? '#267BD8':'transparent')} onPress={()=>{
+                       if (status == '2') {
+                         this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
+                       } else {
+                         //保险报案详情
+                         this.props.navigation.navigate('InsuranceReportDetailView',{taskno:taskNo})
+                       }
+                     }}>
+                       <Text style={{color:(status == '2' ? '#ffffff':'#267BD8'),alignSelf:'center'}}>{status == '2' ? '保险报案' : '保险报案详情'}</Text>
+                   </TouchableHighlight>
+      if (status != '2') {
+        if (status == '3') {
+          thirdButton = <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:'#267BD8'}} underlayColor='#267BD8' onPress={()=>{
+            this.props.navigation.navigate('InsuranceReportSuccessView',{taskno:taskNo})
+          }}>
+            <Text style={{color:'#ffffff',alignSelf:'center'}}>去查勘</Text>
+          </TouchableHighlight>
+        } else if (status == '10') {
+          thirdButton = <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:'#267BD8'}} underlayColor='#267BD8' onPress={()=>{
+            this.props.navigation.navigate('ExploreTakePhotoView',{taskno:taskNo,surveyno:''})
+          }}>
+            <Text style={{color:'#ffffff',alignSelf:'center'}}>补拍照片</Text>
+          </TouchableHighlight>
+        }
+      }
+      return (
+        <View style={{flexDirection:'row',marginBottom:10,marginLeft:15,marginRight:15}}>
+          <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50}} underlayColor='transparent' onPress={()=>{
+            this.props.navigation.navigate('CaseDetailsView', {taskNo})
+          }}>
+            <Text style={{color:'#267BD8',alignSelf:'center'}}>事故详情</Text>
+          </TouchableHighlight>
+          {secondButton}
+          {thirdButton}
+        </View>
+      )
+  }
   _renderLocalCell(rowData, type){
     let { basic, person, step, handleWay, id } = rowData;
     return (

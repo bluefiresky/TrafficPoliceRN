@@ -52,3 +52,4 @@ export { ConfirmReportPartyInfoView } from './insuranceReport/confirmReportParty
 export { ExploreSuccessView } from './insuranceReport/exploreSuccessView.js';  /** 查勘成功 */
 export { SelectInInsuranceCompanyView } from './insuranceReport/selectInInsuranceCompanyView.js';  /** 选择保险公司 */
 export { SelectCityView } from './insuranceReport/selectCityView.js';  /** 选择保险公司 */
+export { InsuranceReportDetailView } from './insuranceReport/insuranceReportDetailView.js';  /** 保险报案详情 */

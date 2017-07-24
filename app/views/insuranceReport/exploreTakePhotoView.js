@@ -34,7 +34,7 @@ class ExploreTakePhotoView extends Component {
     for (var i = 0; i < phototypelist.length; i++) {
       phototypelist[i].imageURL = ''
       for (var j = 0; j < this.partyInfoData.length; j++) {
-        this.partyInfoData[j].carPhotoData.push({title:phototypelist[i].name,imageURL:phototypelist[i].imageURL,code:phototypelist[i].code})
+        this.partyInfoData[j].carPhotoData.push({title:phototypelist[i].name,imageURL:phototypelist[i].imageURL,code:phototypelist[i].code,pid:''})
       }
     }
     for (var i = 0; i < partlist.length; i++) {
@@ -42,6 +42,7 @@ class ExploreTakePhotoView extends Component {
     }
     this.carDamageData = partlist;
     this.partcode = ''
+    this.surveyno = ''
     this.rowNum = 2;
     this.rowMargin = 20;
     this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
@@ -63,6 +64,26 @@ class ExploreTakePhotoView extends Component {
                 path: 'images'
             }
         };
+  }
+  componentDidMount(){
+    let { taskno } = this.props.navigation.state.params
+    this.props.dispatch( create_service(Contract.POST_SURVEY_PHOTOS,{taskno:taskno}))
+      .then( res => {
+        if (res) {
+          this.surveyno = res.data.surveyno
+          for (var i = 0; i < res.data.surveyphoto.length; i++) {
+            for (var j = 0; j < res.data.surveyphoto[i].photolist.length; j++) {
+              this.partyInfoData[i].carPhotoData[j].title = res.data.surveyphoto[i].photolist[j].phototypename;
+              this.partyInfoData[i].carPhotoData[j].imageURL = res.data.surveyphoto[i].photolist[j].url;
+              this.partyInfoData[i].carPhotoData[j].code = res.data.surveyphoto[i].photolist[j].phototypecode;
+              this.partyInfoData[i].carPhotoData[j].pid = res.data.surveyphoto[i].photolist[j].pid;
+            }
+          }
+        }
+        this.setState({
+          loading:false
+        })
+    })
   }
   //拍照
   takePhoto(item,index,ind){
@@ -107,11 +128,12 @@ class ExploreTakePhotoView extends Component {
                 let { surveyno } = this.props.navigation.state.params
                 let licenseno = this.partyInfoData[ind].licenseno
                 let typecode =  this.partyInfoData[ind].carPhotoData[index].code ?  this.partyInfoData[ind].carPhotoData[index].code : '7'
+                let pid = this.partyInfoData[ind].carPhotoData[index].pid;
                 let plat = response.longitude
                 let plng = response.latitude
                 let pfrom = 0
                 let uploadtime = Tool.getTime('yyyy-MM-dd hh:mm:ss')
-                let params =  {licenseno:licenseno,photodata:encodeURI(JSON.stringify(response.data)),pid:'',typecode:typecode,partcode:this.partcode,plat:plat,plng:plng,uploadtime:uploadtime,pfrom:pfrom,surveyno:surveyno}
+                let params =  {licenseno:licenseno,photodata:encodeURI(JSON.stringify(response.data)),pid:pid,typecode:typecode,partcode:this.partcode,plat:plat,plng:plng,uploadtime:uploadtime,pfrom:pfrom,surveyno:(surveyno ? surveyno : this.surveyno)}
                 this.setState({
                   loading:true
                 })
@@ -160,8 +182,8 @@ class ExploreTakePhotoView extends Component {
         }
       }
     }
-    let { taskno } = this.props.navigation.state.params
-    this.props.navigation.navigate('ConfirmReportPartyInfoView',{taskno:taskno});
+    let { taskno,surveyno } = this.props.navigation.state.params
+    this.props.navigation.navigate('ConfirmReportPartyInfoView',{taskno:taskno,surveyno:(surveyno?surveyno:this.surveyno)});
   }
   renderItem(item,index,ind) {
     let innerImgae;

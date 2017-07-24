@@ -17,7 +17,7 @@ import {
   /** peoplePolice */ PpHomePageView,AccidentBasicInformationView,PhotoEvidenceVeiw,GatheringPartyInformationView,GatheringCardPhotoView,ConfirmInformationView,AccidentFactAndResponsibilityView,SignatureConfirmationView,
   /** assistPolice */ ApHomePageView,AAccidentBasicInformationView,APhotoEvidenceVeiw,SelectHandleTypeView,AGatheringPartyInformationView,AGatheringCardPhotoView,AConfirmInformationView,AccidentConditionView,AccidentConfirmResponView,ASignatureConfirmationView,AAccidentFactAndResponsibilityView,WaitRemoteResponsibleView,ResponsibleResultView,
   /** insuranceReport */
-  InsuranceReportPartyInfoView,InsuranceReportSuccessView,PerfectInformantInfoView,ExploreTakePhotoView,ConfirmReportPartyInfoView,ExploreSuccessView,SelectInInsuranceCompanyView,SelectCityView,
+  InsuranceReportPartyInfoView,InsuranceReportSuccessView,PerfectInformantInfoView,ExploreTakePhotoView,ConfirmReportPartyInfoView,ExploreSuccessView,SelectInInsuranceCompanyView,SelectCityView,InsuranceReportDetailView
  } from './views/index.js';
 
 const isIos = Platform.OS === 'ios';
@@ -90,7 +90,9 @@ const PublicNavigator = StackNavigator({
   PerfectInformantInfoView: { screen: PerfectInformantInfoView, navigationOptions: { title: '完善报案人信息'} },
   ExploreTakePhotoView: { screen: ExploreTakePhotoView, navigationOptions: { title: '查勘拍照'} },
   ConfirmReportPartyInfoView: { screen: ConfirmReportPartyInfoView, navigationOptions: { title: '确认信息'} },
-  ExploreSuccessView: { screen: ExploreSuccessView, navigationOptions: { title: '完成'} }
+  ExploreSuccessView: { screen: ExploreSuccessView, navigationOptions: { title: '完成'} },
+  InsuranceReportDetailView: { screen: InsuranceReportDetailView, navigationOptions: { title: '案件详情'} },
+
 },{
   headerMode: 'screen',
   navigationOptions: () => (publicNavigationOptions)

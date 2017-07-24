@@ -15,7 +15,7 @@ import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import Picker from 'react-native-picker';
 import { ScrollerSegment } from '../../components/index';
 
-class ConfirmReportPartyInfoView extends Component {
+class InsuranceReportDetailView extends Component {
 
   constructor(props){
     super(props);
@@ -161,4 +161,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports.ConfirmReportPartyInfoView = connect()(ConfirmReportPartyInfoView)
+module.exports.InsuranceReportDetailView = connect()(InsuranceReportDetailView)

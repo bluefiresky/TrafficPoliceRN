@@ -43,5 +43,5 @@ export const post_surveyecho_info = ({taskno,version}) => {
 }
 /** 保险报案10-获取查勘历史照片接口 */
 export const post_survey_photos = ({taskno,version}) => {
-  return http_post( 'survey.photos', {surveyno}, {}, version )
+  return http_post( 'survey.photos', {taskno}, {}, version )
 }
