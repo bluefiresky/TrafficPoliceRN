@@ -85,15 +85,26 @@ export default class HistoricalCaseCellView extends Component {
     let { accidentAddress, accidentTime, taskNo, cars, status } = rowData;
     return (
       <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.historyCellClick(taskNo)}>
-        <View style={{flex: 1, flexDirection:'row'}}>
-          <View style={styles.left}>
-            <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
-              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
-              <Text style={{color:formLeftText,fontSize:14}}>{accidentTime}</Text>
+        <View style={{flex:1}}>
+          <View style={{flex: 1, flexDirection:'row',marginBottom:15}}>
+            <View style={styles.left}>
+              <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
+                <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
+                <Text style={{color:formLeftText,fontSize:14}}>{accidentTime}</Text>
+              </View>
+              <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start'}}>
+                <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
+                <Text style={{color:formLeftText,fontSize:14, flex:1}}>{accidentAddress}</Text>
+              </View>
+              <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start'}}>
+                <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
+                <Text style={{color:formLeftText,fontSize:14}}>
+                  {cars?cars.map(p => p.ownerName + ' (' + p.licenseNo + ')\n'):'\n'}
+                </Text>
+              </View>
             </View>
-            <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start'}}>
-              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
-              <Text style={{color:formLeftText,fontSize:14, flex:1}}>{accidentAddress}</Text>
+            <View style={styles.right}>
+              <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
             </View>
           </View>
           {(status == '2' || status == '3' || status == '10') ? this._renderButton(status,taskNo):null}
