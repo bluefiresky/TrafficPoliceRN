@@ -107,26 +107,28 @@ export default class HistoricalCaseCellView extends Component {
               <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
             </View>
           </View>
-          {(status == '2' || status == '3' || status == '10') ? this._renderButton(status,taskNo):null}
+          {(status == '2' || status == '3' || status == '10' || status == '8' || status == '9' || status == '11' || status == '12') ? this._renderButton(status,taskNo,cars):null}
         </View>
       </TouchableHighlight>
     )
   }
 
-  _renderButton(status,taskNo){
+  _renderButton(status,taskNo,cars){
     let secondButton;
     let thirdButton;
-    secondButton = <TouchableHighlight
-                     style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:(status == '2' ? '#267BD8':'#ffffff')}} underlayColor={(status == '2' ? '#267BD8':'transparent')} onPress={()=>{
-                       if (status == '2') {
-                         this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
-                       } else {
-                         //保险报案详情
-                         this.props.navigation.navigate('InsuranceReportDetailView',{taskno:taskNo})
-                       }
-                     }}>
-                       <Text style={{color:(status == '2' ? '#ffffff':'#267BD8'),alignSelf:'center'}}>{status == '2' ? '保险报案' : '保险报案详情'}</Text>
-                   </TouchableHighlight>
+    if (status != '8') {
+      secondButton = <TouchableHighlight
+                       style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:(status == '2' ? '#267BD8':'#ffffff')}} underlayColor={(status == '2' ? '#267BD8':'transparent')} onPress={()=>{
+                         if (status == '2') {
+                           this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
+                         } else {
+                           //保险报案详情
+                           this.props.navigation.navigate('InsuranceReportDetailView',{taskno:taskNo})
+                         }
+                       }}>
+                         <Text style={{color:(status == '2' ? '#ffffff':'#267BD8'),alignSelf:'center'}}>{status == '2' ? '保险报案' : '保险报案详情'}</Text>
+                     </TouchableHighlight>
+    }
       if (status != '2') {
         if (status == '3') {
           thirdButton = <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:'#267BD8'}} underlayColor='#267BD8' onPress={()=>{
@@ -136,7 +138,7 @@ export default class HistoricalCaseCellView extends Component {
           </TouchableHighlight>
         } else if (status == '10') {
           thirdButton = <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:'#267BD8'}} underlayColor='#267BD8' onPress={()=>{
-            this.props.navigation.navigate('ExploreTakePhotoView',{taskno:taskNo,surveyno:''})
+            this.props.navigation.navigate('ExploreTakePhotoView',{taskno:taskNo,surveyno:'',personData:cars})
           }}>
             <Text style={{color:'#ffffff',alignSelf:'center'}}>补拍照片</Text>
           </TouchableHighlight>

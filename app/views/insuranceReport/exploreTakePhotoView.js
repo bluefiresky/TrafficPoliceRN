@@ -73,6 +73,7 @@ class ExploreTakePhotoView extends Component {
           this.surveyno = res.data.surveyno
           for (var i = 0; i < res.data.surveyphoto.length; i++) {
             for (var j = 0; j < res.data.surveyphoto[i].photolist.length; j++) {
+              this.partyInfoData[i].licenseno = res.data.surveyphoto[i].licenseno
               this.partyInfoData[i].carPhotoData[j].title = res.data.surveyphoto[i].photolist[j].phototypename;
               this.partyInfoData[i].carPhotoData[j].imageURL = res.data.surveyphoto[i].photolist[j].url;
               this.partyInfoData[i].carPhotoData[j].code = res.data.surveyphoto[i].photolist[j].phototypecode;
@@ -118,29 +119,25 @@ class ExploreTakePhotoView extends Component {
         let that = this;
         ImagePicker.showImagePicker(this.options, (response) => {
             if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
-                let source = { uri: 'data:image/png;base64,' + response.data }
-                this.partyInfoData[ind].carPhotoData[index].imageURL = source;
-                let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].carPhotoData))
-                this.partyInfoData[ind].carPhotoData = temp
-                this.setState({
-                  loading:true
-                })
                 let { surveyno } = this.props.navigation.state.params
                 let licenseno = this.partyInfoData[ind].licenseno
                 let typecode =  this.partyInfoData[ind].carPhotoData[index].code ?  this.partyInfoData[ind].carPhotoData[index].code : '7'
-                let pid = this.partyInfoData[ind].carPhotoData[index].pid;
+                let pid = this.partyInfoData[ind].carPhotoData[index].pid ? this.partyInfoData[ind].carPhotoData[index].pid : '';
                 let plat = response.longitude
                 let plng = response.latitude
                 let pfrom = 0
                 let uploadtime = Tool.getTime('yyyy-MM-dd hh:mm:ss')
-                let params =  {licenseno:licenseno,photodata:encodeURI(JSON.stringify(response.data)),pid:pid,typecode:typecode,partcode:this.partcode,plat:plat,plng:plng,uploadtime:uploadtime,pfrom:pfrom,surveyno:(surveyno ? surveyno : this.surveyno)}
+                let params =  {licenseno:licenseno,photodata:response.data,pid:pid,typecode:typecode,partcode:this.partcode,plat:plat,plng:plng,uploadtime:uploadtime,pfrom:pfrom,surveyno:(surveyno ? surveyno : this.surveyno)}
                 this.setState({
                   loading:true
                 })
                 this.props.dispatch( create_service(Contract.POST_SURVEYPHOTO_INFO,params))
                   .then( res => {
                     if (res) {
-
+                      let source = { uri: 'data:image/png;base64,' + response.data }
+                      this.partyInfoData[ind].carPhotoData[index].imageURL = source;
+                      let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].carPhotoData))
+                      this.partyInfoData[ind].carPhotoData = temp
                     }
                     this.setState({
                       loading:false
@@ -191,7 +188,7 @@ class ExploreTakePhotoView extends Component {
       innerImgae = <Text style={{alignSelf:'center',color:formRightText,fontSize:50}}>+</Text>
     } else {
       if (!item.imageURL) {
-        innerImgae = <Image style={{alignSelf:'center'}} source={require('./image/personal_camera.png')}/>
+        innerImgae = <Image style={{alignSelf:'center',width:38,height:30,resizeMode: 'contain'}} source={require('./image/personal_camera.png')}/>
       } else {
         innerImgae = null
       }
@@ -199,10 +196,12 @@ class ExploreTakePhotoView extends Component {
     return (
       <TouchableHighlight style={{marginLeft:this.rowMargin,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index,ind)} key={index}>
         <View style={{flex:1}}>
-          <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
-                 source={item.imageURL ? item.imageURL:null}>
-            {innerImgae}
-          </Image>
+          <View style={{width: this.rowWH,height: this.rowWH * 0.5}}>
+            <Image style={{flex:1,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1,flex:1}}
+                   source={item.imageURL ? item.imageURL:null}>
+              {innerImgae}
+            </Image>
+          </View>
           <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.title}</Text>
         </View>
       </TouchableHighlight>
