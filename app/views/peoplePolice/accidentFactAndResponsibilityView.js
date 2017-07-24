@@ -119,7 +119,7 @@ class AccidentFactAndResponsibilityView extends Component {
               multiline = {true}
               maxLength={200}
               />
-              
+
              <View style={{alignSelf:'center',marginBottom:50,marginTop:50}}>
                <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
              </View>
@@ -137,19 +137,24 @@ class AccidentFactAndResponsibilityView extends Component {
     let content = '';
     if(num === 1){
       let p = person[0];
-      content = `    ${basic.accidentTime}, ${p.name}(驾驶证号:${p.driverNum})驾驶车牌号为${p.licensePlateNum}的${p.carType}, 在${basic.address}发生交通事故。`
+      content = `\t${this._convertAccidentTime(basic.accidentTime)}, ${p.name}(驾驶证号:${p.driverNum})驾驶车牌号为${p.licensePlateNum}的${p.carType}, 在${basic.address}发生交通事故。`
     }else if(num === 2){
       let p1 = person[0];
       let p2 = person[1];
-      content = `    ${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}，与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}发生交通事故。`
+      content = `\t${this._convertAccidentTime(basic.accidentTime)}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}，与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}发生交通事故。`
     }else if(num === 3){
       let p1 = person[0];
       let p2 = person[1];
       let p3 = person[2];
-      content = `    ${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}，及${p3.name}(驾驶证号:${p3.driverNum})驾驶车牌号为${p3.licensePlateNum}的${p3.carType}发生交通事故。`
+      content = `\t${this._convertAccidentTime(basic.accidentTime)}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}，及${p3.name}(驾驶证号:${p3.driverNum})驾驶车牌号为${p3.licensePlateNum}的${p3.carType}发生交通事故。`
     }
 
     return content;
+  }
+
+  _convertAccidentTime(time){
+    if(time) return time.substring(0, time.length - 3);
+    return ''
   }
 
 }

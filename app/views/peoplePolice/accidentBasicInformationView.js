@@ -198,6 +198,11 @@ class AccidentBasicInformationView extends Component {
     }
   }
 
+  _convertAccidentTime(time){
+    if(time) return time.substring(0, time.length - 3);
+    return ''
+  }
+
 }
 
 const styles = StyleSheet.create({

@@ -202,7 +202,7 @@ class CaseDetailsView extends Component {
       }
     }else if(this.type === 2){  // 本地案件
       if(t === 1){
-        this.props.navigation.navigate('CertificateView', {handleWay:this.state.handleWay});
+        this.props.navigation.navigate('CertificateView', {handleWay:this.state.handleWay, canBack:true});
       }else{
         this.props.navigation.navigate('UploadProgressView', {caseType:1});
       }
@@ -280,7 +280,7 @@ class CaseDetailsView extends Component {
         <View style={{marginTop:15, paddingHorizontal:15, paddingVertical:10, backgroundColor:'#ffffff'}}>
           <View style={{flexDirection:'row', marginVertical:10}}>
             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-            <Text style={{fontSize:18,color:formLeftText,marginLeft:10}}>事故情形</Text>
+            <Text style={{fontSize:18,color:formLeftText,marginLeft:10}}>事故责任</Text>
           </View>
           {
             personResponbilityList.map((value, index) => (

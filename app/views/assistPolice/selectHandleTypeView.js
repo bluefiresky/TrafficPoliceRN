@@ -53,7 +53,7 @@ class SelectHandleTypeView extends Component {
                 <XButton title={'多车事故|自行协商'} onPress={() => this.commit(0)} style={{backgroundColor:'#2DB3E7',borderRadius:20}}/>
               </View>
               <View style={{marginLeft:15,marginBottom:10,marginTop:30}}>
-                <XButton title={'多车事故|需远程定则'} onPress={() => this.commit(1)} style={{backgroundColor:'#FEB35A',borderRadius:20}}/>
+                <XButton title={'多车事故|需远程定责'} onPress={() => this.commit(1)} style={{backgroundColor:'#FEB35A',borderRadius:20}}/>
               </View>
               <View style={{marginLeft:15,marginBottom:10,marginTop:30}}>
                 <XButton title={'单车事故'} onPress={() => this.commit(2)} style={{backgroundColor:'#36BC99',borderRadius:20}}/>

@@ -56,7 +56,7 @@ export async function getFileByName(name){
 export async function deleteFileByName(name, type){
   let filePath = RNFS.DocumentDirectoryPath + `/${name}`;
   let zipPath = RNFS.DocumentDirectoryPath + `/${name}.zip`
-  
+
   let existsFilePath = RNFS.exists(filePath);
   let existsZipPath = RNFS.exists(zipPath);
   console.log(`%c Utility execute deleteFileByName and the filePath -->> ## ${filePath} ## is exists -> ` , 'color:dodgerblue', existsFilePath);
@@ -78,7 +78,7 @@ export async function zipFileByName(name){
 
   try {
     let base64Str = await zipToBase64(sourcePath, targetPath);
-    console.log('%c Utility execute zipFileByName and the base64 -->> ' , 'color:dodgerblue', base64Str);
+    console.log('%c Utility execute zipFileByName and the base64 -->> ' , 'color:dodgerblue', 'base64 str');
 
     return base64Str;
   } catch (e) {

@@ -35,7 +35,7 @@ class SettingView extends Component {
     //退出登录要清空路由栈
     this.setState({loading:true})
     if(this.state.loading) return;
-    
+
     this.props.dispatch( create_service(Contract.POST_USER_LOGOUT, {}))
       .then( res => {
         console.log(' SettingView execute exitLogin and the res -->> ', res);
@@ -60,6 +60,12 @@ class SettingView extends Component {
             <View style={{flex:1,flexDirection:'row',backgroundColor:'#ffffff',alignItems:'center',paddingLeft:20}}>
               <View style={{width:6,height:6,borderRadius:3,backgroundColor:'#1C79D9',alignSelf:'center'}} />
               <Text style={{fontSize:16,marginLeft:10,color:formLeftText}}>意见反馈</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight style={{marginTop:10,height:44,width:W}} underlayColor='#B4B4B4' disabled={true}>
+            <View style={{flex:1,flexDirection:'row',backgroundColor:'#ffffff',alignItems:'center',paddingLeft:20}}>
+              <View style={{width:6,height:6,borderRadius:3,backgroundColor:'#1C79D9',alignSelf:'center'}} />
+              <Text style={{fontSize:16,marginLeft:10,color:formLeftText}}>版本号1.0</Text>
             </View>
           </TouchableHighlight>
         </View>

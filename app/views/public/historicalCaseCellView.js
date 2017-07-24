@@ -85,24 +85,15 @@ export default class HistoricalCaseCellView extends Component {
     let { accidentAddress, accidentTime, taskNo, cars, status } = rowData;
     return (
       <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.historyCellClick(taskNo)}>
-        <View style={{flex:1}}>
-          <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
-            <View style={styles.left}>
-              <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
-                <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
-                <Text style={{color:formLeftText,fontSize:14}}>{accidentTime}</Text>
-              </View>
-              <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
-                <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
-                <Text style={{color:formLeftText,fontSize:14}}>{accidentAddress}</Text>
-              </View>
-              <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start',marginBottom:10}}>
-                <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
-                <Text style={{color:formLeftText,fontSize:14}}>{cars.map(car => car.ownerName + ' (' + car.licenseNo + ')\n')}</Text>
-              </View>
+        <View style={{flex: 1, flexDirection:'row'}}>
+          <View style={styles.left}>
+            <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
+              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
+              <Text style={{color:formLeftText,fontSize:14}}>{accidentTime}</Text>
             </View>
-            <View style={styles.right}>
-              <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
+            <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start'}}>
+              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
+              <Text style={{color:formLeftText,fontSize:14, flex:1}}>{accidentAddress}</Text>
             </View>
           </View>
           {(status == '2' || status == '3' || status == '10') ? this._renderButton(status,taskNo):null}
@@ -156,7 +147,7 @@ export default class HistoricalCaseCellView extends Component {
     let { basic, person, step, handleWay, id } = rowData;
     return (
       <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.caseCellClick(step, handleWay, id, type, rowData)}>
-        <View style={{flex: 1, flexDirection:'row',justifyContent:'space-between'}}>
+        <View style={{flex: 1, flexDirection:'row'}}>
           <View style={styles.left}>
             <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
               <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
@@ -164,7 +155,7 @@ export default class HistoricalCaseCellView extends Component {
             </View>
             <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
               <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
-              <Text style={{color:formLeftText,fontSize:14}}>{basic.address}</Text>
+              <Text style={{color:formLeftText,fontSize:14, flex:1}}>{basic.address}</Text>
             </View>
             <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start',marginBottom:10}}>
               <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
@@ -187,7 +178,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff'
     },
     left:{
-      marginLeft:15
+      flex:1,
+      marginLeft:15,
+      marginRight:10,
     },
     right:{
       width: 10,

@@ -109,8 +109,8 @@ class AccidentConfirmResponView extends Component {
                {this.renderRowItem('事故时间：', basic?this._convertAccidentTime(basic.accidentTime):'')}
                {this.renderRowItem('天气：', basic?this._convertWeather(basic.weather):'')}
                {this.renderRowItem('事故地点：', basic?basic.address:'')}
-               {this.renderRowItem('事故形态：', accidentDes?accidentDes.name:'')}
-               {this.renderRowItem('事故情形：', taskModal?taskModal.name:'')}
+               {this.renderRowItem('事故形态：', taskModal?taskModal.name:'')}
+               {this.renderRowItem('事故情形：', accidentDes?accidentDes.name:'')}
              </View>
            </View>
            <View style={{backgroundColor:'#ffffff',marginTop:10}}>

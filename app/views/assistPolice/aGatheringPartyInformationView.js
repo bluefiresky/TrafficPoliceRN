@@ -46,8 +46,7 @@ class AGatheringPartyInformationView extends Component {
     this.setState({loading: true})
     InteractionManager.runAfterInteractions(async ()=>{
       let info = await StorageHelper.getCurrentCaseInfo();
-      // this.handleWay = info.handleWay;
-      this.handleWay = '03'
+      this.handleWay = info.handleWay;
       if(this.handleWay != '03'){
         this.carInfoData.push({title:'乙方',carNumArr:[getProvincialData(),getNumberData()]})
         this.submitDataArr.push(this.yifangInfo)
@@ -98,10 +97,10 @@ class AGatheringPartyInformationView extends Component {
          error = `请选择${this.carInfoData[i].title}保险公司`
          break;
        }
-      //  if (!this.submitDataArr[i].carInsureNumber) {
-      //    error = `请输入${this.carInfoData[i].title}保单号`
-      //    break;
-      //  }
+       if (this.submitDataArr[i].carInsureNumber && this.submitDataArr[i].carInsureNumber.length < 10) {
+         error = `${this.carInfoData[i].title}的保单号输入不正确`
+         break;
+       }
      }
 
      if(this.submitDataArr.length === 2){
@@ -247,7 +246,7 @@ class AGatheringPartyInformationView extends Component {
             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
             <Text style={{fontSize:15,color:formLeftText,marginLeft:10,alignSelf:'center'}}>{`${value.title}当事人`}</Text>
           </View>
-          {(index == this.carInfoData.length - 1 && index !== 0)?<TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={()=>this.deleteItem(index)} underlayColor='transparent'>
+          {(index === 2)?<TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={()=>this.deleteItem(index)} underlayColor='transparent'>
             <Image style={{width:20,height:20}} source={require('./image/delete.png')}/>
           </TouchableHighlight>:null}
         </View>

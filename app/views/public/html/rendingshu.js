@@ -1,4 +1,4 @@
-export function generateRDS(){
+export function generateRDS(basic, personList, factAndResponsibility){
   return(
     `<!DOCTYPE html>
     <html>
@@ -48,45 +48,61 @@ export function generateRDS(){
        <tbody>
         <tr>
          <td>事故时间</td>
-         <td colspan="3">2017年07月08日 08时30分</td>
+         <td colspan="3">${basic.accidentTime}</td>
          <td>天气</td>
-         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+         <td>${basic.weather}</td>
         </tr>
         <tr style="border-top:1px solid #000000;border-bottom:1px solid #000000;">
          <td>事故地点</td>
-         <td colspan="5">北京市朝阳区百子湾南二路78号院-3</td>
+         <td colspan="5">${basic.address}</td>
         </tr>
         <tr>
          <td>当事人</td>
-         <td>张三</td>
+         <td>${personList[0].name}</td>
          <td>驾驶证或身份证号码</td>
-         <td>111222121333636666</td>
+         <td>${personList[0].driverNum}</td>
          <td>联系电话</td>
-         <td>15010955030</td>
+         <td>${personList[0].phone}</td>
         </tr>
         <tr>
          <td>交通方式</td>
-         <td></td>
+         <td>${personList[0].carType}</td>
          <td>机动车型号、牌号</td>
-         <td>冀CWA356</td>
+         <td>${personList[0].licensePlateNum}</td>
          <td>保险凭证号</td>
-         <td></td>
+         <td>${personList[0].carInsureNumber}</td>
         </tr>
         <tr>
          <td>当事人</td>
-         <td>李四</td>
+         <td>${personList[1].name}</td>
          <td>驾驶证或身份证号码</td>
-         <td>321123456654789987</td>
+         <td>${personList[1].driverNum}</td>
          <td>联系电话</td>
-         <td>18910561309</td>
+         <td>${personList[1].phone}</td>
         </tr>
         <tr>
          <td>交通方式</td>
-         <td class="slash"></td>
+         <td class="slash">${personList[1].carType}</td>
          <td>机动车型号、牌号</td>
-         <td>京C11157</td>
+         <td>${personList[1].licensePlateNum}</td>
          <td>保险凭证号</td>
-         <td></td>
+         <td>${personList[1].carInsureNumber}</td>
+        </tr>
+        <tr>
+         <td>当事人</td>
+         <td>${personList[2].name}</td>
+         <td>驾驶证或身份证号码</td>
+         <td>${personList[2].driverNum}</td>
+         <td>联系电话</td>
+         <td>${personList[2].phone}</td>
+        </tr>
+        <tr>
+         <td>交通方式</td>
+         <td class="slash">${personList[2].carType}</td>
+         <td>机动车型号、牌号</td>
+         <td>${personList[2].licensePlateNum}</td>
+         <td>保险凭证号</td>
+         <td>${personList[2].carInsureNumber}</td>
         </tr>
         <tr>
          <td colspan="6">
@@ -96,16 +112,25 @@ export function generateRDS(){
              <td style="width:80px;text-align:center;;border-top:0px;  border-right: 0px;"> 交<br />通<br />事<br />故<br />事<br />实<br />及<br />责<br />任 </td>
              <td style="text-align:left;border-top:0px;  border-right: 0px;">
                 <p>
-                    2017年07月08日 08时30分，在北京市朝阳区百子湾南二路78号院-3处，张三驾驶的冀CWA356小型载客汽车，与李四驾驶的京C11157小型载客汽车发生追尾碰撞的交通事故。本次事故情形为变更车道与其他车辆刮擦。本次事故责任为李四无责任，李四无责任。
+                    ${factAndResponsibility}
                 </p>
-                <p>sflsk;kfd;fkd;fk;dks;fks;fk;sfkd;fkd;fkd;fkd;fk;fkd;kdf</p>
-                <p>lslfolireioeuoerueleoieiroerueori</p>
-                <br /> 当事人：<img src="http://192.168.1.188:8080/photobase//photos/sign//2017-07-10/1101201707101025255250001/sign_696b8c03-f108-432a-853f-43e8f284a6af.jpg" />、<img src="http://192.168.1.188:8080/photobase//photos/sign//2017-07-10/1101201707101025255250001/sign_76f55d30-9cf3-4333-a4e4-9429d395a3e9.jpg" /><br /> 交通警察<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/91eb62d3-5e28-4443-9ab7-e7fcfd4511eb.png" /> （印章）<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/10f047a2-c10a-45cc-b573-8732ac7ef7b8.png"/>
+                <p></p>
+                <p></p>
+                <br /> 当事人：<img src=${personList[0].signData} />
+                ${personList[1].signData?'<img src='+personList[1].signData+' />':''}
+                ${personList[2].signData?'<img src='+personList[2].signData+' />':''}
+                <br />
+                交通警察<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/91eb62d3-5e28-4443-9ab7-e7fcfd4511eb.png" /> （印章）<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/10f047a2-c10a-45cc-b573-8732ac7ef7b8.png"/>
             </td>
             </tr>
             <tr>
              <td style="width:80px;text-align:center;border-bottom:0px; border-left: 0px; border-right: 0px;"> 损<br />害<br />赔<br />偿<br />调<br />解<br />结<br />果 </td>
-             <td style="text-align:left;border-bottom:0px; border-right: 0px;">经各方当事人共同申请调解，自愿达成协议如下： <br />由当事人自行协商解决。此事故一次结清，签字生效。 <br /> 当事人：<img src="http://192.168.1.188:8080/photobase//photos/sign//2017-07-10/1101201707101025255250001/sign_696b8c03-f108-432a-853f-43e8f284a6af.jpg"/>、<img src="http://192.168.1.188:8080/photobase//photos/sign//2017-07-10/1101201707101025255250001/sign_76f55d30-9cf3-4333-a4e4-9429d395a3e9.jpg" /><br /> 交通警察<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/91eb62d3-5e28-4443-9ab7-e7fcfd4511eb.png" /> （印章）<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/10f047a2-c10a-45cc-b573-8732ac7ef7b8.png"  /> </td>
+             <td style="text-align:left;border-bottom:0px; border-right: 0px;">经各方当事人共同申请调解，自愿达成协议如下： <br />由当事人自行协商解决。此事故一次结清，签字生效。
+             <br /> 当事人：<img src=${personList[0].signData} />
+             ${personList[1].signData?'<img src='+personList[1].signData+' />':''}
+             ${personList[2].signData?'<img src='+personList[2].signData+' />':''}
+             <br />
+             交通警察<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/91eb62d3-5e28-4443-9ab7-e7fcfd4511eb.png" /> （印章）<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/10f047a2-c10a-45cc-b573-8732ac7ef7b8.png"  /> </td>
             </tr>
            </tbody>
           </table></td>

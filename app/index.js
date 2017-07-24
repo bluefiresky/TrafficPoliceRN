@@ -11,7 +11,7 @@ import { configureStore, getStore } from './redux/index.js';
 import RootView from './root.js';
 
 console.ignoredYellowBox = ['Warning: BackAndroid is deprecated.']
-const storage = new Storage({ size: 1000, storageBackend: AsyncStorage, defaultExpires: null, enableCache: true })
+const storage = new Storage({ size: 10000, storageBackend: AsyncStorage, defaultExpires: null, enableCache: false })
 
 const IndicatorColor = Platform.OS === 'ios'? 'white':'#1174D9';
 export default class TrafficPoliceRN extends Component {
