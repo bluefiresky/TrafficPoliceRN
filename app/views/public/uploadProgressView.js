@@ -133,10 +133,14 @@ class UploadProgressView extends Component {
           let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
           self.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
         }else{
-          self.info.taskNo = self.state.taskNo;
-          let saveToUnUploadRes = await StorageHelper.saveAsUnUploaded(self.info);
-          if(!saveToUnUploadRes) return;
-          self.props.navigation.navigate('CertificateView', {handleWay})
+          if(this.state.caseType == 1){
+            self.props.navigation.navigate('CertificateView', {handleWay})
+          }else{
+            self.info.taskNo = self.state.taskNo;
+            let saveToUnUploadRes = await StorageHelper.saveAsUnUploaded(self.info);
+            if(!saveToUnUploadRes) return;
+            self.props.navigation.navigate('CertificateView', {handleWay})
+          }
         }
         self.setState({showTip:false})
       }};

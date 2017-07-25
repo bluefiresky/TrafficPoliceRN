@@ -79,7 +79,7 @@ class HistoricalCaseView extends Component {
           data={data}
           renderItem={this._renderItem.bind(this)}
           showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:borderColor,width:W,height:1}} />)}}
+          ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:backgroundGrey,width:W,height:10}} />)}}
         />
       </View>
     )
@@ -105,7 +105,7 @@ class HistoricalCaseView extends Component {
           ListHeaderComponent={() => <View /> }
           ListFooterComponent={() => <View /> }
           onEndReached = {(info) => console.log('滑动到底部',info)}
-          ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:borderColor,width:W,height:1}} />)}}
+          ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:backgroundGrey,width:W,height:10}} />)}}
           onLayout={ event => {
               this.height = event.nativeEvent.layout.height;
               console.log('HistoricalCaseView onLayout layout -->> ', event.nativeEvent.layout);
@@ -134,8 +134,10 @@ class HistoricalCaseView extends Component {
       this.currentPage = 1;
     }else if(this.state.currentType === 2){
       data = await StorageHelper.getUnCompletedCaseList();
+      data.reverse();
     }else if(this.state.currentType === 1){
       data = await StorageHelper.getUnUploadedCaseList();
+      data.reverse();
     }
     this.setState({loading: false, data});
   }

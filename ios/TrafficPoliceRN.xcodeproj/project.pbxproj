@@ -569,8 +569,8 @@
 			isa = PBXGroup;
 			children = (
 				33EC05921EFAC86E00E327E1 /* BaiduMap */,
-				331D96671F273002005ADF19 /* ImageToBase64.m */,
 				331D96691F273027005ADF19 /* ImageToBase64.h */,
+				331D96671F273002005ADF19 /* ImageToBase64.m */,
 			);
 			name = Modules;
 			sourceTree = "<group>";

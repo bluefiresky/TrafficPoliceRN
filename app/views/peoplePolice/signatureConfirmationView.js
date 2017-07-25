@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { takeSnapshot } from "react-native-view-shot";
 import Orientation from 'react-native-orientation';
+import RNFS from 'react-native-fs';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, XButton, Input } from '../../components/index.js';  /** 自定义组件 */
@@ -17,6 +18,7 @@ import { StorageHelper, Utility, TextUtility } from '../../utility/index.js';
 const PersonalTitles = ['甲方', '乙方', '丙方'];
 const SignW = (W - 40);
 const SignH = (SignW * W)/H;
+const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
 
 class SignatureConfirmationView extends Component {
 
@@ -205,13 +207,13 @@ class SignatureConfirmationView extends Component {
             <TouchableHighlight underlayColor={'transparent'} onPress={()=>{
               let self = this;
               this.props.navigation.navigate('SignatureView', {returnValue: (result)=>{
-                value.signData = result;
+                value.signData = result.substring(result.lastIndexOf('/')+1);
                 value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
                 self.setState({refresh: true})
               }})
             }} >
               {
-                value.signData? <Image source={{uri:'data:image/png;base64,'+value.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
+                value.signData? <Image source={{uri:DocumentPath+value.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
                 :
                 <View style={{width:W-30,height:50,backgroundColor:'#D4D4D4',justifyContent:'center',alignItems:'center',marginLeft:15}}>
                   <Text style={{fontSize:16, color:formLeftText}}>请签名</Text>

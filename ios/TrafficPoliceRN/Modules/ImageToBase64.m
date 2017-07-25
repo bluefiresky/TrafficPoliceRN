@@ -38,7 +38,7 @@ RCT_EXPORT_METHOD(convertToBase64:(NSString*)path
     float maxWidth = 750;
     float maxHeight = 1000;
     image = [self downscaleImageIfNecessary:image maxWidth:maxWidth maxHeight:maxHeight];
-    NSData *data = UIImageJPEGRepresentation(image, 0.6);
+    NSData *data = UIImageJPEGRepresentation(image, 0.5);
 //    [data writeToFile:path atomically:YES];
     NSString *dataString = [data base64EncodedStringWithOptions:0]; // base64 encoded image string
     

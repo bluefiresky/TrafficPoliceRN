@@ -15,9 +15,9 @@ import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 
-const TitlebarHeight = Platform.select({ android: 44, ios: 64 });
+const MarginTitle = Platform.select({ android: 0, ios: 22 });
 const IsIos = Platform.OS === 'ios';
-const ButtonW = H/6
+const ButtonW = (W - 60)/3
 
 class SignatureView extends Component {
 
@@ -26,6 +26,7 @@ class SignatureView extends Component {
     this.signData = null;
     this._onSaveEvent = this._onSaveEvent.bind(this);
     this._orientationDidChange = this._orientationDidChange.bind(this);
+    this._onBackEvent = this._onBackEvent.bind(this);
     this.state = {
       viewMode: 'landscape',
       show:false,
@@ -37,29 +38,32 @@ class SignatureView extends Component {
   }
 
   componentDidMount(){
-    Orientation.getOrientation((err, orientation) => {
-      if(orientation === 'PORTRAIT'){
-        Orientation.lockToLandscapeRight();
-      }else if(orientation === 'LANDSCAPE'){
-        this.setState({show:true})
-      }
-    });
+    InteractionManager.runAfterInteractions(()=>{
+      Orientation.lockToLandscapeRight();
+    })
+    // Orientation.getOrientation((err, orientation) => {
+    //   console.log(' SignatureView get the orientation -->> ', orientation);
+    //   if(orientation === 'PORTRAIT'){
+    //     // Orientation.lockToLandscapeRight();
+    //   }else if(orientation === 'LANDSCAPE'){
+    //     this.setState({show:true})
+    //   }
+    // });
 
   }
 
   componentWillUnmount(){
-    Orientation.removeOrientationListener(this._orientationDidChange)
-    Orientation.lockToPortrait();
+    this._onBackEvent();
   }
 
   render(){
     return(
       <View style={styles.container}>
-        <View style={{flexDirection: 'row', paddingHorizontal:20, paddingVertical:10}}>
+        <View style={{flexDirection: 'row', paddingHorizontal:15, paddingVertical:10, marginTop:MarginTitle}}>
           <TouchableHighlight style={styles.buttonStyle} onPress={() => { this._goBack() }} underlayColor={'transparent'}>
             <Text style={{color:mainBule, fontSize: 14}}>返回</Text>
           </TouchableHighlight>
-          <View style={{width: 20}} />
+          <View style={{width: 15}} />
           <TouchableHighlight style={styles.buttonStyle} onPress={() => { this._resetSign() }} underlayColor={'transparent'}>
             <Text style={{color:mainBule, fontSize: 14}}>重置</Text>
           </TouchableHighlight>
@@ -70,9 +74,9 @@ class SignatureView extends Component {
         </View>
 
         {
-          !this.state.show? null :
+          !this.state.show? <View style={{flex:1, backgroundColor:backgroundGrey}} /> :
           <SignatureCapture
-            style={{flex: 1, backgroundColor:'red', borderColor:'transparent'}}
+            style={{flex: 1}}
             ref={(ref)=>{ this.ref = ref }}
             onSaveEvent={this._onSaveEvent}
             saveImageFileInExtStorage={false}
@@ -87,6 +91,7 @@ class SignatureView extends Component {
 
   /** Private **/
   _orientationDidChange(orientation){
+    // console.log('execute _orientationDidChange and the orientation -->> ', orientation);
     if (orientation === 'LANDSCAPE') {
       this.setState({show:true})
     }
@@ -101,7 +106,6 @@ class SignatureView extends Component {
   }
 
   _goBack() {
-    // this.setState({viewMode:'portrait'})
     this.props.navigation.goBack();
   }
 
@@ -110,11 +114,18 @@ class SignatureView extends Component {
     console.log('SignatureView and the result -->> ', result);
 
     if(result && result.encoded) {
-      this.signData = result.encoded;
-      this.setState({viewMode: 'portrait'})
+      // this.signData = result.encoded;
+      this.signData = result.pathName;
       if(this.props.navigation.state.params.returnValue) this.props.navigation.state.params.returnValue(this.signData);
+
       this.props.navigation.goBack();
     }
+  }
+
+  _onBackEvent(){
+    Orientation.removeOrientationListener(this._orientationDidChange)
+    Orientation.lockToPortrait();
+    console.log(' SignatureView execute _onBackEvent and has lockToPortrait');
   }
 
 }

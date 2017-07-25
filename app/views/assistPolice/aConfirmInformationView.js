@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import Picker from 'react-native-picker';
 import DatePicker from 'react-native-datepicker';
+import RNFS from 'react-native-fs';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule,commonText,getProvincialData,getNumberData } from '../../configs/index.js';/** 自定义配置参数 */
 import { XButton, ProgressView, TipModal, Input, InsurancePicker, CarTypePicker, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
@@ -19,6 +20,7 @@ const ImageH = (220 * ImageW)/340;
 const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}
 const ProvincialData = getProvincialData();
 const NumberData = getNumberData();
+const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
 
 class AConfirmInformationView extends Component {
 
@@ -209,7 +211,7 @@ class AConfirmInformationView extends Component {
           </View>
         </View>
         <View style={{alignItems:'center', marginTop:10, marginBottom:10}}>
-          <Image style={{width: ImageW,height: ImageH}} source={{uri: 'data:image/png;base64,'+credential.photoData}} />
+          <Image style={{width: ImageW,height: ImageH}} source={{uri: DocumentPath+credential.photoData, isStatic:true}} />
           <Text style={{marginTop:10,color:formLeftText,fontSize:12}}>{this._convertPhotoType(credential.photoType)}</Text>
         </View>
       </View>
@@ -273,7 +275,7 @@ class AConfirmInformationView extends Component {
   }
 
   renderItem({item,index}) {
-    let source = {uri: 'data:image/png;base64,' + item.photoData}
+    let source = {uri: DocumentPath+item.photoData, isStatic:true}
     return (
       <View style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
         <Image source={source} style={{width: ImageW, height: ImageH, justifyContent:'center', alignItems: 'center'}} />

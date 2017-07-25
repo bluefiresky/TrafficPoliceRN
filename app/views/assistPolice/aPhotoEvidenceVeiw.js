@@ -6,6 +6,7 @@ import { View, Text, StyleSheet, Image,TouchableHighlight,FlatList,Platform,Aler
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import ImagePicker from 'react-native-image-picker';
+import RNFS from 'react-native-fs';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,babackgroundGrey } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, TipModal } from '../../components/index.js';  /** 自定义组件 */
@@ -29,10 +30,11 @@ const photoOption = {
   chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
   mediaType: 'photo',
   maxWidth: 750,
-  maxHeight: 1334,
-  quality: 0.6,
+  maxHeight: 1000,
+  quality: 0.5,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
+const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
 
 class APhotoEvidenceVeiw extends Component {
 
@@ -72,7 +74,7 @@ class APhotoEvidenceVeiw extends Component {
             console.log(' the ImagePicker response -->> ', response);
             let photoData;
             if(Platform.OS === 'ios'){
-              photoData = response.uri.replace('file://', '');
+              photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
             }else{
               photoData = response.uri;
             }
@@ -93,7 +95,7 @@ class APhotoEvidenceVeiw extends Component {
           // console.log(' the ImagePicker response -->> ', response);
           let photoData;
           if(Platform.OS === 'ios'){
-            photoData = response.uri.replace('file://', '');
+            photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
           }else{
             photoData = response.uri;
           }
@@ -121,7 +123,7 @@ class APhotoEvidenceVeiw extends Component {
           console.log(' the ImagePicker response -->> ', response);
           let photoData;
           if(Platform.OS === 'ios'){
-            photoData = response.uri.replace('file://', '');
+            photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
           }else{
             photoData = response.uri;
           }
@@ -136,43 +138,40 @@ class APhotoEvidenceVeiw extends Component {
     }
     //取证完成
     async commit() {
+      this.setState({loading:true});
+      for (let i = 0; i < this.photoList.length; i++) {
+        if (!this.photoList[i].photoData) {
+          this.setState({loading:false})
+          Toast.showShortCenter(`【${this.photoList[i].title}】必须拍照`);
+          return
+        }
+      }
 
-      let result = await NativeModules.ImageToBase64.convertToBase64(this.photoList[0].photoData);
-      console.log(' commit and the result -->> ', result);
-      // this.setState({loading:true});
-      // for (let i = 0; i < this.photoList.length; i++) {
-      //   if (!this.photoList[i].photoData) {
-      //     this.setState({loading:false})
-      //     Toast.showShortCenter(`【${this.photoList[i].title}】必须拍照`);
-      //     return
-      //   }
-      // }
-      //
-      // let submitList = [];
-      // for(let i = 0; i < this.photoList.length; i++){
-      //   let p = this.photoList[i];
-      //   submitList.push({photoData: p.photoData, photoType: p.photoType, photoDate: p.photoDate})
-      // }
-      //
-      // let self = this;
-      // self.setState({ showTip: true, loading: false,
-      //   tipParams:{
-      //     content: '事故现场照片采集完成，请立即指引当事人挪车。',
-      //     left:{label: '返回修改', event: () => {
-      //       self.setState({showTip: false});
-      //     }},
-      //     right:{label: '采集当事人信息', event: async () => {
-      //       self.setState({loading: true})
-      //       let success = await StorageHelper.saveStep1(submitList)
-      //       self.setState({showTip: false, loading: false});
-      //       if(success) self.props.navigation.navigate('SelectHandleTypeView');
-      //     }}
-      // }});
+      let submitList = [];
+      for(let i = 0; i < this.photoList.length; i++){
+        let p = this.photoList[i];
+        submitList.push({photoData: p.photoData, photoType: p.photoType, photoDate: p.photoDate})
+      }
+
+      let self = this;
+      self.setState({ showTip: true, loading: false,
+        tipParams:{
+          content: '事故现场照片采集完成，请立即指引当事人挪车。',
+          left:{label: '返回修改', event: () => {
+            self.setState({showTip: false});
+          }},
+          right:{label: '采集当事人信息', event: async () => {
+            self.setState({loading: true})
+            let success = await StorageHelper.saveStep1(submitList)
+            self.setState({showTip: false, loading: false});
+            if(success) self.props.navigation.navigate('SelectHandleTypeView');
+          }}
+      }});
     }
     renderItem({item,index}) {
       // let source = item.photoData? {uri: 'data:image/png;base64,' + item.photoData} : item.image;
-      let source = item.photoData? {uri:item.photoData, isStatic:true} : item.image;
-      console.log(' renderItem and the source -->> ', source);
+      let source = item.photoData? {uri:DocumentPath+item.photoData, isStatic:true} : item.image;
+
       return (
         <TouchableHighlight style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
           <View style={{flex:1}}>
@@ -207,7 +206,7 @@ class APhotoEvidenceVeiw extends Component {
              <Modal animationType="slide" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
                <TouchableOpacity onPress={() => this.setState({showBigImage:false})} style={styles.modalContainer} activeOpacity={1}>
                 <View style={{flex:1, marginTop:60}}>
-                  <Image source={{uri: 'data:image/png;base64,'+this.currentImgae}} style={{width:W,height:BigImageH,resizeMode:'contain'}}/>
+                  <Image source={{uri:DocumentPath+this.currentImgae, isStatic:true}} style={{width:W,height:BigImageH,resizeMode:'contain'}}/>
                 </View>
                  <View style={{height:60, flexDirection:'row', alignItems: 'center', justifyContent:'center'}}>
                    <XButton title={'重拍'} onPress={() => this.reTakePhoto()} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>

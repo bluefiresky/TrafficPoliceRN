@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, FlatList, InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
+import RNFS from 'react-native-fs';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, XButton } from '../../components/index.js';  /** 自定义组件 */
@@ -20,6 +21,7 @@ const Titles = ['甲方', '乙方', '丙方'];
 
 const SignW = (W - 30);
 const SignH = (SignW * W)/H;
+const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
 
 class CaseDetailsView extends Component {
 
@@ -77,14 +79,14 @@ class CaseDetailsView extends Component {
             this.photoList = [];
             for(let i = 0; i < accidentPhotos.length; i++){
               let p = accidentPhotos[i];
-              this.photoList.push({photoData:p.photoUrl, photoType:p.photoTypeName})
+              this.photoList.push({photoData:{uri:p.photoUrl, isStatic:true}, photoType:p.photoTypeName})
             }
 
             this.personList = [];
             this.personResponbilityList = [];
             for(let i = 0; i < accidentPersons.length; i++){
               let { name, phone, driverNum, licensePlateNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl, drivingUrl, carDamagedPart, dutyName} = accidentPersons[i];
-              this.personList.push({name, phone, licensePlateNum, driverNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl:{uri:driverUrl}, drivingUrl:driverUrl?{uri:driverUrl}:null/*行驶证url**/})
+              this.personList.push({name, phone, licensePlateNum, driverNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl:{uri:driverUrl, isStatic:true}, drivingUrl:drivingUrl?{uri:drivingUrl, isStatic:true}:null/*行驶证url**/})
               this.personResponbilityList.push({name, licensePlateNum, carDamagedPart:this._convertDamagedCodeToName(carDamagedPart), dutyName})
             }
 
@@ -108,7 +110,7 @@ class CaseDetailsView extends Component {
         this.photoList = [];
         for(let i = 0; i < photo.length; i++){
           let p = photo[i];
-          this.photoList.push({photoData:'data:image/png;base64,'+p.photoData, photoType:this._convertPhotoType(p.photoType)})
+          this.photoList.push({photoData:{uri:DocumentPath+p.photoData, isStatic:true}, photoType:this._convertPhotoType(p.photoType)})
         }
 
         this.personList = [];
@@ -116,15 +118,29 @@ class CaseDetailsView extends Component {
         for(let i = 0; i < person.length; i++){
           let { name, phone, driverNum, licensePlateNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, carDamagedPart } = person[i];
           let { photoData, photoType } = credentials[i];
-          this.personList.push({name, phone, driverNum, licensePlateNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl:{uri: 'data:image/png;base64,'+photoData}, drivingUrl:null})
+          this.personList.push({name, phone, driverNum, licensePlateNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl:{uri:DocumentPath+photoData, isStatic:true}, drivingUrl:null})
           this.personResponbilityList.push({name, licensePlateNum, carDamagedPart:this._convertDamagedCodeToName(carDamagedPart), dutyName:this._convertCodeToEntry(duty[i].dutyType, DutyTypeList).name})
         }
 
-        this.signList = duty;
+        if(duty){
+          this.signList = [];
+          for(let i=0; i<duty.length; i++){
+            let {licensePlateNum, dutyType, signTime, refuseFlag, signData} = duty[i];
+            if(refuseFlag === '01'){
+              this.signList.push({licensePlateNum, dutyType, signTime, refuseFlag, signData:{uri:DocumentPath+signData, isStatic:true}})
+            }else{
+              this.signList.push({licensePlateNum, dutyType, signTime, refuseFlag, signData:{uri:'data:image/jpeg;base64,'+signData, isStatic:true}})
+            }
+          }
+        }
         this.factAndResponsibility = `${this._convertInfoToAccidentContent(basic, person)}${supplementary?supplementary:''}\n${this._convertResponsebilityContent(person, duty)}`;
         this.compensationAndResult = conciliation?conciliation : ' ';
-        this.taskModal = this._convertCodeToEntry(taskModal, getStore().getState().dictionary.formList).name;
-        this.accidentDes = this._convertCodeToEntry(accidentDes, getStore().getState().dictionary.situationList).name;
+        if(taskModal){
+          this.taskModal = this._convertCodeToEntry(taskModal, getStore().getState().dictionary.formList).name;
+        }
+        if(this.accidentDes){
+          this.accidentDes = this._convertCodeToEntry(accidentDes, getStore().getState().dictionary.situationList).name;
+        }
 
         let bl, pageFlag;
         if(handleWay === '04'){
@@ -142,7 +158,7 @@ class CaseDetailsView extends Component {
   renderItem({item,index}) {
     return (
       <View style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
-        <Image source={{uri:item.photoData}} style={{width: ImageW, height: ImageH, justifyContent:'center', alignItems: 'center'}} />
+        <Image source={item.photoData} style={{width: ImageW, height: ImageH, justifyContent:'center', alignItems: 'center'}} />
         <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.photoType}</Text>
       </View>
     )
@@ -337,7 +353,7 @@ class CaseDetailsView extends Component {
           return(
             <View key={index}>
               <Text style={{fontSize:14, color:textColor, marginTop:10}}>{text}</Text>
-              <Image source={{uri:'data:image/png;base64,'+sign.signData}} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
+              <Image source={sign.signData} style={{width:SignW, height:SignH, alignSelf: 'center', resizeMode:'contain'}} />
             </View>
           )
         })}
