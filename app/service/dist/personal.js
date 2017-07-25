@@ -5,11 +5,7 @@
 
 import { http_get, http_post, service_url } from "../service_helpers";
 
-/** 发送验证码 ## action:[ '0' ] */
-export const post_send_dynamic_check_code3 = ({mobile, action}) => {
-  return http_post( service_url('/verify/send'), {mobile, action} )
-}
-/** 获取版本号　## from: [] */
-export const get_user_register3 = ({params1, params2}) => {
-  return http_get( service_url('/version'), {params1, params2} )
+/** 获取用户信息 ## action:[ '0' ] */
+export const get_user_info = ({version}) => {
+  return http_get( 'police.get', {}, {}, version )
 }

@@ -27,6 +27,8 @@ import { getStore } from "../index.js";
 import * as mocks from "../../service/mock/index.js";
 import * as dists from "../../service/dist/index.js";
 
+import * as Contract from '../../service/contract.js';
+
 export function create_service(name, ...params) {
 
   console.log('%c create_service the name: -- ' + name + ' -- && and the params -->> ', 'color:limegreen', params);
@@ -53,16 +55,15 @@ export function create_service(name, ...params) {
  * 用于联网后　需要 reducer 保存　data　到　state
  */
 function dispatch_reducers(dispatch, promise, name, params){
-  dispatch({ type : name + "@Init", requestParams : params });
+  // dispatch({ type : name + "@Init", requestParams : params });
   const nPromise =
     promise.then( data => {
       if (data.terminate){
         console.log('%c create_service terminate === true and doing ## LOGIN_FAIL ##', 'color:red');
         dispatch({ type : "LOGIN_FAIL" });
-        // Actions.login();
       }else{
         if (data.success){
-          dispatch({ type : name, requestParams : params, data : data });
+          dispatch({ type : name, requestParams : params, data: data.data });
           return data.data;
         }else{
           Toast.showShortCenter(data.message)
@@ -70,18 +71,15 @@ function dispatch_reducers(dispatch, promise, name, params){
       }
     }).catch( error => {
       console.log('%c create_service && catch error -->> ', 'color:red', error);
-
-      if(error.result_code === 20000) {
-        Toast.showShortCenter("请登录");
-        dispatch({ type : "LOGIN_FAIL" });
-      }else if(error.result_code === - 1){
-        Toast.showShortCenter("网络请求错误,请稍后重试");
-      }else {
-        Toast.showShortCenter(error.error_msg);
-      }
     })
 
   return nPromise
+}
+
+function filterDispatch(dispatch, name, params, data){
+  if((name === Contract.POST_ACHIEVE_DICTIONARY) && (data.updateFlag === 0)) return;
+  console.log(' filterDispatch and the name -->> ', name);
+  dispatch({ type : name, requestParams : params, data });
 }
 
 /**

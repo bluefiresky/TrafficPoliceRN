@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, TouchableNativeFeedback, TouchableHighlight, Platform, Image  } from 'react-native';
 import { InputH, W, borderColor, formLeftText, formRightText, commonText, placeholderColor } from '../../configs/index.js';
 
-const clearButtonW = InputH/2
+// const clearButtonW = InputH/2
 export class Input extends Component {
 
 
@@ -119,7 +119,7 @@ export class Input extends Component {
       <View style={ [{paddingLeft: 20, flexDirection: 'row', height: InputH, backgroundColor: 'white'}, border, style] }>
         {this.renderLabelView(l, labelWidth, label)}
         <TextInput
-          style={{flex: 1, fontSize: 16, color: commonText, paddingLeft: 0}}
+          style={{flex: 1, fontSize: 14, color: commonText, paddingLeft: 0}}
           onChangeText={ (text) => { this._onChangeText(text) } }
           value={value}
           autoFocus={autoFocus}
@@ -141,7 +141,7 @@ export class Input extends Component {
     if (!l) {
       return(
         <View style={{width: labelWidth? labelWidth : 80, justifyContent: 'center'}}>
-          <Text style={{ color: formLeftText, fontSize: 16 }}>{ label }</Text>
+          <Text style={{ color: formLeftText, fontSize: 14 }}>{ label }</Text>
         </View>
       )
     }
@@ -154,7 +154,7 @@ export class Input extends Component {
       if (value && value != '') {
         const _Component = this.renderTouchComponent();
         return (
-          <View style={{width: clearButtonW, paddingRight: 15, justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center'}}>
             <_Component onPress={this._clear}>
               <Image style={{height: 15, width: 15}} source={require('./image/icon-clear-text.png')} resizeMode='contain'/>
             </_Component>

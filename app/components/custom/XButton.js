@@ -8,7 +8,7 @@
 */
 
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ViewPropTypes, TouchableHighlight } from "react-native";
 import { Button } from 'react-native-elements';
 
 import { W, mainBule } from '../../configs/index.js';
@@ -16,7 +16,7 @@ import { W, mainBule } from '../../configs/index.js';
 export class XButton extends Component {
 
   static propTypes = {
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     textStyle: Text.propTypes.style
   }
 
@@ -25,7 +25,7 @@ export class XButton extends Component {
   }
 
   render(){
-    let { disabled, loading, title, onPress, style, textStyle } = this.props;
+    let { disabled, loading, title, onPress, style, textStyle, borderRadius } = this.props;
     let d = loading? true : (disabled? true : false);
     let t = loading? '' : title;
     return(
@@ -36,11 +36,12 @@ export class XButton extends Component {
         activityIndicatorStyle={styles.indicator}
         color={mainBule}
         large={false}
-        borderRadius={5}
+        borderRadius={borderRadius?borderRadius:5}
         disabled={d}
         loading={loading}
         title={t}
-        onPress={onPress}/>
+        onPress={onPress}
+        Component={TouchableHighlight}/>
     );
   }
 }
