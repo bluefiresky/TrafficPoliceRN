@@ -2,7 +2,7 @@
 * 协警拍照取证页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image,TouchableHighlight,FlatList,Platform,Alert,TouchableOpacity,Modal } from "react-native";
+import { View, Text, StyleSheet, Image,TouchableHighlight,FlatList,Platform,Alert,TouchableOpacity,Modal,NativeModules } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import ImagePicker from 'react-native-image-picker';
@@ -30,7 +30,7 @@ const photoOption = {
   mediaType: 'photo',
   maxWidth: 750,
   maxHeight: 1334,
-  quality: 1,
+  quality: 0.6,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
 
@@ -70,8 +70,14 @@ class APhotoEvidenceVeiw extends Component {
         ImagePicker.showImagePicker(photoOption, (response) => {
           if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
             console.log(' the ImagePicker response -->> ', response);
+            let photoData;
+            if(Platform.OS === 'ios'){
+              photoData = response.uri.replace('file://', '');
+            }else{
+              photoData = response.uri;
+            }
             let p = self.photoList[index];
-            p.photoData = response.data;
+            p.photoData = photoData;
             p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
             self.setState({reRender: true})
           }
@@ -85,7 +91,13 @@ class APhotoEvidenceVeiw extends Component {
         this.setState({ showBigImage: false });
         if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
           // console.log(' the ImagePicker response -->> ', response);
-          self.photoList[self.currentImgaeIndex].photoData = response.data;
+          let photoData;
+          if(Platform.OS === 'ios'){
+            photoData = response.uri.replace('file://', '');
+          }else{
+            photoData = response.uri;
+          }
+          self.photoList[self.currentImgaeIndex].photoData = photoData;
           self.photoList[self.currentImgaeIndex].photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss');
           self.setState({reRender: true})
         }
@@ -107,48 +119,60 @@ class APhotoEvidenceVeiw extends Component {
       ImagePicker.showImagePicker(photoOption, (response) => {
         if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
           console.log(' the ImagePicker response -->> ', response);
+          let photoData;
+          if(Platform.OS === 'ios'){
+            photoData = response.uri.replace('file://', '');
+          }else{
+            photoData = response.uri;
+          }
+
           let otherNum = self.photoList.length - 2;
           let otherPhotoType = 50 + otherNum;
-          self.photoList.push({'title': `其它现场照片${otherNum}`,image:EOtherIcon,photoData:response.data,photoType:`${otherPhotoType}`,photoDate:Utility.formatDate('yyyy-MM-dd hh:mm:ss')});
+          self.photoList.push({'title': `其它现场照片${otherNum}`,image:EOtherIcon,photoData:photoData,photoType:`${otherPhotoType}`,photoDate:Utility.formatDate('yyyy-MM-dd hh:mm:ss')});
           self.setState({reRender: true})
         }
       });
 
     }
     //取证完成
-    commit() {
-      this.setState({loading:true});
-      for (let i = 0; i < this.photoList.length; i++) {
-        if (!this.photoList[i].photoData) {
-          this.setState({loading:false})
-          Toast.showShortCenter(`【${this.photoList[i].title}】必须拍照`);
-          return
-        }
-      }
+    async commit() {
 
-      let submitList = [];
-      for(let i = 0; i < this.photoList.length; i++){
-        let p = this.photoList[i];
-        submitList.push({photoData: p.photoData, photoType: p.photoType, photoDate: p.photoDate})
-      }
-
-      let self = this;
-      self.setState({ showTip: true, loading: false,
-        tipParams:{
-          content: '事故现场照片采集完成，请立即指引当事人挪车。',
-          left:{label: '返回修改', event: () => {
-            self.setState({showTip: false});
-          }},
-          right:{label: '采集当事人信息', event: async () => {
-            self.setState({loading: true})
-            let success = await StorageHelper.saveStep1(submitList)
-            self.setState({showTip: false, loading: false});
-            if(success) self.props.navigation.navigate('SelectHandleTypeView');
-          }}
-      }});
+      let result = await NativeModules.ImageToBase64.convertToBase64(this.photoList[0].photoData);
+      console.log(' commit and the result -->> ', result);
+      // this.setState({loading:true});
+      // for (let i = 0; i < this.photoList.length; i++) {
+      //   if (!this.photoList[i].photoData) {
+      //     this.setState({loading:false})
+      //     Toast.showShortCenter(`【${this.photoList[i].title}】必须拍照`);
+      //     return
+      //   }
+      // }
+      //
+      // let submitList = [];
+      // for(let i = 0; i < this.photoList.length; i++){
+      //   let p = this.photoList[i];
+      //   submitList.push({photoData: p.photoData, photoType: p.photoType, photoDate: p.photoDate})
+      // }
+      //
+      // let self = this;
+      // self.setState({ showTip: true, loading: false,
+      //   tipParams:{
+      //     content: '事故现场照片采集完成，请立即指引当事人挪车。',
+      //     left:{label: '返回修改', event: () => {
+      //       self.setState({showTip: false});
+      //     }},
+      //     right:{label: '采集当事人信息', event: async () => {
+      //       self.setState({loading: true})
+      //       let success = await StorageHelper.saveStep1(submitList)
+      //       self.setState({showTip: false, loading: false});
+      //       if(success) self.props.navigation.navigate('SelectHandleTypeView');
+      //     }}
+      // }});
     }
     renderItem({item,index}) {
-      let source = item.photoData? {uri: 'data:image/png;base64,' + item.photoData} : item.image;
+      // let source = item.photoData? {uri: 'data:image/png;base64,' + item.photoData} : item.image;
+      let source = item.photoData? {uri:item.photoData, isStatic:true} : item.image;
+      console.log(' renderItem and the source -->> ', source);
       return (
         <TouchableHighlight style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
           <View style={{flex:1}}>

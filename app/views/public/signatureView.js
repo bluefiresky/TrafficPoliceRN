@@ -37,14 +37,19 @@ class SignatureView extends Component {
   }
 
   componentDidMount(){
-    Orientation.lockToLandscape();
+    Orientation.getOrientation((err, orientation) => {
+      if(orientation === 'PORTRAIT'){
+        Orientation.lockToLandscapeRight();
+      }else if(orientation === 'LANDSCAPE'){
+        this.setState({show:true})
+      }
+    });
+
   }
 
   componentWillUnmount(){
     Orientation.removeOrientationListener(this._orientationDidChange)
-    // if(IsIos){
-      Orientation.lockToPortrait();
-    // }
+    Orientation.lockToPortrait();
   }
 
   render(){

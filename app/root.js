@@ -9,6 +9,8 @@ import {View, StatusBar, StyleSheet, Platform, Text, TouchableOpacity, ScrollVie
 import {connect} from 'react-redux';
 import { StackNavigator } from 'react-navigation';
 
+import Orientation from 'react-native-orientation';
+
 /** 自定义 */
 import { backgroundGrey, mainBule, W } from './configs/index.js';
 
@@ -128,6 +130,10 @@ class RootView extends Component {
       statusBackColor: isIos? 'transparent' : '#1C79D9'
     };
     // global.currentCaseId = '1500390583744';
+  }
+
+  componentWillMount(){
+    Orientation.lockToPortrait();
   }
 
   render(){

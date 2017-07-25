@@ -23,6 +23,7 @@
 		1545C01546E84FBDBAF3B3B1 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7DBAA299FE5541429D68C455 /* SimpleLineIcons.ttf */; };
 		279FABFD9C18426B83E245B3 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1256264AFD294FB789108B06 /* EvilIcons.ttf */; };
 		29B05D49F2174C6DB9E86085 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B8B4EE6381340DEA1EC2363 /* Ionicons.ttf */; };
+		331D96681F273002005ADF19 /* ImageToBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 331D96671F273002005ADF19 /* ImageToBase64.m */; };
 		333BAC971ED1AC8A0048FC48 /* libRCTToast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 333BAC7F1ED1AB2E0048FC48 /* libRCTToast.a */; };
 		333BAC981ED1AC8A0048FC48 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 333BAC901ED1AB580048FC48 /* libRNImagePicker.a */; };
 		333BAC991ED1AC8A0048FC48 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 333BAC961ED1AB9B0048FC48 /* libRNVectorIcons.a */; };
@@ -335,6 +336,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TrafficPoliceRN/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1B8B4EE6381340DEA1EC2363 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		331D96671F273002005ADF19 /* ImageToBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageToBase64.m; path = TrafficPoliceRN/Modules/ImageToBase64.m; sourceTree = "<group>"; };
+		331D96691F273027005ADF19 /* ImageToBase64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ImageToBase64.h; path = TrafficPoliceRN/Modules/ImageToBase64.h; sourceTree = "<group>"; };
 		333BAC6C1ED1AB2E0048FC48 /* RCTToast.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTToast.xcodeproj; path = "../node_modules/@remobile/react-native-toast/ios/RCTToast.xcodeproj"; sourceTree = "<group>"; };
 		333BAC8B1ED1AB580048FC48 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		333BAC911ED1AB9B0048FC48 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -566,6 +569,8 @@
 			isa = PBXGroup;
 			children = (
 				33EC05921EFAC86E00E327E1 /* BaiduMap */,
+				331D96671F273002005ADF19 /* ImageToBase64.m */,
+				331D96691F273027005ADF19 /* ImageToBase64.h */,
 			);
 			name = Modules;
 			sourceTree = "<group>";
@@ -1231,6 +1236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				331D96681F273002005ADF19 /* ImageToBase64.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				33EC05AA1EFAC9BC00E327E1 /* BaiduMapModule.m in Sources */,
 			);
