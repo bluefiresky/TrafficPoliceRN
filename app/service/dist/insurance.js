@@ -30,8 +30,8 @@ export const post_survey_info = ({surveyno,taskno,surveytime,groupname,policetyp
   return http_post( 'survey.info', {surveyno,taskno,surveytime,groupname,policetypen,policename,policephone,data}, {}, version )
 }
 /** 保险报案7-提交查勘照片信息接口 */
-export const post_surveyphoto_info = ({surveyno,licenseno,photodata,pid,typecode,partcode,plat,plng,pfrom,uploadtime,version}) => {
-  return http_post( 'surveyphoto.info', {surveyno,licenseno,pid,typecode,partcode,plat,plng,pfrom,uploadtime}, {photodata}, version )
+export const post_surveyphoto_info = ({surveyno,licenseno,photodata,pid,typecode,partcode,plat,plng,pfrom,uploadtime,appsource,version}) => {
+  return http_post( 'surveyphoto.info', {surveyno,licenseno,pid,typecode,partcode,plat,plng,pfrom,uploadtime,appsource}, {photodata}, version )
 }
 /** 保险报案8-提交确认查勘完成接口 */
 export const post_survey_finish = ({surveyno,version}) => {
