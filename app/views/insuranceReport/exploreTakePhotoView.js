@@ -14,6 +14,8 @@ import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import ImagePicker from 'react-native-image-picker';
 import Tool from '../../utility/Tool'
+const ImageW = (W - 3 * 20) / 2;
+const ImageH = (220 * ImageW)/340;
 
 class ExploreTakePhotoView extends Component {
 
@@ -29,12 +31,12 @@ class ExploreTakePhotoView extends Component {
     let { personData } = props.navigation.state.params
     this.partyInfoData = personData
     for (var i = 0; i < this.partyInfoData.length; i++) {
-      this.partyInfoData[i].carPhotoData = []
+      this.partyInfoData[i].photolist = []
     }
     for (var i = 0; i < phototypelist.length; i++) {
-      phototypelist[i].imageURL = ''
+      phototypelist[i].url = ''
       for (var j = 0; j < this.partyInfoData.length; j++) {
-        this.partyInfoData[j].carPhotoData.push({title:phototypelist[i].name,imageURL:phototypelist[i].imageURL,code:phototypelist[i].code,pid:''})
+        this.partyInfoData[j].photolist.push({phototypename:phototypelist[i].name,url:phototypelist[i].url,phototypecode:phototypelist[i].code,pid:''})
       }
     }
     for (var i = 0; i < partlist.length; i++) {
@@ -43,9 +45,6 @@ class ExploreTakePhotoView extends Component {
     this.carDamageData = partlist;
     this.partcode = ''
     this.surveyno = ''
-    this.rowNum = 2;
-    this.rowMargin = 20;
-    this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
     this.currentImgae = null;
     this.currentImgaeIndex = -1;   //图片所属的当事人中某张
     this.currentImgaeInSection = -1;  //图片所属的当事人
@@ -67,17 +66,16 @@ class ExploreTakePhotoView extends Component {
   }
   componentDidMount(){
     let { taskno } = this.props.navigation.state.params
+    this.setState({
+      loading: true
+    })
     this.props.dispatch( create_service(Contract.POST_SURVEY_PHOTOS,{taskno:taskno}))
       .then( res => {
         if (res) {
           this.surveyno = res.data.surveyno
-          for (var i = 0; i < res.data.surveyphoto.length; i++) {
-            for (var j = 0; j < res.data.surveyphoto[i].photolist.length; j++) {
-              this.partyInfoData[i].carPhotoData[j].title = res.data.surveyphoto[i].photolist[j].phototypename;
-              this.partyInfoData[i].carPhotoData[j].imageURL = res.data.surveyphoto[i].photolist[j].url;
-              this.partyInfoData[i].carPhotoData[j].code = res.data.surveyphoto[i].photolist[j].phototypecode;
-              this.partyInfoData[i].carPhotoData[j].pid = res.data.surveyphoto[i].photolist[j].pid;
-            }
+          this.partyInfoData = res.data.surveyphoto
+          for (var i = 0; i < this.partyInfoData.length; i++) {
+            this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
           }
         }
         this.setState({
@@ -87,8 +85,8 @@ class ExploreTakePhotoView extends Component {
   }
   //拍照
   takePhoto(item,index,ind){
-    if (item.imageURL) {
-      this.currentImgae = item.imageURL;
+    if (item.url) {
+      this.currentImgae = item.url;
       this.currentImgaeIndex = index;
       this.currentImgaeInSection = ind;
       this.setState({
@@ -96,18 +94,18 @@ class ExploreTakePhotoView extends Component {
       })
     } else {
       //点击最后一个添加
-      if (index == this.partyInfoData[ind].carPhotoData.length - 1) {
-        if (this.partyInfoData[ind].carPhotoData.length == 18) {
+      if (index == this.partyInfoData[ind].photolist.length - 1) {
+        if (this.partyInfoData[ind].photolist.length == 18) {
           Toast.showShortCenter('您好，其他照片总数限制10张');
           return
         }
-        this.partyInfoData[ind].carPhotoData.splice(this.partyInfoData[ind].carPhotoData.length - 1,0,{'title': `其它现场照片${this.partyInfoData[ind].carPhotoData.length - 7}`,imageURL:''});
-        let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].carPhotoData))
-        this.partyInfoData[ind].carPhotoData = temp
+        this.partyInfoData[ind].photolist.splice(this.partyInfoData[ind].photolist.length - 1,0,{'phototypename': `其它现场照片${this.partyInfoData[ind].photolist.length - 7}`,url:''});
+        let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].photolist))
+        this.partyInfoData[ind].photolist = temp
         this.setState({
           refresh: true
         })
-      } else if ((index == 3 || index == 4) && this.partyInfoData[ind].carPhotoData[index].title.indexOf('(') > 0 ) {
+      } else if ((index == 3 || index == 4) && this.partyInfoData[ind].photolist[index].phototypename.indexOf('(') > 0 ) {
         this.currentImgaeIndex = index;
         this.currentImgaeInSection = ind;
         this.setState({
@@ -118,29 +116,25 @@ class ExploreTakePhotoView extends Component {
         let that = this;
         ImagePicker.showImagePicker(this.options, (response) => {
             if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
-                let source = { uri: 'data:image/png;base64,' + response.data }
-                this.partyInfoData[ind].carPhotoData[index].imageURL = source;
-                let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].carPhotoData))
-                this.partyInfoData[ind].carPhotoData = temp
-                this.setState({
-                  loading:true
-                })
                 let { surveyno } = this.props.navigation.state.params
                 let licenseno = this.partyInfoData[ind].licenseno
-                let typecode =  this.partyInfoData[ind].carPhotoData[index].code ?  this.partyInfoData[ind].carPhotoData[index].code : '7'
-                let pid = this.partyInfoData[ind].carPhotoData[index].pid;
-                let plat = response.longitude
-                let plng = response.latitude
+                let typecode =  this.partyInfoData[ind].photolist[index].phototypecode ?  this.partyInfoData[ind].photolist[index].phototypecode : '7'
+                let pid = this.partyInfoData[ind].photolist[index].pid ? this.partyInfoData[ind].photolist[index].pid : '';
+                let plat = response.longitude ? response.longitude : ''
+                let plng = response.latitude ? response.latitude : ''
                 let pfrom = 0
                 let uploadtime = Tool.getTime('yyyy-MM-dd hh:mm:ss')
-                let params =  {licenseno:licenseno,photodata:encodeURI(JSON.stringify(response.data)),pid:pid,typecode:typecode,partcode:this.partcode,plat:plat,plng:plng,uploadtime:uploadtime,pfrom:pfrom,surveyno:(surveyno ? surveyno : this.surveyno)}
+                let params =  {licenseno:licenseno,photodata:response.data,pid:pid,typecode:typecode,partcode:this.partcode,plat:plat,plng:plng,uploadtime:uploadtime,pfrom:pfrom,surveyno:(surveyno ? surveyno : this.surveyno),appsource:((Platform.OS === 'ios') ? '2' : '1')}
                 this.setState({
                   loading:true
                 })
                 this.props.dispatch( create_service(Contract.POST_SURVEYPHOTO_INFO,params))
                   .then( res => {
                     if (res) {
-
+                      let source = { uri: 'data:image/png;base64,' + response.data }
+                      this.partyInfoData[ind].photolist[index].url = source;
+                      let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].photolist))
+                      this.partyInfoData[ind].photolist = temp
                     }
                     this.setState({
                       loading:false
@@ -153,20 +147,20 @@ class ExploreTakePhotoView extends Component {
   }
   //重拍
   reTakePhoto(){
-    this.partyInfoData[this.currentImgaeInSection].carPhotoData[this.currentImgaeIndex].imageURL = '';
-    let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].carPhotoData));
-    this.partyInfoData[this.currentImgaeInSection].carPhotoData = temp;
+    this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url = '';
+    let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].photolist));
+    this.partyInfoData[this.currentImgaeInSection].photolist = temp;
     this.setState({
       showBigImage: false
     })
   }
   //删除照片
   deletePhoto(){
-    this.partyInfoData[this.currentImgaeInSection].carPhotoData.splice(this.currentImgaeIndex,1)
-    let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].carPhotoData));
-    this.partyInfoData[this.currentImgaeInSection].carPhotoData = temp;
-    for (var i = 7; i < this.partyInfoData[this.currentImgaeInSection].carPhotoData.length-1; i++) {
-        this.partyInfoData[this.currentImgaeInSection].carPhotoData[i].title = `其它现场照片${i-6}`
+    this.partyInfoData[this.currentImgaeInSection].photolist.splice(this.currentImgaeIndex,1)
+    let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].photolist));
+    this.partyInfoData[this.currentImgaeInSection].photolist = temp;
+    for (var i = 7; i < this.partyInfoData[this.currentImgaeInSection].photolist.length-1; i++) {
+        this.partyInfoData[this.currentImgaeInSection].photolist[i].phototypename = `其它现场照片${i-6}`
     }
     this.setState({
       showBigImage: false
@@ -176,8 +170,8 @@ class ExploreTakePhotoView extends Component {
   commit() {
     for (var i = 0; i < this.partyInfoData.length; i++) {
       for (var j = 0; j < 6; j++) {
-        if (!this.partyInfoData[i].carPhotoData[j].imageURL) {
-          Toast.showShortCenter(`当事人【${this.partyInfoData[i].licenseno}】的 “${this.partyInfoData[i].carPhotoData[j].title}”必须拍摄`);
+        if (!this.partyInfoData[i].photolist[j].url) {
+          Toast.showShortCenter(`当事人【${this.partyInfoData[i].licenseno}】的 “${this.partyInfoData[i].photolist[j].phototypename}”必须拍摄`);
           return
         }
       }
@@ -187,23 +181,23 @@ class ExploreTakePhotoView extends Component {
   }
   renderItem(item,index,ind) {
     let innerImgae;
-    if (index == this.partyInfoData[ind].carPhotoData.length - 1) {
+    if (index == this.partyInfoData[ind].photolist.length - 1) {
       innerImgae = <Text style={{alignSelf:'center',color:formRightText,fontSize:50}}>+</Text>
     } else {
-      if (!item.imageURL) {
-        innerImgae = <Image style={{alignSelf:'center'}} source={require('./image/personal_camera.png')}/>
+      if (!item.url) {
+        innerImgae = <Image style={{alignSelf:'center',width:38,height:30,resizeMode: 'contain'}} source={require('./image/personal_camera.png')}/>
       } else {
         innerImgae = null
       }
     }
     return (
-      <TouchableHighlight style={{marginLeft:this.rowMargin,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index,ind)} key={index}>
+      <TouchableHighlight style={{marginLeft:15,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index,ind)} key={index}>
         <View style={{flex:1}}>
-          <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
-                 source={item.imageURL ? item.imageURL:null}>
+          <View style={{width: ImageW,height: ImageH,borderColor:'#D4D4D4',borderWidth:1,justifyContent:'center'}}>
+            <Image style={{justifyContent:'center'}} source={item.url}/>
             {innerImgae}
-          </Image>
-          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.title}</Text>
+          </View>
+          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.phototypename}</Text>
         </View>
       </TouchableHighlight>
     )
@@ -217,7 +211,7 @@ class ExploreTakePhotoView extends Component {
         </View>
         <View style={{marginTop:10,backgroundColor:backgroundGrey,height:1}}></View>
         <View style={{flexDirection:'row',marginTop:10,flexWrap:'wrap'}}>
-          {value.carPhotoData.map((value,index) => this.renderItem(value,index,ind))}
+          {value.photolist.map((value,index) => this.renderItem(value,index,ind))}
         </View>
       </View>
     )
@@ -251,7 +245,7 @@ class ExploreTakePhotoView extends Component {
               <TouchableHighlight style={{paddingVertical:10,justifyContent:'center'}} underlayColor='transparent' onPress={()=>{
                 for (var i = 0; i < this.carDamageData.length; i++) {
                   if (this.carDamageData[i].isSel) {
-                    this.partyInfoData[this.currentImgaeInSection].carPhotoData[this.currentImgaeIndex].title = this.carDamageData[i].name;
+                    this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].phototypename = this.carDamageData[i].name;
                     this.partcode = this.carDamageData[i].code
                   }
                   this.carDamageData[i].isSel = false
