@@ -181,20 +181,24 @@ class ExploreTakePhotoView extends Component {
   }
   renderItem(item,index,ind) {
     let innerImgae;
+    let showImage;
     if (index == this.partyInfoData[ind].photolist.length - 1) {
       innerImgae = <Text style={{alignSelf:'center',color:formRightText,fontSize:50}}>+</Text>
+      showImage = null
     } else {
       if (!item.url) {
         innerImgae = <Image style={{alignSelf:'center',width:38,height:30,resizeMode: 'contain'}} source={require('./image/personal_camera.png')}/>
+        showImage = null
       } else {
         innerImgae = null
+        showImage = <Image style={{justifyContent:'center',flex:1}} source={item.url}/>
       }
     }
     return (
       <TouchableHighlight style={{marginLeft:15,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index,ind)} key={index}>
         <View style={{flex:1}}>
           <View style={{width: ImageW,height: ImageH,borderColor:'#D4D4D4',borderWidth:1,justifyContent:'center'}}>
-            <Image style={{justifyContent:'center'}} source={item.url}/>
+            {showImage}
             {innerImgae}
           </View>
           <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.phototypename}</Text>

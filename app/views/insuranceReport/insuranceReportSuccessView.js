@@ -33,22 +33,23 @@ class InsuranceReportSuccessView extends Component {
         break;
       case '需要查勘，点击继续':
         this.timer && clearInterval(this.timer);
-        this.props.navigation.navigate('PerfectInformantInfoView',{surveyno:this.surveyno,partyData:this.props.navigation.state.params.partyData,taskno:taskno});
+        this.props.navigation.navigate('PerfectInformantInfoView',{surveyno:this.surveyno,taskno:taskno});
         break;
       case '无需查勘，返回首页':
         this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
         break;
       case '请等待保险公司审核结果':
-
         break;
       default:
-
     }
   }
   componentDidMount(){
-    InteractionManager.runAfterInteractions(async () => {
-      this._startFetchRemoteRes();
-    })
+    let { openflag } = this.props.navigation.state.params;
+    if (openflag) {
+      InteractionManager.runAfterInteractions(async () => {
+        this._startFetchRemoteRes();
+      })
+    }
   }
   componentWillUnmount(){
     this.timer && clearInterval(this.timer);
@@ -72,13 +73,14 @@ class InsuranceReportSuccessView extends Component {
             loading:false
           })
         } else {
+          self.waitForLook = true
           self.timer && clearInterval(self.timer);
         }
       }
     }, 30000);
     //3分钟内未进行审核，则系统自动返回需要查勘服务
   }
-  componentWillMount
+
   render(){
     let tipMsg;
     let detailMsg;

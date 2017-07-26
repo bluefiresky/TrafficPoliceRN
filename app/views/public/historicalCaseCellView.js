@@ -107,7 +107,7 @@ export default class HistoricalCaseCellView extends Component {
               <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
             </View>
           </View>
-          {(status == '2' || status == '3' || status == '10' || status == '8' || status == '9' || status == '11' || status == '12') ? this._renderButton(status,taskNo,cars):null}
+          {(status == '2' || status == '3' || status == '10' || status == '8' || status == '9' || status == '11' || status == '12' || status == '13') ? this._renderButton(status,taskNo,cars):null}
         </View>
       </TouchableHighlight>
     )
@@ -130,9 +130,20 @@ export default class HistoricalCaseCellView extends Component {
                      </TouchableHighlight>
     }
       if (status != '2') {
-        if (status == '3') {
+        if (status == '3' || status == '13') {
           thirdButton = <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:'#267BD8'}} underlayColor='#267BD8' onPress={()=>{
-            this.props.navigation.navigate('InsuranceReportSuccessView',{taskno:taskNo})
+            if (status == '3') {
+              this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG, {taskno:taskNo}))
+                .then( res => {
+                  if(res && res.data.surveyflag == '1'){
+                    this.props.navigation.navigate('PerfectInformantInfoView',{taskno:taskNo,surveyno:res.data.surveyno})
+                  } else {
+                    
+                  }
+              })
+            } else if (status == '13') {
+              this.props.navigation.navigate('InsuranceReportSuccessView',{taskno:taskNo,openflag:1})
+            }
           }}>
             <Text style={{color:'#ffffff',alignSelf:'center'}}>去查勘</Text>
           </TouchableHighlight>
