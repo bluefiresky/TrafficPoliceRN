@@ -2,7 +2,7 @@
 * 交警拍照取证页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image,TouchableHighlight,FlatList,Platform,Alert,TouchableOpacity,Modal } from "react-native";
+import { View, Text, StyleSheet, Image,TouchableHighlight,FlatList,Platform,Alert,TouchableOpacity,Modal,InteractionManager } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import ImagePicker from 'react-native-image-picker';
@@ -56,6 +56,41 @@ class PhotoEvidenceVeiw extends Component {
 
     this.currentImgae = null;
     this.currentImgaeIndex = -1;
+    this._saveOnePhoto = this._saveOnePhoto.bind(this);
+
+  }
+
+  componentDidMount(){
+    this.setState({loading:true})
+    InteractionManager.runAfterInteractions(async () => {
+      let info = await StorageHelper.getCurrentCaseInfo();
+      if(info.photo){
+        for(let i=0; i<info.photo.length; i++){
+          let p = info.photo[i];
+          if(p.photoType == '0') {
+            this.photoList[0].photoData = p.photoData;
+            this.photoList[0].photoDate = p.photoDate;
+          }else if(p.photoType == '1'){
+            this.photoList[1].photoData = p.photoData;
+            this.photoList[1].photoDate = p.photoDate;
+          }else if(p.photoType == '2'){
+            this.photoList[2].photoData = p.photoData;
+            this.photoList[2].photoDate = p.photoDate;
+          }else{
+            this.photoList.push({...p});
+          }
+        }
+        console.log(' componentDidMount and this.photoList -->> ', this.photoList);
+        this.setState({loading:false})
+      }else{
+        this.photoList = [
+          {'title': '侧前方', image:EFrontIcon, photoData: null, photoType: '0', photoDate:''},
+          {'title': '侧后方', image:EBackIcon, photoData: null, photoType: '1', photoDate:''},
+          {'title': '碰撞部位', image:EKnockedIcon, photoData: null, photoType: '2', photoDate:''}
+        ];
+        this.setState({loading:false})
+      }
+    });
   }
 
 
@@ -80,7 +115,8 @@ class PhotoEvidenceVeiw extends Component {
           }
           p.photoData = photoData;
           p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
-          self.setState({reRender: true})
+
+          self._saveOnePhoto();
         }
       });
     }
@@ -101,7 +137,8 @@ class PhotoEvidenceVeiw extends Component {
 
         self.photoList[self.currentImgaeIndex].photoData = photoData;
         self.photoList[self.currentImgaeIndex].photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss');
-        self.setState({reRender: true})
+
+        self._saveOnePhoto();
       }
     });
   }
@@ -132,10 +169,21 @@ class PhotoEvidenceVeiw extends Component {
         let otherNum = self.photoList.length - 2;
         let otherPhotoType = 50 + otherNum;
         self.photoList.push({'title': `其它现场照片${otherNum}`,image:EOtherIcon,photoData:photoData,photoType:`${otherPhotoType}`,photoDate:Utility.formatDate('yyyy-MM-dd hh:mm:ss')});
-        self.setState({reRender: true})
+
+        self._saveOnePhoto();
       }
     });
 
+  }
+
+  async _saveOnePhoto(){
+    let submitList = [];
+    for(let i = 0; i < this.photoList.length; i++){
+      let p = this.photoList[i];
+      submitList.push({photoData: p.photoData, photoType: p.photoType, photoDate: p.photoDate})
+    }
+    let success = await StorageHelper.saveStep1(submitList, true);
+    this.setState({loading:false})
   }
   //取证完成
   commit() {

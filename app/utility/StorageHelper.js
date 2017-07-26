@@ -48,12 +48,14 @@ export class StorageHelper{
       ...
     ]
   **/
-  static async saveStep1(photo){
+  static async saveStep1(photo, one){
     try {
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
-      this.loadRes.step = '1';
+      if(!one){
+        this.loadRes.step = '1';
+      }
       this.loadRes.photo = photo;
       let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep1 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);
