@@ -33,52 +33,55 @@ class InsuranceReportSuccessView extends Component {
         break;
       case '需要查勘，点击继续':
         this.timer && clearInterval(this.timer);
-        this.props.navigation.navigate('PerfectInformantInfoView',{surveyno:this.surveyno,partyData:this.props.navigation.state.params.partyData,taskno:taskno});
+        this.props.navigation.navigate('PerfectInformantInfoView',{surveyno:this.surveyno,taskno:taskno});
         break;
       case '无需查勘，返回首页':
         this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
         break;
       case '请等待保险公司审核结果':
-
         break;
       default:
-
     }
-  }
-  componentDidMount(){
-    InteractionManager.runAfterInteractions(async () => {
-      this._startFetchRemoteRes();
-    })
   }
   componentWillUnmount(){
     this.timer && clearInterval(this.timer);
   }
-  async _startFetchRemoteRes(){
+  componentDidMount(){
+    let { openflag } = this.props.navigation.state.params;
+    if (openflag) {
+      this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
+        this.startFetchRemoteRes();
+      })
+    }
+  }
+  startFetchRemoteRes(){
     let self = this;
     let { taskno } = this.props.navigation.state.params
     let count = 0
-    this.timer = setInterval(async () => {
+    this.timer = setInterval(() => {
       count++
       if (count == 7) {
         self.timer && clearInterval(self.timer);
 
       } else {
-        let res = await self.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno}))
-        if(res){
-          self.waitForLook = false
-          self.surveyflag = res.data.surveyflag
-          self.surveyno = res.data.surveyno
-          self.setState({
-            loading:false
-          })
-        } else {
-          self.timer && clearInterval(self.timer);
-        }
+        this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
+          if(res){
+            self.waitForLook = false
+            self.surveyflag = res.data.surveyflag
+            self.surveyno = res.data.surveyno
+            self.setState({
+              loading:false
+            })
+          } else {
+            self.waitForLook = true
+            self.timer && clearInterval(self.timer);
+          }
+        })
       }
     }, 30000);
     //3分钟内未进行审核，则系统自动返回需要查勘服务
   }
-  componentWillMount
+
   render(){
     let tipMsg;
     let detailMsg;

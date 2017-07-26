@@ -90,7 +90,7 @@ class PerfectInformantInfoView extends Component {
           this.partyData = res.data.surveylist
           for (var i = 0; i < res.data.surveylist.length; i++) {
             let onePerson = res.data.surveylist[i]
-            this.data.push({person:onePerson.person,licenseno:onePerson.licenseno,driverlicenseno:onePerson.driverlicenseno,engineno:onePerson.engineno,vinno:onePerson.vinno,driverflag:onePerson.driverflag,drivingflag:onePerson.drivingflag,matchingflag:onePerson.matchingflag,scenelist:[],dutyname:this.props.navigation.state.params.partyData[i].dutyName})
+            this.data.push({person:onePerson.person,licenseno:onePerson.licenseno,driverlicenseno:onePerson.driverlicenseno,engineno:onePerson.engineno,vinno:onePerson.vinno,driverflag:onePerson.driverflag,drivingflag:onePerson.drivingflag,matchingflag:onePerson.matchingflag,scenelist:[]})
             this.partyData[i].scenelist = []
           }
           for (var i = 0; i < scenelist.length; i++) {
