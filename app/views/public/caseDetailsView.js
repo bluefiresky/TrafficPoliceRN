@@ -2,7 +2,7 @@
 * 确认事故信息
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, FlatList, InteractionManager } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, FlatList, InteractionManager, Platform } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import RNFS from 'react-native-fs';
@@ -21,7 +21,7 @@ const Titles = ['甲方', '乙方', '丙方'];
 
 const SignW = (W - 30);
 const SignH = (SignW * W)/H;
-const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
+const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class CaseDetailsView extends Component {
 

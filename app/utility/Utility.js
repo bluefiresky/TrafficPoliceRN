@@ -58,8 +58,8 @@ export async function deleteFileByName(name, type){
   let filePath = RNFS.DocumentDirectoryPath + `/${name}`;
   let zipPath = RNFS.DocumentDirectoryPath + `/${name}.zip`
 
-  let existsFilePath = RNFS.exists(filePath);
-  let existsZipPath = RNFS.exists(zipPath);
+  let existsFilePath = await RNFS.exists(filePath);
+  let existsZipPath = await RNFS.exists(zipPath);
   console.log(`%c Utility execute deleteFileByName and the filePath -->> ## ${filePath} ## is exists -> ` , 'color:dodgerblue', existsFilePath);
   console.log(`%c Utility execute deleteFileByName and the zipPath -->> ## ${zipPath} ## is exists -> ` , 'color:dodgerblue', existsZipPath);
 
@@ -116,6 +116,8 @@ async function convertObjToUploadJson(obj){
       if(refuseFlag === '01'){
         let result = await NativeModules.ImageToBase64.convertToBase64(imageDocumentPath+signData);
         nDuty.push({licensePlateNum, dutyType, signTime, refuseFlag, signData:result.base64})
+      }else{
+        nDuty.push({licensePlateNum, dutyType, signTime, refuseFlag, signData})
       }
     }
   }

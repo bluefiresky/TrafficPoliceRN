@@ -34,7 +34,7 @@ const photoOption = {
   quality: 0.5,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
-const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
+const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class PhotoEvidenceVeiw extends Component {
 
@@ -72,7 +72,13 @@ class PhotoEvidenceVeiw extends Component {
         if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
           // console.log(' the ImagePicker response -->> ', response);
           let p = self.photoList[index];
-          p.photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+          let photoData;
+          if(Platform.OS === 'ios'){
+            photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+          }else{
+            photoData = response.path;
+          }
+          p.photoData = photoData;
           p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
           self.setState({reRender: true})
         }
@@ -86,7 +92,14 @@ class PhotoEvidenceVeiw extends Component {
       this.setState({ showBigImage: false });
       if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
         // console.log(' the ImagePicker response -->> ', response);
-        self.photoList[self.currentImgaeIndex].photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+        let photoData;
+        if(Platform.OS === 'ios'){
+          photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+        }else{
+          photoData = response.path;
+        }
+
+        self.photoList[self.currentImgaeIndex].photoData = photoData;
         self.photoList[self.currentImgaeIndex].photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss');
         self.setState({reRender: true})
       }
@@ -109,9 +122,16 @@ class PhotoEvidenceVeiw extends Component {
     ImagePicker.showImagePicker(photoOption, (response) => {
       if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
         console.log(' the ImagePicker response -->> ', response);
+        let photoData;
+        if(Platform.OS === 'ios'){
+          photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+        }else{
+          photoData = response.path;
+        }
+
         let otherNum = self.photoList.length - 2;
         let otherPhotoType = 50 + otherNum;
-        self.photoList.push({'title': `其它现场照片${otherNum}`,image:EOtherIcon,photoData:response.uri.substring(response.uri.lastIndexOf('/')+1),photoType:`${otherPhotoType}`,photoDate:Utility.formatDate('yyyy-MM-dd hh:mm:ss')});
+        self.photoList.push({'title': `其它现场照片${otherNum}`,image:EOtherIcon,photoData:photoData,photoType:`${otherPhotoType}`,photoDate:Utility.formatDate('yyyy-MM-dd hh:mm:ss')});
         self.setState({reRender: true})
       }
     });

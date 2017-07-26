@@ -29,7 +29,7 @@ const photoOption = {
   quality: 0.8,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
-const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
+const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class GatheringCardPhotoView extends Component {
 
@@ -63,8 +63,15 @@ class GatheringCardPhotoView extends Component {
     let self = this;
     ImagePicker.showImagePicker(photoOption, (response) => {
       if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+        let photoData;
+        if(Platform.OS === 'ios'){
+          photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+        }else{
+          photoData = response.path;
+        }
+
         let p = self.carInfoData[ind].data[index];
-        p.photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+        p.photoData = photoData;
         p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
         self.setState({refresh: true})
       }

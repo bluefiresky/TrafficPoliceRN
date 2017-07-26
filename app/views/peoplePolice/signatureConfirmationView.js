@@ -18,7 +18,7 @@ import { StorageHelper, Utility, TextUtility } from '../../utility/index.js';
 const PersonalTitles = ['甲方', '乙方', '丙方'];
 const SignW = (W - 40);
 const SignH = (SignW * W)/H;
-const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
+const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class SignatureConfirmationView extends Component {
 
@@ -207,7 +207,11 @@ class SignatureConfirmationView extends Component {
             <TouchableHighlight underlayColor={'transparent'} onPress={()=>{
               let self = this;
               this.props.navigation.navigate('SignatureView', {returnValue: (result)=>{
-                value.signData = result.substring(result.lastIndexOf('/')+1);
+                if(Platform.OS === 'ios'){
+                  value.signData = result.substring(result.lastIndexOf('/')+1);
+                }else{
+                  value.signData = result;
+                }
                 value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
                 self.setState({refresh: true})
               }})

@@ -116,9 +116,13 @@ class ASignatureConfirmationView extends Component {
       let signatureList = [];
       for(let i = 0; i<this.dutyList.length; i++){
         let d = this.dutyList[i];
-        let documentPath = Platform.select({ android: '', ios: RNFS.DocumentDirectoryPath + '/images/' });
-        let sd = await NativeModules.ImageToBase64.convertToBase64(documentPath+d.signData);
-        signatureList.push({licensePlateNum:d.licensePlateNum, signContent:sd.base64, refuseFlag:d.refuseFlag})
+        if(d.refuseFlag === '01'){
+          let documentPath = Platform.select({ android: '', ios: RNFS.DocumentDirectoryPath + '/images/' });
+          let sd = await NativeModules.ImageToBase64.convertToBase64(documentPath+d.signData);
+          signatureList.push({licensePlateNum:d.licensePlateNum, signContent:sd.base64, refuseFlag:d.refuseFlag})
+        }else{
+          signatureList.push({licensePlateNum:d.licensePlateNum, signContent:d.signData, refuseFlag:d.refuseFlag})
+        }
       }
       this.res = await this.props.dispatch( create_service(Contract.POST_GENERATE_DUTYCONFIRMATION, {taskNo: this.taskNo, signatureList:JSON.stringify(signatureList)}))
       this.setState({loading: false});
