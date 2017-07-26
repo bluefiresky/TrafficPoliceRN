@@ -29,7 +29,7 @@ const photoOption = {
   quality: 0.5,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
-const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
+const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class AGatheringCardPhotoView extends Component {
 
@@ -68,7 +68,7 @@ class AGatheringCardPhotoView extends Component {
         if(Platform.OS === 'ios'){
           photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
         }else{
-          photoData = response.uri;
+          photoData = response.path;
         }
 
         let p = self.carInfoData[ind].data[index];

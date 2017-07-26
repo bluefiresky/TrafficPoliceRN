@@ -34,7 +34,8 @@ const photoOption = {
   quality: 0.5,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
-const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
+
+const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class APhotoEvidenceVeiw extends Component {
 
@@ -76,7 +77,7 @@ class APhotoEvidenceVeiw extends Component {
             if(Platform.OS === 'ios'){
               photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
             }else{
-              photoData = response.uri;
+              photoData = response.path;
             }
             let p = self.photoList[index];
             p.photoData = photoData;
@@ -97,7 +98,7 @@ class APhotoEvidenceVeiw extends Component {
           if(Platform.OS === 'ios'){
             photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
           }else{
-            photoData = response.uri;
+            photoData = response.path;
           }
           self.photoList[self.currentImgaeIndex].photoData = photoData;
           self.photoList[self.currentImgaeIndex].photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss');
@@ -125,7 +126,7 @@ class APhotoEvidenceVeiw extends Component {
           if(Platform.OS === 'ios'){
             photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
           }else{
-            photoData = response.uri;
+            photoData = response.path;
           }
 
           let otherNum = self.photoList.length - 2;

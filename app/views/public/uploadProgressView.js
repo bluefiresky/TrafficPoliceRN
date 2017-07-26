@@ -87,6 +87,7 @@ class UploadProgressView extends Component {
 
     this._animate(this.info.handleWay);
     let fileRes = await Utility.convertObjtoFile(this.info, this.info.id);
+    console.log(' the filedRes -->> ', fileRes);
     if(fileRes){
       let base64Str = await Utility.zipFileByName(this.info.id);
       let res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:AppSource, fileName:this.info.id, file:'zip@'+base64Str}));

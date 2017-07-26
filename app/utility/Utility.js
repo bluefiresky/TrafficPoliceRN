@@ -91,13 +91,14 @@ export async function zipFileByName(name){
 // 根据本地数据生成上传数据格式
 async function convertObjToUploadJson(obj){
   let { id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty, taskModal, accidentDes, accidentOther } = obj;
-  let imageDocumentPath = RNFS.DocumentDirectoryPath+'/images/';
+  let imageDocumentPath = Platform.select({ android: '', ios: RNFS.DocumentDirectoryPath + '/images/' });
+
 
   let nPhoto = [];
   for(let i=0; i<photo.length; i++){
     let { photoData, photoDate, photoType } = photo[i];
     let result = await NativeModules.ImageToBase64.convertToBase64(imageDocumentPath+photoData);
-    nPhoto.push({photoDate, photoType, photoDate:result.base64})
+    nPhoto.push({photoDate, photoType, photoData:result.base64})
   }
 
   let nCredentials = [];
@@ -106,12 +107,14 @@ async function convertObjToUploadJson(obj){
     let result = await NativeModules.ImageToBase64.convertToBase64(imageDocumentPath+photoData);
     nCredentials.push({photoDate, photoType, photoData:result.base64})
   }
+
+  let nDuty = null;
   if(duty){
-    let nDuty = [];
+    nDuty = [];
     for(let i=0; i<duty.length; i++){
       let {licensePlateNum, dutyType, signTime, refuseFlag, signData} = duty[i];
       if(refuseFlag === '01'){
-        let result = await NativeModules.ImageToBase64.convertToBase64(imageDocumentPath+d.signData);
+        let result = await NativeModules.ImageToBase64.convertToBase64(imageDocumentPath+signData);
         nDuty.push({licensePlateNum, dutyType, signTime, refuseFlag, signData:result.base64})
       }
     }

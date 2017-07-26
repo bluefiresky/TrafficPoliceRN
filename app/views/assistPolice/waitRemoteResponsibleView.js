@@ -41,6 +41,8 @@ class WaitRemoteResponsibleView extends Component {
               this.props.navigation.dispatch({ type: 'replace', routeName: 'ResponsibleResultView', key: 'ResponsibleResultView', params: {remoteRes: res}});
             }else if(res.status == 22){
               this._turnToLocal();
+            }else if(res.status == 20){
+              this._caseHasCompleted();
             }else{
               this._startFetchRemoteRes(taskNo);
             }
@@ -124,6 +126,13 @@ class WaitRemoteResponsibleView extends Component {
           self.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({routeName}) ]}) )
         }}
     }});
+  }
+
+  async _caseHasCompleted(){
+    await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
+    let deleteRes = Utility.deleteFileByName(global.currentCaseId)
+    let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
+    this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
   }
 
 }

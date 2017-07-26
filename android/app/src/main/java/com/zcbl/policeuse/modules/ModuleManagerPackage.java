@@ -4,6 +4,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.modules.camera.ImageEditingManager;
 import com.facebook.react.uimanager.ViewManager;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class ModuleManagerPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<NativeModule>();
         modules.add(new BaiduMapModule(reactContext));
+        modules.add(new ImageToBase64(reactContext));
         return modules;
     }
 

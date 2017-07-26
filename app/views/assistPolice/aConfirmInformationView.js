@@ -20,7 +20,8 @@ const ImageH = (220 * ImageW)/340;
 const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}
 const ProvincialData = getProvincialData();
 const NumberData = getNumberData();
-const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
+
+const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class AConfirmInformationView extends Component {
 

@@ -79,7 +79,7 @@ class SignatureView extends Component {
             style={{flex: 1}}
             ref={(ref)=>{ this.ref = ref }}
             onSaveEvent={this._onSaveEvent}
-            saveImageFileInExtStorage={false}
+            saveImageFileInExtStorage={true}
             showNativeButtons={false}
             showTitleLabel={false}
             viewMode={'landscape'}/>
