@@ -4,7 +4,7 @@
 
 'use strict';
 
-import { Platform } from 'react-native';
+import { Platform, NativeModules } from 'react-native';
 import RNFS from 'react-native-fs';
 import { zip, zipToBase64, unzip, unzipAssets, subscribe } from 'react-native-zip-archive'
 
@@ -29,7 +29,8 @@ export async function convertObjtoFile(obj, name){
     if(!exists){
       let make = await RNFS.mkdir(dir);
     }
-    await RNFS.writeFile(path, convertObjToUploadJson(obj), 'utf8');
+    let uploadJson = await convertObjToUploadJson(obj);
+    await RNFS.writeFile(path, uploadJson, 'utf8');
     return 'success';
   } catch (e) {
     console.log('%c Utility convertObjtoFile catch error -->> ' , 'color:red', e.message);
@@ -78,7 +79,8 @@ export async function zipFileByName(name){
 
   try {
     let base64Str = await zipToBase64(sourcePath, targetPath);
-    console.log('%c Utility execute zipFileByName and the base64 -->> ' , 'color:dodgerblue', 'base64 str');
+    let stat = await RNFS.stat(targetPath);
+    console.log('%c Utility execute zipFileByName and the base64file status-->> ' , 'color:dodgerblue', stat);
 
     return base64Str;
   } catch (e) {
@@ -87,8 +89,37 @@ export async function zipFileByName(name){
 }
 
 // 根据本地数据生成上传数据格式
-function convertObjToUploadJson(obj){
+async function convertObjToUploadJson(obj){
   let { id, basic, photo, person, credentials, handleWay, sign, supplementary, conciliation, duty, taskModal, accidentDes, accidentOther } = obj;
+  let imageDocumentPath = Platform.select({ android: '', ios: RNFS.DocumentDirectoryPath + '/images/' });
+
+
+  let nPhoto = [];
+  for(let i=0; i<photo.length; i++){
+    let { photoData, photoDate, photoType } = photo[i];
+    let result = await NativeModules.ImageToBase64.convertToBase64(imageDocumentPath+photoData);
+    nPhoto.push({photoDate, photoType, photoData:result.base64})
+  }
+
+  let nCredentials = [];
+  for(let i=0; i<credentials.length; i++){
+    let { photoData, photoDate, photoType } = credentials[i];
+    let result = await NativeModules.ImageToBase64.convertToBase64(imageDocumentPath+photoData);
+    nCredentials.push({photoDate, photoType, photoData:result.base64})
+  }
+
+  let nDuty = null;
+  if(duty){
+    nDuty = [];
+    for(let i=0; i<duty.length; i++){
+      let {licensePlateNum, dutyType, signTime, refuseFlag, signData} = duty[i];
+      if(refuseFlag === '01'){
+        let result = await NativeModules.ImageToBase64.convertToBase64(imageDocumentPath+signData);
+        nDuty.push({licensePlateNum, dutyType, signTime, refuseFlag, signData:result.base64})
+      }
+    }
+  }
+
   let uploadData = {
     processType: handleWay,
     longitude: basic.longitude,
@@ -102,8 +133,8 @@ function convertObjToUploadJson(obj){
     supplementary: supplementary?supplementary:'',
     conciliation: conciliation?conciliation:'',
     personList: person,
-    photoList: photo.concat(credentials),
-    dutyList: duty?duty:null,
+    photoList: nPhoto.concat(nCredentials),
+    dutyList: duty?nDuty:null,
     signList: sign?sign:null
   }
 

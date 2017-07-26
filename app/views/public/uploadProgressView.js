@@ -87,6 +87,7 @@ class UploadProgressView extends Component {
 
     this._animate(this.info.handleWay);
     let fileRes = await Utility.convertObjtoFile(this.info, this.info.id);
+    console.log(' the filedRes -->> ', fileRes);
     if(fileRes){
       let base64Str = await Utility.zipFileByName(this.info.id);
       let res = await this.props.dispatch( create_service(Contract.POST_UPLOAD_ACCIDENT_FILE, {appSource:AppSource, fileName:this.info.id, file:'zip@'+base64Str}));
@@ -133,10 +134,14 @@ class UploadProgressView extends Component {
           let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
           self.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
         }else{
-          self.info.taskNo = self.state.taskNo;
-          let saveToUnUploadRes = await StorageHelper.saveAsUnUploaded(self.info);
-          if(!saveToUnUploadRes) return;
-          self.props.navigation.navigate('CertificateView', {handleWay})
+          if(this.state.caseType == 1){
+            self.props.navigation.navigate('CertificateView', {handleWay})
+          }else{
+            self.info.taskNo = self.state.taskNo;
+            let saveToUnUploadRes = await StorageHelper.saveAsUnUploaded(self.info);
+            if(!saveToUnUploadRes) return;
+            self.props.navigation.navigate('CertificateView', {handleWay})
+          }
         }
         self.setState({showTip:false})
       }};

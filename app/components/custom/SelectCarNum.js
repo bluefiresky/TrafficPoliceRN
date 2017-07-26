@@ -127,6 +127,7 @@ export class SelectCarNum extends Component {
 
               <View style={{flexDirection:'row',flexWrap:'wrap'}}>
               <FlatList
+                keyExtractor={(item, index) => index}
                 data={this.state.showData}
                 numColumns={6}
                 extraData={this.state}

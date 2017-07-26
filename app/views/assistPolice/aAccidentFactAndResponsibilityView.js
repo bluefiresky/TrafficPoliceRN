@@ -36,6 +36,7 @@ class AAccidentFactAndResponsibilityView extends Component {
       this.setState({
         loading:false,
         supplementaryE: this._convertInfoToAccidentContent(basic, person),
+        supplementary:supplementary?supplementary:null,
         handleWay
       });
     })

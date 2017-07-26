@@ -52,11 +52,8 @@ class UploadSuccessView extends Component {
   /** Private **/
   async _onPress(type){
     if(type == 1) {
-      Toast.showShortCenter('此处是否应该删除案件？？？');
-      let res = await StorageHelper.removeItem(global.personal.mobile+'unuploaded', global.currentCaseId)
-      if(!res){
-        res = await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
-      }
+      await StorageHelper.removeItem(global.personal.mobile+'unuploaded', global.currentCaseId)
+      await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
       let deleteRes = Utility.deleteFileByName(global.currentCaseId)
       let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
       this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )

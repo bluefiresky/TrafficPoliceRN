@@ -6,6 +6,7 @@ import { View, Text, StyleSheet, Image, ScrollView,TouchableHighlight,Platform,A
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import ImagePicker from 'react-native-image-picker';
+import RNFS from 'react-native-fs';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, TipModal,XButton } from '../../components/index.js';  /** 自定义组件 */
@@ -23,11 +24,12 @@ const photoOption = {
   takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
   chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
   mediaType: 'photo',
-  maxWidth: parseInt(W),
-  maxHeight: parseInt(H),
-  quality: 0.8,
+  maxWidth: 750,
+  maxHeight: 1000,
+  quality: 0.5,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
+const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class AGatheringCardPhotoView extends Component {
 
@@ -61,8 +63,16 @@ class AGatheringCardPhotoView extends Component {
     let self = this;
     ImagePicker.showImagePicker(photoOption, (response) => {
       if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+        console.log('AGatheringCardPhotoView and ImagePicker response -->> ', response);
+        let photoData;
+        if(Platform.OS === 'ios'){
+          photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+        }else{
+          photoData = response.path;
+        }
+
         let p = self.carInfoData[ind].data[index];
-        p.photoData = response.data;
+        p.photoData = photoData;
         p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
         self.setState({refresh: true})
       }
@@ -102,7 +112,7 @@ class AGatheringCardPhotoView extends Component {
     }});
   }
   renderItem(item,index,ind) {
-    let source=item.photoData?{uri:'data:image/png;base64,'+item.photoData}:item.image;
+    let source=item.photoData?{uri:DocumentPath+item.photoData, isStatic:true}:item.image;
     return (
       <TouchableHighlight style={{paddingLeft: 10, paddingRight: 10,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(index,ind)} key={index}>
         <View style={{flex:1}}>

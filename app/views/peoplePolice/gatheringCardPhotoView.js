@@ -6,6 +6,7 @@ import { View, Text, StyleSheet, Image, ScrollView,TouchableHighlight,Platform,A
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import ImagePicker from 'react-native-image-picker';
+import RNFS from 'react-native-fs';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, TipModal, XButton } from '../../components/index.js';  /** 自定义组件 */
@@ -28,6 +29,7 @@ const photoOption = {
   quality: 0.8,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
+const DocumentPath = RNFS.DocumentDirectoryPath + '/images/';
 
 class GatheringCardPhotoView extends Component {
 
@@ -62,7 +64,7 @@ class GatheringCardPhotoView extends Component {
     ImagePicker.showImagePicker(photoOption, (response) => {
       if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
         let p = self.carInfoData[ind].data[index];
-        p.photoData = response.data;
+        p.photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
         p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
         self.setState({refresh: true})
       }
@@ -102,7 +104,7 @@ class GatheringCardPhotoView extends Component {
     }});
   }
   renderItem(item,index,ind) {
-    let source=item.photoData?{uri:'data:image/png;base64,'+item.photoData}:item.image;
+    let source=item.photoData?{uri:DocumentPath+item.photoData, isStatic:true}:item.image;
     return (
       <TouchableHighlight style={{paddingLeft: 10, paddingRight: 10,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(index,ind)} key={index}>
         <View style={{flex:1}}>

@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,Modal,InteractionManager } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,Modal,InteractionManager,TouchableWithoutFeedback } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
@@ -164,16 +164,18 @@ class AccidentConditionView extends Component {
       <View>
         <Modal animationType="fade" transparent={true} visible={this.state.showModalView} onRequestClose={() => {}}>
           <TouchableHighlight onPress={() => this.setState({showModalView:false})} style={styles.modalContainer} underlayColor='transparent'>
-            <View style={{backgroundColor:'#ffffff',alignSelf:'center',marginLeft:60,marginRight:60,borderRadius:10}}>
-              <View style={{flexDirection:'row',flexWrap:'wrap',padding:20}}>
-                 {this.carDamageCodeData.map((value,index) => this.renderDamageSeleteView(value,index))}
+            <TouchableHighlight style={{backgroundColor:'#ffffff',alignSelf:'center',marginLeft:60,marginRight:60,borderRadius:10}} onPress={()=>{}} underlayColor='#ffffff'>
+              <View>
+                <View style={{flexDirection:'row',flexWrap:'wrap',padding:20}}>
+                   {this.carDamageCodeData.map((value,index) => this.renderDamageSeleteView(value,index))}
+                </View>
+                <View style={{height:1,backgroundColor:backgroundGrey}}></View>
+                <TouchableHighlight style={{paddingVertical:10,justifyContent:'center'}} underlayColor='transparent'
+                  onPress={()=>{ this.setState({ showModalView: false })}}>
+                  <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>选好了</Text>
+                </TouchableHighlight>
               </View>
-              <View style={{height:1,backgroundColor:backgroundGrey}}></View>
-              <TouchableHighlight style={{paddingVertical:10,justifyContent:'center'}} underlayColor='transparent'
-                onPress={()=>{ this.setState({ showModalView: false })}}>
-                <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>选好了</Text>
-              </TouchableHighlight>
-            </View>
+            </TouchableHighlight>
           </TouchableHighlight>
         </Modal>
       </View>
