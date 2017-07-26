@@ -43,39 +43,40 @@ class InsuranceReportSuccessView extends Component {
       default:
     }
   }
-  componentDidMount(){
-    let { openflag } = this.props.navigation.state.params;
-    if (openflag) {
-      InteractionManager.runAfterInteractions(async () => {
-        this._startFetchRemoteRes();
-      })
-    }
-  }
   componentWillUnmount(){
     this.timer && clearInterval(this.timer);
   }
-  async _startFetchRemoteRes(){
+  componentDidMount(){
+    let { openflag } = this.props.navigation.state.params;
+    if (openflag) {
+      this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
+        this.startFetchRemoteRes();
+      })
+    }
+  }
+  startFetchRemoteRes(){
     let self = this;
     let { taskno } = this.props.navigation.state.params
     let count = 0
-    this.timer = setInterval(async () => {
+    this.timer = setInterval(() => {
       count++
       if (count == 7) {
         self.timer && clearInterval(self.timer);
 
       } else {
-        let res = await self.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno}))
-        if(res){
-          self.waitForLook = false
-          self.surveyflag = res.data.surveyflag
-          self.surveyno = res.data.surveyno
-          self.setState({
-            loading:false
-          })
-        } else {
-          self.waitForLook = true
-          self.timer && clearInterval(self.timer);
-        }
+        this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
+          if(res){
+            self.waitForLook = false
+            self.surveyflag = res.data.surveyflag
+            self.surveyno = res.data.surveyno
+            self.setState({
+              loading:false
+            })
+          } else {
+            self.waitForLook = true
+            self.timer && clearInterval(self.timer);
+          }
+        })
       }
     }, 30000);
     //3分钟内未进行审核，则系统自动返回需要查勘服务
