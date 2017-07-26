@@ -129,8 +129,8 @@ class AccidentConditionView extends Component {
   }
   renderDamageView(value,index){
     return (
-      <View style={{borderColor:mainBule, borderWidth:1,borderRadius:10,width:DamagedW,paddingVertical:5,marginHorizontal:5,alignItems:'center',marginBottom:10}} key={index}>
-        <Text style={{fontSize:14,color:mainBule}}>{this._convertDamagedCodeToName(value)}</Text>
+      <View style={{borderColor:mainBule, borderWidth:1,borderRadius:10,width:DamagedW,height:35,marginHorizontal:5,alignItems:'center',justifyContent:'center',marginBottom:10}} key={index}>
+        <Text style={{fontSize:15,color:mainBule}}>{this._convertDamagedCodeToName(value)}</Text>
       </View>
     )
   }
