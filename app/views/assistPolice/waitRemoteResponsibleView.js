@@ -64,15 +64,15 @@ class WaitRemoteResponsibleView extends Component {
           <Image source={require('./image/confirm_response.png')} style={{width:100,height:100,marginTop:50,alignSelf:'center'}}/>
           <View style={{marginTop:20,marginLeft:15,width:W-30}}>
             <Text style={{alignSelf:'center',fontSize:14,color:formLeftText}}>
-              远程交警正在定责，请等待！
+              远程交警正在定责，请稍等！
             </Text>
             <Text style={{alignSelf:'center',fontSize:14,color:formLeftText,lineHeight:20,marginTop:5,textAlign:'center'}}>
-              远程交警定责完成后，将有短信提醒定责完成，可进入【历史案件】-【未完成】中查看并继续处理该案件。
+              远程交警定责完成后，将有短信提醒定责完成，可从首页【未完结案件】中查看并继续处理该案件。
             </Text>
           </View>
           <View style={{marginTop:20,marginLeft:15,width:W-30}}>
             <Text style={{alignSelf:'center',fontSize:14,color:formLeftText,lineHeight:20}}>
-              若较长时间未接收到后台民警的定责结果，请拨打以下电话咨询：
+              若较长时间未接收到后台民警的定责结果，请拨打一下电话咨询：
               <Text style={{color:mainBule}} onPress={()=>{Tool.callPhoneNum(global.personal.depTelephone,true)}}>
                 {global.personal.depTelephone}
               </Text>

@@ -126,7 +126,7 @@ class ASignatureConfirmationView extends Component {
       }
       this.res = await this.props.dispatch( create_service(Contract.POST_GENERATE_DUTYCONFIRMATION, {taskNo: this.taskNo, signatureList:JSON.stringify(signatureList)}))
       this.setState({loading: false});
-      if(this.res) this.props.navigation.navigate('UploadSuccessView', {content:'案件信息上传成功，交通事故认定书稍后将以短信形式发送至当事人手机。'});
+      if(this.res) this.props.navigation.navigate('UploadSuccessView', {content:'案件信息上传成功，交通事故认定书稍后将以短信形式发送至当事人手机。', taskNo:this.taskNo});
     }
 
   }

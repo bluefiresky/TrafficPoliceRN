@@ -38,15 +38,15 @@ class CertificateView extends Component {
   componentDidMount(){
     // this.setState({loading:true})
     InteractionManager.runAfterInteractions(()=>{
-      this._getInfo((info) => {
+      this._getInfo(async (info) => {
         console.log(' the info -->>', info);
         if(info){
           let html;
           let { handleWay } = info;
           if(handleWay === '04'){
-            html = this._generateXieYiShu(info)
+            html = await this._generateXieYiShu(info)
           }else{
-            html = this._generateRenDingShu(info)
+            html = await this._generateRenDingShu(info)
           }
           this.setState({loading:false, source:{html, baseUrl:''}})
         }else{
@@ -124,10 +124,8 @@ class CertificateView extends Component {
     for(let i=0; i < person.length; i++){
       let p = person[i];
       let signData = await NativeModules.ImageToBase64.convertToBase64(DocumentPath+duty[i].signData);
-      console.log(' the signData -->> ', signData);
       nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureDueDate:p.carInsureDueDate, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+signData.base64, signTime:duty[i].signTime, insureCompanyName:p.insureCompanyName})
     }
-    console.log('^^^^^^^^^^^^ nPersonList -->> ', nPersonList);
 
     let formList = getStore().getState().dictionary.formList;
     let nTaskModal = '';
