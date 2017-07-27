@@ -2,10 +2,11 @@
 * 设置页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,InteractionManager,WebView } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,InteractionManager,WebView,NativeModules,Platform } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
+import RNFS from 'react-native-fs';
 
 import { W, H, backgroundGrey,formLeftText } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView, XButton } from '../../components/index.js';  /** 自定义组件 */
@@ -18,6 +19,7 @@ import { generateXYS } from './html/xieyishu.js';
 
 const DutyTypeList = [{name:'全责',code:'0'},{name:'无责',code:'1'},{name:'同等责任',code:'2'},{name:'主责',code:'3'},{name:'次责',code:'4'}];
 const ButtonW = (W - 60)/2
+const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class CertificateView extends Component {
 
@@ -92,14 +94,15 @@ class CertificateView extends Component {
     callback(info)
   }
 
-  _generateRenDingShu(info){
+  async _generateRenDingShu(info){
     let {basic, person, duty } = info;
     let nBasic = {accidentTime:this._convertAccidentTime(basic.accidentTime), weather:this._convertWeather(basic.weather), address:basic.address};
 
     let nPersonList = [];
     for(let i=0; i < person.length; i++){
       let p = person[i];
-      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+duty[i].signData})
+      let signData = await NativeModules.ImageToBase64.convertToBase64(DocumentPath+duty[i].signData);
+      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+signData.base64})
     }
     if(nPersonList.length === 2){
       nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
@@ -113,15 +116,18 @@ class CertificateView extends Component {
     return generateRDS(nBasic, nPersonList, factAndResponsibility)
   }
 
-  _generateXieYiShu(info){
+  async _generateXieYiShu(info){
     let {basic, person, duty, taskModal, accidentDes } = info;
     let nBasic = {accidentTime:this._convertAccidentTime(basic.accidentTime), weather:this._convertWeather(basic.weather), address:basic.address};
 
     let nPersonList = [];
     for(let i=0; i < person.length; i++){
       let p = person[i];
-      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureDueDate:p.carInsureDueDate, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+duty[i].signData, signTime:duty[i].signTime, insureCompanyName:p.insureCompanyName})
+      let signData = await NativeModules.ImageToBase64.convertToBase64(DocumentPath+duty[i].signData);
+      console.log(' the signData -->> ', signData);
+      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureDueDate:p.carInsureDueDate, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+signData.base64, signTime:duty[i].signTime, insureCompanyName:p.insureCompanyName})
     }
+    console.log('^^^^^^^^^^^^ nPersonList -->> ', nPersonList);
 
     let formList = getStore().getState().dictionary.formList;
     let nTaskModal = '';

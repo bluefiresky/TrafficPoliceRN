@@ -123,7 +123,8 @@ async function convertObjToUploadJson(obj){
   }
 
   let uploadData = {
-    processType: handleWay,
+    processType: '01',
+    // processType: handleWay,
     longitude: basic.longitude,
     latitude: basic.latitude,
     address: basic.address,
