@@ -134,8 +134,10 @@ export default class HistoricalCaseCellView extends Component {
         if (status == '3' || status == '13') {
           thirdButton = <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:'#267BD8'}} underlayColor='#267BD8' onPress={()=>{
             if (status == '3') {
+              this.props.showHub();
               this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG, {taskno:taskNo}))
                 .then( res => {
+                  this.props.hideHub();
                   if(res && res.data.surveyflag == '1'){
                     this.props.navigation.navigate('PerfectInformantInfoView',{taskno:taskNo,surveyno:res.data.surveyno})
                   } else {
