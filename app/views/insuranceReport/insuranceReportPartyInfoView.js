@@ -68,7 +68,7 @@ class InsuranceReportPartyInfoView extends Component {
             loading: false
           })
           if (res) {
-            this.props.navigation.navigate('InsuranceReportSuccessView',{openflag:res.data.openflag,taskno:taskno});
+            this.props.navigation.navigate('InsuranceReportSuccessView',{openflag:res.data.openflag,taskno:taskno,needTimer:true});
           }
       })
     } else {

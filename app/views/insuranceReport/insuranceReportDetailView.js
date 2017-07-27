@@ -15,6 +15,9 @@ import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import Picker from 'react-native-picker';
 import { ScrollerSegment } from '../../components/index';
 
+const ImageW = (W - 3 * 20) / 2;
+const ImageH = (330 * ImageW)/510;
+
 class InsuranceReportDetailView extends Component {
 
   constructor(props){
@@ -24,9 +27,9 @@ class InsuranceReportDetailView extends Component {
       loading:false
     }
     this.segDatas = ['当事人甲方', '当事人乙方','当事人丙方','当事人丁方']
-    this.rowNum = 2;
-    this.rowMargin = 20;
-    this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
+    // this.rowNum = 2;
+    // this.rowMargin = 20;
+    // this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
     this.partyData = [];
   }
   componentDidMount(){
@@ -73,12 +76,12 @@ class InsuranceReportDetailView extends Component {
   }
   renderPhotoItem(value,index) {
     return (
-      <View style={{marginLeft:this.rowMargin,marginBottom:15}} key={index}>
-          <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
-                 source={{uri: value.url}}>
-          </Image>
-          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{value.phototypename}</Text>
-      </View>
+        <View style={{marginLeft:15,marginBottom:15,justifyContent:'center'}} key={index}>
+          <Image style={{width: ImageW,height: ImageH,alignSelf:'center'}} source={{uri:value.url}}/>
+          <View style={{flexDirection:'row',alignSelf:'center',marginTop:10}}>
+            <Text style={{color:formLeftText,fontSize:12,marginLeft:5}}>{value.phototypename}</Text>
+          </View>
+        </View>
     )
   }
   renderOneParty(value) {

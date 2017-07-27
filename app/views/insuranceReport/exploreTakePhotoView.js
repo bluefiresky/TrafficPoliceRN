@@ -129,6 +129,9 @@ class ExploreTakePhotoView extends Component {
           showDamageModalView: true
         })
       } else {
+        this.setState({
+          showDamageModalView: false
+        })
         //点击其它是拍照
         let that = this;
         ImagePicker.showImagePicker(this.options, (response) => {
@@ -148,7 +151,13 @@ class ExploreTakePhotoView extends Component {
                 this.props.dispatch( create_service(Contract.POST_SURVEYPHOTO_INFO,params))
                   .then( res => {
                     if (res) {
-                      let source = { uri: 'data:image/png;base64,' + response.data }
+                      // let source = { uri: 'data:image/png;base64,' + response.data }
+                      let source;
+                      if (Platform.OS === 'ios') {
+                          source = response.uri.replace('file://', '')
+                      } else {
+                          source = response.uri
+                      }
                       this.partyInfoData[ind].photolist[index].url = source;
                       let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].photolist))
                       this.partyInfoData[ind].photolist = temp
@@ -167,6 +176,7 @@ class ExploreTakePhotoView extends Component {
     this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url = '';
     let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].photolist));
     this.partyInfoData[this.currentImgaeInSection].photolist = temp;
+    this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
     this.setState({
       showBigImage: false
     })
@@ -226,7 +236,7 @@ class ExploreTakePhotoView extends Component {
         showImage = null
       } else {
         innerImgae = null
-        showImage = <Image style={{width: ImageW,height: ImageH,alignSelf:'center'}} source={{uri:item.miniurl}}/>
+        showImage = <Image style={{width: ImageW,height: ImageH,alignSelf:'center'}} source={{uri:item.url}}/>
       }
     }
     return (
@@ -292,9 +302,6 @@ class ExploreTakePhotoView extends Component {
                   }
                   this.carDamageData[i].isSel = false
                 }
-                this.setState({
-                  showDamageModalView: false
-                })
                 this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
               }}>
                 <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>确定</Text>
@@ -322,7 +329,7 @@ class ExploreTakePhotoView extends Component {
           <View>
             <Modal animationType="none" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
               <TouchableOpacity onPress={() => this.setState({showBigImage:false})} style={styles.modalContainer} underlayColor={'#ffffff'}>
-                <Image source={this.currentImgae} style={{width:W,height:W * 0.7,alignSelf:'center'}}/>
+                <Image source={{uri:this.currentImgae}} style={{width:W,height:W * 0.7,alignSelf:'center'}}/>
                 <View style={{marginLeft:15,marginBottom:20,marginTop:100,flexDirection:'row'}}>
                   <XButton title={'重拍'} onPress={() => this.reTakePhoto()} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
                   <XButton title={'删除'} onPress={() => this.deletePhoto()} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}} disabled={this.currentImgaeIndex < 7}/>

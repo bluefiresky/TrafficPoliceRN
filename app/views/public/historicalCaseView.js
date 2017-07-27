@@ -45,7 +45,15 @@ class HistoricalCaseView extends Component {
   }
   _renderItem({item,index}) {
     return (
-      <HistoricalCaseCellView type={this.state.currentType} rowData={item} key={index} navigation={this.props.navigation} dispatch={this.props.dispatch}/>
+      <HistoricalCaseCellView type={this.state.currentType} rowData={item} key={index} navigation={this.props.navigation} dispatch={this.props.dispatch} showHub={()=>{
+        this.setState({
+          loading:true
+        })
+      }} hideHub={()=>{
+        this.setState({
+          loading:false
+        })
+      }}/>
     )
   }
 
