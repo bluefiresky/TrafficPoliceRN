@@ -133,7 +133,7 @@ class GatheringPartyInformationView extends Component {
     }
 
      //提交信息
-     let handleWay = (this.carInfoData.length) > 1?'01':'02';
+     let handleWay = (this.carInfoData.length) > 1?'02':'01';
      let success = await StorageHelper.saveStep2_3(handleWay, this.submitDataArr);
      this.setState({loading: false})
      //提交成功后跳转到下个页面
