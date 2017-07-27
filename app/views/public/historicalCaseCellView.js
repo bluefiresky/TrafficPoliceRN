@@ -4,8 +4,9 @@
 'use strict';
 import React, {Component} from 'react';
 import { StyleSheet, Image, Text, View, TouchableHighlight } from 'react-native';
-
+import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import {W, formLeftText, formRightText, mainBule} from '../../configs/index.js';
+import * as Contract from '../../service/contract.js'; /** api方法名 */
 
 const PStepToView = {
   '0':'PhotoEvidenceVeiw',
@@ -138,7 +139,7 @@ export default class HistoricalCaseCellView extends Component {
                   if(res && res.data.surveyflag == '1'){
                     this.props.navigation.navigate('PerfectInformantInfoView',{taskno:taskNo,surveyno:res.data.surveyno})
                   } else {
-                    
+
                   }
               })
             } else if (status == '13') {

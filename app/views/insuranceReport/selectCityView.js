@@ -14,7 +14,7 @@ import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 
 class SelectCityView extends Component {
-   
+
   constructor(props){
     super(props);
     this.state = {
@@ -58,7 +58,7 @@ class SelectCityView extends Component {
              当前定位城市：
            </Text>
            <TouchableHighlight style={{backgroundColor:'#298FE2',paddingTop:5,paddingBottom:5,marginLeft:15,width:(W-90)/3,marginTop:10,borderRadius:5}} underlayColor='#298FE2' onPress={()=>{
-             this.props.navigation.state.params.selData({showData:`${global.personal.cityName}-${data.name}`,insurecode:data.code,citycode:''})
+             this.props.navigation.state.params.selData({showData:`${global.personal.cityName}-${data.name}`,insurecode:data.code,citycode:global.personal.cityCode})
              this.props.navigation.goBack(global.stackKeys.SelectInInsuranceCompanyView)
            }}>
              <Text style={{fontSize:15,color:'#ffffff',alignSelf:'center'}}>

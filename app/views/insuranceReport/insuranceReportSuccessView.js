@@ -47,7 +47,7 @@ class InsuranceReportSuccessView extends Component {
     this.timer && clearInterval(this.timer);
   }
   componentDidMount(){
-    let { openflag } = this.props.navigation.state.params;
+    let { openflag,taskno } = this.props.navigation.state.params;
     if (openflag) {
       this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
         this.startFetchRemoteRes();

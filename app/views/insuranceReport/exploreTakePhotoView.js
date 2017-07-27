@@ -14,8 +14,16 @@ import { getStore } from '../../redux/index.js';       /** Redux的store */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import ImagePicker from 'react-native-image-picker';
 import Tool from '../../utility/Tool'
+
+const car_font = require('./image/car_font.png')
+const car_and_party = require('./image/car_and_party.png')
+const car_vivo = require('./image/car_vivo.png')
+const car_damage_one = require('./image/car_damage_one.png')
+const car_damage_two = require('./image/car_damage_two.png')
+const car_placeholder = require('./image/car_placeholder.png')
+
 const ImageW = (W - 3 * 20) / 2;
-const ImageH = (220 * ImageW)/340;
+const ImageH = (330 * ImageW)/510;
 
 class ExploreTakePhotoView extends Component {
 
@@ -73,10 +81,19 @@ class ExploreTakePhotoView extends Component {
       .then( res => {
         if (res) {
           this.surveyno = res.data.surveyno
-          this.partyInfoData = res.data.surveyphoto
+          // this.partyInfoData = res.data.surveyphoto
           for (var i = 0; i < this.partyInfoData.length; i++) {
-            this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
+            for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
+              for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
+                if (res.data.surveyphoto[i].photolist[k].phototypecode == this.partyInfoData[i].photolist[j].phototypecode) {
+                  this.partyInfoData[i].photolist[j] = res.data.surveyphoto[i].photolist[k]
+                }
+              }
+            }
           }
+          // for (var i = 0; i < this.partyInfoData.length; i++) {
+          //   this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
+          // }
         }
         this.setState({
           loading:false
@@ -169,7 +186,7 @@ class ExploreTakePhotoView extends Component {
   //取证完成
   commit() {
     for (var i = 0; i < this.partyInfoData.length; i++) {
-      for (var j = 0; j < 6; j++) {
+      for (var j = 0; j < 5; j++) {
         if (!this.partyInfoData[i].photolist[j].url) {
           Toast.showShortCenter(`当事人【${this.partyInfoData[i].licenseno}】的 “${this.partyInfoData[i].photolist[j].phototypename}”必须拍摄`);
           return
@@ -180,28 +197,49 @@ class ExploreTakePhotoView extends Component {
     this.props.navigation.navigate('ConfirmReportPartyInfoView',{taskno:taskno,surveyno:(surveyno?surveyno:this.surveyno)});
   }
   renderItem(item,index,ind) {
-    let innerImgae;
-    let showImage;
+    let innerImgae = null;
+    let innerImgaeSource;
+    if (item.phototypecode == '0') {
+      innerImgaeSource = car_font;
+    } else if (item.phototypecode == '1') {
+      innerImgaeSource = car_and_party;
+    } else if (item.phototypecode == '2') {
+      innerImgaeSource = car_vivo;
+    } else if (item.phototypecode == '3') {
+      innerImgaeSource = car_damage_one;
+    } else if (item.phototypecode == '4') {
+      innerImgaeSource = car_damage_two;
+    } else {
+      innerImgaeSource = car_placeholder;
+    }
+    let showImage = null;
     if (index == this.partyInfoData[ind].photolist.length - 1) {
-      innerImgae = <Text style={{alignSelf:'center',color:formRightText,fontSize:50}}>+</Text>
+      innerImgae = <Image style={{width: ImageW,height: ImageH,justifyContent:'center'}} source={innerImgaeSource}>
+        <Text style={{alignSelf:'center',color:'#ffffff',fontSize:50}}>+</Text>
+      </Image>
       showImage = null
     } else {
       if (!item.url) {
-        innerImgae = <Image style={{alignSelf:'center',width:38,height:30,resizeMode: 'contain'}} source={require('./image/personal_camera.png')}/>
+        innerImgae = <Image style={{width: ImageW,height: ImageH,justifyContent:'center'}} source={innerImgaeSource}>
+          <Image style={{alignSelf:'center',width:32,height:25,resizeMode: 'contain'}} source={require('./image/personal_camera.png')}/>
+        </Image>
         showImage = null
       } else {
         innerImgae = null
-        showImage = <Image style={{justifyContent:'center',flex:1}} source={item.url}/>
+        showImage = <Image style={{width: ImageW,height: ImageH,alignSelf:'center'}} source={{uri:item.miniurl}}/>
       }
     }
     return (
       <TouchableHighlight style={{marginLeft:15,marginBottom:15}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index,ind)} key={index}>
         <View style={{flex:1}}>
-          <View style={{width: ImageW,height: ImageH,borderColor:'#D4D4D4',borderWidth:1,justifyContent:'center'}}>
+          <View style={{width: ImageW,height: ImageH,justifyContent:'center'}}>
             {showImage}
             {innerImgae}
           </View>
-          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.phototypename}</Text>
+          <View style={{flexDirection:'row',alignSelf:'center',marginTop:10}}>
+            {index < 5 ? <Text style={{color:'red',fontSize:12}}>*</Text>:null}
+            <Text style={{color:formLeftText,fontSize:12,marginLeft:5}}>{item.phototypename}</Text>
+          </View>
         </View>
       </TouchableHighlight>
     )
@@ -257,6 +295,7 @@ class ExploreTakePhotoView extends Component {
                 this.setState({
                   showDamageModalView: false
                 })
+                this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
               }}>
                 <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>确定</Text>
               </TouchableHighlight>
