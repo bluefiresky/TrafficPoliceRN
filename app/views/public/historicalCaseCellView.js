@@ -124,7 +124,7 @@ export default class HistoricalCaseCellView extends Component {
                            this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
                          } else {
                            //保险报案详情
-                           this.props.navigation.navigate('InsuranceReportDetailView',{taskno:taskNo})
+                           this.props.navigation.navigate('InsuranceReportDetailView',{taskno:taskNo,status:status})
                          }
                        }}>
                          <Text style={{color:(status == '2' ? '#ffffff':'#267BD8'),alignSelf:'center'}}>{status == '2' ? '保险报案' : '保险报案详情'}</Text>

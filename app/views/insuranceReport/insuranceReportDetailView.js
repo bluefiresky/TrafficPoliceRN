@@ -33,11 +33,15 @@ class InsuranceReportDetailView extends Component {
     this.setState({
       loading:true
     })
-    let { taskno } = this.props.navigation.state.params
+    let { taskno,status } = this.props.navigation.state.params
     this.props.dispatch( create_service(Contract.POST_SURVEY_DETAIL, {taskno:taskno}))
       .then( res => {
         if (res) {
-          this.partyData = res.data.surveylist
+          if (status == '3' || status == '13') {
+            this.partyData = res.data.insurelist
+          } else{
+            this.partyData = res.data.surveylist
+          }
         }
         this.setState({
           loading:false
@@ -81,6 +85,7 @@ class InsuranceReportDetailView extends Component {
         </View>
     )
   }
+  //已查勘
   renderOneParty(value) {
     return (
       <View style={{backgroundColor:'#ffffff',marginBottom:10}}>
@@ -126,16 +131,41 @@ class InsuranceReportDetailView extends Component {
       </ScrollView>
     )
   }
+  //未查勘
+  renderOnePartyForNo(value,index) {
+    return (
+      <View style={{backgroundColor:'#ffffff',marginTop:10}} key={index}>
+        <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
+          <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
+          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.licenseno}】`}</Text>
+        </View>
+        <View style={{backgroundColor:backgroundGrey,height:1,marginTop:10}}></View>
+        {this.renderRowItem('当事人姓名',value.person)}
+        {this.renderRowItem('当事人车牌号',value.licenseno)}
+        {this.renderRowItem('当事人责任类型',value.dutyname)}
+        {this.renderRowItem('报案保险公司',value.insurename)}
+        {this.renderRowItem('是否保险报案',value.reportflag ? '是' : '否')}
+      </View>
+    )
+  }
   render(){
     this.segArrays = [];
     this.contentArrs = [];
     let content = null;
-    if (this.partyData && this.partyData.length > 0) {
-      for (var i = 0; i < this.partyData.length; i++) {
-        this.segArrays.push(this.segDatas[i])
-        this.contentArrs.push(this.renderOneItem(i,this.partyData[i]));
+    let { taskno,status } = this.props.navigation.state.params
+    if (status == '3' || status == '13') {
+      content = <ScrollView showsVerticalScrollIndicator={false}>
+        {this.partyData.map((value,index) => this.renderOnePartyForNo(value,index))}
+      </ScrollView>
+
+    } else {
+      if (this.partyData && this.partyData.length > 0) {
+        for (var i = 0; i < this.partyData.length; i++) {
+          this.segArrays.push(this.segDatas[i])
+          this.contentArrs.push(this.renderOneItem(i,this.partyData[i]));
+        }
+        content = <ScrollerSegment segDatas = {this.segArrays} contentDatas={this.contentArrs} />
       }
-      content = <ScrollerSegment segDatas = {this.segArrays} contentDatas={this.contentArrs} />
     }
     return(
       <View style={styles.container}>
