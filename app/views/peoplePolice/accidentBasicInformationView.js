@@ -181,7 +181,7 @@ class AccidentBasicInformationView extends Component {
           self.setState({ loading: false, showTip: true,
             tipParams:{
               content: '无法获取当前位置，请开启定位功能后点击重试，或手动填写事故地点',
-              left:{label: '确认', event: () => {
+              left:{label: '手动填写', event: () => {
                 self.setState({showTip: false});
               }},
               right:{label: '重试', event: () => {
