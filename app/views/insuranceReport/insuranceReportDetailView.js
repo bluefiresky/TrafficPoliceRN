@@ -27,9 +27,6 @@ class InsuranceReportDetailView extends Component {
       loading:false
     }
     this.segDatas = ['当事人甲方', '当事人乙方','当事人丙方','当事人丁方']
-    // this.rowNum = 2;
-    // this.rowMargin = 20;
-    // this.rowWH = (W - (this.rowNum + 1) * this.rowMargin) / this.rowNum;
     this.partyData = [];
   }
   componentDidMount(){
@@ -123,16 +120,8 @@ class InsuranceReportDetailView extends Component {
     return (
       <ScrollView style={{flex:1,marginBottom:64,backgroundColor:backgroundGrey}}
                    showsVerticalScrollIndicator={false} key={index}>
-         <View style={{paddingVertical:10}}>
-           <Text style={{fontSize:13,color:'#717171',marginLeft:15}}>
-             请确认保险信息
-           </Text>
-         </View>
          <View style={{flex:1}}>
            {this.renderOneParty(itemData)}
-         </View>
-         <View style={{marginLeft:15,marginBottom:10,marginTop:10}}>
-           <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
          </View>
       </ScrollView>
     )
