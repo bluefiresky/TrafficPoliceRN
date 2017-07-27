@@ -74,7 +74,7 @@ class CaseDetailsView extends Component {
         this.props.dispatch( create_service(Contract.POST_ACCIDENT_DETAILS, {taskNo}))
           .then( res => {
             if(!res) return;
-            
+
             let {accidentStatus, accidentTime, weather, accidentAddress, accidentPhotos, accidentPersons, accidentFact, conciliationResult, pageFlag, pageUrl, accidentModalName, accidentDesName, supplementAccidentFact } = res;
             this.type = 1;
             this.accidentStatus = accidentStatus;
@@ -99,7 +99,7 @@ class CaseDetailsView extends Component {
             this.taskModal = accidentModalName;
             this.accidentDes = accidentDesName;
 
-            let bl = (pageFlag === '01')?'认定书':'协议书';
+            let bl = (pageFlag === '02')?'协议书':'认定书';
             this.setState({loading: false, button1Text:`交通事故${bl}`, button2Text:'保险报案', pageFlag, pageUrl})
         })
       }else if(info){
