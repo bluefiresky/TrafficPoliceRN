@@ -45,7 +45,7 @@ class HistoricalCaseView extends Component {
   }
   _renderItem({item,index}) {
     return (
-      <HistoricalCaseCellView type={this.state.currentType} rowData={item} key={index} navigation={this.props.navigation}/>
+      <HistoricalCaseCellView type={this.state.currentType} rowData={item} key={index} navigation={this.props.navigation} dispatch={this.props.dispatch}/>
     )
   }
 
