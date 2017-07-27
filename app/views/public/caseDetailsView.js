@@ -213,13 +213,14 @@ class CaseDetailsView extends Component {
   }
   //下一步
   gotoNext(t){
+    let { taskNo, info } = this.props.navigation.state.params;
     if(this.type === 1){ // 历史案件
       if(t === 1){
         let { button1Text, pageUrl } = this.state;
         this.props.navigation.navigate('CommonWebView', {title:button1Text, url:pageUrl})
         if(this.accidentStatus && this.accidentStatus == '8') Toast.showShortCenter('该案件已转现场处理');
       }else{
-        Toast.showShortCenter('此功能暂未开通');
+        this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
       }
     }else if(this.type === 2){  // 本地案件
       if(t === 1){
@@ -383,8 +384,8 @@ class CaseDetailsView extends Component {
               <XButton title={'查看'+this.state.button1Text} onPress={() => this.gotoNext(1)} style={{backgroundColor:'#267BD8',borderRadius:20}} textStyle={{color:'#ffffff',fontSize:14}}/>
               <View style={{height: 30}} />
               {
-                (this.accidentStatus && this.accidentStatus == '8')? null:
-                <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+                (this.accidentStatus && this.accidentStatus == '2') ?
+                <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>:null
               }
             </View>
           }

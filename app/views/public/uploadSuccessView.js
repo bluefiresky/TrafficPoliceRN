@@ -51,6 +51,7 @@ class UploadSuccessView extends Component {
 
   /** Private **/
   async _onPress(type){
+    let { taskNo } = this.props.navigation.state.params;
     if(type == 1) {
       await StorageHelper.removeItem(global.personal.mobile+'unuploaded', global.currentCaseId)
       await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
@@ -58,7 +59,7 @@ class UploadSuccessView extends Component {
       let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
       this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
     }else{
-      Toast.showShortCenter('该功能暂未开通')
+      this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
     }
   }
 }
