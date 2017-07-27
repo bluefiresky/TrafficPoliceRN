@@ -2,7 +2,7 @@
 * 民警首页
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image,Platform,TouchableHighlight,InteractionManager,Linking,RefreshControl,TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image,Platform,TouchableHighlight,InteractionManager,Linking,RefreshControl,TouchableOpacity,DeviceEventEmitter } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
@@ -48,6 +48,11 @@ class PpHomePageView extends Component {
   }
   componentDidMount() {
     //1、载入页面，加载账户信息、大队章、勘察章、字典表（保险公司、天气、车辆类型等）信息，加载过程显示loading，信息缓存到本地。2、每次启动APP，请求后台字典数据是否有更新，如果有更新，后台返回新的字典数据，客户端缓存最新字典数据；如果没有更新，不需重新缓存数据。若无网络，弹框提示“未检测到网络，是否离线处理？”点击继续。
+    let self = this;
+    DeviceEventEmitter.addListener('InitHome',() =>{
+      console.log(' PpHomePageView receive the InitHome message ');
+      self._getData();
+    })
     InteractionManager.runAfterInteractions(async () => {
       this._getData();
     });

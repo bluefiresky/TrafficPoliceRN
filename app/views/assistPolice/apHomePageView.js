@@ -2,7 +2,7 @@
 * 确认事故信息
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, FlatList,Platform,TouchableHighlight,InteractionManager,RefreshControl } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, FlatList,Platform,TouchableHighlight,InteractionManager,RefreshControl,DeviceEventEmitter } from "react-native";
 import { connect } from 'react-redux';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule, Version } from '../../configs/index.js';/** 自定义配置参数 */
@@ -47,7 +47,12 @@ class ApHomePageView extends Component {
   }
   componentDidMount() {
     //1、载入页面，加载账户信息、大队章、勘察章、字典表（保险公司、天气、车辆类型等）信息，加载过程显示loading，信息缓存到本地。2、每次启动APP，请求后台字典数据是否有更新，如果有更新，后台返回新的字典数据，客户端缓存最新字典数据；如果没有更新，不需重新缓存数据。若无网络，弹框提示“未检测到网络，是否离线处理？”点击继续。
-    InteractionManager.runAfterInteractions(async () => {
+    let self = this;
+    DeviceEventEmitter.addListener('InitHome',() =>{
+      console.log(' ApHomePageView receive the InitHome message ');
+      self._getData();
+    })
+    InteractionManager.runAfterInteractions(() => {
       this._getData();
     });
   }

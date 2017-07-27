@@ -2,7 +2,7 @@
 * 设置页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager,BackHandler } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager,BackHandler,DeviceEventEmitter } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
@@ -133,6 +133,7 @@ class UploadProgressView extends Component {
         if( handleWay === '03' || handleWay === '05'){
           let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
           self.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
+          DeviceEventEmitter.emit('InitHome');
         }else{
           if(this.state.caseType == 1){
             self.props.navigation.navigate('CertificateView', {handleWay})

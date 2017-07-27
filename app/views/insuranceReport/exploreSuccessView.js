@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,DeviceEventEmitter } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
@@ -25,6 +25,7 @@ class ExploreSuccessView extends Component {
   goBack(){
     let routeName = global.personal.policeType === 2 ? 'PpHomePageView':'ApHomePageView';
     this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
+    DeviceEventEmitter.emit('InitHome');
   }
   render(){
     return(
