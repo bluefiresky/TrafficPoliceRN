@@ -37,7 +37,7 @@ class InsuranceReportDetailView extends Component {
     this.props.dispatch( create_service(Contract.POST_SURVEY_DETAIL, {taskno:taskno}))
       .then( res => {
         if (res) {
-          if (status == '3') {
+          if (status == '3' || status == '13') {
             this.partyData = res.data.insurelist
           } else{
             this.partyData = res.data.surveylist
@@ -91,7 +91,7 @@ class InsuranceReportDetailView extends Component {
       <View style={{backgroundColor:'#ffffff',marginBottom:10}}>
         <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
           <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-          {/* <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.licenseno}】`}</Text> */}
+          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.licenseno}】`}</Text>
         </View>
         <View style={{backgroundColor:backgroundGrey,height:1,marginTop:10}}></View>
         {this.renderRowItem('当事人姓名：',value.person)}
@@ -137,7 +137,7 @@ class InsuranceReportDetailView extends Component {
       <View style={{backgroundColor:'#ffffff',marginTop:10}} key={index}>
         <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
           <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-          {/* <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.licenseno}】`}</Text> */}
+          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`当事人【${value.licenseno}】`}</Text>
         </View>
         <View style={{backgroundColor:backgroundGrey,height:1,marginTop:10}}></View>
         {this.renderRowItem('当事人姓名',value.person)}
@@ -153,7 +153,7 @@ class InsuranceReportDetailView extends Component {
     this.contentArrs = [];
     let content = null;
     let { taskno,status } = this.props.navigation.state.params
-    if (status == '3') {
+    if (status == '3' || status == '13') {
       content = <ScrollView showsVerticalScrollIndicator={false}>
         {this.partyData.map((value,index) => this.renderOnePartyForNo(value,index))}
       </ScrollView>
