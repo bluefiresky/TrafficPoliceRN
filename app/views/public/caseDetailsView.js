@@ -62,6 +62,7 @@ class CaseDetailsView extends Component {
     this.taskModal = null;    // 事故形体
     this.accidentDes = null;  // 事故情形
     this.personResponbilityList = null;  // 事故责任列表
+    this.accidentStatus = null;
   }
 
   componentDidMount(){
@@ -72,8 +73,9 @@ class CaseDetailsView extends Component {
         /** 历史案件详情 **/
         this.props.dispatch( create_service(Contract.POST_ACCIDENT_DETAILS, {taskNo}))
           .then( res => {
-            let { accidentTime, weather, accidentAddress, accidentPhotos, accidentPersons, accidentFact, conciliationResult, pageFlag, pageUrl, accidentModalName, accidentDesName, supplementAccidentFact } = res;
+            let {accidentStatus, accidentTime, weather, accidentAddress, accidentPhotos, accidentPersons, accidentFact, conciliationResult, pageFlag, pageUrl, accidentModalName, accidentDesName, supplementAccidentFact } = res;
             this.type = 1;
+            this.accidentStatus = accidentStatus;
             this.basic = {accidentTime:this._convertAccidentTime(accidentTime), weather, address:accidentAddress};
 
             this.photoList = [];
@@ -85,9 +87,9 @@ class CaseDetailsView extends Component {
             this.personList = [];
             this.personResponbilityList = [];
             for(let i = 0; i < accidentPersons.length; i++){
-              let { name, phone, driverNum, licensePlateNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl, drivingUrl, carDamagedPart, dutyName} = accidentPersons[i];
+              let { name, phone, driverNum, licensePlateNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl, drivingUrl, carDamagedPart, dutyTypeName} = accidentPersons[i];
               this.personList.push({name, phone, licensePlateNum, driverNum, carType, insureCompanyName, carInsureNumber, carInsureDueDate, driverUrl:{uri:driverUrl, isStatic:true}, drivingUrl:drivingUrl?{uri:drivingUrl, isStatic:true}:null/*行驶证url**/})
-              this.personResponbilityList.push({name, licensePlateNum, carDamagedPart:this._convertDamagedCodeToName(carDamagedPart), dutyName})
+              this.personResponbilityList.push({name, licensePlateNum, carDamagedPart:this._convertDamagedCodeToName(carDamagedPart), dutyName:dutyTypeName})
             }
 
             this.factAndResponsibility = `\t${accidentFact}${supplementAccidentFact}\n\t${this._convertResponsebilityContent(accidentPersons)}`;
@@ -213,6 +215,7 @@ class CaseDetailsView extends Component {
       if(t === 1){
         let { button1Text, pageUrl } = this.state;
         this.props.navigation.navigate('CommonWebView', {title:button1Text, url:pageUrl})
+        if(this.accidentStatus && this.accidentStatus == '8') Toast.showShortCenter('该案件已转现场处理');
       }else{
         Toast.showShortCenter('此功能暂未开通');
       }
@@ -377,7 +380,10 @@ class CaseDetailsView extends Component {
             <View style={{backgroundColor:'white', paddingVertical:50, alignItems:'center'}}>
               <XButton title={'查看'+this.state.button1Text} onPress={() => this.gotoNext(1)} style={{backgroundColor:'#267BD8',borderRadius:20}} textStyle={{color:'#ffffff',fontSize:14}}/>
               <View style={{height: 30}} />
-              <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+              {
+                (this.accidentStatus && this.accidentStatus == '8')? null:
+                <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+              }
             </View>
           }
         </ScrollView>
