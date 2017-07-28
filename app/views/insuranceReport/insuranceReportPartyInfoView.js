@@ -78,9 +78,9 @@ class InsuranceReportPartyInfoView extends Component {
   renderRowItem(title,value){
     return (
       <View style={{marginTop:15}}>
-        <View style={{flexDirection:'row'}}>
+        <View style={{flexDirection:'row',width:W-15}}>
           <Text style={{marginLeft:15,color:formLeftText}}>{title}</Text>
-          <Text style={{marginLeft:20,color:formLeftText}}>{value}</Text>
+          <Text style={{marginLeft:20,color:formLeftText,flex:1}}>{value}</Text>
         </View>
         <View style={{backgroundColor:backgroundGrey,height:1,marginTop:15,marginLeft:15}}></View>
       </View>
@@ -98,9 +98,9 @@ class InsuranceReportPartyInfoView extends Component {
         {this.renderRowItem('当事人姓名',value.name)}
         {this.renderRowItem('当事人车牌号',value.licensePlateNum)}
         {this.renderRowItem('当事人责任类型',value.dutyName)}
-        {value.isReport ? <View>
+        {value.isReport ? <View style={{flex:1}}>
             <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:15}}>
-            <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>保险公司</Text>
+              <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>保险公司</Text>
               <TouchableHighlight style={{marginRight:15}} underlayColor='transparent' onPress={()=>{this.props.navigation.navigate('SelectInInsuranceCompanyView',{selData:(selData)=>{
                 value.insuranceCompany = selData.showData;
                 value.insurecode = selData.insurecode;
@@ -109,7 +109,7 @@ class InsuranceReportPartyInfoView extends Component {
                   refresh: true
                 })
               }})}}>
-                <View style={{flex:1,flexDirection:'row'}}>
+                <View style={{flex:1,flexDirection:'row',width:W-110,justifyContent:'space-between'}}>
                   <Text style={{marginLeft:20,color:(value.insuranceCompany ? formLeftText : formRightText),marginRight:10}}>{value.insuranceCompany ? value.insuranceCompany : '请选择当事人报案保险公司'}</Text>
                   <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,alignSelf:'center'}}/>
                 </View>

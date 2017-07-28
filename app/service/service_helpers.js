@@ -73,12 +73,10 @@ function http_factory({method, paramsType}) {
         console.log('%c service_helpers response-jsonData -->> ', 'color:limegreen', jsonData);
 
         let code = jsonData.code;
-        if(code == 200){
-          return { success: true, data : jsonData };
-        }else if(code == 500){
+        if(code == 500){
           return { success: false, message: jsonData.message };
         }else {
-          return { success: false, message: jsonData.message };
+          return { success: true, message: jsonData };
         }
       }else{
         return { success : false, code : response.status, message : '网络连接错误' };

@@ -51,37 +51,39 @@ class InsuranceReportSuccessView extends Component {
   componentDidMount(){
     let { openflag,taskno,needTimer } = this.props.navigation.state.params;
     if (openflag && needTimer) {
+      let self = this;
       this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
-        this.startFetchRemoteRes();
+        if (res && res.code == '200') {
+          console.log('---- bbbbbbbbbbbbbbbbb');
+          self.waitForLook = false
+          self.surveyflag = res.data.surveyflag
+          self.surveyno = res.data.surveyno
+          self.setState({
+            loading:false
+          })
+        } else {
+          console.log('---- cccccccccccccccccccc');
+          this.startFetchRemoteRes();
+        }
       })
     }
   }
   startFetchRemoteRes(){
     let self = this;
     let { taskno } = this.props.navigation.state.params
-    let count = 0
     this.timer = setInterval(() => {
-      count++
-      if (count == 7) {
-        self.timer && clearInterval(self.timer);
-
-      } else {
-        this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
-          if(res){
-            self.waitForLook = false
-            self.surveyflag = res.data.surveyflag
-            self.surveyno = res.data.surveyno
-            self.setState({
-              loading:false
-            })
-          } else {
-            self.waitForLook = true
-            self.timer && clearInterval(self.timer);
-          }
-        })
-      }
-    }, 30000);
-    //3分钟内未进行审核，则系统自动返回需要查勘服务
+      console.log('---- aaaaaaaaaaaaaaaaaaaaa');
+      this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
+        if(res){
+          self.waitForLook = false
+          self.surveyflag = res.data.surveyflag
+          self.surveyno = res.data.surveyno
+          self.setState({
+            loading:false
+          })
+        }
+      })
+    }, 5000);
   }
 
   render(){
