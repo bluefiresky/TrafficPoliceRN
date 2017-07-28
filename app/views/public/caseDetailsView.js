@@ -473,11 +473,11 @@ class CaseDetailsView extends Component {
     let content = '';
     if(duty){
       if(num === 1){
-        content = `${person[0].name}应负此次事故的${this._convertCodeToEntry(duty[0].dutyType, DutyTypeList)}。`
+        content = `${person[0].name}应负此次事故的${this._convertCodeToEntry(duty[0].dutyType, DutyTypeList).name}。`
       }else if(num === 2){
-        content = `${person[0].name}应负此次事故的${this._convertCodeToEntry(duty[0].dutyType, DutyTypeList)}，${person[1].name}应负此次事故的${this._convertCodeToEntry(duty[1].dutyType, DutyTypeList)}。`
+        content = `${person[0].name}应负此次事故的${this._convertCodeToEntry(duty[0].dutyType, DutyTypeList).name}，${person[1].name}应负此次事故的${this._convertCodeToEntry(duty[1].dutyType, DutyTypeList).name}。`
       }else if(num === 3){
-        content = `${person[0].name}应负此次事故的${this._convertCodeToEntry(duty[0].dutyType, DutyTypeList)}，${person[1].name}应负此次事故的${this._convertCodeToEntry(duty[1].dutyType, DutyTypeList)}，${person[2].name}应负此次事故的${this._convertCodeToEntry(duty[2].dutyType, DutyTypeList)}。`
+        content = `${person[0].name}应负此次事故的${this._convertCodeToEntry(duty[0].dutyType, DutyTypeList).name}，${person[1].name}应负此次事故的${this._convertCodeToEntry(duty[1].dutyType, DutyTypeList).name}，${person[2].name}应负此次事故的${this._convertCodeToEntry(duty[2].dutyType, DutyTypeList).name}。`
       }
     }else{
       if(num === 1){

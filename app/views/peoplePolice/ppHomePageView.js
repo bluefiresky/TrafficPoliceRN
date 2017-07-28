@@ -16,6 +16,7 @@ import { StorageHelper, Utility } from '../../utility/index.js';
 
 const AppType = Platform.OS === 'ios'?2:1;
 const HomeBgH = (W * 749)/1125;
+const IconH = (90 * 340)/320;
 const InfoH = Platform.OS === 'ios'?(HomeBgH-30-20):(HomeBgH-15-20)
 
 class PpHomePageView extends Component {
@@ -112,14 +113,14 @@ class PpHomePageView extends Component {
                <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
                <Image source={{uri: 'data:image/png;base64,' + global.personal.sealUrlBase64}} style={{marginLeft:15,width:90,height:40,resizeMode:'cover'}}/>
              </View>
-             <View style={{flexDirection:'row',margin:20}}>
+             <View style={{margin:20}}>
                <View>
                  {this.renderRowItem('手机号：', global.personal.mobile, 0)}
                  {this.renderRowItem('警员编号：', global.personal.policeNumber, 10)}
                  {this.renderRowItem('所属城市：', global.personal.cityName, 10)}
                  {this.renderRowItem('所属大队：', global.personal.depName, 10)}
                </View>
-               <Image source={{uri: 'data:image/png;base64,' + global.personal.depSealUrlBase64}} style={{marginLeft:30,width:90,height:90,resizeMode:'contain',alignSelf:'flex-end'}} />
+               <Image source={{uri: 'data:image/png;base64,' + global.personal.depSealUrlBase64}} style={{position:'absolute',right:10,width:90,height:90,resizeMode:'contain'}} />
              </View>
           </View>
         </Image>

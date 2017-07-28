@@ -158,12 +158,14 @@ export class StorageHelper{
       ...
     ]
   **/
-  static async saveStep4(credentials){
+  static async saveStep4(credentials, one){
     try {
       let key = global.personal.mobile + 'uncompleted';
       let id = global.currentCaseId;
       this.loadRes = await global.storage.load({key, id});
-      this.loadRes.step = '4';
+      if(!one){
+        this.loadRes.step = '4';
+      }
       this.loadRes.credentials = credentials;
       let data = {...this.loadRes}
       console.log('%c StorageHelper execute saveStep4 -- the key -->> ## ' + key + ' ## id -->> ' + id + ' ## the data -->> ' , 'color:dodgerblue', data);

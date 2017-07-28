@@ -46,14 +46,17 @@ class GatheringCardPhotoView extends Component {
   async componentDidMount(){
     let info = await StorageHelper.getCurrentCaseInfo();
     let titles = [{name:'甲方', type:'30'}, {name:'乙方',type:'31'}, {name:'丙方',type:'32'}];
+    let credentials = info.credentials?info.credentials : [];
     for(let i=0; i < info.person.length; i++){
       let p = info.person[i];
       let t = titles[i];
+      let c = credentials[i];
       this.carInfoData.push({
         name:t.name+'('+p.name+'  '+ p.licensePlateNum +')',
-        data:[{title:'驾驶证及行驶证',image:CredentialsIcon,photoData:null,photoType:t.type,photoDate:null}]
+        data:[{title:'驾驶证及行驶证',image:CredentialsIcon,photoData:(c?c.photoData:null),photoType:t.type,photoDate:(c?c.photoDate:null)}]
       });
     }
+
     this.forceUpdate();
   }
 
@@ -73,10 +76,25 @@ class GatheringCardPhotoView extends Component {
         let p = self.carInfoData[ind].data[index];
         p.photoData = photoData;
         p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+
+        self._saveOnePhoto();
         self.setState({refresh: true})
       }
     });
   }
+
+  async _saveOnePhoto(){
+    let photoList = [];
+    for (let i = 0; i < this.carInfoData.length; i++) {
+      for (let j = 0; j < this.carInfoData[i].data.length; j++) {
+        let data = this.carInfoData[i].data[j];
+        let { photoData, photoDate, photoType } = data;
+        photoList.push({photoData, photoDate, photoType});
+      }
+    }
+    await StorageHelper.saveStep4(photoList, true)
+  }
+
   //信息采集完成
   gotoNext(){
     this.setState({loading:true})
