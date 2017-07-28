@@ -144,9 +144,6 @@ class ExploreTakePhotoView extends Component {
           showDamageModalView: true
         })
       } else {
-        this.setState({
-          showDamageModalView: false
-        })
         //点击其它是拍照
         let that = this;
         ImagePicker.showImagePicker(this.options, (response) => {
@@ -317,7 +314,13 @@ class ExploreTakePhotoView extends Component {
                   }
                   this.carDamageData[i].isSel = false
                 }
-                this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
+                this.setState({
+                  showDamageModalView: false
+                })
+                this.timer = setTimeout(
+                  () => {
+                    this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
+                  },1000);
               }}>
                 <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>确定</Text>
               </TouchableHighlight>

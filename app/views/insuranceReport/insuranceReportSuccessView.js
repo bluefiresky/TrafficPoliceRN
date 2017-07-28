@@ -54,7 +54,6 @@ class InsuranceReportSuccessView extends Component {
       let self = this;
       this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
         if (res && res.code == '200') {
-          console.log('---- bbbbbbbbbbbbbbbbb');
           self.waitForLook = false
           self.surveyflag = res.data.surveyflag
           self.surveyno = res.data.surveyno
@@ -62,7 +61,6 @@ class InsuranceReportSuccessView extends Component {
             loading:false
           })
         } else {
-          console.log('---- cccccccccccccccccccc');
           this.startFetchRemoteRes();
         }
       })
@@ -72,9 +70,8 @@ class InsuranceReportSuccessView extends Component {
     let self = this;
     let { taskno } = this.props.navigation.state.params
     this.timer = setInterval(() => {
-      console.log('---- aaaaaaaaaaaaaaaaaaaaa');
       this.props.dispatch( create_service(Contract.POST_SURVEY_FLAG,{taskno: taskno})).then(res => {
-        if(res){
+        if(res && res.code == '200'){
           self.waitForLook = false
           self.surveyflag = res.data.surveyflag
           self.surveyno = res.data.surveyno

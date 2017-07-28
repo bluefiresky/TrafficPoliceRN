@@ -24,9 +24,6 @@ class InsuranceReportPartyInfoView extends Component {
     }
     this.partyData = [];
   }
-  componentWillMount(){
-    this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {}));
-  }
   componentDidMount(){
     let { taskno } = this.props.navigation.state.params
     this.setState({

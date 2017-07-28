@@ -64,11 +64,9 @@ function http_factory({method, paramsType}) {
     try{
       const response = await fetch(path, meta);
       console.log('%c service_helpers resopnse-stauts -->> ', 'color:limegreen', response.status );
-
       if(response.status == 200){
         const text = await response.text()
         // console.log('%c service_helpers response-text -->> ', 'color:limegreen', text);
-
         const jsonData = JSON.parse(text)
         console.log('%c service_helpers response-jsonData -->> ', 'color:limegreen', jsonData);
 
@@ -77,13 +75,12 @@ function http_factory({method, paramsType}) {
            code == 206 || code == 208 || code == 209 || code == 210 || code == 211 ||
            code == 212 || code == 213 || code == 214 || code == 216 || code == 218){
           return { success: false, message: jsonData.message };
-        }else
-          return { success: true, message: jsonData };
+        }else {
+          return { success: true, data: jsonData };
         }
       }else{
         return { success : false, code : response.status, message : '网络连接错误' };
       }
-
 
     }catch(ex) {
       console.log('%c service_helpers fetch error -->> ', 'color:red', ex);
