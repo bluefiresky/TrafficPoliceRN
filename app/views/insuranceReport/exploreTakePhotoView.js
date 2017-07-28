@@ -75,8 +75,8 @@ class ExploreTakePhotoView extends Component {
             takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
             chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
             mediaType: 'photo',
-            maxWidth: 1500,
-            maxHeight: 2000,
+            maxWidth: 750,
+            maxHeight: 1000,
             quality: 0.5,
             storageOptions: {
                 cameraRoll:true,
@@ -94,20 +94,22 @@ class ExploreTakePhotoView extends Component {
       this.props.dispatch( create_service(Contract.POST_SURVEY_PHOTOS,{taskno:taskno}))
         .then( res => {
           if (res) {
-            // this.surveyno = res.data.surveyno
-            this.partyInfoData = res.data.surveyphoto
+            this.surveyno = res.data.surveyno
+            // this.partyInfoData = res.data.surveyphoto
+
+            for (var i = 0; i < this.partyInfoData.length; i++) {
+              this.partyInfoData[i].licenseno = res.data.surveyphoto[i].licenseno
+              for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
+                for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
+                  if (res.data.surveyphoto[i].photolist[k].phototypecode == this.partyInfoData[i].photolist[j].phototypecode) {
+                    this.partyInfoData[i].photolist[j] = res.data.surveyphoto[i].photolist[k]
+                  }
+                }
+              }
+            }
             // for (var i = 0; i < this.partyInfoData.length; i++) {
-            //   for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
-            //     for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
-            //       if (res.data.surveyphoto[i].photolist[k].phototypecode == this.partyInfoData[i].photolist[j].phototypecode) {
-            //         this.partyInfoData[i].photolist[j] = res.data.surveyphoto[i].photolist[k]
-            //       }
-            //     }
-            //   }
+            //   this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
             // }
-            // // for (var i = 0; i < this.partyInfoData.length; i++) {
-            // //   this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
-            // // }
           }
           this.setState({
             loading:false
