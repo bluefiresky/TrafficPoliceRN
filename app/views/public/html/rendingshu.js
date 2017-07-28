@@ -90,24 +90,17 @@ export function generateRDS(basic, personList, factAndResponsibility, width){
         </tr>
         ${
           !personList[2].name?'':
-          '<tr>
-           <td>当事人</td>
-           <td>'+${personList[2].name}+'</td>
-           <td>驾驶证或身份证号码</td>
-           <td>'+${personList[2].driverNum}+'</td>
-           <td>联系电话</td>
-           <td>'+${personList[2].phone}+'</td>
-          </tr>
-          <tr>
-           <td>交通方式</td>
-           <td>'+${personList[2].carType}+'</td>
-           <td>机动车型号、牌号</td>
-           <td>'+${personList[2].licensePlateNum}+'</td>
-           <td>保险凭证号</td>
-           <td>'+${personList[2].carInsureNumber}+'</td>
-          </tr>
-          <tr>'
-        }
+          '<tr>'+
+            '<td>当事人</td><td>'+personList[2].name+'</td>'+
+            '<td>驾驶证或身份证号码</td><td>'+personList[2].driverNum+'</td>'+
+            '<td>联系电话</td><td>'+personList[2].phone+'</td>'+
+          '</tr>'+
+          '<tr>'+
+            '<td>交通方式</td><td>'+personList[2].carType+'</td>'+
+            '<td>机动车型号、牌号</td><td>'+personList[2].licensePlateNum+'</td>'+
+            '<td>保险凭证号</td><td>'+personList[2].carInsureNumber+'</td>'+
+          '</tr>'
+         }
          <td colspan="6">
           <table border="1px" scellpadding="0" cellspacing="0" style="font-size:14px; border-bottom: 0px;border-right: 0px;" width="100%">
            <tbody>
