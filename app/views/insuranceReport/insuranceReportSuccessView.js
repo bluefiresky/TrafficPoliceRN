@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager,DeviceEventEmitter } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
@@ -30,6 +30,7 @@ class InsuranceReportSuccessView extends Component {
     switch (buttonText) {
       case '返回首页':
         this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
+        DeviceEventEmitter.emit('InitHome');
         break;
       case '需要查勘，点击继续':
         this.timer && clearInterval(this.timer);
@@ -37,6 +38,7 @@ class InsuranceReportSuccessView extends Component {
         break;
       case '无需查勘，返回首页':
         this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
+        DeviceEventEmitter.emit('InitHome');
         break;
       case '请等待保险公司审核结果':
         break;

@@ -120,7 +120,7 @@ export function generateRDS(basic, personList, factAndResponsibility){
                 ${personList[1].signData?'<img src='+personList[1].signData+' />':''}
                 ${personList[2].signData?'<img src='+personList[2].signData+' />':''}
                 <br />
-                交通警察<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/91eb62d3-5e28-4443-9ab7-e7fcfd4511eb.png" /> （印章）<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/10f047a2-c10a-45cc-b573-8732ac7ef7b8.png"/>
+                交通警察<img src=${'data:image/jpeg;base64,'+global.personal.sealUrlBase64} /> （印章）<img src=${'data:image/jpeg;base64,'+global.personal.depSealUrlBase64} />
             </td>
             </tr>
             <tr>
@@ -130,7 +130,7 @@ export function generateRDS(basic, personList, factAndResponsibility){
              ${personList[1].signData?'<img src='+personList[1].signData+' />':''}
              ${personList[2].signData?'<img src='+personList[2].signData+' />':''}
              <br />
-             交通警察<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/91eb62d3-5e28-4443-9ab7-e7fcfd4511eb.png" /> （印章）<img src="http://testx.zhongchebaolian.com/photobase//photos/printSign/10f047a2-c10a-45cc-b573-8732ac7ef7b8.png"  /> </td>
+             交通警察<img src=${'data:image/jpeg;base64,'+global.personal.sealUrlBase64} /> （印章）<img src=${'data:image/jpeg;base64,'+global.personal.depSealUrlBase64}  /> </td>
             </tr>
            </tbody>
           </table></td>

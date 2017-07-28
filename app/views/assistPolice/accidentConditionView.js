@@ -16,7 +16,7 @@ import { StorageHelper } from '../../utility/index.js';
 
 
 const TitleList = ['甲方当事人：', '乙方当事人：', '丙方当事人：']
-const DamagedW = (W - 50)/3
+const DamagedW = (W - 80)/3
 
 class AccidentConditionView extends Component {
 

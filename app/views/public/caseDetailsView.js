@@ -2,7 +2,7 @@
 * 确认事故信息
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, FlatList, InteractionManager, Platform } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, FlatList, InteractionManager, Platform, TouchableHighlight, TouchableWithoutFeedback, Modal } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import RNFS from 'react-native-fs';
@@ -15,6 +15,7 @@ import { create_service, getStore } from '../../redux/index.js'; /** 调用api�
 const textColor = '#767676';
 const ImageW = (W - 3 * 20) / 2;
 const ImageH = (220 * ImageW)/340;
+const BigImageH = H-200
 const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}
 const DutyTypeList = [{name:'全责',code:'0'},{name:'无责',code:'1'},{name:'同等责任',code:'2'},{name:'主责',code:'3'},{name:'次责',code:'4'}];
 const Titles = ['甲方', '乙方', '丙方'];
@@ -49,6 +50,7 @@ class CaseDetailsView extends Component {
       pageFlag:null,
       pageUrl:null,
       handleWay:null,
+      showBigImage:false,
     }
 
     this.type = 0;  // 1 历史案件; 2 未上传案件
@@ -63,6 +65,9 @@ class CaseDetailsView extends Component {
     this.accidentDes = null;  // 事故情形
     this.personResponbilityList = null;  // 事故责任列表
     this.accidentStatus = null;
+    this.currentImage = null;
+
+    this._showBigPhoto = this._showBigPhoto.bind(this);
   }
 
   componentDidMount(){
@@ -142,7 +147,7 @@ class CaseDetailsView extends Component {
         if(taskModal){
           this.taskModal = this._convertCodeToEntry(taskModal, getStore().getState().dictionary.formList).name;
         }
-        if(this.accidentDes){
+        if(accidentDes){
           this.accidentDes = this._convertCodeToEntry(accidentDes, getStore().getState().dictionary.situationList).name;
         }
 
@@ -161,10 +166,12 @@ class CaseDetailsView extends Component {
 
   renderItem({item,index}) {
     return (
-      <View style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
-        <Image source={item.photoData} style={{width: ImageW, height: ImageH, justifyContent:'center', alignItems: 'center'}} />
-        <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.photoType}</Text>
-      </View>
+      <TouchableHighlight style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this._showBigPhoto(item.photoData,index)}>
+        <View>
+          <Image source={item.photoData} style={{width: ImageW, height: ImageH, justifyContent:'center', alignItems: 'center'}} />
+          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{item.photoType}</Text>
+        </View>
+      </TouchableHighlight>
     )
   }
 
@@ -196,16 +203,20 @@ class CaseDetailsView extends Component {
         {this.renderRowItem('保险到期日：', person.carInsureDueDate)}
 
         <View style={{marginVertical:10, flexDirection:'row', justifyContent:'center'}}>
-          <View style = {{alignItems:'center'}}>
-            <Image source={person.driverUrl} style={{width:ImageW,height:ImageH}}/>
-            <Text style={{fontSize:12,color:textColor,marginTop:10}}>{person.drivingUrl?'驾驶证':'证件照'}</Text>
-          </View>
+          <TouchableHighlight style={{alignItems:'center'}} underlayColor={'transparent'} onPress={()=> this._showBigPhoto(person.driverUrl) }>
+            <View style = {{alignItems:'center'}}>
+              <Image source={person.driverUrl} style={{width:ImageW,height:ImageH}}/>
+              <Text style={{fontSize:12,color:textColor,marginTop:10}}>{person.drivingUrl?'驾驶证':'证件照'}</Text>
+            </View>
+          </TouchableHighlight>
           {
             !person.drivingUrl? null :
-            <View style={{alignItems:'center',marginLeft:20}}>
-              <Image source={person.drivingUrl} style={{width:ImageW,height:ImageH}}/>
-              <Text style={{fontSize:12,color:textColor,marginTop:10,alignSelf:'center'}}>行驶证</Text>
-            </View>
+            <TouchableHighlight style={{alignItems:'center',marginLeft:20}} underlayColor={'transparent'} onPress={()=> this._showBigPhoto(person.drivingUrl) }>
+              <View>
+                <Image source={person.drivingUrl} style={{width:ImageW,height:ImageH}}/>
+                <Text style={{fontSize:12,color:textColor,marginTop:10,alignSelf:'center'}}>行驶证</Text>
+              </View>
+            </TouchableHighlight>
           }
         </View>
       </View>
@@ -216,9 +227,12 @@ class CaseDetailsView extends Component {
     let { taskNo, info } = this.props.navigation.state.params;
     if(this.type === 1){ // 历史案件
       if(t === 1){
-        let { button1Text, pageUrl } = this.state;
-        this.props.navigation.navigate('CommonWebView', {title:button1Text, url:pageUrl})
-        if(this.accidentStatus && this.accidentStatus == '8') Toast.showShortCenter('该案件已转现场处理');
+        if(this.accidentStatus && this.accidentStatus == '8') {
+          Toast.showShortCenter('该案件已转现场处理');
+        }else{
+          let { button1Text, pageUrl } = this.state;
+          this.props.navigation.navigate('CommonWebView', {title:button1Text, url:pageUrl})
+        }
       }else{
         this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
       }
@@ -384,13 +398,27 @@ class CaseDetailsView extends Component {
               <XButton title={'查看'+this.state.button1Text} onPress={() => this.gotoNext(1)} style={{backgroundColor:'#267BD8',borderRadius:20}} textStyle={{color:'#ffffff',fontSize:14}}/>
               <View style={{height: 30}} />
               {
-                (this.accidentStatus && this.accidentStatus == '2') ?
-                <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>:null
+                this.accidentStatus?
+                  (this.accidentStatus && this.accidentStatus == '2') ?
+                  <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>:null
+                :
+                <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
               }
             </View>
           }
         </ScrollView>
         <ProgressView show={this.state.loading} hasTitleBar={true} />
+
+        <View>
+          <Modal animationType="fade" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
+            <TouchableWithoutFeedback onPress={() => this.setState({showBigImage:false})}>
+              <View style={styles.modalContainer}>
+                <Image source={this.currentImage} style={{width:W,height:BigImageH,resizeMode:'contain'}}/>
+              </View>
+            </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+
       </View>
 
     );
@@ -410,6 +438,12 @@ class CaseDetailsView extends Component {
   }
 
   /** Private */
+  _showBigPhoto(photoData, index){
+    console.log(' sjda;jsdlfajldjflasdjf');
+    this.currentImage = photoData;
+    this.setState({showBigImage:true})
+  }
+
   _convertInfoToAccidentContent(basic, person){
     if(!basic) return '';
 
@@ -520,6 +554,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: backgroundGrey
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)'
   }
 });
 

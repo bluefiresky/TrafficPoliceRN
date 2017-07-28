@@ -90,7 +90,7 @@ export class SelectCarNum extends Component {
       <TouchableHighlight
         style={{width:ItemWidth, height:ItemWidth, marginTop:10, marginLeft:10, alignItems:'center',justifyContent: 'center',borderColor:'#D4D4D4',borderWidth:1,backgroundColor:'white'}}
         onPress={this.itemClick.bind(this,item.title, index)}
-        underlayColor={'transparent'}>
+        underlayColor={mainBule}>
         <Text style={{fontSize:14, color:formLeftText}}>{item.title}</Text>
       </TouchableHighlight>
     )

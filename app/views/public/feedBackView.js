@@ -45,6 +45,7 @@ class FeedBackView extends Component {
       this.props.dispatch( create_service(Contract.POST_ADVICE_ADD, {adviceContent: this.feedBackText, contactMobile:this.phoneNum}))
         .then( res => {
           if(res){
+            Toast.showShortCenter('提交成功');
             self.props.navigation.goBack(null);
           }else{
             this.setState({loading: false})

@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager,DeviceEventEmitter } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
@@ -26,6 +26,7 @@ class WaitRemoteResponsibleView extends Component {
     }
     this.timer = null;
     this._turnToLocal = this._turnToLocal.bind(this);
+    this._startFetchRemoteRes = this._startFetchRemoteRes.bind(this);
   }
 
   componentDidMount(){
@@ -37,11 +38,11 @@ class WaitRemoteResponsibleView extends Component {
       this.props.dispatch( create_service(Contract.GET_REMOTE_FIXDUTY_RESULT, {taskNo}))
         .then( res => {
           if(res){
-            if(res.status == 21){
+            if(res.status == '21'){
               this.props.navigation.dispatch({ type: 'replace', routeName: 'ResponsibleResultView', key: 'ResponsibleResultView', params: {remoteRes: res}});
-            }else if(res.status == 22){
+            }else if(res.status == '22'){
               this._turnToLocal();
-            }else if(res.status == 20){
+            }else if(res.status == '20'){
               this._caseHasCompleted();
             }else{
               this._startFetchRemoteRes(taskNo);
@@ -50,11 +51,17 @@ class WaitRemoteResponsibleView extends Component {
       })
     })
   }
+
+  componentWillUnMount(){
+    this.timer && clearInterval(this.timer)
+  }
+
   //取消远程定责
   cancleWait(){
     this.timer && clearInterval(this.timer);
     let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
     this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({routeName}) ]}) )
+    DeviceEventEmitter.emit('InitHome');
   }
 
   render(){
@@ -90,15 +97,17 @@ class WaitRemoteResponsibleView extends Component {
 
   /** Provate */
   _startFetchRemoteRes(taskNo){
+    console.log(' _startFetchRemoteRes');
     let self = this;
     this.timer = setInterval(() => {
+      console.log(' _startFetchRemoteRes setInterval and the taskNo -->> ', taskNo);
       self.props.dispatch( create_service(Contract.GET_REMOTE_FIXDUTY_RESULT, {taskNo}))
         .then( res => {
           if(res){
-            if(res.status == 21){
+            if(res.status == '21'){
               self.timer && clearInterval(self.timer)
               self.props.navigation.dispatch({ type: 'replace', routeName: 'ResponsibleResultView', key: 'ResponsibleResultView', params: {remoteRes: res}});
-            }else if(res.status == 22){
+            }else if(res.status == '22'){
               self.timer && clearInterval(self.timer)
               self._turnToLocal();
             }
@@ -124,6 +133,7 @@ class WaitRemoteResponsibleView extends Component {
 
           let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
           self.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({routeName}) ]}) )
+          DeviceEventEmitter.emit('InitHome');
         }}
     }});
   }
@@ -133,6 +143,7 @@ class WaitRemoteResponsibleView extends Component {
     let deleteRes = Utility.deleteFileByName(global.currentCaseId)
     let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
     this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
+    DeviceEventEmitter.emit('InitHome');
   }
 
 }
