@@ -154,7 +154,7 @@ export default class HistoricalCaseCellView extends Component {
           </TouchableHighlight>
         } else if (status == '10') {
           thirdButton = <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:'#267BD8'}} underlayColor='#267BD8' onPress={()=>{
-            this.props.navigation.navigate('ExploreTakePhotoView',{taskno:taskNo,surveyno:'',personData:cars})
+            this.props.navigation.navigate('ExploreTakePhotoView',{taskno:taskNo,surveyno:'',personData:cars,needRequestPhoto:true,photolist:[]})
           }}>
             <Text style={{color:'#ffffff',alignSelf:'center'}}>补拍照片</Text>
           </TouchableHighlight>

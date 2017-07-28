@@ -25,6 +25,7 @@ class PerfectInformantInfoView extends Component {
     }
     this.partyData = null;
     this.data = [];
+    this.photolistData = []
   }
   componentWillMount(){
     let { surveyno,taskno } = this.props.navigation.state.params
@@ -46,10 +47,10 @@ class PerfectInformantInfoView extends Component {
       //   Toast.showShortCenter(`请填写${this.data[i].person}的车架号`)
       //   return
       // }
-      if (this.data[i].scenelist.length == 0) {
-        Toast.showShortCenter(`请选择${this.data[i].person}的现场情况`)
-        return
-      }
+      // if (this.data[i].scenelist.length == 0) {
+      //   Toast.showShortCenter(`请选择${this.data[i].person}的现场情况`)
+      //   return
+      // }
     }
     this.setState({
       loading: true
@@ -59,7 +60,7 @@ class PerfectInformantInfoView extends Component {
     this.props.dispatch( create_service(Contract.POST_SURVEY_INFO, this.submitData))
       .then( res => {
         if (res) {
-          this.props.navigation.navigate('ExploreTakePhotoView',{surveyno:surveyno,personData:this.data,taskno:taskno})
+          this.props.navigation.navigate('ExploreTakePhotoView',{surveyno:surveyno,personData:this.data,taskno:taskno,photolist:this.photolistData,needRequestPhoto:false})
         }
         this.setState({
           loading:false
@@ -90,6 +91,7 @@ class PerfectInformantInfoView extends Component {
           this.partyData = res.data.surveylist
           for (var i = 0; i < res.data.surveylist.length; i++) {
             let onePerson = res.data.surveylist[i]
+            this.photolistData.push(onePerson.photolist);
             this.data.push({person:onePerson.person,licenseno:onePerson.licenseno,driverlicenseno:onePerson.driverlicenseno,engineno:onePerson.engineno,vinno:onePerson.vinno,driverflag:onePerson.driverflag,drivingflag:onePerson.drivingflag,matchingflag:onePerson.matchingflag,scenelist:[]})
             this.partyData[i].scenelist = []
           }

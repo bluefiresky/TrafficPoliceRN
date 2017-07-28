@@ -88,9 +88,9 @@ class InsuranceReportSuccessView extends Component {
     let buttonText;
     let defaultColor;
     let showImage;
-    let { openflag } = this.props.navigation.state.params;
+    let { openflag,needTimer } = this.props.navigation.state.params;
     if (openflag) {
-      if (this.waitForLook) {
+      if (this.waitForLook && needTimer) {
         tipMsg = '您的保险报案已成功'
         detailMsg = '事故信息已传至保险公司，请等待保险公司确认是否需要现场查勘操作，最多3分钟，请耐心等待'
         buttonText = '请等待保险公司审核结果'

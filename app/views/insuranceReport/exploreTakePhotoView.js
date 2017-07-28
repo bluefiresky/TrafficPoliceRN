@@ -36,7 +36,7 @@ class ExploreTakePhotoView extends Component {
       showDamageModalView: false
     }
     let { phototypelist,partlist } = getStore().getState().insuranceDictionary
-    let { personData } = props.navigation.state.params
+    let { personData,photolist,surveyno } = props.navigation.state.params
     this.partyInfoData = personData
     for (var i = 0; i < this.partyInfoData.length; i++) {
       this.partyInfoData[i].photolist = []
@@ -47,12 +47,25 @@ class ExploreTakePhotoView extends Component {
         this.partyInfoData[j].photolist.push({phototypename:phototypelist[i].name,url:phototypelist[i].url,phototypecode:phototypelist[i].code,pid:''})
       }
     }
+    if (photolist.length > 0) {
+      for (var i = 0; i < photolist.length; i++) {
+        if (photolist[i].length > 0) {
+          for (var j = 0; j < photolist[i].length; j++) {
+            for (var k = 0; k < this.partyInfoData[i].photolist.length; k++) {
+              if (this.partyInfoData[i].photolist[k].phototypecode == photolist[i][j].phototypecode) {
+                this.partyInfoData[i].photolist[k] = photolist[i][j]
+              }
+            }
+          }
+        }
+      }
+    }
     for (var i = 0; i < partlist.length; i++) {
       partlist[i].isSel = false
     }
     this.carDamageData = partlist;
     this.partcode = ''
-    this.surveyno = ''
+    this.surveyno = surveyno
     this.currentImgae = null;
     this.currentImgaeIndex = -1;   //图片所属的当事人中某张
     this.currentImgaeInSection = -1;  //图片所属的当事人
@@ -73,32 +86,34 @@ class ExploreTakePhotoView extends Component {
         };
   }
   componentDidMount(){
-    let { taskno } = this.props.navigation.state.params
-    this.setState({
-      loading: true
-    })
-    this.props.dispatch( create_service(Contract.POST_SURVEY_PHOTOS,{taskno:taskno}))
-      .then( res => {
-        if (res) {
-          this.surveyno = res.data.surveyno
-          // this.partyInfoData = res.data.surveyphoto
-          for (var i = 0; i < this.partyInfoData.length; i++) {
-            for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
-              for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
-                if (res.data.surveyphoto[i].photolist[k].phototypecode == this.partyInfoData[i].photolist[j].phototypecode) {
-                  this.partyInfoData[i].photolist[j] = res.data.surveyphoto[i].photolist[k]
-                }
-              }
-            }
+    let { taskno,needRequestPhoto } = this.props.navigation.state.params
+    if (needRequestPhoto) {
+      this.setState({
+        loading: true
+      })
+      this.props.dispatch( create_service(Contract.POST_SURVEY_PHOTOS,{taskno:taskno}))
+        .then( res => {
+          if (res) {
+            // this.surveyno = res.data.surveyno
+            this.partyInfoData = res.data.surveyphoto
+            // for (var i = 0; i < this.partyInfoData.length; i++) {
+            //   for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
+            //     for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
+            //       if (res.data.surveyphoto[i].photolist[k].phototypecode == this.partyInfoData[i].photolist[j].phototypecode) {
+            //         this.partyInfoData[i].photolist[j] = res.data.surveyphoto[i].photolist[k]
+            //       }
+            //     }
+            //   }
+            // }
+            // // for (var i = 0; i < this.partyInfoData.length; i++) {
+            // //   this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
+            // // }
           }
-          // for (var i = 0; i < this.partyInfoData.length; i++) {
-          //   this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
-          // }
-        }
-        this.setState({
-          loading:false
-        })
-    })
+          this.setState({
+            loading:false
+          })
+      })
+    }
   }
   //拍照
   takePhoto(item,index,ind){

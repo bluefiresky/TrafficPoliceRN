@@ -37,7 +37,7 @@ class InsuranceReportDetailView extends Component {
     this.props.dispatch( create_service(Contract.POST_SURVEY_DETAIL, {taskno:taskno}))
       .then( res => {
         if (res) {
-          if (status == '3' || status == '13') {
+          if (status == '3' || status == '12' || status == '13') {
             this.partyData = res.data.insurelist
           } else{
             this.partyData = res.data.surveylist
@@ -69,7 +69,7 @@ class InsuranceReportDetailView extends Component {
       <View style={{marginTop:15}}>
         <View style={{flexDirection:'row'}}>
           <Text style={{marginLeft:15,color:formLeftText}}>{title}</Text>
-          <Text style={{marginLeft:20,color:formLeftText}}>{value}</Text>
+          <Text style={{marginLeft:20,color:formLeftText,flex:1}}>{value}</Text>
         </View>
         <View style={{backgroundColor:backgroundGrey,height:1,marginTop:15,marginLeft:15}}></View>
       </View>
@@ -153,7 +153,7 @@ class InsuranceReportDetailView extends Component {
     this.contentArrs = [];
     let content = null;
     let { taskno,status } = this.props.navigation.state.params
-    if (status == '3' || status == '13') {
+    if (status == '3' || status == '12' || status == '13') {
       content = <ScrollView showsVerticalScrollIndicator={false}>
         {this.partyData.map((value,index) => this.renderOnePartyForNo(value,index))}
       </ScrollView>
