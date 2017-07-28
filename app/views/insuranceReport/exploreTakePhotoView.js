@@ -75,8 +75,8 @@ class ExploreTakePhotoView extends Component {
             takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
             chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
             mediaType: 'photo',
-            maxWidth: 1500,
-            maxHeight: 2000,
+            maxWidth: 750,
+            maxHeight: 1000,
             quality: 0.5,
             storageOptions: {
                 cameraRoll:true,
