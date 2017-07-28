@@ -116,7 +116,7 @@ class UploadProgressView extends Component {
           type: 'replace',
           routeName: 'UploadSuccessView',
           key: 'UploadSuccessView',
-          params: {content, taskNo:thi.setState.taskNo}
+          params: {content, taskNo:this.setState.taskNo}
         });
       }
       return;
