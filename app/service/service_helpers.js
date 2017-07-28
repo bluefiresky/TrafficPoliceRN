@@ -73,9 +73,11 @@ function http_factory({method, paramsType}) {
         console.log('%c service_helpers response-jsonData -->> ', 'color:limegreen', jsonData);
 
         let code = jsonData.code;
-        if(code == 500){
+        if(code == 500 || code == 202 || code == 203 || code == 204 || code == 205 ||
+           code == 206 || code == 208 || code == 209 || code == 210 || code == 211 ||
+           code == 212 || code == 213 || code == 214 || code == 216 || code == 218){
           return { success: false, message: jsonData.message };
-        }else {
+        }else
           return { success: true, message: jsonData };
         }
       }else{
