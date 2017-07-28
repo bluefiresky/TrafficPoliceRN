@@ -117,7 +117,7 @@ export function generateRDS(basic, personList, factAndResponsibility){
                 <p></p>
                 <p></p>
                 <br /> 当事人：<img src=${personList[0].signData} />
-                ${personList[1].signData?'<img src='+personList[1].signData+' />':''}
+                ${personList[1].signData?'<img src='+personList[1].signData+' alt="" />':''}
                 ${personList[2].signData?'<img src='+personList[2].signData+' />':''}
                 <br />
                 交通警察<img src=${'data:image/jpeg;base64,'+global.personal.sealUrlBase64} /> （印章）<img src=${'data:image/jpeg;base64,'+global.personal.depSealUrlBase64} />

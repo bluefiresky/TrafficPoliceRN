@@ -13,7 +13,7 @@ export const XIN_REQ_TIMEOUT = 10000
 
 /** 请求服务的url @type {string} */
 export const XinConfigTitle = "Dev"
-export const XIN_SERVICE_URL = 'https://testx.zhongchebaolian.com/police-api-web/router'
+export const XIN_SERVICE_URL = 'http://testx.zhongchebaolian.com/police-api-web/router'
 // export const XIN_SERVICE_URL = 'http://10.214.175.123:8080/police-api-web/router'
 export const XIN_APISIGN_STR = '021711ea-3578-4408-91c0-8f3728964094'
 export const XIN_CURRENT_TIME = () => {

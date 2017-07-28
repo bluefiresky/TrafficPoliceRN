@@ -102,9 +102,17 @@ class CertificateView extends Component {
     let nPersonList = [];
     for(let i=0; i < person.length; i++){
       let p = person[i];
-      let signData = await NativeModules.ImageToBase64.convertToBase64(DocumentPath+duty[i].signData);
-      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+signData.base64})
+      let d = duty[i];
+      let signData = '';
+      if(d.refuseFlag == '01'){
+        let s = await NativeModules.ImageToBase64.convertToBase64(DocumentPath+d.signData);
+        signData = s.base64;
+      }else{
+        signData = d.signData;
+      }
+      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureNumber:p.carInsureNumber, signData:'data:image/jpeg;base64,'+signData})
     }
+
     if(nPersonList.length === 2){
       nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
     }else if(nPersonList.length === 3){
@@ -124,8 +132,15 @@ class CertificateView extends Component {
     let nPersonList = [];
     for(let i=0; i < person.length; i++){
       let p = person[i];
-      let signData = await NativeModules.ImageToBase64.convertToBase64(DocumentPath+duty[i].signData);
-      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureDueDate:p.carInsureDueDate, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+signData.base64, signTime:duty[i].signTime, insureCompanyName:p.insureCompanyName})
+      let d = duty[i];
+      let signData = '';
+      if(d.refuseFlag == '01'){
+        let s = await NativeModules.ImageToBase64.convertToBase64(DocumentPath+d.signData);
+        signData = s.base64;
+      }else{
+        signData = d.signData;
+      }
+      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureDueDate:p.carInsureDueDate, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+signData, signTime:d.signTime, insureCompanyName:p.insureCompanyName})
     }
 
     let formList = getStore().getState().dictionary.formList;
