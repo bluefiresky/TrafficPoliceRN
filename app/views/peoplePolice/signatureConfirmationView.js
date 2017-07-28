@@ -163,12 +163,7 @@ class SignatureConfirmationView extends Component {
 
         <View style={{flexDirection:'row',marginTop:15,marginLeft:20,alignItems:'center'}}>
           <Input label={'手机号:'} value={value.phone} keyboardType={'numeric'} style={{flex:1, height: 35, paddingLeft:0}} hasClearButton={false} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
-          {
-            value.refuseFlag === '02'?null:
-            <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value,index)} disabled={value.refuseFlag === '02'}>
-              <Text style={{fontSize:14,color:mainBule}}>{value.codeText }</Text>
-            </TouchableHighlight>
-          }
+
         </View>
 
         <View style={{flexDirection:'row', height:30, marginLeft:20, alignItems:'center'}}>
@@ -184,7 +179,15 @@ class SignatureConfirmationView extends Component {
         {
           value.refuseFlag === '02'? null :
           <View style={{marginLeft:20}}>
-            <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
+            <View style={{flexDirection:'row', alignItems:'center'}}>
+              <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
+              {
+                value.refuseFlag === '02'?null:
+                <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value,index)} disabled={value.refuseFlag === '02'}>
+                  <Text style={{fontSize:14,color:mainBule}}>{value.codeText }</Text>
+                </TouchableHighlight>
+              }
+            </View>
             {value.showSpeekCode ?
               <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                 <Text style={{marginRight:15}}>

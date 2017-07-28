@@ -48,7 +48,11 @@ class CertificateView extends Component {
           }else{
             html = await this._generateRenDingShu(info)
           }
-          this.setState({loading:false, source:{html, baseUrl:''}})
+          if(Platform.OS === 'ios'){
+            this.setState({loading:false, source:{html, baseUrl:''}})
+          }else{
+            this.setState({loading:false, source:{html}})
+          }
         }else{
           // this.setState({loading:false})
         }
@@ -113,16 +117,16 @@ class CertificateView extends Component {
       nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureNumber:p.carInsureNumber, signData:'data:image/jpeg;base64,'+signData})
     }
 
-    if(nPersonList.length === 2){
+    if(nPersonList.length === 1){
       nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
-    }else if(nPersonList.length === 3){
       nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
+    }else if(nPersonList.length === 2){
       nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
     }
 
     let factAndResponsibility = this._convertInfoToAccidentContent(basic, person) + this._convertResponsebilityContent(person, duty);
 
-    return generateRDS(nBasic, nPersonList, factAndResponsibility)
+    return generateRDS(nBasic, nPersonList, factAndResponsibility, W)
   }
 
   async _generateXieYiShu(info){

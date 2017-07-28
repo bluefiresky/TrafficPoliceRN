@@ -1,4 +1,4 @@
-export function generateRDS(basic, personList, factAndResponsibility){
+export function generateRDS(basic, personList, factAndResponsibility, width){
   return(
     `<!DOCTYPE html>
     <html>

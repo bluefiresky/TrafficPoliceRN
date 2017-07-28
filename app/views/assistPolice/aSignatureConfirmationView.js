@@ -210,13 +210,13 @@ class ASignatureConfirmationView extends Component {
           value.refuseFlag === '02'?null:
           <View style={{marginLeft:20}}>
             <View style={{flexDirection:'row', alignItems:'center'}}>
-            <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
-            {
-              value.refuseFlag === '02'?null:
-              <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value,index)} disabled={value.refuseFlag === '02'}>
-                <Text style={{fontSize:14,color:mainBule}}>{value.codeText }</Text>
-              </TouchableHighlight>
-            }
+              <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
+              {
+                value.refuseFlag === '02'?null:
+                <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value,index)} disabled={value.refuseFlag === '02'}>
+                  <Text style={{fontSize:14,color:mainBule}}>{value.codeText }</Text>
+                </TouchableHighlight>
+              }
             </View>
             {
               value.showSpeekCode ?
