@@ -99,11 +99,11 @@ class ConfirmReportPartyInfoView extends Component {
         {this.renderRowItem('驾驶证有效期是否正常：',value.driverflag ? '正常':'不正常')}
         {this.renderRowItem('行驶证有效期是否正常：',value.drivingflag ? '正常':'不正常')}
         {this.renderRowItem('准驾车型与车辆类型是否匹配：',value.matchingflag ? '匹配' : '不匹配')}
-        {value.scenelist.length > 0 ? <View style={{marginTop:20,marginLeft:15,marginBottom:15}}>
+        {(value.scenelist && value.scenelist.length > 0) ? <View style={{marginTop:20,marginLeft:15,marginBottom:15}}>
           <Text style={{fontSize:16,color:formLeftText}}>现场情况：</Text>
           {value.scenelist.map((value,index) => this.renderOtherTypeView(value,index))}
         </View>:null}
-        {value.photolist.length > 0 ? <View style={{flexDirection:'row',flexWrap:'wrap',marginBottom:15}}>
+        {(value.photolist && value.photolist.length > 0) ? <View style={{flexDirection:'row',flexWrap:'wrap',marginBottom:15}}>
           {value.photolist.map((value,index) => this.renderPhotoItem(value,index))}
         </View>:null}
       </View>
