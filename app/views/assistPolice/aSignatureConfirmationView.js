@@ -307,7 +307,7 @@ class ASignatureConfirmationView extends Component {
                   }else if(index === 2){
                     tmp = this.refs.refuse2;
                   }
-                  takeSnapshot(tmp, {format: "jpeg",quality: 0.8,result:'base64'})
+                  takeSnapshot(tmp, {format: "png",quality: 0.8,result:'base64'})
                     .then(uri => {
                       value.signData = uri;
                       value.signTime = Utility.formatDate('yyyy-MM-dd hh:mm:ss');

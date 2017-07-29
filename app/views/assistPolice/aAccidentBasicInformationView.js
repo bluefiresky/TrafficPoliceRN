@@ -37,6 +37,7 @@ class AAccidentBasicInformationView extends Component {
     this.tmp = 1;
   }
   componentDidMount(){
+    this.setState({loading: true})
     //首先进来需要先定位
     //定位完成设置位置信息
     InteractionManager.runAfterInteractions(() => {

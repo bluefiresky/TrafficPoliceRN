@@ -37,6 +37,7 @@ class AccidentBasicInformationView extends Component {
     this.tmp = 1;
   }
   componentDidMount(){
+    this.setState({loading: true})
     //页面载入，获取当前系统时间，可修改。点击时间框，调起时间选择插件。时间格式“XXXX年XX月XX日 XX时XX分”。需同时记录当前系统时间、修改后时间，都需传给后台。
     //页面载入时，进行定位，定位结束loading消失,无法定位，弹框提示手动修改事故地点。定位失败，弹框提示重试。定位成功，显示定位到的地点
     InteractionManager.runAfterInteractions(() => {
