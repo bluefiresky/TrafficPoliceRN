@@ -28,6 +28,7 @@ public class ImageToBase64 extends ReactContextBaseJavaModule implements Activit
 
     @ReactMethod
     public void convertToBase64(String path, Promise promise){
+        Log.i(TAG, "convertToBase64: and the path -->> " + path);
         Bitmap bitmap = ratio(path, 750, 1000);
 
         String result = null;

@@ -20,7 +20,7 @@ import { generateXYS } from './html/xieyishu.js';
 const DutyTypeList = [{name:'全责',code:'0'},{name:'无责',code:'1'},{name:'同等责任',code:'2'},{name:'主责',code:'3'},{name:'次责',code:'4'}];
 const XYSDutyTypeList = [{name:'全责',code:'0'},{name:'无责',code:'1'},{name:'同等责任',code:'2'}];
 const ButtonW = (W - 60)/2
-const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
+const DocumentPath = Platform.select({ android: '', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
 class CertificateView extends Component {
 
@@ -37,7 +37,7 @@ class CertificateView extends Component {
   }
 
   componentDidMount(){
-    // this.setState({loading:true})
+    this.setState({loading:true})
     InteractionManager.runAfterInteractions(()=>{
       this._getInfo(async (info) => {
         console.log(' the info -->>', info);
@@ -80,6 +80,7 @@ class CertificateView extends Component {
           <XButton title={'保存为图片'} onPress={this._onPress.bind(this, 1)} borderRadius={20} style={{backgroundColor:'#ffffff',width:ButtonW,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
           <XButton title={'返回首页'} onPress={this._onPress.bind(this, 2)} borderRadius={20} style={{backgroundColor:'#267BD8',width:ButtonW}} textStyle={{color:'#ffffff',fontSize:14}}/>
         </View>
+        <ProgressView show={this.state.loading} hasTitleBar={true}/>
       </View>
     );
   }
@@ -117,7 +118,6 @@ class CertificateView extends Component {
       }
       nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureNumber:p.carInsureNumber, signData:'data:image/jpeg;base64,'+signData})
     }
-
     if(nPersonList.length === 1){
       nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
       nPersonList.push({name:'', phone:'', driverNum:'', licensePlateNum:'', carType:'', carInsureNumber:'', signData:''})
