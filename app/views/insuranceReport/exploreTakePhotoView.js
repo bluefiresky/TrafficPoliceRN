@@ -189,6 +189,12 @@ class ExploreTakePhotoView extends Component {
     this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url = '';
     let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].photolist));
     this.partyInfoData[this.currentImgaeInSection].photolist = temp;
+    for (var i = 0; i < this.carDamageData.length; i++) {
+      if (this.carDamageData[i].name == this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].phototypename) {
+        this.partcode = this.carDamageData[i].code
+      }
+    }
+
     this.setState({
       showBigImage: false
     })
