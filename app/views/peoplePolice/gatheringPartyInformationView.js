@@ -236,6 +236,7 @@ class GatheringPartyInformationView extends Component {
      });
      Picker.show();
   }
+
   renderOnePersonInfo(value,index){
     return (
       <View style={{backgroundColor:'#ffffff'}} key={index}>
@@ -243,7 +244,10 @@ class GatheringPartyInformationView extends Component {
         <View style={{marginTop:10,flexDirection:'row',paddingTop:10,paddingBottom:10,justifyContent:'space-between'}}>
           <View style={{flexDirection:'row',marginLeft:15}}>
             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-            <Text style={{fontSize:15,color:formLeftText,marginLeft:10,alignSelf:'center'}}>{`${value.title}当事人`}</Text>
+            <Text style={{fontSize:15,color:formLeftText,marginLeft:10,alignSelf:'center'}}>
+              {`${value.title}当事人`}
+              <Text style={{fontSize:15,color:'red'}}>{index===1?'(单车事故时请删除乙方当事人)':null}</Text>
+            </Text>
           </View>
           {(index == this.carInfoData.length - 1 && index !== 0)?<TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={()=>this.deleteItem(index)} underlayColor='transparent'>
             <Image style={{width:20,height:20}} source={require('./image/delete.png')}/>
@@ -321,7 +325,7 @@ class GatheringPartyInformationView extends Component {
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
-        <View style={{flexDirection:'row',marginLeft:15,paddingTop:10}}>
+        <View style={{flexDirection:'row',marginLeft:22,paddingTop:10}}>
           <Text style={{fontSize:14,color:formLeftText,marginLeft:10}}>保险到期日:</Text>
           <DatePicker
             style={{marginTop:-12,flex:1}}
@@ -353,6 +357,17 @@ class GatheringPartyInformationView extends Component {
               })
             }}
           />
+          {
+            !(this.submitDataArr.length > 0 && this.submitDataArr[index].carInsureDueDate)? null:
+            <TouchableHighlight
+              style={{alignItems:'center', justifyContent:'center', marginTop:-10, width:40}}
+              onPress={()=>{
+                this.submitDataArr[index].carInsureDueDate = '';
+                this.setState({refresh:true})
+              }}>
+              <Image style={{height: 15, width: 15, resizeMode:'contain'}} source={require('./image/icon-clear-text.png')}/>
+            </TouchableHighlight>
+          }
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
       </View>

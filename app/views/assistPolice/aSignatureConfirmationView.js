@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager,NativeModules } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager,NativeModules,TouchableOpacity,DeviceEventEmitter } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { takeSnapshot } from "react-native-view-shot";
@@ -37,6 +37,22 @@ class ASignatureConfirmationView extends Component {
     this.getVerCode = this.getVerCode.bind(this);
     this.getVerCodeVoice = this.getVerCodeVoice.bind(this);
     this.timerArray = [{timer: null}, {timer: null}, {timer: null}];
+    this.canBack = true;
+  }
+
+  componentWillMount(){
+    let self = this;
+    DeviceEventEmitter.addListener('TitleBackPress', () => {
+      if(self.canBack){
+        self.props.navigation.goBack();
+      }
+    })
+  }
+
+  componentWillUnmount(){
+    this.timerArray[0] && clearInterval(this.timerArray[0]);
+    this.timerArray[1] && clearInterval(this.timerArray[1]);
+    this.timerArray[2] && clearInterval(this.timerArray[2]);
   }
 
   componentDidMount(){
@@ -113,6 +129,8 @@ class ASignatureConfirmationView extends Component {
       this.setState({loading: false})
       if(success) this.props.navigation.navigate('UploadProgressView', {content:'案件信息上传成功，交通事故自行协商协议书稍后将以短信形式发送至当事人手机。'});
     }else if(this.handleWay === '03' || this.handleWay === '05'){
+      this.canBack = false; // 控制back按键不能回退
+
       let signatureList = [];
       for(let i = 0; i<this.dutyList.length; i++){
         let d = this.dutyList[i];
@@ -126,7 +144,13 @@ class ASignatureConfirmationView extends Component {
       }
       this.res = await this.props.dispatch( create_service(Contract.POST_GENERATE_DUTYCONFIRMATION, {taskNo: this.taskNo, signatureList:JSON.stringify(signatureList)}))
       this.setState({loading: false});
-      if(this.res) this.props.navigation.navigate('UploadSuccessView', {content:'案件信息上传成功，交通事故认定书稍后将以短信形式发送至当事人手机。', taskNo:this.taskNo});
+
+      if(this.res) {
+        this.props.navigation.navigate('UploadSuccessView', {content:'案件信息上传成功，交通事故认定书稍后将以短信形式发送至当事人手机。', taskNo:this.taskNo});
+        this.timerArray[index] && clearInterval(this.timerArray[index]);
+      }else{
+        this.canBack = true;
+      }
     }
 
   }
@@ -210,13 +234,13 @@ class ASignatureConfirmationView extends Component {
           value.refuseFlag === '02'?null:
           <View style={{marginLeft:20}}>
             <View style={{flexDirection:'row', alignItems:'center'}}>
-            <Input label={'验证码:'} placeholder={'请输入验证码'} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
-            {
-              value.refuseFlag === '02'?null:
-              <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value,index)} disabled={value.refuseFlag === '02'}>
-                <Text style={{fontSize:14,color:mainBule}}>{value.codeText }</Text>
-              </TouchableHighlight>
-            }
+              <Input label={'验证码:'} placeholder={'请输入验证码'} maxLength={6} value={value.code} keyboardType={'numeric'} hasClearButton={false} style={{flex:1, height: 35, paddingLeft:0}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Code') }}/>
+              {
+                value.refuseFlag === '02'?null:
+                <TouchableHighlight style={{marginRight:20}} underlayColor={'transparent'} onPress={()=>this.getVerCode(value,index)} disabled={value.refuseFlag === '02'}>
+                  <Text style={{fontSize:14,color:mainBule}}>{value.codeText }</Text>
+                </TouchableHighlight>
+              }
             </View>
             {
               value.showSpeekCode ?
@@ -337,4 +361,20 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports.ASignatureConfirmationView = connect()(ASignatureConfirmationView)
+const ExportView = connect()(ASignatureConfirmationView);
+ExportView.navigationOptions = ({ navigation }) => {
+  let { params } = navigation.state;
+  let resultCallback = params? params.resultCallback : null;
+  return {
+    headerLeft: (
+      <TouchableOpacity activeOpacity={0.8} style={{width:50}} onPress={() => { DeviceEventEmitter.emit('TitleBackPress')}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', padding: 10}}>
+          <Image source={require('./image/back-icon.png')} style={{tintColor: 'white', width: 20, height: 20, resizeMode: 'contain'}}/>
+          <Text style={{color: 'white', fontSize: 16}}></Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+}
+
+module.exports.ASignatureConfirmationView = ExportView

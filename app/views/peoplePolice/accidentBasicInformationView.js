@@ -14,7 +14,7 @@ import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import Tool from '../../utility/Tool';
-import { StorageHelper } from '../../utility/index.js';
+import { StorageHelper, Utility } from '../../utility/index.js';
 
 class AccidentBasicInformationView extends Component {
 
@@ -107,6 +107,7 @@ class AccidentBasicInformationView extends Component {
              <Text style={{marginLeft:15,fontSize:16,color:formLeftText,alignSelf:'center'}}>事故时间</Text>
              <DatePicker style={{flex:1}} date={this.state.date} mode="datetime" format="YYYY-MM-DD h:mm a" confirmBtnText="确定" cancelBtnText="取消"
                iconSource={require('./image/right_arrow.png')}
+               maxDate={Utility.formatDate('yyyy-MM-dd hh:mm:ss')}
                customStyles={{dateInput: { alignItems:'flex-end', borderColor:'#ffffff' }, dateIcon: { width:7, height:12, marginRight:15 } }}
                onDateChange={(date) => {
                  console.log('########### date -->> ', date);

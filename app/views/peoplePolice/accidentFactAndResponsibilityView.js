@@ -25,6 +25,7 @@ class AccidentFactAndResponsibilityView extends Component {
       localDutyList:[]
     }
     this.info = {};
+    this.dutyDisabled = false;
   }
 
   componentDidMount(){
@@ -32,9 +33,14 @@ class AccidentFactAndResponsibilityView extends Component {
       this.info = await StorageHelper.getCurrentCaseInfo();
       let { basic, person, localDutyList, supplementary, conciliation } = this.info;
       let ldl = [];
-      for(let i=0; i < person.length; i++){
-        let p = person[i];
-        ldl.push({name: p.name, phone:p.phone, licensePlateNum: p.licensePlateNum, dutyName: '', dutyType: ''})
+      if(person.length === 1){
+        this.dutyDisabled = true;
+        ldl.push({name: person[0].name, phone:person[0].phone, licensePlateNum: person[0].licensePlateNum, dutyName: '全责', dutyType: '0'})
+      }else{
+        for(let i=0; i < person.length; i++){
+          let p = person[i];
+          ldl.push({name: p.name, phone:p.phone, licensePlateNum: p.licensePlateNum, dutyName: '', dutyType: ''})
+        }
       }
       this.setState({localDutyList: ldl});
     })
@@ -71,7 +77,7 @@ class AccidentFactAndResponsibilityView extends Component {
   renderOneParty(value,index){
     return (
       <View style={{marginLeft:15}} key={index}>
-        <DutyTypePicker label={`当事人${value.name}(${value.licensePlateNum})`} placeholder={'请选择责任类型'} value={value.dutyName} onChange={(res)=>{ this.onChangeText(res, 'DutyList', index) }} noBorder={true}/>
+        <DutyTypePicker disabled={this.dutyDisabled} label={`当事人:${value.name}(${value.licensePlateNum})`} placeholder={'请选择责任类型'} value={value.dutyName} onChange={(res)=>{ this.onChangeText(res, 'DutyList', index) }} noBorder={true}/>
         <View style={{height:1,backgroundColor:backgroundGrey,marginRight:15}} />
       </View>
     )

@@ -8,7 +8,8 @@ import React, { Component } from 'react';
 import _Picker from 'react-native-picker';
 
 import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, TouchableHighlight, Platform, Image  } from 'react-native';
-import { W, borderColor, formLeftText, formRightText, commonText, placeholderColor } from '../../configs/index.js';
+import { W, borderColor, formLeftText, formRightText, commonText, placeholderColor, backgroundGrey } from '../../configs/index.js';
+import { Input } from '../index.js';  /** 自定义组件 */
 
 export class CarTypePicker extends Component {
 
@@ -23,6 +24,7 @@ export class CarTypePicker extends Component {
     this._onChangeText = this._onChangeText.bind(this);
     this.data = this.props.data;
     this.labelArray = [];
+    this.inputType = 0; // 0:正常 -- 1:其他
   }
 
   componentDidMount(){
@@ -58,11 +60,27 @@ export class CarTypePicker extends Component {
     return res;
   }
 
-  _onChangeText(entry) {
+  _onChangeText(entry, input) {
     // console.log('doing onjectPicker _onChangeText and the entry -->> ', entry);
-    if (this.props.onChange) {
-      this.props.onChange(entry);
+    if(input){
+      if (this.props.onChange) {
+        this.props.onChange(entry);
+      }
+      this.inputType = 1;
+    }else{
+      if(entry.indexOf('其他') != -1){
+        this.inputType = 1;
+        if (this.props.onChange) {
+          this.props.onChange('');
+        }
+      }else{
+        this.inputType = 0;
+        if (this.props.onChange) {
+          this.props.onChange(entry);
+        }
+      }
     }
+
   }
 
   render(){
@@ -70,26 +88,38 @@ export class CarTypePicker extends Component {
     const border = noBorder? null : { borderBottomColor :  borderColor, borderBottomWidth: 0.5 };
 
     return(
-      <View style={ [{paddingLeft: 20, flexDirection: 'row', height: 40, backgroundColor: 'white'}, border] }>
-        <View style={{width: labelWidth? labelWidth : 80, justifyContent: 'center'}}>
-          <Text style={{ color: formLeftText, fontSize: 14 }}>{ label }</Text>
-        </View>
-        <TouchableWithoutFeedback onPress={this._onPress}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{flex: 1, justifyContent: 'center'}}>
-              {
-                value && value != ''?
-                <Text style={{fontSize: 14, color: commonText}} numberOfLines={2} >{value}</Text>
-                :
-                <Text style={{fontSize: 14, color: placeholderColor}}>{placeholder}</Text>
-              }
-            </View>
-            <View style={{width: 50, alignItems: 'center', justifyContent: 'center'}}>
-              <Image style={{height: 12, width: 12, resizeMode: 'contain'}} source={require('./image/right_arrow.png')}/>
-            </View>
+      <View style={[{paddingLeft:20}, border]}>
+        <View style={ [{flexDirection: 'row', height: 40, backgroundColor: 'white'}] }>
+          <View style={{width: labelWidth? labelWidth : 80, justifyContent: 'center'}}>
+            <Text style={{ color: formLeftText, fontSize: 14 }}>{ label }</Text>
           </View>
-        </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={this._onPress}>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <View style={{flex: 1, justifyContent: 'center'}}>
+                {
+                  value && value != ''?
+                  <Text style={{fontSize: 14, color: commonText}} numberOfLines={2} >{this.inputType === 1? '其他':value}</Text>
+                  :
+                  <Text style={{fontSize: 14, color: placeholderColor}}>{this.inputType === 1?'其他':placeholder}</Text>
+                }
+              </View>
+              <View style={{width: 50, alignItems: 'center', justifyContent: 'center'}}>
+                <Image style={{height: 12, width: 12, resizeMode: 'contain'}} source={require('./image/right_arrow.png')}/>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        {
+          this.inputType === 1?
+            <View>
+              <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
+              <Input label={'其他类型'} placeholder={'请输入其他车辆类型'} value={value} maxLength={18} style={{flex:1, height: 40, paddingLeft:0}} noBorder={true} onChange={(text) => { this._onChangeText(text, true) }}/>
+            </View>
+            :
+            null
+        }
       </View>
+
     )
   }
 }

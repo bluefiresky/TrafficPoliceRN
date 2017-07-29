@@ -75,7 +75,9 @@ const styles = StyleSheet.create({
 
 const ExportView = connect()(UploadSuccessView);
 ExportView.navigationOptions = ({ navigation }) => {
-  return {}
+  return {
+    headerLeft: null
+  }
 }
 
 module.exports.UploadSuccessView = ExportView;

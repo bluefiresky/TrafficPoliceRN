@@ -40,7 +40,8 @@ const publicNavigationOptions = {
   headerStyle:styles.headerStyle,
   headerTitleStyle: styles.headerTitleStyle,
   headerTintColor: 'white',
-  headerBackTitle: ' '
+  headerBackTitle: ' ',
+  gesturesEnabled:false
 }
 
 /** App-public栈 */

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
 import { W, H, backgroundGrey,formLeftText, formRightText, mainBule, borderColor } from '../../configs/index.js';/** 自定义配置参数 */
-import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
+import { ProgressView, TipModal } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import { StorageHelper, Utility } from '../../utility/index.js';
@@ -31,6 +31,8 @@ class HistoricalCaseView extends Component {
       loadingMoreString: '',
       loading: false,
       data: 'default',
+      showTip:false,
+      tipParams:{},
     }
     this.height = 0;
     this.currentPage = 1;
@@ -45,21 +47,44 @@ class HistoricalCaseView extends Component {
   }
   _renderItem({item,index}) {
     return (
-      <HistoricalCaseCellView type={this.state.currentType} rowData={item} key={index} navigation={this.props.navigation} dispatch={this.props.dispatch} showHub={()=>{
-        this.setState({
-          loading:true
-        })
-      }} hideHub={()=>{
-        this.setState({
-          loading:false
-        })
-      }}/>
+      <HistoricalCaseCellView
+        type={this.state.currentType}
+        rowData={item}
+        key={index}
+        navigation={this.props.navigation}
+        dispatch={this.props.dispatch}
+        showHub={()=>{
+          this.setState({loading:true})}
+        }
+        hideHub={()=>{
+          this.setState({loading:false})}
+        }
+        deleteEvent={() => {
+          let self = this;
+          this.setState({
+            showTip:true,
+            tipParams:{
+              content: '删除后案件信息无法恢复，请确认是否继续删除？',
+              left:{label: '返回', event: () => {
+                self.setState({showTip: false});
+              }},
+              right:{label: '继续删除', event: async () => {
+                self.setState({loading: true})
+                if(self.loading) return;
+
+                await StorageHelper.removeItem(global.personal.mobile+'uncompleted', item.id)
+                self.setState({showTip: false, loading:false});
+                self._onGetData();
+              }}
+            }})
+        }}
+      />
     )
   }
 
   render(){
     let { currentType, data } = this.state;
-    console.log(' HistoricalCaseView render and the currentType -->> ', currentType);
+    // console.log(' HistoricalCaseView render and the currentType -->> ', currentType);
     return(
       <View style={{flex:1, backgroundColor: backgroundGrey}}>
         {
@@ -72,6 +97,7 @@ class HistoricalCaseView extends Component {
           <ActivityIndicator animating={this.state.isLoadingMore} color={mainBule}/>
         </View>
         <ProgressView show={this.state.loading} hasTitleBar={true}/>
+        <TipModal show={this.state.showTip} {...this.state.tipParams} />
       </View>
     );
   }
@@ -112,11 +138,11 @@ class HistoricalCaseView extends Component {
           keyExtractor={(item, index) => index }
           ListHeaderComponent={() => <View /> }
           ListFooterComponent={() => <View /> }
-          onEndReached = {(info) => console.log('滑动到底部',info)}
+          onEndReached = {(info) => {/**console.log('滑动到底部',info) **/}}
           ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:backgroundGrey,width:W,height:10}} />)}}
           onLayout={ event => {
               this.height = event.nativeEvent.layout.height;
-              console.log('HistoricalCaseView onLayout layout -->> ', event.nativeEvent.layout);
+              // console.log('HistoricalCaseView onLayout layout -->> ', event.nativeEvent.layout);
           }}
         />
       </View>
@@ -193,7 +219,7 @@ class HistoricalCaseView extends Component {
     let self = this;
     this.props.dispatch(create_service(Contract.POST_ACCIDENTS_SEARCH,{page:this.currentPage, pageNum: 10}))
       .then((res)=>{
-        console.log(' 第 ' + self.currentPage + ' 页的数据 res -->> ' ,res)
+        // console.log(' 第 ' + self.currentPage + ' 页的数据 res -->> ' ,res)
         if(res){
           let { totalPage, accidents } = res;
           self.totalPage = totalPage;
