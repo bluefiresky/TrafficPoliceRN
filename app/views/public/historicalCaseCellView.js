@@ -176,26 +176,40 @@ export default class HistoricalCaseCellView extends Component {
     let { basic, person, step, handleWay, id } = rowData;
     return (
       <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.caseCellClick(step, handleWay, id, type, rowData)}>
-        <View style={{flex: 1, flexDirection:'row'}}>
-          <View style={styles.left}>
-            <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
-              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
-              <Text style={{color:formLeftText,fontSize:14}}>{basic.accidentTime}</Text>
+        <View>
+          <View style={{flex: 1, flexDirection:'row'}}>
+            <View style={styles.left}>
+              <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
+                <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
+                <Text style={{color:formLeftText,fontSize:14}}>{basic.accidentTime}</Text>
+              </View>
+              <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
+                <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
+                <Text style={{color:formLeftText,fontSize:14, flex:1}}>{basic.address}</Text>
+              </View>
+              <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start',marginBottom:10}}>
+                <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
+                <Text style={{color:formLeftText,fontSize:14}}>
+                  {person?person.map(p => p.name + ' (' + p.licensePlateNum + ')\n'):'\n'}
+                </Text>
+              </View>
             </View>
-            <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
-              <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
-              <Text style={{color:formLeftText,fontSize:14, flex:1}}>{basic.address}</Text>
-            </View>
-            <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-start',marginBottom:10}}>
-              <Text style={{color:formLeftText,fontSize:15, width: 80}}>当事人：</Text>
-              <Text style={{color:formLeftText,fontSize:14}}>
-                {person?person.map(p => p.name + ' (' + p.licensePlateNum + ')\n'):'\n'}
-              </Text>
+            <View style={styles.right}>
+              <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
             </View>
           </View>
-          <View style={styles.right}>
-            <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
-          </View>
+          {
+            type != 2? null:
+            <View style={{flexDirection:'row', marginBottom:10,marginLeft:15,marginRight:15}}>
+              <View style={{width:100, height:30, borderColor:mainBule, borderRadius:15, borderWidth:1, alignItems:'center', justifyContent:'center'}}>
+                <Text style={{fontSize:15, color:mainBule}}>继续处理</Text>
+              </View>
+              <View style={{flex:1}} />
+              <TouchableHighlight onPress={()=> this.props.deleteEvent() } style={{width:100, height:30, borderColor:'red', borderRadius:15, borderWidth:1, alignItems:'center', justifyContent:'center'}} underlayColor={'transparent'}>
+                <Text style={{fontSize:15, color:'red'}}>删除</Text>
+              </TouchableHighlight>
+            </View>
+          }
         </View>
       </TouchableHighlight>
     )
