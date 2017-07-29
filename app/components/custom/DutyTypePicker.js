@@ -73,7 +73,7 @@ export class DutyTypePicker extends Component {
   }
 
   render(){
-    let { label, labelWidth, placeholder, noBorder, /** fields */value } = this.props;
+    let { label, labelWidth, placeholder, noBorder, disabled,/** fields */value } = this.props;
     const border = noBorder? null : { borderBottomColor :  borderColor, borderBottomWidth: 0.5 };
 
     return(
@@ -81,7 +81,7 @@ export class DutyTypePicker extends Component {
         <View style={{flex:1, justifyContent: 'center'}}>
           <Text style={{ color: formLeftText, fontSize: 14 }}>{ label }</Text>
         </View>
-        <TouchableWithoutFeedback onPress={this._onPress}>
+        <TouchableWithoutFeedback onPress={this._onPress} disabled={disabled} >
           <View style={{flexDirection: 'row'}}>
             <View style={{justifyContent: 'center'}}>
               {
