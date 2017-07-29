@@ -77,7 +77,7 @@ class PhotoEvidenceVeiw extends Component {
             this.photoList[2].photoData = p.photoData;
             this.photoList[2].photoDate = p.photoDate;
           }else{
-            this.photoList.push({...p});
+            this.photoList.push({...p, 'title': `其它现场照片${i-2}`,image:EOtherIcon});
           }
         }
         console.log(' componentDidMount and this.photoList -->> ', this.photoList);

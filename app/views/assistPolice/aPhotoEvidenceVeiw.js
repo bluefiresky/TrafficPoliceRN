@@ -79,7 +79,7 @@ class APhotoEvidenceVeiw extends Component {
               this.photoList[2].photoData = p.photoData;
               this.photoList[2].photoDate = p.photoDate;
             }else{
-              this.photoList.push({...p});
+              this.photoList.push({...p, 'title': `其它现场照片${i-2}`,image:EOtherIcon});
             }
           }
           console.log(' componentDidMount and this.photoList -->> ', this.photoList);
@@ -227,7 +227,7 @@ class APhotoEvidenceVeiw extends Component {
     renderItem({item,index}) {
       // let source = item.photoData? {uri: 'data:image/png;base64,' + item.photoData} : item.image;
       let source = item.photoData? {uri:DocumentPath+item.photoData, isStatic:true} : item.image;
-
+      console.log(' the source -->> ', source);
       return (
         <TouchableHighlight style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
           <View style={{flex:1}}>

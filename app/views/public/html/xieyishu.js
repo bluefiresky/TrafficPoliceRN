@@ -130,7 +130,7 @@ export function generateXYS(basic, personList, taskModal, damagedList, accidentD
          </p>
           ${
             !personList[2]?'':
-             '<p class="padR">乙：<span class="wid"><img src=' + personList[2].signData + ' alt="" /></span>，<span>' + personList[2].signTime + '</span></p>'
+             '<p class="padR">丙：<span class="wid"><img src=' + personList[2].signData + ' alt="" /></span>，<span>' + personList[2].signTime + '</span></p>'
            }
 
         </div>

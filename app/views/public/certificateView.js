@@ -76,13 +76,13 @@ class CertificateView extends Component {
             scalesPageToFit={true}
             startInLoadingState={true}/>
         </View>
-        <View style={{flexDirection:'row', marginTop:20, marginBottom:20}}>
-          <XButton title={'保存为图片'} onPress={this._onPress.bind(this, 1)} borderRadius={20} style={{backgroundColor:'#ffffff',width:ButtonW,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+        <View style={{flexDirection:'row', marginTop:20, marginBottom:20, justifyContent:'center'}}>
           <XButton title={'返回首页'} onPress={this._onPress.bind(this, 2)} borderRadius={20} style={{backgroundColor:'#267BD8',width:ButtonW}} textStyle={{color:'#ffffff',fontSize:14}}/>
         </View>
         <ProgressView show={this.state.loading} hasTitleBar={true}/>
       </View>
     );
+    // <XButton title={'保存为图片'} onPress={this._onPress.bind(this, 1)} borderRadius={20} style={{backgroundColor:'#ffffff',width:ButtonW,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
   }
 
   /**  Private  */
@@ -102,7 +102,7 @@ class CertificateView extends Component {
   }
 
   async _generateRenDingShu(info){
-    let {basic, person, duty } = info;
+    let {basic, person, duty, conciliation } = info;
     let nBasic = {accidentTime:this._convertAccidentTime(basic.accidentTime), weather:this._convertWeather(basic.weather), address:basic.address};
 
     let nPersonList = [];
@@ -127,7 +127,7 @@ class CertificateView extends Component {
 
     let factAndResponsibility = this._convertInfoToAccidentContent(basic, person) + this._convertResponsebilityContent(person, duty);
 
-    return generateRDS(nBasic, nPersonList, factAndResponsibility, W)
+    return generateRDS(nBasic, nPersonList, factAndResponsibility, conciliation)
   }
 
   async _generateXieYiShu(info){
