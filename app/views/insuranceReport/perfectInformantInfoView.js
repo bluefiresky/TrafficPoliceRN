@@ -56,6 +56,7 @@ class PerfectInformantInfoView extends Component {
       loading: true
     })
     let { taskno } = this.props.navigation.state.params
+    this.submitData.data = this.data
     this.submitData.data = JSON.stringify(this.data)
     this.props.dispatch( create_service(Contract.POST_SURVEY_INFO, this.submitData))
       .then( res => {
@@ -107,6 +108,7 @@ class PerfectInformantInfoView extends Component {
               for (var k = 0; k < this.partyData[i].scenelistShow.length; k++) {
                 if (this.partyData[i].scenelist[j].scenecode == this.partyData[i].scenelistShow[k].code) {
                   this.partyData[i].scenelistShow[k].isSel = true
+                  this.data[i].scenelist.push({scenecode:this.partyData[i].scenelist[j].scenecode})
                 }
               }
             }
