@@ -84,7 +84,7 @@ class HistoricalCaseView extends Component {
 
   render(){
     let { currentType, data } = this.state;
-    console.log(' HistoricalCaseView render and the currentType -->> ', currentType);
+    // console.log(' HistoricalCaseView render and the currentType -->> ', currentType);
     return(
       <View style={{flex:1, backgroundColor: backgroundGrey}}>
         {
@@ -138,11 +138,11 @@ class HistoricalCaseView extends Component {
           keyExtractor={(item, index) => index }
           ListHeaderComponent={() => <View /> }
           ListFooterComponent={() => <View /> }
-          onEndReached = {(info) => console.log('滑动到底部',info)}
+          onEndReached = {(info) => {/**console.log('滑动到底部',info) **/}}
           ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:backgroundGrey,width:W,height:10}} />)}}
           onLayout={ event => {
               this.height = event.nativeEvent.layout.height;
-              console.log('HistoricalCaseView onLayout layout -->> ', event.nativeEvent.layout);
+              // console.log('HistoricalCaseView onLayout layout -->> ', event.nativeEvent.layout);
           }}
         />
       </View>
@@ -219,7 +219,7 @@ class HistoricalCaseView extends Component {
     let self = this;
     this.props.dispatch(create_service(Contract.POST_ACCIDENTS_SEARCH,{page:this.currentPage, pageNum: 10}))
       .then((res)=>{
-        console.log(' 第 ' + self.currentPage + ' 页的数据 res -->> ' ,res)
+        // console.log(' 第 ' + self.currentPage + ' 页的数据 res -->> ' ,res)
         if(res){
           let { totalPage, accidents } = res;
           self.totalPage = totalPage;

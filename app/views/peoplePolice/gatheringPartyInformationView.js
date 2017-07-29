@@ -325,7 +325,7 @@ class GatheringPartyInformationView extends Component {
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
-        <View style={{flexDirection:'row',marginLeft:15,paddingTop:10}}>
+        <View style={{flexDirection:'row',marginLeft:22,paddingTop:10}}>
           <Text style={{fontSize:14,color:formLeftText,marginLeft:10}}>保险到期日:</Text>
           <DatePicker
             style={{marginTop:-12,flex:1}}
@@ -357,6 +357,17 @@ class GatheringPartyInformationView extends Component {
               })
             }}
           />
+          {
+            !(this.submitDataArr.length > 0 && this.submitDataArr[index].carInsureDueDate)? null:
+            <TouchableHighlight
+              style={{alignItems:'center', justifyContent:'center', marginTop:-10, width:40}}
+              onPress={()=>{
+                this.submitDataArr[index].carInsureDueDate = '';
+                this.setState({refresh:true})
+              }}>
+              <Image style={{height: 15, width: 15, resizeMode:'contain'}} source={require('./image/icon-clear-text.png')}/>
+            </TouchableHighlight>
+          }
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
       </View>

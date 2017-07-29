@@ -2,7 +2,7 @@
 * 交警当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,Alert,InteractionManager } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,Alert,InteractionManager, Modal, TouchableWithoutFeedback } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import Picker from 'react-native-picker';
@@ -17,6 +17,7 @@ import { StorageHelper, TextUtility } from '../../utility/index.js';
 
 const ImageW = (W - 3 * 20) / 2;
 const ImageH = (220 * ImageW)/340;
+const BigImageH = H-200
 const PhotoTypes = {'0':'侧前方','1':'侧后方','2':'碰撞部位','30':'甲方证件照','31':'乙方证件照','32':'丙方证件照'}
 const ProvincialData = getProvincialData();
 const NumberData = getNumberData();
@@ -30,12 +31,14 @@ class ConfirmInformationView extends Component {
       refresh:false,
       showTip: false,
       tipParams: {},
-      loading:false
+      loading:false,
+      showBigImage:false,
     }
     this.currentCaseInfo = {};
     this.partyVerData = [{name:'甲方当事人',ver:''},{name:'乙方当事人',ver:''},{name:'丙方当事人',ver:''}];
     this.carTypeData = getStore().getState().dictionary.carTypeList;
     this.insuranceData = getStore().getState().dictionary.insureList;
+    this.currentImage = null;
   }
 
   componentDidMount(){
@@ -201,12 +204,28 @@ class ConfirmInformationView extends Component {
                 this.onChangeText(date,ind,'InsuranceTime',value)
               }}
             />
+            {
+              !value.carInsureDueDate? null:
+              <TouchableHighlight
+                style={{alignItems:'center', justifyContent:'center', marginTop:-10, width:40}}
+                onPress={()=>{
+                  this.onChangeText('',ind,'InsuranceTime',value)
+                }}>
+                <Image style={{height: 15, width: 15, resizeMode:'contain'}} source={require('./image/icon-clear-text.png')}/>
+              </TouchableHighlight>
+            }
           </View>
         </View>
-        <View style={{alignItems:'center', marginTop:10, marginBottom:10}}>
-          <Image style={{width: ImageW,height: ImageH}} source={{uri: DocumentPath+credential.photoData, isStatic:true}} />
-          <Text style={{marginTop:10,color:formLeftText,fontSize:12}}>{this._convertPhotoType(credential.photoType)}</Text>
-        </View>
+
+        <TouchableHighlight underlayColor={'transparent'} onPress={()=>{
+          this.currentImage = {uri: DocumentPath+credential.photoData, isStatic:true};
+          this.setState({showBigImage:true})
+        }}>
+          <View style={{alignItems:'center', marginTop:10, marginBottom:10}}>
+            <Image style={{width: ImageW,height: ImageH}} source={{uri: DocumentPath+credential.photoData, isStatic:true}} />
+            <Text style={{marginTop:10,color:formLeftText,fontSize:12}}>{this._convertPhotoType(credential.photoType)}</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     )
   }
@@ -270,10 +289,15 @@ class ConfirmInformationView extends Component {
   renderItem({item,index}) {
     let source = {uri: DocumentPath+item.photoData, isStatic:true}
     return (
-      <View style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
-        <Image source={source} style={{width: ImageW, height: ImageH, justifyContent:'center', alignItems: 'center'}} />
-        <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{this._convertPhotoType(item.photoType)}</Text>
-      </View>
+      <TouchableHighlight underlayColor={'transparent'} onPress={()=>{
+        this.currentImage = source;
+        this.setState({showBigImage:true})
+      }}>
+        <View style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
+          <Image source={source} style={{width: ImageW, height: ImageH, justifyContent:'center', alignItems: 'center'}} />
+          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{this._convertPhotoType(item.photoType)}</Text>
+        </View>
+      </TouchableHighlight>
     )
   }
 
@@ -322,6 +346,17 @@ class ConfirmInformationView extends Component {
         </ScrollView>
         <TipModal show={this.state.showTip} {...this.state.tipParams} />
         <ProgressView show={this.state.loading} hasTitleBar={true} />
+
+        <View>
+          <Modal animationType="fade" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
+            <TouchableWithoutFeedback onPress={() => this.setState({showBigImage:false})}>
+              <View style={styles.modalContainer}>
+                <Image source={this.currentImage} style={{width:W,height:BigImageH,resizeMode:'contain'}}/>
+              </View>
+            </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+
       </View>
 
     );
@@ -360,6 +395,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: backgroundGrey
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)'
   }
 });
 
