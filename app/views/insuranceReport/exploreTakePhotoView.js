@@ -96,7 +96,6 @@ class ExploreTakePhotoView extends Component {
           if (res) {
             this.surveyno = res.data.surveyno
             // this.partyInfoData = res.data.surveyphoto
-
             for (var i = 0; i < this.partyInfoData.length; i++) {
               this.partyInfoData[i].licenseno = res.data.surveyphoto[i].licenseno
               for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
@@ -190,10 +189,13 @@ class ExploreTakePhotoView extends Component {
     this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url = '';
     let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].photolist));
     this.partyInfoData[this.currentImgaeInSection].photolist = temp;
-    this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
     this.setState({
       showBigImage: false
     })
+    this.timer = setTimeout(
+      () => {
+        this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
+      },500);
   }
   //删除照片
   deletePhoto(){
@@ -322,7 +324,7 @@ class ExploreTakePhotoView extends Component {
                 this.timer = setTimeout(
                   () => {
                     this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
-                  },1000);
+                  },500);
               }}>
                 <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>确定</Text>
               </TouchableHighlight>
