@@ -163,8 +163,8 @@ class ExploreTakePhotoView extends Component {
                 })
                 this.props.dispatch( create_service(Contract.POST_SURVEYPHOTO_INFO,params))
                   .then( res => {
+                    console.log('res');
                     if (res) {
-                      // let source = { uri: 'data:image/png;base64,' + response.data }
                       let source;
                       if (Platform.OS === 'ios') {
                           source = response.uri.replace('file://', '')
