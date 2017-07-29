@@ -36,7 +36,7 @@ class ResponsibleResultView extends Component {
   renderOneParty(value,index){
     return (
       <View key={index} style={{flexDirection:'row', height:40, alignItems: 'center'}}>
-        <Text style={{flex:1, fontSize:14, color:formLeftText}}>{`当事人${value.name}（${value.licensePlateNum}）`}</Text>
+        <Text style={{flex:1, fontSize:14, color:formLeftText}}>{`当事人:${value.name}（${value.licensePlateNum}）`}</Text>
         <Text style={{fontSize:14, color:formLeftText}}>{value.dutyName}</Text>
       </View>
     )

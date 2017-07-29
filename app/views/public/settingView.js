@@ -40,10 +40,10 @@ class SettingView extends Component {
       .then( res => {
         console.log(' SettingView execute exitLogin and the res -->> ', res);
         this.setState({loading:false})
-        if(res){
+        // if(res){
           this.props.dispatch({ type : 'CLEAR_USER_INFO' })
           this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName: 'LoginView'}) ]}) )
-        }
+        // }
       })
   }
   render(){

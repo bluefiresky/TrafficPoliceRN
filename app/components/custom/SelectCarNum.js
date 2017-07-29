@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 
-import { View, Text, StyleSheet, TextInput, TouchableHighlight, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableHighlight, FlatList, Image } from 'react-native';
 import { W, formLeftText, formRightText,backgroundGrey, mainBule } from '../../configs/index.js';
 import { getProvincialData, getNumberData } from '../../configs/index.js';
 
@@ -13,6 +13,7 @@ const provincialData = getProvincialData();
 const numberData = getNumberData();
 
 const ItemWidth = (W - (20 + 15 + (7*10))) / 6;
+const DeleteIcon = require('./image/icon-delete.png');
 
 export class SelectCarNum extends Component {
   constructor(props) {
@@ -110,20 +111,24 @@ export class SelectCarNum extends Component {
           <TouchableHighlight style={{flex:1, height:30, alignItems:'center', justifyContent:'center', borderColor:mainBule, borderWidth:1}} underlayColor={'transparent'} onPress={this.showData.bind(this, null)}>
             <Text style={{fontSize:16, fontWeight:'bold'}}>{plateNum}</Text>
           </TouchableHighlight>
+          <TouchableHighlight style={{width:50, alignItems:'flex-end'}} underlayColor={'transparent'} onPress={() => this.deleteClick()}>
+            <Image style={{height: 30, width: 30, resizeMode:'contain'}} source={DeleteIcon}/>
+          </TouchableHighlight>
         </View>
         {
           this.state.show?
-            <View style={{borderColor:'#D4D4D4',borderWidth:1,marginTop:10}}>
-              <View style={{flexDirection:'row',height:30}}>
-                <TouchableHighlight onPress={this.showData.bind(this, 'province')} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center', backgroundColor:(this.currSeleIndex == 0?mainBule:'white')}}>
-                  <Text style={{fontSize:14, color:(this.currSeleIndex == 0?'white':formLeftText)}}>省</Text>
+            <View style={{borderColor:'#D4D4D4',borderWidth:1,marginTop:10,paddingBottom:10}}>
+              <View style={{flexDirection:'row',height:40}}>
+                <TouchableHighlight onPress={this.showData.bind(this, 'province')} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center', backgroundColor:(this.currSeleIndex == 0?'white':'lightgray')}}>
+                  <Text style={{fontSize:14, color:formLeftText}}>省</Text>
                 </TouchableHighlight>
-                <View style={{width:1, backgroundColor:'#D4D4D4'}} />
-                <TouchableHighlight onPress={this.showData.bind(this, 'number')} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center', backgroundColor:(this.currSeleIndex == 1?mainBule:'white')}}>
-                  <Text style={{fontSize:14, color:(this.currSeleIndex == 1?'white':formLeftText)}}>数字</Text>
+                <TouchableHighlight onPress={this.showData.bind(this, 'number')} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center', backgroundColor:(this.currSeleIndex == 1?'white':'lightgray')}}>
+                  <Text style={{fontSize:14, color:formLeftText}}>数字</Text>
+                </TouchableHighlight>
+                <TouchableHighlight onPress={() => this.confirmClick()} underlayColor='transparent' style={{width:50, alignItems:'center', justifyContent:'center', backgroundColor:mainBule}}>
+                  <Text style={{fontSize:14, color:'white'}}>确定</Text>
                 </TouchableHighlight>
               </View>
-              <View style={{height:1, backgroundColor:'#D4D4D4'}} />
 
               <View style={{flexDirection:'row',flexWrap:'wrap'}}>
               <FlatList
@@ -133,17 +138,6 @@ export class SelectCarNum extends Component {
                 extraData={this.state}
                 renderItem={this.renderOneItem.bind(this)}
               />
-              </View>
-
-              <View style={{height:1, backgroundColor:'#D4D4D4', marginTop:10}} />
-              <View style={{flexDirection:'row',justifyContent: 'center',height:30}}>
-                <TouchableHighlight onPress={() => this.deleteClick()} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-                  <Text style={{fontSize:14}}>删除</Text>
-                </TouchableHighlight>
-                <View style={{width:1, backgroundColor:'#D4D4D4'}} />
-                <TouchableHighlight onPress={() => this.confirmClick()} underlayColor='transparent' style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-                  <Text style={{fontSize:14}}>确定</Text>
-                </TouchableHighlight>
               </View>
             </View>
           :

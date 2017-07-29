@@ -18,6 +18,7 @@ import { generateRDS } from './html/rendingshu.js';
 import { generateXYS } from './html/xieyishu.js';
 
 const DutyTypeList = [{name:'全责',code:'0'},{name:'无责',code:'1'},{name:'同等责任',code:'2'},{name:'主责',code:'3'},{name:'次责',code:'4'}];
+const XYSDutyTypeList = [{name:'全责',code:'0'},{name:'无责',code:'1'},{name:'同等责任',code:'2'}];
 const ButtonW = (W - 60)/2
 const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
 
@@ -144,7 +145,7 @@ class CertificateView extends Component {
       }else{
         signData = d.signData;
       }
-      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureDueDate:p.carInsureDueDate, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+signData, signTime:d.signTime, insureCompanyName:p.insureCompanyName})
+      nPersonList.push({name:p.name, phone:p.phone, driverNum:p.driverNum, licensePlateNum:p.licensePlateNum, carType:p.carType, carInsureDueDate:p.carInsureDueDate, carInsureNumber:p.carInsureNumber, signData:'data:image/png;base64,'+signData, signTime:this._convertSignTime(d.signTime), insureCompanyName:p.insureCompanyName})
     }
 
     let formList = getStore().getState().dictionary.formList;
@@ -186,11 +187,11 @@ class CertificateView extends Component {
     for(let i=0; i<duty.length; i++){
       let tmp = duty[i].dutyType;
       let tmpDuty = '';
-      for(let j=0; j<DutyTypeList.length; j++){
-        if(tmp === DutyTypeList[j].code){
-          tmpDuty+='  <span>√'+DutyTypeList[j].name+'</span>'
+      for(let j=0; j<XYSDutyTypeList.length; j++){
+        if(tmp === XYSDutyTypeList[j].code){
+          tmpDuty+='  <span>√'+XYSDutyTypeList[j].name+'</span>'
         }else{
-          tmpDuty+='  <span>□'+DutyTypeList[j].name+'</span>'
+          tmpDuty+='  <span>□'+XYSDutyTypeList[j].name+'</span>'
         }
       }
       nDutyList.push(tmpDuty);
@@ -201,6 +202,14 @@ class CertificateView extends Component {
 
   _convertAccidentTime(time){
     if(time) return time.substring(0, time.length - 3);
+    return ''
+  }
+
+  _convertSignTime(time){
+    if(time) {
+      let array = time.split(' ');
+      return array[0];
+    }
     return ''
   }
 

@@ -165,7 +165,7 @@ class AConfirmInformationView extends Component {
           {this.renderRowItem('姓名',value.name,ind,'Name',value)}
           {this.renderRowItem('联系方式',value.phone,ind,'Phone',value,11)}
           {this.renderRowItem('驾驶证号',value.driverNum,ind,'DrivingLicense',value,18)}
-          <View style={{flexDirection:'row',marginLeft:20,paddingTop:5,paddingBottom:5, alignItems: 'center'}}>
+          <View style={{flexDirection:'row',marginLeft:15,paddingTop:5,paddingBottom:5, alignItems: 'center'}}>
             <SelectCarNum
               label={'车牌号'}
               plateNum={value.licensePlateNum}
@@ -182,7 +182,7 @@ class AConfirmInformationView extends Component {
             value={value.carType}
             onChange={(res) => {
               console.log(' ConfirmReportPartyInfoView carType -->> ', res);
-              this.onChangeText(res,ind,'CarType',value)
+              this.onChangeText(res,ind,'CarType',value);
             }}/>
           <InsurancePicker
             data={getStore().getState().dictionary.insureList}

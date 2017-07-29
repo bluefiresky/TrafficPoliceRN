@@ -71,7 +71,7 @@ class AccidentFactAndResponsibilityView extends Component {
   renderOneParty(value,index){
     return (
       <View style={{marginLeft:15}} key={index}>
-        <DutyTypePicker label={`当事人${value.name}(${value.licensePlateNum})`} placeholder={'请选择责任类型'} value={value.dutyName} onChange={(res)=>{ this.onChangeText(res, 'DutyList', index) }} noBorder={true}/>
+        <DutyTypePicker label={`当事人:${value.name}(${value.licensePlateNum})`} placeholder={'请选择责任类型'} value={value.dutyName} onChange={(res)=>{ this.onChangeText(res, 'DutyList', index) }} noBorder={true}/>
         <View style={{height:1,backgroundColor:backgroundGrey,marginRight:15}} />
       </View>
     )
