@@ -98,6 +98,7 @@ class InsuranceReportDetailView extends Component {
         {this.renderRowItem('驾驶证号：',value.driverlicenseno)}
         {this.renderRowItem('当事人车牌号：',value.licenseno)}
         {this.renderRowItem('当事人责任类型：',value.dutyname)}
+        {this.renderRowItem('是否保险报案',value.reportflag ? '是' : '否')}
         {this.renderRowItem('保险公司：',value.insurename)}
         {/* {this.renderRowItem('发动机号：',value.engineno)}
         {this.renderRowItem('车架号：',value.vinno)} */}

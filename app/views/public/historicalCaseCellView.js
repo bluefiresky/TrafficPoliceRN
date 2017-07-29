@@ -84,9 +84,28 @@ export default class HistoricalCaseCellView extends Component {
 
   _renderHistoryCell(rowData){
     let { accidentAddress, accidentTime, taskNo, cars, status } = rowData;
+    let tipText;
+    if (status == '2') {
+      tipText = '待保险报案'
+    } else if(status == '3'){
+      tipText = '待查勘'
+    } else if(status == '10'){
+      tipText = '待补拍照片'
+    } else if(status == '9'){
+      tipText = '已查勘待审核'
+    } else if(status == '11'){
+      tipText = '查勘完成'
+    } else if(status == '12'){
+      tipText = '无需查勘'
+    } else if(status == '13'){
+      tipText = '待审核是否需要查勘'
+    } else if(status == '8'){
+      tipText = '案件已转现场'
+    }
     return (
       <TouchableHighlight style={styles.content} underlayColor={'#ffffff'} onPress={() => this.historyCellClick(taskNo)}>
         <View style={{flex:1}}>
+
           <View style={{flex: 1, flexDirection:'row',marginBottom:15}}>
             <View style={styles.left}>
               <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
@@ -103,12 +122,15 @@ export default class HistoricalCaseCellView extends Component {
                   {cars?cars.map(p => p.ownerName + ' (' + p.licenseNo + ')\n'):'\n'}
                 </Text>
               </View>
+              {(status == '2' || status == '3' || status == '8' || status == '9' || status == '10' || status == '11' || status == '12' || status == '13') ? this._renderButton(status,taskNo,cars):null}
             </View>
             <View style={styles.right}>
               <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>
             </View>
           </View>
-          {(status == '2' || status == '3' || status == '8' || status == '9' || status == '10' || status == '11' || status == '12' || status == '13') ? this._renderButton(status,taskNo,cars):null}
+          <View style={{position:'absolute',top:0,right:0,backgroundColor:'#ffffff',paddingTop:5,paddingBottom:5,paddingLeft:10,paddingRight:10}}>
+            <Text style={{fontSize:13,color:mainBule}}>{tipText}</Text>
+          </View>
         </View>
       </TouchableHighlight>
     )
@@ -140,8 +162,6 @@ export default class HistoricalCaseCellView extends Component {
                   this.props.hideHub();
                   if(res && res.data.surveyflag == '1'){
                     this.props.navigation.navigate('PerfectInformantInfoView',{taskno:taskNo,surveyno:res.data.surveyno})
-                  } else {
-                    this.props.navigation.navigate('InsuranceReportSuccessView',{taskno:taskNo,openflag:1,needTimer:false})
                   }
               })
             } else if (status == '12') {

@@ -28,13 +28,13 @@ class PerfectInformantInfoView extends Component {
     this.photolistData = []
   }
   componentWillMount(){
-    let { surveyno,taskno } = this.props.navigation.state.params
+    let { taskno } = this.props.navigation.state.params
     let surveytime = Tool.getTime('yyyy-MM-dd hh:mm:ss')
     let groupname = global.personal.depName
     let policetypen = global.personal.policeType
     let policename = global.personal.policeName
     let policephone = global.personal.mobile
-    this.submitData = {surveyno:surveyno,taskno:taskno,surveytime:surveytime,groupname:groupname,policetypen:policetypen,policename:policename,policephone:policephone}
+    this.submitData = {taskno:taskno,surveytime:surveytime,groupname:groupname,policetypen:policetypen,policename:policename,policephone:policephone}
   }
   //下一步
   gotoNext(){
@@ -55,12 +55,12 @@ class PerfectInformantInfoView extends Component {
     this.setState({
       loading: true
     })
-    let { surveyno,taskno } = this.props.navigation.state.params
+    let { taskno } = this.props.navigation.state.params
     this.submitData.data = JSON.stringify(this.data)
     this.props.dispatch( create_service(Contract.POST_SURVEY_INFO, this.submitData))
       .then( res => {
-        if (res) {
-          this.props.navigation.navigate('ExploreTakePhotoView',{surveyno:surveyno,personData:this.data,taskno:taskno,photolist:this.photolistData,needRequestPhoto:false})
+        if (res && res.code == 200) {
+          this.props.navigation.navigate('ExploreTakePhotoView',{surveyno:res.data.surveyno,personData:this.data,taskno:taskno,photolist:this.photolistData,needRequestPhoto:false})
         }
         this.setState({
           loading:false
@@ -93,11 +93,22 @@ class PerfectInformantInfoView extends Component {
             let onePerson = res.data.surveylist[i]
             this.photolistData.push(onePerson.photolist);
             this.data.push({person:onePerson.person,licenseno:onePerson.licenseno,driverlicenseno:onePerson.driverlicenseno,engineno:onePerson.engineno,vinno:onePerson.vinno,driverflag:onePerson.driverflag,drivingflag:onePerson.drivingflag,matchingflag:onePerson.matchingflag,scenelist:[]})
-            this.partyData[i].scenelist = []
+            this.partyData[i].scenelistShow = []
           }
-          for (var i = 0; i < scenelist.length; i++) {
-            for (var j = 0; j < this.partyData.length; j++) {
-              this.partyData[j].scenelist.push({name:scenelist[i].name,code:scenelist[i].code,isSel:scenelist[i].isSel})
+        }
+        for (var i = 0; i < scenelist.length; i++) {
+          for (var j = 0; j < this.partyData.length; j++) {
+            this.partyData[j].scenelistShow.push({name:scenelist[i].name,code:scenelist[i].code,isSel:false})
+          }
+        }
+        for (var i = 0; i < this.partyData.length; i++) {
+          if (this.partyData[i].scenelist && this.partyData[i].scenelist.length > 0) {
+            for (var j = 0; j < this.partyData[i].scenelist.length; j++) {
+              for (var k = 0; k < this.partyData[i].scenelistShow.length; k++) {
+                if (this.partyData[i].scenelist[j].scenecode == this.partyData[i].scenelistShow[k].code) {
+                  this.partyData[i].scenelistShow[k].isSel = true
+                }
+              }
             }
           }
         }
@@ -193,7 +204,7 @@ class PerfectInformantInfoView extends Component {
             请确认现场是否存在以下情况：
           </Text>
           <View style={{marginTop:15}}>
-            {value.scenelist.map((value,index) => this.renderSeleteRow(value,index,ind))}
+            {value.scenelistShow.map((value,index) => this.renderSeleteRow(value,index,ind))}
           </View>
         </View>
       </View>

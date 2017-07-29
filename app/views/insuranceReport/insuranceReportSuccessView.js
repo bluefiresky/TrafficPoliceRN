@@ -34,7 +34,7 @@ class InsuranceReportSuccessView extends Component {
         break;
       case '需要查勘，点击继续':
         this.timer && clearInterval(this.timer);
-        this.props.navigation.navigate('PerfectInformantInfoView',{surveyno:this.surveyno,taskno:taskno});
+        this.props.navigation.navigate('PerfectInformantInfoView',{taskno:taskno});
         break;
       case '无需查勘，返回首页':
         this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
@@ -56,7 +56,6 @@ class InsuranceReportSuccessView extends Component {
         if (res && res.code == '200') {
           self.waitForLook = false
           self.surveyflag = res.data.surveyflag
-          self.surveyno = res.data.surveyno
           self.setState({
             loading:false
           })
@@ -74,7 +73,6 @@ class InsuranceReportSuccessView extends Component {
         if(res && res.code == '200'){
           self.waitForLook = false
           self.surveyflag = res.data.surveyflag
-          self.surveyno = res.data.surveyno
           self.setState({
             loading:false
           })

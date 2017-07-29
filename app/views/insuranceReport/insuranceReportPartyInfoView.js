@@ -122,6 +122,8 @@ class InsuranceReportPartyInfoView extends Component {
               this.setState({
                 refresh: true
               })
+            } else {
+              Toast.showShortCenter('无责方无需保险报案')
             }
           }}>
             <Image source={selImage} style={{width:19,height:19,alignSelf:'center'}}/>
@@ -147,6 +149,10 @@ class InsuranceReportPartyInfoView extends Component {
                    <XButton title='下一步' onPress={() => this.gotoNext()} style={{backgroundColor:'#267BD8',borderRadius:20}}/>
                  </View>
               </ScrollView>
+    } else {
+      // content = <TouchableHighlight style={{flex:1,backgroundColor: backgroundGrey,justifyContent:'center'}} underlayColor={backgroundGrey}>
+      //           <Text style={{}}>点击重试</Text>
+      //           </TouchableHighlight>
     }
     return(
       <View style={styles.container}>
