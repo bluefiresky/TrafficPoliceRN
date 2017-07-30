@@ -43,7 +43,7 @@ export function generateRDS(basic, personList, fact, responsibility, conciliatio
      </head>
      <body style="margin: 5 10px;">
       <h2 style="font-size:20px;font-weight:normal;text-align:center;padding-top: 5px;width:100%;" id="maxh">北京交管局双井交通大队<br />道路交通事故认定书（简易程序） </h2>
-      <h3 style="font-size:16px;text-align:center;font-weight:normal;width:1;" id="minh">第201707101025266600002号</h3>
+      <h3 style="font-size:16px;text-align:center;font-weight:normal;width:1;" id="minh">第&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</h3>
       <table border="1" cellpadding="0" cellspacing="0" width="100%" style="font-size:14px;" id="tab">
        <tbody>
         <tr>
