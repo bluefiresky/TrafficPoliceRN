@@ -1,4 +1,4 @@
-export function generateRDS(basic, personList, factAndResponsibility, conciliation){
+export function generateRDS(basic, personList, fact, responsibility, conciliation){
   return(
     `<!DOCTYPE html>
     <html>
@@ -107,9 +107,7 @@ export function generateRDS(basic, personList, factAndResponsibility, conciliati
             <tr>
              <td style="width:80px;text-align:center;;border-top:0px;  border-right: 0px;"> 交<br />通<br />事<br />故<br />事<br />实<br />及<br />责<br />任 </td>
              <td style="text-align:left;border-top:0px;  border-right: 0px;">
-                <p>
-                    ${factAndResponsibility}
-                </p>
+                <p>${fact+'  '+responsibility}</p>
                 <p></p>
                 <p></p>
                 <br /> 当事人：<img src=${personList[0].signData} />

@@ -142,7 +142,7 @@ class CaseDetailsView extends Component {
             }
           }
         }
-        this.factAndResponsibility = `${this._convertInfoToAccidentContent(basic, person)}${supplementary?supplementary:''}\n${this._convertResponsebilityContent(person, duty)}`;
+        this.factAndResponsibility = `${this._convertInfoToAccidentContent(basic, person)}${supplementary?supplementary:''}\n\t${this._convertResponsebilityContent(person, duty)}`;
         this.compensationAndResult = conciliation?conciliation : ' ';
         if(taskModal){
           this.taskModal = this._convertCodeToEntry(taskModal, getStore().getState().dictionary.formList).name;
@@ -451,16 +451,16 @@ class CaseDetailsView extends Component {
     let content = '';
     if(num === 1){
       let p = person[0];
-      content = `\t\t${basic.accidentTime}, ${p.name}(驾驶证号:${p.driverNum})驾驶车牌号为${p.licensePlateNum}的${p.carType}, 在${basic.address}发生交通事故。`
+      content = `\t${basic.accidentTime}, ${p.name}(驾驶证号:${p.driverNum})驾驶车牌号为${p.licensePlateNum}的${p.carType}, 在${basic.address}发生交通事故。`
     }else if(num === 2){
       let p1 = person[0];
       let p2 = person[1];
-      content = `\t\t${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}，与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}发生交通事故。`
+      content = `\t${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}，与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}发生交通事故。`
     }else if(num === 3){
       let p1 = person[0];
       let p2 = person[1];
       let p3 = person[2];
-      content = `\t\t${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}，及${p3.name}(驾驶证号:${p3.driverNum})驾驶车牌号为${p3.licensePlateNum}的${p3.carType}发生交通事故。`
+      content = `\t${basic.accidentTime}, ${p1.name}(驾驶证号:${p1.driverNum})驾驶车牌号为${p1.licensePlateNum}的${p1.carType}, 在${basic.address}与${p2.name}(驾驶证号:${p2.driverNum})驾驶车牌号为${p2.licensePlateNum}的${p2.carType}，及${p3.name}(驾驶证号:${p3.driverNum})驾驶车牌号为${p3.licensePlateNum}的${p3.carType}发生交通事故。`
     }
 
     return content;
