@@ -119,7 +119,7 @@ class InsuranceReportSuccessView extends Component {
     }
     return(
       <ScrollView style={styles.container}
-                   showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}>
         <Image source={showImage} style={{width:100,height:100,marginTop:30,alignSelf:'center'}}/>
         <View style={{marginTop:20,marginLeft:15,width:W-30}}>
           <Text style={{alignSelf:'center',fontSize:16,color:formLeftText}}>

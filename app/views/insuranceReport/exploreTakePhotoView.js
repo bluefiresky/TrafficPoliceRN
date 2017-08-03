@@ -49,7 +49,7 @@ class ExploreTakePhotoView extends Component {
     }
     if (photolist.length > 0) {
       for (var i = 0; i < photolist.length; i++) {
-        if (photolist[i].length > 0) {
+        if (photolist[i].length > 0 && photolist[i].length < 8) {
           for (var j = 0; j < photolist[i].length; j++) {
             for (var k = 0; k < this.partyInfoData[i].photolist.length; k++) {
               if (this.partyInfoData[i].photolist[k].phototypecode == photolist[i][j].phototypecode) {
@@ -57,7 +57,14 @@ class ExploreTakePhotoView extends Component {
               }
             }
           }
+        } else if (photolist[i].length > 7) {
+          for (var j = 0; j < photolist[i].length; j++) {
+            for (var k = 0; k < this.partyInfoData[i].photolist.length; k++) {
+              this.partyInfoData[i].photolist = photolist[i]
+            }
+          }
         }
+        this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
       }
     }
     for (var i = 0; i < partlist.length; i++) {
@@ -98,17 +105,26 @@ class ExploreTakePhotoView extends Component {
             // this.partyInfoData = res.data.surveyphoto
             for (var i = 0; i < this.partyInfoData.length; i++) {
               this.partyInfoData[i].licenseno = res.data.surveyphoto[i].licenseno
-              for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
-                for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
-                  if (res.data.surveyphoto[i].photolist[k].phototypecode == this.partyInfoData[i].photolist[j].phototypecode) {
-                    this.partyInfoData[i].photolist[j] = res.data.surveyphoto[i].photolist[k]
+              if (res.data.surveyphoto[i].photolist.length < 8) {
+                for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
+                  for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
+                    if (res.data.surveyphoto[i].photolist[k].phototypecode == this.partyInfoData[i].photolist[j].phototypecode) {
+                      this.partyInfoData[i].photolist[j] = res.data.surveyphoto[i].photolist[k]
+                    }
                   }
+                }
+              } else {
+                for (var i = 0; i < this.partyInfoData.length; i++) {
+                  this.partyInfoData[i].licenseno = res.data.surveyphoto[i].licenseno
+                  for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
+                    for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
+                      this.partyInfoData[i].photolist = res.data.surveyphoto[i].photolist
+                    }
+                  }
+                  this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
                 }
               }
             }
-            // for (var i = 0; i < this.partyInfoData.length; i++) {
-            //   this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',phototypecode:'7',pid:''})
-            // }
           }
           this.setState({
             loading:false

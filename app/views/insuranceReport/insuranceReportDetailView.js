@@ -125,10 +125,10 @@ class InsuranceReportDetailView extends Component {
   renderOneItem(index,itemData){
     return (
       <ScrollView style={{flex:1,marginBottom:64,backgroundColor:backgroundGrey}}
-                   showsVerticalScrollIndicator={false} key={index}>
-         <View style={{flex:1}}>
-           {this.renderOneParty(itemData)}
-         </View>
+        showsVerticalScrollIndicator={false} key={index}>
+        <View style={{flex:1}}>
+          {this.renderOneParty(itemData)}
+        </View>
       </ScrollView>
     )
   }
