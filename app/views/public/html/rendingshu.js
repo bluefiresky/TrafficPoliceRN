@@ -1,4 +1,4 @@
-export function generateRDS(basic, personList, factAndResponsibility, width){
+export function generateRDS(basic, personList, fact, responsibility, conciliation){
   return(
     `<!DOCTYPE html>
     <html>
@@ -43,7 +43,7 @@ export function generateRDS(basic, personList, factAndResponsibility, width){
      </head>
      <body style="margin: 5 10px;">
       <h2 style="font-size:20px;font-weight:normal;text-align:center;padding-top: 5px;width:100%;" id="maxh">北京交管局双井交通大队<br />道路交通事故认定书（简易程序） </h2>
-      <h3 style="font-size:16px;text-align:center;font-weight:normal;width:1;" id="minh">第201707101025266600002号</h3>
+      <h3 style="font-size:16px;text-align:center;font-weight:normal;width:1;" id="minh">第&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</h3>
       <table border="1" cellpadding="0" cellspacing="0" width="100%" style="font-size:14px;" id="tab">
        <tbody>
         <tr>
@@ -76,17 +76,17 @@ export function generateRDS(basic, personList, factAndResponsibility, width){
          <td>当事人</td>
          <td ${personList[1].name?'':'class="slash"'} >${personList[1].name}</td>
          <td>驾驶证或身份证号码</td>
-         <td ${personList[1].driverNum?'':'class="slash"'} >${personList[1].driverNum}</td>
+         <td ${personList[1].name?'':'class="slash"'} >${personList[1].driverNum}</td>
          <td>联系电话</td>
-         <td ${personList[1].phone?'':'class="slash"'} >${personList[1].phone}</td>
+         <td ${personList[1].name?'':'class="slash"'} >${personList[1].phone}</td>
         </tr>
         <tr>
          <td>交通方式</td>
-         <td ${personList[1].carType?'':'class="slash"'} >${personList[1].carType}</td>
+         <td ${personList[1].name?'':'class="slash"'} >${personList[1].carType}</td>
          <td>机动车型号、牌号</td>
-         <td ${personList[1].licensePlateNum?'':'class="slash"'} >${personList[1].licensePlateNum}</td>
+         <td ${personList[1].name?'':'class="slash"'} >${personList[1].licensePlateNum}</td>
          <td>保险凭证号</td>
-         <td ${personList[1].carInsureNumber?'':'class="slash"'} >${personList[1].carInsureNumber}</td>
+         <td ${personList[1].name?'':'class="slash"'} >${personList[1].carInsureNumber}</td>
         </tr>
         ${
           !personList[2].name?'':
@@ -107,9 +107,7 @@ export function generateRDS(basic, personList, factAndResponsibility, width){
             <tr>
              <td style="width:80px;text-align:center;;border-top:0px;  border-right: 0px;"> 交<br />通<br />事<br />故<br />事<br />实<br />及<br />责<br />任 </td>
              <td style="text-align:left;border-top:0px;  border-right: 0px;">
-                <p>
-                    ${factAndResponsibility}
-                </p>
+                <p>${fact+'  '+responsibility}</p>
                 <p></p>
                 <p></p>
                 <br /> 当事人：<img src=${personList[0].signData} />
@@ -121,7 +119,7 @@ export function generateRDS(basic, personList, factAndResponsibility, width){
             </tr>
             <tr>
              <td style="width:80px;text-align:center;border-bottom:0px; border-left: 0px; border-right: 0px;"> 损<br />害<br />赔<br />偿<br />调<br />解<br />结<br />果 </td>
-             <td style="text-align:left;border-bottom:0px; border-right: 0px;">经各方当事人共同申请调解，自愿达成协议如下： <br />由当事人自行协商解决。此事故一次结清，签字生效。
+             <td style="text-align:left;border-bottom:0px; border-right: 0px;">${conciliation}
              <br /> 当事人：<img src=${personList[0].signData} />
              ${personList[1].signData?'<img src='+personList[1].signData+' />':''}
              ${personList[2].signData?'<img src='+personList[2].signData+' />':''}

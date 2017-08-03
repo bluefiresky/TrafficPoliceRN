@@ -201,7 +201,7 @@ export default class HistoricalCaseCellView extends Component {
             <View style={styles.left}>
               <View style={{flexDirection:'row',marginTop:15,alignItems:'center'}}>
                 <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故时间：</Text>
-                <Text style={{color:formLeftText,fontSize:14}}>{basic.accidentTime}</Text>
+                <Text style={{color:formLeftText,fontSize:14}}>{this._convertAccidentTime(basic.accidentTime)}</Text>
               </View>
               <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
                 <Text style={{color:formLeftText,fontSize:15, width: 80}}>事故地点：</Text>
@@ -234,6 +234,12 @@ export default class HistoricalCaseCellView extends Component {
       </TouchableHighlight>
     )
   }
+
+  _convertAccidentTime(time){
+    if(time) return time.substring(0, time.length - 3);
+    return ''
+  }
+
 }
 const styles = StyleSheet.create({
     content: {

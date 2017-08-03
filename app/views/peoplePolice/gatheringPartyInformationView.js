@@ -85,15 +85,15 @@ class GatheringPartyInformationView extends Component {
         break;
       }
       if (!TextUtility.checkLength(this.submitDataArr[i].licensePlateNum, 9, 7)) {
-        error = `请输入${this.carInfoData[i].title}车牌号`
+        error = `请输入正确的${this.carInfoData[i].title}车牌号`
         break;
       }
       if (!this.submitDataArr[i].carType) {
-        error = `请输入${this.carInfoData[i].title}车辆类型`
+        error = `请输入正确的${this.carInfoData[i].title}车辆类型`
         break;
       }
       if (!this.submitDataArr[i].insureCompanyName) {
-        error = `请选择${this.carInfoData[i].title}保险公司`
+        error = `请选择正确的${this.carInfoData[i].title}保险公司`
         break;
       }
       if (this.submitDataArr[i].carInsureNumber && this.submitDataArr[i].carInsureNumber.length < 10) {
@@ -190,9 +190,9 @@ class GatheringPartyInformationView extends Component {
         }
         break;
       case 'DrivingLicense':
-        if(TextUtility.checkNumber(text)){
+        // if(TextUtility.checkNumber(text)){
           this.submitDataArr[index].driverNum = text;
-        }
+        // }
         break;
       case 'InsuranceCertificateNum':
         this.submitDataArr[index].carInsureNumber = text;
@@ -269,7 +269,7 @@ class GatheringPartyInformationView extends Component {
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} value={this.submitDataArr[index].driverNum} maxLength={18} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
+          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} value={this.submitDataArr[index].driverNum} maxLength={18} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
