@@ -179,15 +179,9 @@ class ExploreTakePhotoView extends Component {
                 })
                 this.props.dispatch( create_service(Contract.POST_SURVEYPHOTO_INFO,params))
                   .then( res => {
-                    console.log('res');
                     if (res) {
-                      let source;
-                      if (Platform.OS === 'ios') {
-                          source = response.uri.replace('file://', '')
-                      } else {
-                          source = response.uri
-                      }
-                      this.partyInfoData[ind].photolist[index].url = source;
+                      this.partyInfoData[ind].photolist[index].url =  res.data.url;
+                      this.partyInfoData[ind].photolist[index].pid = res.data.pid;
                       let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].photolist))
                       this.partyInfoData[ind].photolist = temp
                     }
