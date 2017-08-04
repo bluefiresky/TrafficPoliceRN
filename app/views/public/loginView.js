@@ -146,7 +146,7 @@ class LoginView extends Component {
           <View style={{flex:1,marginTop:MarginTop}}>
             <Image source={require('./image/login.png')} style={{width:90,height:90,alignSelf:'center'}}/>
             <Text style={{marginTop:10,alignSelf:'center',fontSize:16,color:'#1174D9',fontWeight:'bold'}}>
-              警用事故处理
+              事故e处理警用版
             </Text>
             <View style={{marginTop:30,flexDirection:'row',width:W-30,marginLeft:15,backgroundColor:'#EFF2F7',borderRadius:10}}>
               <Image source={require('./image/phone.png')} style={{width:11,height:16,alignSelf:'center',marginLeft:15}}/>

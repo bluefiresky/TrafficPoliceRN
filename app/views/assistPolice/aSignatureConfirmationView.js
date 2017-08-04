@@ -217,7 +217,7 @@ class ASignatureConfirmationView extends Component {
         </View>
 
         <View style={{flexDirection:'row',marginTop:15,marginLeft:20,alignItems:'center'}}>
-          <Input label={'手机号:'} value={value.phone} keyboardType={'numeric'} style={{flex:1, height: 35, paddingLeft:0}} hasClearButton={false} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
+          <Input label={'手机号:'} value={value.phone} keyboardType={'numeric'} maxLength={11} style={{flex:1, height: 35, paddingLeft:0}} hasClearButton={false} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
         </View>
 
         <View style={{flexDirection:'row', height:30, marginLeft:20, alignItems:'center'}}>

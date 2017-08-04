@@ -107,7 +107,7 @@ export class SelectCarNum extends Component {
           {
             hasStar? <Text style={{fontSize:12,color:'red',alignSelf:'center'}}>*</Text> : null
           }
-          <Text style={{fontSize: 14, color: formLeftText, width: 80, alignSelf:'center',marginLeft:5}}>{label}</Text>
+          <Text style={{fontSize: 16, color: formLeftText, width: 80, alignSelf:'center',marginLeft:5}}>{label}</Text>
           <TouchableHighlight style={{flex:1, height:30, alignItems:'center', justifyContent:'center', borderColor:mainBule, borderWidth:1}} underlayColor={'transparent'} onPress={this.showData.bind(this, null)}>
             <Text style={{fontSize:16, fontWeight:'bold'}}>{plateNum}</Text>
           </TouchableHighlight>

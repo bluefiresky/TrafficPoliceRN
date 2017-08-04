@@ -91,16 +91,16 @@ export class CarTypePicker extends Component {
       <View style={[{paddingLeft:20}, border]}>
         <View style={ [{flexDirection: 'row', height: 40, backgroundColor: 'white'}] }>
           <View style={{width: labelWidth? labelWidth : 80, justifyContent: 'center'}}>
-            <Text style={{ color: formLeftText, fontSize: 14 }}>{ label }</Text>
+            <Text style={{ color: formLeftText, fontSize: 16 }}>{ label }</Text>
           </View>
           <TouchableWithoutFeedback onPress={this._onPress}>
             <View style={{flex: 1, flexDirection: 'row'}}>
               <View style={{flex: 1, justifyContent: 'center'}}>
                 {
                   value && value != ''?
-                  <Text style={{fontSize: 14, color: commonText}} numberOfLines={2} >{this.inputType === 1? '其他':value}</Text>
+                  <Text style={{fontSize: 16, color: commonText}} numberOfLines={2} >{this.inputType === 1? '其他':value}</Text>
                   :
-                  <Text style={{fontSize: 14, color: placeholderColor}}>{this.inputType === 1?'其他':placeholder}</Text>
+                  <Text style={{fontSize: 16, color: placeholderColor}}>{this.inputType === 1?'其他':placeholder}</Text>
                 }
               </View>
               <View style={{width: 50, alignItems: 'center', justifyContent: 'center'}}>

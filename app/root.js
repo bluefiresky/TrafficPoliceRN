@@ -15,7 +15,7 @@ import Orientation from 'react-native-orientation';
 import { backgroundGrey, mainBule, W } from './configs/index.js';
 
 import {
-  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,SignatureView,UploadProgressView,UploadSuccessView,CertificateView,CommonWebView,
+  /** public */ LoginView,SettingView,FeedBackView,HistoricalCaseView,CaseDetailsView,LookConclusionView,LookBigImageView,SignatureView,UploadProgressView,UploadSuccessView,CertificateView,CommonWebView,AccidentInsuranceCompanyView,
   /** peoplePolice */ PpHomePageView,AccidentBasicInformationView,PhotoEvidenceVeiw,GatheringPartyInformationView,GatheringCardPhotoView,ConfirmInformationView,AccidentFactAndResponsibilityView,SignatureConfirmationView,
   /** assistPolice */ ApHomePageView,AAccidentBasicInformationView,APhotoEvidenceVeiw,SelectHandleTypeView,AGatheringPartyInformationView,AGatheringCardPhotoView,AConfirmInformationView,AccidentConditionView,AccidentConfirmResponView,ASignatureConfirmationView,AAccidentFactAndResponsibilityView,WaitRemoteResponsibleView,ResponsibleResultView,
   /** insuranceReport */
@@ -59,6 +59,7 @@ const PublicNavigator = StackNavigator({
   UploadSuccessView: {screen: UploadSuccessView, navigationOptions: {title: '上传成功'}},
   CertificateView: {screen: CertificateView },
   CommonWebView: {screen: CommonWebView },
+  AccidentInsuranceCompanyView: {screen: AccidentInsuranceCompanyView, navigationOptions: {title: '选择保险公司'} },
 
   //协警
   ApHomePageView: { screen: ApHomePageView, navigationOptions: { title: '首页'} },

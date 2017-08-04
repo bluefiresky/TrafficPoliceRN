@@ -244,9 +244,9 @@ class GatheringPartyInformationView extends Component {
         <View style={{marginTop:10,flexDirection:'row',paddingTop:10,paddingBottom:10,justifyContent:'space-between'}}>
           <View style={{flexDirection:'row',marginLeft:15}}>
             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-            <Text style={{fontSize:15,color:formLeftText,marginLeft:10,alignSelf:'center'}}>
+            <Text style={{fontSize:17,color:formLeftText,marginLeft:10,alignSelf:'center'}}>
               {`${value.title}当事人`}
-              <Text style={{fontSize:15,color:'red'}}>{index===1?'(单车事故时请删除乙方当事人)':null}</Text>
+              <Text style={{fontSize:17,color:'red'}}>{index===1?'(单车事故时请删除乙方当事人)':null}</Text>
             </Text>
           </View>
           {(index == this.carInfoData.length - 1 && index !== 0)?<TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={()=>this.deleteItem(index)} underlayColor='transparent'>
@@ -257,23 +257,23 @@ class GatheringPartyInformationView extends Component {
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'姓名: '} placeholder={'请输入当事人姓名'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Name') }}/>
+          <Input label={'姓名: '} placeholder={'请输入当事人姓名'} style={{flex:1, height: 50, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Name') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'联系方式: '} placeholder={'请输入当事人联系方式'} value={this.submitDataArr[index].phone} maxLength={11} keyboardType={'numeric'} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
+          <Input label={'联系方式: '} placeholder={'请输入当事人联系方式'} value={this.submitDataArr[index].phone} maxLength={11} keyboardType={'numeric'} style={{flex:1, height: 50, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Phone') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} value={this.submitDataArr[index].driverNum} maxLength={18} style={{flex:1, height: 40, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
+          <Input label={'驾驶证号: '} placeholder={'请输入当事人驾驶证号'} value={this.submitDataArr[index].driverNum} maxLength={18} style={{flex:1, height: 50, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'DrivingLicense') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
-        <View style={{flexDirection:'row',marginLeft:20,paddingVertical:5, alignItems: 'center'}}>
+        <View style={{flexDirection:'row',marginLeft:20,paddingVertical:10, alignItems: 'center'}}>
           <SelectCarNum
             label={'车牌号: '}
             plateNum={this.submitDataArr[index].licensePlateNum}
@@ -287,12 +287,12 @@ class GatheringPartyInformationView extends Component {
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
         <View style={{flex:1,paddingLeft:20}}>
-          <View style={{flexDirection:'row',height:40,marginRight:15,alignItems:'center'}}>
+          <View style={{flexDirection:'row',height:50,marginRight:15,alignItems:'center'}}>
             <Text style={{fontSize:12,color:'red'}}>*</Text>
-            <Text style={{fontSize:14,color:formLeftText,marginLeft:5}}>车辆类型:</Text>
+            <Text style={{fontSize:16,color:formLeftText,marginLeft:5}}>车辆类型:</Text>
             <TouchableHighlight onPress={() => this.showTypePicker(this.carTypeData,index,'carTypeData')} underlayColor='transparent' style={{flex:1}}>
               <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-                <Text style={{fontSize:14,paddingLeft:13,color:formLeftText,marginLeft:10,marginRight:10}} >{this.state.showOtherCarTextInput?'其他':this.submitDataArr[index].carType}</Text>
+                <Text style={{fontSize:16,paddingLeft:13,color:formLeftText,marginLeft:10,marginRight:10}} >{this.state.showOtherCarTextInput?'其他':this.submitDataArr[index].carType}</Text>
                 <Image style={{width:7,height:12,resizeMode:'contain'}} source={require('./image/right_arrow.png')}/>
               </View>
             </TouchableHighlight>
@@ -307,12 +307,18 @@ class GatheringPartyInformationView extends Component {
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
-        <View style={{flex:1,flexDirection:'row',marginLeft:20,height:40,marginRight:15,alignItems:'center'}}>
+        <View style={{flex:1,flexDirection:'row',marginLeft:20,height:50,marginRight:15,alignItems:'center'}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Text style={{fontSize:14,color:formLeftText,marginLeft:5}}>保险公司:</Text>
-          <TouchableHighlight onPress={() => this.showTypePicker(this.insuranceCompanyLabel,index,'insuranceCompanyData')} underlayColor='transparent' style={{flex:1}}>
-            <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <Text style={{fontSize:14,paddingLeft:13,color:formLeftText,marginLeft:10,marginRight:10}}>{this.submitDataArr[index].insureCompanyName}</Text>
+          <Text style={{fontSize:16,color:formLeftText,marginLeft:5}}>保险公司:</Text>
+          <TouchableHighlight onPress={() => {
+              this.props.navigation.navigate('AccidentInsuranceCompanyView', {returnValue: (value) => {
+                this.submitDataArr[index].insureCompanyCode = value.code;
+                this.submitDataArr[index].insureCompanyName = value.title;
+                this.setState({refresh:true})
+              }})
+            }} underlayColor='transparent' style={{flex:1}}>
+            <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+              <Text style={{flex:1,fontSize:16,paddingLeft:13,color:formLeftText,marginLeft:10,marginRight:10}}>{this.submitDataArr[index].insureCompanyName}</Text>
               <Image style={{width:7,height:12,resizeMode:'contain'}} source={require('./image/right_arrow.png')}/>
             </View>
           </TouchableHighlight>
@@ -321,19 +327,20 @@ class GatheringPartyInformationView extends Component {
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 22}}>
           <Text style={{fontSize:12,color:'red'}}></Text>
-          <Input label={'保单号: '} placeholder={'请输入交强险保单号'} keyboardType={'email-address'}  maxLength={40} style={{flex:1, height: 40, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
+          <Input label={'保单号: '} placeholder={'请输入交强险保单号'} keyboardType={'email-address'}  maxLength={40} style={{flex:1, height: 50, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
-        <View style={{flexDirection:'row',marginLeft:22,paddingTop:10}}>
-          <Text style={{fontSize:14,color:formLeftText,marginLeft:10}}>保险到期日:</Text>
+        <View style={{flexDirection:'row',marginLeft:20,paddingVertical:5}}>
+          <Text style={{fontSize:16,color:formLeftText,marginLeft:10,alignSelf:'center'}}>保险到期日:</Text>
           <DatePicker
-            style={{marginTop:-12,flex:1}}
-            date={this.submitDataArr[index].carInsureDueDate}
+            style={{flex:1, height:40}}
+            date={this.submitDataArr.length > 0?(this.submitDataArr[index].carInsureDueDate):''}
             mode="date"
             format="YYYY-MM-DD"
             confirmBtnText="确定"
             cancelBtnText="取消"
+            placeholder="选填"
             iconSource={require('./image/right_arrow.png')}
             customStyles={{
               dateIcon: {
@@ -343,9 +350,18 @@ class GatheringPartyInformationView extends Component {
               },
               dateInput: {
                 borderColor:'#ffffff',
-                height:25,
+                height:40,
                 marginRight:5,
-                alignItems:'flex-end'
+                marginLeft:10,
+                alignItems:'flex-start'
+              },
+              dataText: {
+                fontSize:16,
+                color:formLeftText,
+              },
+              placeholderText: {
+                fontSize:16,
+                color:formRightText
               }
             }}
             onDateChange={(date) => {
@@ -360,7 +376,8 @@ class GatheringPartyInformationView extends Component {
           {
             !(this.submitDataArr.length > 0 && this.submitDataArr[index].carInsureDueDate)? null:
             <TouchableHighlight
-              style={{alignItems:'center', justifyContent:'center', marginTop:-10, width:40}}
+              style={{alignItems:'center', justifyContent:'center', width:40}}
+              underlayColor={'transparent'}
               onPress={()=>{
                 this.submitDataArr[index].carInsureDueDate = '';
                 this.setState({refresh:true})

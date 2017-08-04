@@ -23,7 +23,7 @@ class AccidentBasicInformationView extends Component {
 
     this.state = {
       date: Tool.getTime('yyyy-MM-dd hh:mm'),
-      weather: null,
+      weather: {name:'晴', code:'1'},
       accidentSite: null,
       loading: false,
       showTip: false,
@@ -146,10 +146,10 @@ class AccidentBasicInformationView extends Component {
           <View style={{backgroundColor:'#ffffff',marginTop:15}}>
             <Text style={{color:formLeftText,marginLeft:15,marginTop:10,fontSize:16}}>
               事故地点
-              <Text style={{color:formRightText,fontSize:16}}>(可手动更改事故地点)</Text>
+              <Text style={{color:formRightText,fontSize:16}}>(可手动修改)</Text>
             </Text>
             <View style={{backgroundColor:'#EFF2F7',width:W,height:1,marginTop:10}}></View>
-            <InputWithIcon labelWidth={20} style={{height: 55, paddingLeft:15}} maxLength={50} icon={require('./image/location.png')} noBorder={true} value={this.state.accidentSite} onChange={this.onChangeText.bind(this)} multiline={true}/>
+            <InputWithIcon labelWidth={20} style={{height: 55, paddingLeft:15}} maxLength={50} icon={require('./image/location.png')} noBorder={true} placeholder={'请填写事故地点'} value={this.state.accidentSite} onChange={this.onChangeText.bind(this)} multiline={true}/>
             <TouchableOpacity onPress={()=>{this._onGetLocation()}} activeOpacity={0.8} style={{backgroundColor:'transparent', position:'absolute', width:50, height:50, top:45}}>
               <View />
             </TouchableOpacity>

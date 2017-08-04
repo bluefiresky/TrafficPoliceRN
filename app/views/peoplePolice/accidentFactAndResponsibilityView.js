@@ -96,7 +96,7 @@ class AccidentFactAndResponsibilityView extends Component {
             <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>事故事实及责任</Text>
           </View>
           <View style={{backgroundColor:'#ffffff'}}>
-            <Text style={{marginLeft:15,marginRight:15,marginTop:15,color:formRightText,fontSize:13,lineHeight:20}}>{this._convertInfoToAccidentContent(basic, person)}
+            <Text style={{marginLeft:15,marginRight:15,marginTop:15,color:'#666666',fontSize:13,lineHeight:20}}>{this._convertInfoToAccidentContent(basic, person)}
             </Text>
             <AutoGrowingTextInput
               style={{height:100,marginLeft:15,width:W-30,fontSize:13,padding:5,borderWidth:1,borderColor:'#D4D4D4',marginTop:15,backgroundColor:'#FBFBFE'}}

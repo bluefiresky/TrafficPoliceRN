@@ -154,7 +154,7 @@ class ConfirmInformationView extends Component {
       <View style={{backgroundColor:'#ffffff',marginTop:10}} key={ind}>
         <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
           <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-          <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>{`${this.partyVerData[ind].name}信息`}</Text>
+          <Text style={{fontSize:17,color:formLeftText,marginLeft:10}}>{`${this.partyVerData[ind].name}信息`}</Text>
         </View>
         <View style={{marginTop:10}}>
           {this.renderRowItem('姓名',value.name,ind,'Name',value)}
@@ -179,17 +179,23 @@ class ConfirmInformationView extends Component {
               console.log(' ConfirmReportPartyInfoView carType -->> ', res);
               this.onChangeText(res,ind,'CarType',value)
             }}/>
-          <InsurancePicker
-            data={this.insuranceData}
-            label={'保险公司'}
-            value={value.insureCompanyName}
-            onChange={(res) => {
-              console.log(' ConfirmReportPartyInfoView insureCompanyName res -->> ', res)
-              this.onChangeText(res,ind,'InsuranceCompany',value)
-            }}/>
+          <View style={{flex:1,flexDirection:'row',marginLeft:20,height:40,marginRight:20,alignItems:'center'}}>
+            <Text style={{fontSize:16,color:formLeftText}}>保险公司</Text>
+            <TouchableHighlight onPress={() => {
+                this.props.navigation.navigate('AccidentInsuranceCompanyView', {returnValue: (item) => {
+                  this.onChangeText(item,ind,'InsuranceCompany',value)
+                }})
+              }} underlayColor='transparent' style={{flex:1}}>
+              <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+                <Text style={{flex:1,fontSize:16,paddingLeft:10,color:commonText,marginLeft:10,marginRight:10}}>{value.insureCompanyName}</Text>
+                <Image style={{width:7,height:12,resizeMode:'contain'}} source={require('./image/right_arrow.png')}/>
+              </View>
+            </TouchableHighlight>
+          </View>
+          <View style={{width:W, height:1, backgroundColor:backgroundGrey}} />
           {this.renderRowItem('保险单号',value.carInsureNumber,ind,'InsuranceCertificateNum',value)}
           <View style={{flexDirection:'row',marginLeft:20,paddingTop:10}}>
-            <Text style={{fontSize:14,color:formLeftText}}>保险到期日:</Text>
+            <Text style={{fontSize:16,color:formLeftText}}>保险到期日</Text>
             <DatePicker
               style={{marginTop:-12,flex:1}}
               date={value.carInsureDueDate}
@@ -251,8 +257,8 @@ class ConfirmInformationView extends Component {
         item.carType = text;
         break;
       case 'InsuranceCompany':
-        item.insureCompanyName = text.inscomname;
-        item.insureCompanyCode = text.inscomcode;
+        item.insureCompanyName = text.title;
+        item.insureCompanyCode = text.code;
         break;
       case 'InsuranceCertificateNum':
         item.carInsureNumber = text;
@@ -266,9 +272,11 @@ class ConfirmInformationView extends Component {
 
   renderRowItem(title,value,index,type,item,maxLength){
     let keyboardType = (type === 'Phone' || type === 'DrivingLicense')?'numeric':'default';
+    let placeholder = `请输入${title}`;
+    if(title == '保险单号') placeholder = '';
     return (
       <View style={{flex:1}}>
-        <Input label={title} value={value} placeholder={`请输入${title}`} maxLength={maxLength} keyboardType={keyboardType} style={{flex:1, height: 40}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,type,item) }}/>
+        <Input label={title} value={value} placeholder={placeholder} maxLength={maxLength} keyboardType={keyboardType} style={{flex:1, height: 40}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,type,item) }}/>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
       </View>
     )
@@ -280,8 +288,8 @@ class ConfirmInformationView extends Component {
     if(type === 'Weather') v = this._convertWeather(value);
     return(
       <View style={{flex: 1, flexDirection:'row', height: 30}}>
-        <Text style={{width:80, fontSize: 14, color: formRightText}}>{title}</Text>
-        <Text style={{fontSize: 14, color: formRightText}}>{v}</Text>
+        <Text style={{width:80, fontSize: 16, color: '#666666'}}>{title}</Text>
+        <Text style={{fontSize: 16, color: '#666666'}}>{v}</Text>
       </View>
     )
   }
@@ -309,14 +317,14 @@ class ConfirmInformationView extends Component {
            <View style={{backgroundColor:'#ffffff',marginTop:10}}>
              <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
                <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-               <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>基本信息</Text>
+               <Text style={{fontSize:17,color:formLeftText,marginLeft:10}}>基本信息</Text>
              </View>
              <View style={{marginTop:10,marginLeft:20}}>
                {this.renderBasicItem('事故时间', basic?basic.accidentTime:'', 'AccidentTime')}
                {this.renderBasicItem('天气', basic?basic.weather:'', 'Weather')}
                <View style={{flex: 1, flexDirection:'row', paddingBottom:5}}>
-                 <Text style={{width:80, fontSize: 14, color: formRightText}}>事故地点</Text>
-                 <Text style={{flex:1, fontSize: 14, color: formRightText}}>{ basic?basic.address :''}</Text>
+                 <Text style={{width:80, fontSize: 16, color: '#666666'}}>事故地点</Text>
+                 <Text style={{flex:1, fontSize: 16, color: '#666666'}}>{ basic?basic.address :''}</Text>
                </View>
              </View>
            </View>
@@ -324,7 +332,7 @@ class ConfirmInformationView extends Component {
            <View style={{backgroundColor:'#ffffff',marginTop:10}}>
              <View style={{flexDirection:'row',marginTop:10,marginLeft:10}}>
                <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
-               <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>现场照片</Text>
+               <Text style={{fontSize:17,color:formLeftText,marginLeft:10}}>现场照片</Text>
              </View>
              <View style={{flex:1,marginTop:15,marginLeft:10}}>
                <FlatList
