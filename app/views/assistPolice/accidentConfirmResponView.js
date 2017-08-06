@@ -12,6 +12,8 @@ import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { StorageHelper } from '../../utility/index.js';
 
+const DamagedW = (W - 80)/3
+
 class AccidentConfirmResponView extends Component {
 
   constructor(props){
@@ -26,6 +28,8 @@ class AccidentConfirmResponView extends Component {
     }
 
     this.dutyDataList = null;
+    this.renderDutySeleteView = this.renderDutySeleteView.bind(this);
+    this._mutexDutySelect = this._mutexDutySelect.bind(this);
   }
 
   componentDidMount(){
@@ -77,20 +81,66 @@ class AccidentConfirmResponView extends Component {
     )
   }
 
-  renderOneParty(value,index){
+  _mutexDutySelect(currentIndex, selectValue){
+    let otherIndex = currentIndex == 0? 1:0;
+    let { localDutyList } = this.state;
+    let currentDuty = localDutyList[currentIndex];
+    let otherDuty = localDutyList[otherIndex];
+    if(selectValue.code == '0'){
+      currentDuty.dutyName = selectValue.label;
+      currentDuty.dutyType = selectValue.code;
+      otherDuty.dutyName = this.dutyDataList[1].label;
+      otherDuty.dutyType = this.dutyDataList[1].code;
+    }else if(selectValue.code == '1'){
+      currentDuty.dutyName = selectValue.label;
+      currentDuty.dutyType = selectValue.code;
+      otherDuty.dutyName = this.dutyDataList[0].label;
+      otherDuty.dutyType = this.dutyDataList[0].code;
+    }else if(selectValue.code == '2'){
+      currentDuty.dutyName = selectValue.label;
+      currentDuty.dutyType = selectValue.code;
+      otherDuty.dutyName = this.dutyDataList[2].label;
+      otherDuty.dutyType = this.dutyDataList[2].code;
+    }
+    this.setState({localDutyList})
+  }
+
+  renderDutySeleteView(value,index,selectDuty,personIndex){
+    let showColor =  selectDuty? ((value.code == selectDuty.dutyType)? mainBule : formRightText) : formRightText
     return (
-      <View style={{marginLeft:15}} key={index}>
-        <DutyTypePicker label={`当事人${value.name}(${value.licensePlateNum})`} placeholder={'请选择责任类型'} value={value.dutyName}
-          data={this.dutyDataList}
-          onChange={(res)=>{
-            let { localDutyList } = this.state;
-            let d = localDutyList[index];
-            d.dutyName = res.label;
-            d.dutyType = res.code;
+      <TouchableHighlight style={{marginTop:10, borderColor:showColor, borderWidth:1,borderRadius:5,marginHorizontal:5,width:DamagedW, height:30,alignItems:'center',justifyContent:'center'}} key={index}
+        onPress={() => {
+          let { localDutyList } = this.state;
+          if(localDutyList.length === 2){
+            this._mutexDutySelect(personIndex, value);
+          }else{
+            let d = localDutyList[personIndex];
+            d.dutyName = value.label;
+            d.dutyType = value.code;
             this.setState({localDutyList})
-          }}
-          noBorder={true}/>
-        <View style={{height:1,backgroundColor:backgroundGrey,marginRight:15}} />
+          }
+        }}
+        underlayColor='transparent'>
+          <Text style={{fontSize:16,color:showColor}}>{value.label}</Text>
+      </TouchableHighlight>
+    )
+  }
+
+  renderOneParty(value,personIndex){
+    let d = this.state.localDutyList[personIndex];
+
+    return (
+      <View key={personIndex} style={{paddingTop:10}}>
+        <Text style={{paddingLeft:15, fontSize:14}}>{`当事人${value.name}(${value.licensePlateNum})`}</Text>
+        {
+          (this.dutyDataList.length > 0)?
+            <View style={{flexDirection:'row',flexWrap:'wrap', paddingLeft:10}}>
+               {this.dutyDataList.map((duty,index) => this.renderDutySeleteView(duty,index,d,personIndex))}
+            </View>
+            :
+            null
+          }
+        <View style={{height:1,backgroundColor:backgroundGrey,marginRight:15, marginTop:10}}></View>
       </View>
     )
   }

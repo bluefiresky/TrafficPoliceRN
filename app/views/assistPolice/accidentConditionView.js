@@ -101,16 +101,13 @@ class AccidentConditionView extends Component {
   showDamageDataModal(index){
     this.setState({ showModalView: true, currentDamageIndex: index })
   }
-  renderDamageSeleteView(code,index){
-    let currentDamagedArray = this.personDamagedArray[this.state.currentDamageIndex];
-    if(!currentDamagedArray) return;
+  renderDamageSeleteView(code,index,currentDamagedArray){
 
-    let check = currentDamagedArray.indexOf(code) != -1;
-    let selBorderColor =  check? mainBule : backgroundGrey
-    let selFontColor = check ? mainBule : formRightText
+    let check = currentDamagedArray? (currentDamagedArray.indexOf(code) != -1) : false;
+    let showColor =  check? mainBule : formRightText
 
     return (
-      <TouchableHighlight style={{borderColor:selBorderColor, borderWidth:1,borderRadius:5,paddingTop:5,paddingBottom:5,paddingLeft:10,paddingRight:5,marginTop:15,marginLeft:10}} key={index}
+      <TouchableHighlight style={{marginTop:10, borderColor:showColor, borderWidth:1,borderRadius:5,marginHorizontal:5,width:DamagedW, height:30,alignItems:'center',justifyContent:'center'}} key={index}
         onPress={() => {
           let i = currentDamagedArray.indexOf(code);
           if(i === -1) {
@@ -123,7 +120,7 @@ class AccidentConditionView extends Component {
           else currentDamagedArray.splice(i,1);
           this.setState({refresh:true})}}
         underlayColor='transparent'>
-          <Text style={{fontSize:16,color:selFontColor}}>{this.carDamageNameData[index]}</Text>
+          <Text style={{fontSize:16,color:showColor}}>{this.carDamageNameData[index]}</Text>
       </TouchableHighlight>
     )
   }
@@ -137,50 +134,43 @@ class AccidentConditionView extends Component {
   renderOneParty(p,index){
     let currentDamagedArray = this.personDamagedArray[index];
     return (
-      <View key={index}>
-        <View style={{height:40, flexDirection:'row',justifyContent:'space-between'}}>
-          <Text style={{flex:1, paddingLeft:15, fontSize:13,alignSelf:'center'}}>{`${TitleList[index]+p.name}（${p.licensePlateNum}）`}</Text>
-          <TouchableHighlight style={{paddingRight:15,justifyContent:'center'}} onPress={() => this.showDamageDataModal(index,p)} underlayColor='transparent'>
-            <Text style={{fontSize:13,color:mainBule}}>
-              选择受损部位
-            </Text>
-          </TouchableHighlight>
-        </View>
+      <View key={index} style={{paddingTop:10}}>
+        <Text style={{paddingLeft:15, fontSize:14}}>{`${TitleList[index]+p.name}（${p.licensePlateNum}）`}</Text>
         {
-          (currentDamagedArray.length > 0)?
-             <View style={{flexDirection:'row', flexWrap:'wrap', paddingHorizontal:10}}>
-              {currentDamagedArray.map((value,index) => this.renderDamageView(value,index))}
-             </View>
+          (this.carDamageCodeData.length > 0)?
+            <View style={{flexDirection:'row',flexWrap:'wrap', paddingLeft:10}}>
+               {this.carDamageCodeData.map((value,index) => this.renderDamageSeleteView(value,index,currentDamagedArray))}
+            </View>
             :
             null
           }
-        <View style={{height:1,backgroundColor:backgroundGrey,marginRight:15}}></View>
+        <View style={{height:1,backgroundColor:backgroundGrey,marginRight:15, marginTop:10}}></View>
       </View>
     )
   }
 
-  renderModalView(){
-    return (
-      <View>
-        <Modal animationType="fade" transparent={true} visible={this.state.showModalView} onRequestClose={() => {}}>
-          <TouchableHighlight onPress={() => this.setState({showModalView:false})} style={styles.modalContainer} underlayColor='transparent'>
-            <TouchableHighlight style={{backgroundColor:'#ffffff',alignSelf:'center',marginLeft:60,marginRight:60,borderRadius:10}} onPress={()=>{}} underlayColor='#ffffff'>
-              <View>
-                <View style={{flexDirection:'row',flexWrap:'wrap',padding:20}}>
-                   {this.carDamageCodeData.map((value,index) => this.renderDamageSeleteView(value,index))}
-                </View>
-                <View style={{height:1,backgroundColor:backgroundGrey}}></View>
-                <TouchableHighlight style={{paddingVertical:10,justifyContent:'center'}} underlayColor='transparent'
-                  onPress={()=>{ this.setState({ showModalView: false })}}>
-                  <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>选好了</Text>
-                </TouchableHighlight>
-              </View>
-            </TouchableHighlight>
-          </TouchableHighlight>
-        </Modal>
-      </View>
-    )
-  }
+  // renderModalView(){
+  //   return (
+  //     <View>
+  //       <Modal animationType="fade" transparent={true} visible={this.state.showModalView} onRequestClose={() => {}}>
+  //         <TouchableHighlight onPress={() => this.setState({showModalView:false})} style={styles.modalContainer} underlayColor='transparent'>
+  //           <TouchableHighlight style={{backgroundColor:'#ffffff',alignSelf:'center',marginLeft:60,marginRight:60,borderRadius:10}} onPress={()=>{}} underlayColor='#ffffff'>
+  //             <View>
+  //               <View style={{flexDirection:'row',flexWrap:'wrap',padding:20}}>
+  //                  {this.carDamageCodeData.map((value,index) => this.renderDamageSeleteView(value,index))}
+  //               </View>
+  //               <View style={{height:1,backgroundColor:backgroundGrey}}></View>
+  //               <TouchableHighlight style={{paddingVertical:10,justifyContent:'center'}} underlayColor='transparent'
+  //                 onPress={()=>{ this.setState({ showModalView: false })}}>
+  //                 <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>选好了</Text>
+  //               </TouchableHighlight>
+  //             </View>
+  //           </TouchableHighlight>
+  //         </TouchableHighlight>
+  //       </Modal>
+  //     </View>
+  //   )
+  // }
   render(){
     let { accidentDes, taskModal } = this.state;
     return(
@@ -206,7 +196,6 @@ class AccidentConditionView extends Component {
 
         </ScrollView>
 
-        {this.renderModalView()}
         <ProgressView show={this.state.loading} hasTitleBar={true} />
       </View>
     );
