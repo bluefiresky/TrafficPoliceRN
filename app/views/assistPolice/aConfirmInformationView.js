@@ -8,12 +8,13 @@ import Toast from '@remobile/react-native-toast';
 import Picker from 'react-native-picker';
 import DatePicker from 'react-native-datepicker';
 import RNFS from 'react-native-fs';
+import ImagePicker from 'react-native-image-picker';
 
 import { W, H, backgroundGrey,formLeftText, formRightText,mainBule,commonText,getProvincialData,getNumberData } from '../../configs/index.js';/** 自定义配置参数 */
 import { XButton, ProgressView, TipModal, Input, InsurancePicker, CarTypePicker, SelectCarNum } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
-import { StorageHelper, TextUtility } from '../../utility/index.js';
+import { StorageHelper, TextUtility, Utility } from '../../utility/index.js';
 
 const ImageW = (W - 3 * 20) / 2;
 const ImageH = (220 * ImageW)/340;
@@ -23,6 +24,17 @@ const ProvincialData = getProvincialData();
 const NumberData = getNumberData();
 
 const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
+const photoOption = {
+  title: '选择照片', //选择器的标题，可以设置为空来不显示标题
+  cancelButtonTitle: '取消',
+  takePhotoButtonTitle: '拍照', //调取摄像头的按钮，可以设置为空使用户不可选择拍照
+  chooseFromLibraryButtonTitle: '从手机相册选择', //调取相册的按钮，可以设置为空使用户不可选择相册照片
+  mediaType: 'photo',
+  maxWidth: 750,
+  maxHeight: 1000,
+  quality: 0.5,
+  storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
+}
 
 class AConfirmInformationView extends Component {
 
@@ -38,7 +50,8 @@ class AConfirmInformationView extends Component {
     this.currentCaseInfo = {};
     this.partyVerData = [{name:'甲方当事人',ver:''},{name:'乙方当事人',ver:''},{name:'丙方当事人',ver:''}];
     this.currentImage = null;
-
+    this.currentImgaeIndex = -1;
+    this.modifyCredentials = false;
   }
 
   componentDidMount(){
@@ -233,6 +246,8 @@ class AConfirmInformationView extends Component {
 
         <TouchableHighlight underlayColor={'transparent'} onPress={()=>{
           this.currentImage = {uri: DocumentPath+credential.photoData, isStatic:true};
+          this.currentImgaeIndex = ind;
+          this.modifyCredentials = true;
           this.setState({showBigImage:true})
         }}>
           <View style={{alignItems:'center', marginTop:10, marginBottom:10}}>
@@ -306,6 +321,8 @@ class AConfirmInformationView extends Component {
     return (
       <TouchableHighlight underlayColor={'transparent'} onPress={()=>{
         this.currentImage = source;
+        this.currentImgaeIndex = index;
+        this.modifyCredentials = false;
         this.setState({showBigImage:true})
       }}>
         <View style={{marginBottom:15, alignItems: 'center', paddingLeft: 10, paddingRight: 10}} underlayColor={'transparent'} onPress={() => this.takePhoto(item,index)}>
@@ -366,7 +383,13 @@ class AConfirmInformationView extends Component {
           <Modal animationType="fade" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
             <TouchableWithoutFeedback onPress={() => this.setState({showBigImage:false})}>
               <View style={styles.modalContainer}>
-                <Image source={this.currentImage} style={{width:W,height:BigImageH,resizeMode:'contain'}}/>
+                <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                  <Image source={this.currentImage} style={{width:W,height:BigImageH,resizeMode:'contain'}}/>
+                </View>
+                <View style={{height:100, flexDirection:'row', justifyContent: 'center', alignItems:'center'}}>
+                  <XButton title={'重拍'} onPress={() => this._reTakePhoto()} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+                  <XButton title={'返回'} onPress={() => this.setState({showBigImage:false})} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}}/>
+                </View>
               </View>
             </TouchableWithoutFeedback>
           </Modal>
@@ -403,6 +426,34 @@ class AConfirmInformationView extends Component {
     }else{
       return '其他现场照' + String(code-50);
     }
+  }
+
+  //重拍
+  _reTakePhoto(){
+    let self = this;
+    ImagePicker.showImagePicker(photoOption, (response) => {
+      this.setState({ showBigImage: false });
+      if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+        // console.log(' the ImagePicker response -->> ', response);
+        let photoData;
+        if(Platform.OS === 'ios'){
+          photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+        }else{
+          photoData = response.path;
+        }
+
+        let photo;
+        if(self.modifyCredentials){
+          photo = this.currentCaseInfo.credentials[self.currentImgaeIndex];
+        }else{
+          photo = this.currentCaseInfo.photo[self.currentImgaeIndex];
+        }
+        photo.photoData = photoData;
+        photo.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss');
+
+        self.setState({refresh:true})
+      }
+    });
   }
 
 }
