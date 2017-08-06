@@ -117,9 +117,16 @@ class AAccidentBasicInformationView extends Component {
                  let tmp2 = tmp1[1].split(':');
                  let tmp3;
                  if(tmp1[2] === 'pm'){
-                   tmp3 = Number(tmp2[0])+12
+                   tmp3 = Number(tmp2[0])
+                   if(tmp3 < 12){
+                     tmp3 += 12
+                   }
                  }else{
-                   tmp3 = tmp2[0];
+                   tmp3 = Number(tmp2[0]);
+                   if(tmp3 == 12){
+                     tmp3 = '0'
+                   }
+
                  }
                  let newDate = tmp1[0] + ' ' + tmp3 + ':' +tmp2[1]
                  this.setState({date: newDate})
