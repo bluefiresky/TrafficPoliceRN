@@ -327,7 +327,7 @@ class GatheringPartyInformationView extends Component {
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 22}}>
           <Text style={{fontSize:12,color:'red'}}></Text>
-          <Input label={'保单号: '} placeholder={'请输入交强险保单号'} keyboardType={'email-address'}  maxLength={40} style={{flex:1, height: 50, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
+          <Input label={'保单号: '} placeholder={'选填'} keyboardType={'email-address'}  maxLength={40} style={{flex:1, height: 50, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 

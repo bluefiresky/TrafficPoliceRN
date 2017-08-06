@@ -106,9 +106,12 @@ class AccidentConfirmResponView extends Component {
   }
 
   renderDutySeleteView(value,index,selectDuty,personIndex){
-    let showColor =  selectDuty? ((value.code == selectDuty.dutyType)? mainBule : formRightText) : formRightText
+    let showBackColor =  selectDuty? ((value.code == selectDuty.dutyType)? mainBule : 'white') : 'white'
+    let showTextColor = selectDuty? ((value.code == selectDuty.dutyType)? 'white' : formRightText) : formRightText
+    let showBorderColor = selectDuty? ((value.code == selectDuty.dutyType)? mainBule : formRightText) : formRightText
+
     return (
-      <TouchableHighlight style={{marginTop:10, borderColor:showColor, borderWidth:1,borderRadius:5,marginHorizontal:5,width:DamagedW, height:30,alignItems:'center',justifyContent:'center'}} key={index}
+      <TouchableHighlight style={{backgroundColor:showBackColor, marginTop:10, borderColor:showBorderColor, borderWidth:1,borderRadius:5,marginHorizontal:5,width:DamagedW, height:30,alignItems:'center',justifyContent:'center'}} key={index}
         onPress={() => {
           let { localDutyList } = this.state;
           if(localDutyList.length === 2){
@@ -121,7 +124,7 @@ class AccidentConfirmResponView extends Component {
           }
         }}
         underlayColor='transparent'>
-          <Text style={{fontSize:16,color:showColor}}>{value.label}</Text>
+          <Text style={{fontSize:16,color:showTextColor}}>{value.label}</Text>
       </TouchableHighlight>
     )
   }
@@ -133,7 +136,7 @@ class AccidentConfirmResponView extends Component {
       <View key={personIndex} style={{paddingTop:10}}>
         <Text style={{paddingLeft:15, fontSize:14}}>{`当事人${value.name}(${value.licensePlateNum})`}</Text>
         {
-          (this.dutyDataList.length > 0)?
+          (this.dutyDataList && this.dutyDataList.length > 0)?
             <View style={{flexDirection:'row',flexWrap:'wrap', paddingLeft:10}}>
                {this.dutyDataList.map((duty,index) => this.renderDutySeleteView(duty,index,d,personIndex))}
             </View>

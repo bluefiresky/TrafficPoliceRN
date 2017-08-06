@@ -23,7 +23,7 @@ class SettingView extends Component {
   }
   //使用帮助
   useHelp(){
-
+    this.props.navigation.navigate('CommonWebView', {title:'使用帮助', url:'https://testx.zhongchebaolian.com/police_usehelp'});
   }
   //意见反馈
   feedback(){

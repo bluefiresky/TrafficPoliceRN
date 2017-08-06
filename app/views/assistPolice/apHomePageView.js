@@ -104,8 +104,8 @@ class ApHomePageView extends Component {
         showsVerticalScrollIndicator={false}>
         <Image source={require('./image/home_bg.png')} style={{width:W, height:HomeBgH}}>
           <Text style={{color:'#ffffff',fontSize:18,alignSelf:'center',marginTop:(Platform.OS === 'ios') ? 30 : 15,backgroundColor:'transparent'}}>首页</Text>
-          <TouchableHighlight style={{top:Platform.OS === 'ios'? 30 : 10,right:15,position:'absolute'}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
-            <Image source={require('./image/setting.png')} style={{width:20,height:20}}/>
+          <TouchableHighlight style={{top:Platform.OS === 'ios'? 30 : 10,right:15,position:'absolute',width:30, height:30}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
+            <Image source={require('./image/setting.png')} style={{width:20,height:20,alignSelf:'flex-end'}}/>
           </TouchableHighlight>
           <View style={{flex:1, justifyContent:'center',marginTop:15,marginLeft:15,width:W-30,backgroundColor:'#ffffff',borderRadius:10}}>
              <View style={{flexDirection:'row',marginLeft:20}}>

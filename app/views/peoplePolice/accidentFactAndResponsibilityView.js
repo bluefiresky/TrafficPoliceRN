@@ -98,9 +98,12 @@ class AccidentFactAndResponsibilityView extends Component {
   }
 
   renderDutySeleteView(value,index,selectDuty,personIndex){
-    let showColor =  selectDuty? ((value.code == selectDuty.dutyType)? mainBule : formRightText) : formRightText
+    let showBackColor =  selectDuty? ((value.code == selectDuty.dutyType)? mainBule : 'white') : 'white'
+    let showTextColor = selectDuty? ((value.code == selectDuty.dutyType)? 'white' : formRightText) : formRightText
+    let showBorderColor = selectDuty? ((value.code == selectDuty.dutyType)? mainBule : formRightText) : formRightText
+
     return (
-      <TouchableHighlight style={{marginTop:10, borderColor:showColor, borderWidth:1,borderRadius:5,marginHorizontal:5,width:DamagedW, height:30,alignItems:'center',justifyContent:'center'}} key={index}
+      <TouchableHighlight style={{backgroundColor:showBackColor, marginTop:10, borderColor:showBorderColor, borderWidth:1,borderRadius:5,marginHorizontal:5,width:DamagedW, height:30,alignItems:'center',justifyContent:'center'}} key={index}
         onPress={() => {
           let { localDutyList } = this.state;
           if(localDutyList.length === 2){
@@ -113,7 +116,7 @@ class AccidentFactAndResponsibilityView extends Component {
           }
         }}
         underlayColor='transparent'>
-          <Text style={{fontSize:16,color:showColor}}>{value.label}</Text>
+          <Text style={{fontSize:16,color:showTextColor}}>{value.label}</Text>
       </TouchableHighlight>
     )
   }
@@ -162,13 +165,13 @@ class AccidentFactAndResponsibilityView extends Component {
           <View style={{width:W, height:15, backgroundColor:backgroundGrey}} />
           <View style={{flexDirection:'row',paddingTop:10,backgroundColor:'#ffffff',marginTop:10}}>
             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
-            <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>事故事实及责任</Text>
+            <Text style={{fontSize:17,color:formLeftText,marginLeft:10}}>事故事实及责任</Text>
           </View>
           <View style={{backgroundColor:'#ffffff'}}>
-            <Text style={{marginLeft:15,marginRight:15,marginTop:15,color:'#666666',fontSize:13,lineHeight:20}}>{this._convertInfoToAccidentContent(basic, person)}
+            <Text style={{marginLeft:15,marginRight:15,marginTop:15,color:formLeftText,fontSize:15,lineHeight:20}}>{this._convertInfoToAccidentContent(basic, person)}
             </Text>
             <AutoGrowingTextInput
-              style={{height:100,marginLeft:15,width:W-30,fontSize:13,padding:5,borderWidth:1,borderColor:'#D4D4D4',marginTop:15,backgroundColor:'#FBFBFE'}}
+              style={{height:100,marginLeft:15,width:W-30,fontSize:15,padding:5,borderWidth:1,borderColor:'#D4D4D4',marginTop:15,backgroundColor:'#FBFBFE'}}
               value={supplementary}
               underlineColorAndroid={'transparent'}
               placeholder={'补充事故事实（可不填）'}
@@ -184,10 +187,10 @@ class AccidentFactAndResponsibilityView extends Component {
             <View style={{width:W, height:15, backgroundColor:backgroundGrey}} />
             <View style={{flexDirection:'row',backgroundColor:'#ffffff',marginTop:15}}>
               <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center',marginLeft:15}}/>
-              <Text style={{fontSize:15,color:formLeftText,marginLeft:10}}>损害赔偿及调解结果（可自行修改）</Text>
+              <Text style={{fontSize:17,color:formLeftText,marginLeft:10}}>损害赔偿及调解结果（可自行修改）</Text>
             </View>
             <TextInput
-              style={{height:100, fontSize: 14, marginLeft:15,marginTop:10, width: W - 30,borderWidth:1,borderColor:'#D4D4D4',backgroundColor:'#FBFBFE',padding:5}}
+              style={{height:100, fontSize: 15, marginLeft:15,marginTop:10, width: W - 30,borderWidth:1,borderColor:'#D4D4D4',backgroundColor:'#FBFBFE',padding:5}}
               value={conciliation}
               underlineColorAndroid={'transparent'}
               onChangeText={(text) => { this.onChangeText(text,'Result') } }
