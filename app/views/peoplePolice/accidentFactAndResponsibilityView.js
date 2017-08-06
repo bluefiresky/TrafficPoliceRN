@@ -13,6 +13,8 @@ import { create_service, getStore } from '../../redux/index.js'; /** 调用api�
 import { XButton, DutyTypePicker } from '../../components/index.js';  /** 自定义组件 */
 import { StorageHelper } from '../../utility/index.js';
 
+const DamagedW = (W - 80)/3
+
 class AccidentFactAndResponsibilityView extends Component {
 
   constructor(props){
@@ -26,6 +28,7 @@ class AccidentFactAndResponsibilityView extends Component {
     }
     this.info = {};
     this.dutyDisabled = false;
+    this.dutyTypeList = null;
   }
 
   componentDidMount(){
@@ -36,11 +39,13 @@ class AccidentFactAndResponsibilityView extends Component {
       if(person.length === 1){
         this.dutyDisabled = true;
         ldl.push({name: person[0].name, phone:person[0].phone, licensePlateNum: person[0].licensePlateNum, dutyName: '全责', dutyType: '0'})
+        this.dutyTypeList = [{label:'全责',code:'0'}];
       }else{
         for(let i=0; i < person.length; i++){
           let p = person[i];
           ldl.push({name: p.name, phone:p.phone, licensePlateNum: p.licensePlateNum, dutyName: '', dutyType: ''})
         }
+        this.dutyTypeList = [{label:'全责',code:'0'},{label:'无责',code:'1'},{label:'同等责任',code:'2'},{label:'主责',code:'3'},{label:'次责',code:'4'}];
       }
       this.setState({localDutyList: ldl});
     })
@@ -74,13 +79,77 @@ class AccidentFactAndResponsibilityView extends Component {
     }
   }
 
-  renderOneParty(value,index){
+
+  renderOneParty(value,personIndex){
+    let d = this.state.localDutyList[personIndex];
+
     return (
-      <View style={{marginLeft:15}} key={index}>
-        <DutyTypePicker disabled={this.dutyDisabled} label={`当事人:${value.name}(${value.licensePlateNum})`} placeholder={'请选择责任类型'} value={value.dutyName} onChange={(res)=>{ this.onChangeText(res, 'DutyList', index) }} noBorder={true}/>
-        <View style={{height:1,backgroundColor:backgroundGrey,marginRight:15}} />
+      <View key={personIndex} style={{paddingTop:10}}>
+        <Text style={{paddingLeft:15, fontSize:14}}>{`当事人${value.name}(${value.licensePlateNum})`}</Text>
+          <View style={{flexDirection:'row',flexWrap:'wrap', paddingLeft:10}}>
+             {
+               !this.dutyTypeList? null :
+                  this.dutyTypeList.map((duty,index) => this.renderDutySeleteView(duty,index,d,personIndex))
+             }
+          </View>
+        <View style={{height:1,backgroundColor:backgroundGrey,marginRight:15, marginTop:10}}></View>
       </View>
     )
+  }
+
+  renderDutySeleteView(value,index,selectDuty,personIndex){
+    let showColor =  selectDuty? ((value.code == selectDuty.dutyType)? mainBule : formRightText) : formRightText
+    return (
+      <TouchableHighlight style={{marginTop:10, borderColor:showColor, borderWidth:1,borderRadius:5,marginHorizontal:5,width:DamagedW, height:30,alignItems:'center',justifyContent:'center'}} key={index}
+        onPress={() => {
+          let { localDutyList } = this.state;
+          if(localDutyList.length === 2){
+            this._mutexDutySelect(personIndex, value);
+          }else{
+            let d = localDutyList[personIndex];
+            d.dutyName = value.label;
+            d.dutyType = value.code;
+            this.setState({localDutyList})
+          }
+        }}
+        underlayColor='transparent'>
+          <Text style={{fontSize:16,color:showColor}}>{value.label}</Text>
+      </TouchableHighlight>
+    )
+  }
+
+  _mutexDutySelect(currentIndex, selectValue){
+    let otherIndex = currentIndex == 0? 1:0;
+    let { localDutyList } = this.state;
+    let currentDuty = localDutyList[currentIndex];
+    let otherDuty = localDutyList[otherIndex];
+    if(selectValue.code == '0'){
+      currentDuty.dutyName = selectValue.label;
+      currentDuty.dutyType = selectValue.code;
+      otherDuty.dutyName = this.dutyTypeList[1].label;
+      otherDuty.dutyType = this.dutyTypeList[1].code;
+    }else if(selectValue.code == '1'){
+      currentDuty.dutyName = selectValue.label;
+      currentDuty.dutyType = selectValue.code;
+      otherDuty.dutyName = this.dutyTypeList[0].label;
+      otherDuty.dutyType = this.dutyTypeList[0].code;
+    }else if(selectValue.code == '2'){
+      currentDuty.dutyName = selectValue.label;
+      currentDuty.dutyType = selectValue.code;
+      otherDuty.dutyName = this.dutyTypeList[2].label;
+      otherDuty.dutyType = this.dutyTypeList[2].code;
+    }else if(selectValue.code == '3'){
+      currentDuty.dutyName = selectValue.label;
+      currentDuty.dutyType = selectValue.code;
+      otherDuty.dutyName = this.dutyTypeList[4].label;
+      otherDuty.dutyType = this.dutyTypeList[4].code;
+    }else if(selectValue.code == '4'){
+      currentDuty.dutyName = selectValue.label;
+      currentDuty.dutyType = selectValue.code;
+      otherDuty.dutyName = this.dutyTypeList[3].label;
+      otherDuty.dutyType = this.dutyTypeList[3].code;
+    }
+    this.setState({localDutyList})
   }
 
   render(){
