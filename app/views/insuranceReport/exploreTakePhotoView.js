@@ -76,6 +76,7 @@ class ExploreTakePhotoView extends Component {
     this.currentImgae = null;
     this.currentImgaeIndex = -1;   //图片所属的当事人中某张
     this.currentImgaeInSection = -1;  //图片所属的当事人
+    this.reTakeURL = ''
     this.options = {
             title: '选择照片', //选择器的标题，可以设置为空来不显示标题
             cancelButtonTitle: '取消',
@@ -164,7 +165,18 @@ class ExploreTakePhotoView extends Component {
         //点击其它是拍照
         let that = this;
         ImagePicker.showImagePicker(this.options, (response) => {
-            if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+            if (response.didCancel) {
+              this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url = this.reTakeURL;
+              let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].photolist));
+              this.partyInfoData[this.currentImgaeInSection].photolist = temp;
+              this.setState({
+                refresh:true
+              })
+            } else if (response.error) {
+
+            } else if (response.customButton) {
+
+            } else {
                 let { surveyno } = this.props.navigation.state.params
                 let licenseno = this.partyInfoData[ind].licenseno
                 let typecode =  this.partyInfoData[ind].photolist[index].phototypecode ?  this.partyInfoData[ind].photolist[index].phototypecode : '7'
@@ -196,6 +208,7 @@ class ExploreTakePhotoView extends Component {
   }
   //重拍
   reTakePhoto(){
+    this.reTakeURL = this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url;
     this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url = '';
     let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].photolist));
     this.partyInfoData[this.currentImgaeInSection].photolist = temp;
@@ -204,7 +217,6 @@ class ExploreTakePhotoView extends Component {
         this.partcode = this.carDamageData[i].code
       }
     }
-
     this.setState({
       showBigImage: false
     })
@@ -367,7 +379,7 @@ class ExploreTakePhotoView extends Component {
           <View>
             <Modal animationType="none" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
               <TouchableOpacity onPress={() => this.setState({showBigImage:false})} style={styles.modalContainer} underlayColor={'#ffffff'}>
-                <Image source={{uri:this.currentImgae}} style={{width:W,height:W * 0.7,alignSelf:'center'}}/>
+                <Image source={{uri:this.currentImgae}} style={{width:W,height:W * 0.7,alignSelf:'center'}} resizeMode='contain'/>
                 <View style={{marginLeft:15,marginBottom:20,marginTop:100,flexDirection:'row'}}>
                   <XButton title={'重拍'} onPress={() => this.reTakePhoto()} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
                   <XButton title={'删除'} onPress={() => this.deletePhoto()} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}} disabled={this.currentImgaeIndex < 7}/>
