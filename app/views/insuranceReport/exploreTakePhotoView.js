@@ -44,7 +44,7 @@ class ExploreTakePhotoView extends Component {
     for (var i = 0; i < phototypelist.length; i++) {
       phototypelist[i].url = ''
       for (var j = 0; j < this.partyInfoData.length; j++) {
-        this.partyInfoData[j].photolist.push({phototypename:phototypelist[i].name,url:phototypelist[i].url,phototypecode:phototypelist[i].code,pid:''})
+        this.partyInfoData[j].photolist.push({phototypename:phototypelist[i].name,url:phototypelist[i].miniurl,phototypecode:phototypelist[i].code,pid:''})
       }
     }
     if (photolist.length > 0) {
@@ -192,7 +192,7 @@ class ExploreTakePhotoView extends Component {
                 this.props.dispatch( create_service(Contract.POST_SURVEYPHOTO_INFO,params))
                   .then( res => {
                     if (res) {
-                      this.partyInfoData[ind].photolist[index].url =  res.data.url;
+                      this.partyInfoData[ind].photolist[index].url =  res.data.miniurl;
                       this.partyInfoData[ind].photolist[index].pid = res.data.pid;
                       let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].photolist))
                       this.partyInfoData[ind].photolist = temp
