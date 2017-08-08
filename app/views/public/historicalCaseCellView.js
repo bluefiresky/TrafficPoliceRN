@@ -122,7 +122,9 @@ export default class HistoricalCaseCellView extends Component {
                   {cars?cars.map(p => p.ownerName + ' (' + p.licenseNo + ')\n'):'\n'}
                 </Text>
               </View>
-              {(status == '2' || status == '3' || status == '8' || status == '9' || status == '10' || status == '11' || status == '12' || status == '13') ? this._renderButton(status,taskNo,cars):null}
+              <View style={{marginTop:10}}>
+                {(status == '2' || status == '3' || status == '8' || status == '9' || status == '10' || status == '11' || status == '12' || status == '13') ? this._renderButton(status,taskNo,cars):null}
+              </View>
             </View>
             <View style={styles.right}>
               <Image source={require('./image/right_arrow.png')} style={{width:7,height:12,resizeMode:'contain'}}/>

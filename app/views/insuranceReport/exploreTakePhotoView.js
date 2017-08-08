@@ -166,13 +166,15 @@ class ExploreTakePhotoView extends Component {
         let that = this;
         ImagePicker.showImagePicker(this.options, (response) => {
             if (response.didCancel) {
-              this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].miniurl = this.reTakeMiniurl;
-              this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url = this.reTakeURL;
-              let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].photolist));
-              this.partyInfoData[this.currentImgaeInSection].photolist = temp;
-              this.setState({
-                refresh:true
-              })
+              if (this.isReTake) {
+                this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].miniurl = this.reTakeMiniurl;
+                this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url = this.reTakeURL;
+                let temp = JSON.parse(JSON.stringify(this.partyInfoData[this.currentImgaeInSection].photolist));
+                this.partyInfoData[this.currentImgaeInSection].photolist = temp;
+                this.setState({
+                  refresh:true
+                })
+              }
             } else if (response.error) {
 
             } else if (response.customButton) {
@@ -210,6 +212,9 @@ class ExploreTakePhotoView extends Component {
   }
   //重拍
   reTakePhoto(){
+
+    this.isReTake = true
+
     this.reTakeURL = this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].url;
     this.reTakeMiniurl = this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].miniurl;
 
@@ -345,20 +350,24 @@ class ExploreTakePhotoView extends Component {
               </View>
               <View style={{height:1,backgroundColor:backgroundGrey}}></View>
               <TouchableHighlight style={{paddingVertical:10,justifyContent:'center'}} underlayColor='transparent' onPress={()=>{
+                let count = 0;
                 for (var i = 0; i < this.carDamageData.length; i++) {
                   if (this.carDamageData[i].isSel) {
                     this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex].phototypename = this.carDamageData[i].name;
                     this.partcode = this.carDamageData[i].code
+                    count++
                   }
                   this.carDamageData[i].isSel = false
                 }
                 this.setState({
                   showDamageModalView: false
                 })
-                this.timer = setTimeout(
-                  () => {
-                    this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
-                  },500);
+                if (count > 0) {
+                  this.timer = setTimeout(
+                    () => {
+                      this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
+                    },500);
+                }
               }}>
                 <Text style={{color:mainBule,fontSize:15,alignSelf:'center'}}>确定</Text>
               </TouchableHighlight>
@@ -384,7 +393,10 @@ class ExploreTakePhotoView extends Component {
           </View>
           <View>
             <Modal animationType="none" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
-              <TouchableOpacity onPress={() => this.setState({showBigImage:false})} style={styles.modalContainer} underlayColor={'#ffffff'}>
+              <TouchableOpacity onPress={() =>{
+                this.isReTake = false
+                this.setState({showBigImage:false})
+               }} style={styles.modalContainer} underlayColor={'#ffffff'}>
                 <Image source={{uri:this.currentImgae}} style={{width:W,height:(H-200),alignSelf:'center'}} resizeMode='contain'/>
                 <View style={{marginLeft:15,marginBottom:20,marginTop:50,flexDirection:'row',alignSelf:'center'}}>
                   <XButton title={'重拍'} onPress={() => this.reTakePhoto()} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
