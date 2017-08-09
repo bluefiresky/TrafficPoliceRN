@@ -183,7 +183,9 @@ class AGatheringPartyInformationView extends Component {
   onChangeText(text,index,type) {
     switch (type) {
       case 'Name':
-        this.submitDataArr[index].name = text;
+        if(TextUtility.checkHanZi(text)){
+          this.submitDataArr[index].name = text;
+        }
         break;
       case 'Phone':
         if(TextUtility.checkNumber(text)){
@@ -191,12 +193,14 @@ class AGatheringPartyInformationView extends Component {
         }
         break;
       case 'DrivingLicense':
-        // if(TextUtility.checkNumber(text)){
+        if(TextUtility.checkNumberAndLetters(text)){
           this.submitDataArr[index].driverNum = text;
-        // }
+        }
         break;
       case 'InsuranceCertificateNum':
-        this.submitDataArr[index].carInsureNumber = text;
+        if(TextUtility.checkNumberAndLetters(text)){
+          this.submitDataArr[index].carInsureNumber = text;
+        }
         break;
       case 'OtherCarType':
         this.submitDataArr[index].carType = text;
@@ -254,7 +258,7 @@ class AGatheringPartyInformationView extends Component {
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'姓名: '} placeholder={'请输入当事人姓名'} style={{flex:1, height: 50, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Name') }}/>
+          <Input label={'姓名: '} value={this.submitDataArr[index].name} placeholder={'请输入当事人姓名'} style={{flex:1, height: 50, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Name') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
@@ -325,7 +329,7 @@ class AGatheringPartyInformationView extends Component {
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}></Text>
-          <Input label={'保单号: '} placeholder={'选填'} keyboardType={'email-address'} maxLength={40} style={{flex:1, height: 50, paddingLeft:12}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
+          <Input label={'保单号: '} value={this.submitDataArr[index].carInsureNumber} placeholder={'选填'} keyboardType={'email-address'} maxLength={40} style={{flex:1, height: 50, paddingLeft:12}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 

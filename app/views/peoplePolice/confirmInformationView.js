@@ -254,7 +254,9 @@ class ConfirmInformationView extends Component {
   onChangeText(text,index,type,item){
     switch (type) {
       case 'Name':
-        item.name = text;
+        if(TextUtility.checkHanZi(text)){
+          item.name = text;
+        }
         break;
       case 'Phone':
         if(TextUtility.checkNumber(text)){
@@ -262,7 +264,7 @@ class ConfirmInformationView extends Component {
         }
         break;
       case 'DrivingLicense':
-        if(TextUtility.checkNumber(text)){
+        if(TextUtility.checkNumberAndLetters(text)){
           item.driverNum = text;
         }
         break;
@@ -277,7 +279,9 @@ class ConfirmInformationView extends Component {
         item.insureCompanyCode = text.code;
         break;
       case 'InsuranceCertificateNum':
-        item.carInsureNumber = text;
+        if(TextUtility.checkNumberAndLetters(text)){
+          item.carInsureNumber = text;
+        }
         break;
       case 'InsuranceTime':
         item.carInsureDueDate = text;
@@ -287,7 +291,7 @@ class ConfirmInformationView extends Component {
   }
 
   renderRowItem(title,value,index,type,item,maxLength){
-    let keyboardType = (type === 'Phone' || type === 'DrivingLicense')?'numeric':'default';
+    let keyboardType = (type === 'Phone')?'numeric':'default';
     let placeholder = `请输入${title}`;
     if(title == '保险单号') placeholder = '';
     return (

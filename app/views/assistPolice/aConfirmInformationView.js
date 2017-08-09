@@ -262,7 +262,9 @@ class AConfirmInformationView extends Component {
   onChangeText(text,index,type,item){
     switch (type) {
       case 'Name':
-        item.name = text;
+        if(TextUtility.checkHanZi(text)){
+          item.name = text;
+        }
         break;
       case 'Phone':
         if(TextUtility.checkNumber(text)){
@@ -270,7 +272,7 @@ class AConfirmInformationView extends Component {
         }
         break;
       case 'DrivingLicense':
-        if(TextUtility.checkNumber(text)){
+        if(TextUtility.checkNumberAndLetters(text)){
           item.driverNum = text;
         }
         break;
@@ -285,7 +287,9 @@ class AConfirmInformationView extends Component {
         item.insureCompanyCode = text.code;
         break;
       case 'InsuranceCertificateNum':
-        item.carInsureNumber = text;
+        if(TextUtility.checkNumberAndLetters(text)){
+          item.carInsureNumber = text;
+        }
         break;
       case 'InsuranceTime':
         item.carInsureDueDate = text;
@@ -295,7 +299,7 @@ class AConfirmInformationView extends Component {
   }
 
   renderRowItem(title,value,index,type,item,maxLength){
-    let keyboardType = (type === 'Phone' || type === 'DrivingLicense')?'numeric':'default';
+    let keyboardType = (type === 'Phone')?'numeric':'default';
     return (
       <View style={{flex:1}}>
         <Input label={title} value={value} placeholder={`请输入${title}`} maxLength={maxLength} keyboardType={keyboardType} style={{flex:1, height: 40}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,type,item) }}/>

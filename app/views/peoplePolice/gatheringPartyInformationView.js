@@ -182,20 +182,24 @@ class GatheringPartyInformationView extends Component {
   onChangeText(text,index,type) {
     switch (type) {
       case 'Name':
+      if(TextUtility.checkHanZi(text)){
         this.submitDataArr[index].name = text;
         break;
+      }
       case 'Phone':
         if(TextUtility.checkNumber(text)){
           this.submitDataArr[index].phone = text;
         }
         break;
       case 'DrivingLicense':
-        // if(TextUtility.checkNumber(text)){
+        if(TextUtility.checkNumberAndLetters(text)){
           this.submitDataArr[index].driverNum = text;
-        // }
+        }
         break;
       case 'InsuranceCertificateNum':
-        this.submitDataArr[index].carInsureNumber = text;
+        if(TextUtility.checkNumberAndLetters(text)){
+          this.submitDataArr[index].carInsureNumber = text;
+        }
         break;
       case 'OtherCarType':
         this.submitDataArr[index].carType = text;
@@ -242,7 +246,7 @@ class GatheringPartyInformationView extends Component {
       <View style={{backgroundColor:'#ffffff'}} key={index}>
         <View style={{width:W, height:(index>0)?10:0, backgroundColor:backgroundGrey}} />
         <View style={{marginTop:10,flexDirection:'row',paddingTop:10,paddingBottom:10,justifyContent:'space-between'}}>
-          <View style={{flexDirection:'row',marginLeft:15}}>
+          <View style={{flex:1, flexDirection:'row',marginLeft:15,paddingRight:10}}>
             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
             <Text style={{fontSize:17,color:formLeftText,marginLeft:10,alignSelf:'center'}}>
               {`${value.title}当事人`}
@@ -250,14 +254,14 @@ class GatheringPartyInformationView extends Component {
             </Text>
           </View>
           {(index == this.carInfoData.length - 1 && index !== 0)?<TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={()=>this.deleteItem(index)} underlayColor='transparent'>
-            <Image style={{width:20,height:20}} source={require('./image/delete.png')}/>
+            <Image style={{width:20,height:20,marginRight:10}} source={require('./image/delete.png')}/>
           </TouchableHighlight>:null}
         </View>
 
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'姓名: '} placeholder={'请输入当事人姓名'} style={{flex:1, height: 50, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Name') }}/>
+          <Input label={'姓名: '} value={this.submitDataArr[index].name} placeholder={'请输入当事人姓名'} style={{flex:1, height: 50, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Name') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
@@ -327,7 +331,7 @@ class GatheringPartyInformationView extends Component {
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 22}}>
           <Text style={{fontSize:12,color:'red'}}></Text>
-          <Input label={'保单号: '} placeholder={'选填'} keyboardType={'email-address'}  maxLength={40} style={{flex:1, height: 50, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
+          <Input label={'保单号: '} value={this.submitDataArr[index].carInsureNumber} placeholder={'选填'} keyboardType={'email-address'}  maxLength={40} style={{flex:1, height: 50, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 

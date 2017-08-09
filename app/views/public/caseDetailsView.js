@@ -105,7 +105,7 @@ class CaseDetailsView extends Component {
             this.accidentDes = accidentDesName;
 
             let bl = (pageFlag === '02')?'协议书':'认定书';
-            this.setState({loading: false, button1Text:`交通事故${bl}`, button2Text:'保险报案', pageFlag, pageUrl})
+            this.setState({loading: false, button1Text:`交通事故${bl}`, button2Text:null, pageFlag, pageUrl})
         })
       }else if(info){
         /*  本地待上传详情  **/
@@ -398,11 +398,12 @@ class CaseDetailsView extends Component {
               <XButton title={'查看'+this.state.button1Text} onPress={() => this.gotoNext(1)} style={{backgroundColor:'#267BD8',borderRadius:20}} textStyle={{color:'#ffffff',fontSize:14}}/>
               <View style={{height: 30}} />
               {
-                this.accidentStatus?
-                  (this.accidentStatus && this.accidentStatus == '2') ?
-                  <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>:null
-                :
-                <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+                !this.state.button2Text? null :
+                  this.accidentStatus?
+                    (this.accidentStatus && this.accidentStatus == '2') ?
+                    <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>:null
+                  :
+                  <XButton title={this.state.button2Text} onPress={() => this.gotoNext(2)} style={{backgroundColor:'#ffffff',borderRadius:20,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
               }
             </View>
           }

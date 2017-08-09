@@ -21,6 +21,16 @@ export function checkLength(value, max = 10, min = 0){
   return (!!value && !(value.length < min) && !(value.length > max))
 }
 
+export function checkHanZi(value){
+  let reg = /^[\u0391-\uFFE5]+$/;
+  return reg.test(value);
+}
+
+export function checkNumberAndLetters(value){
+  let reg = /^[0-9a-zA-Z]*$/
+  return reg.test(value);
+}
+
 function _checkNumber(value){
   let reg = /^[0-9]*$/
   return reg.test(value);

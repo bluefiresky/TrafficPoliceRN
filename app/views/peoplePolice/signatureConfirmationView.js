@@ -63,7 +63,7 @@ class SignatureConfirmationView extends Component {
 
   //下一步
   async gotoNext(){
-    let netInfo = await NetUtility.getCurrentNetIsConnect();
+    let isConnected = await NetUtility.getCurrentNetIsConnect();
     if(!isConnected){
       Toast.showShortCenter('当前网络不可用，请检查网络设置');
       return;
@@ -89,8 +89,9 @@ class SignatureConfirmationView extends Component {
       }
     }
 
-    this.setState({loading: true})
+
     if(this.state.loading) return;
+    this.setState({loading: true})
 
     let keysArray = Object.keys(mobileCodeMap);
     if(keysArray.length > 0){
