@@ -10,7 +10,7 @@ import { NavigationActions } from 'react-navigation'
 import { W, H, backgroundGrey,formLeftText } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
-import { create_service } from '../../redux/index.js'; /** 调用api的Action */
+import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
 import { XButton } from '../../components/index.js';  /** 自定义组件 */
 
 class SettingView extends Component {
@@ -23,7 +23,8 @@ class SettingView extends Component {
   }
   //使用帮助
   useHelp(){
-    this.props.navigation.navigate('CommonWebView', {title:'使用帮助', url:'https://testx.zhongchebaolian.com/police_usehelp'});
+    let helpUrl = getStore().getState().dictionary.helpUrl;
+    this.props.navigation.navigate('CommonWebView', {title:'使用帮助', url:helpUrl});
   }
   //意见反馈
   feedback(){
