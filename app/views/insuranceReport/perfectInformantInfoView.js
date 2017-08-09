@@ -61,7 +61,9 @@ class PerfectInformantInfoView extends Component {
     this.props.dispatch( create_service(Contract.POST_SURVEY_INFO, this.submitData))
       .then( res => {
         if (res && res.code == 200) {
-          this.props.navigation.navigate('ExploreTakePhotoView',{surveyno:res.data.surveyno,personData:this.data,taskno:taskno,photolist:this.photolistData,needRequestPhoto:false})
+          this.props.navigation.navigate('ExploreTakePhotoView',{surveyno:res.data.surveyno,personData:this.data,taskno:taskno,photolist:this.photolistData,needRequestPhoto:false,requestData:()=>{
+            this.requestData()
+          }})
         }
         this.setState({
           loading:false
@@ -80,12 +82,14 @@ class PerfectInformantInfoView extends Component {
 
     }
   }
-  componentDidMount(){
+  requestData(){
     this.setState({
       loading: true
     })
     let { scenelist } = getStore().getState().insuranceDictionary
     let { taskno } = this.props.navigation.state.params
+    this.photolistData = []
+    this.data = []
     this.props.dispatch( create_service(Contract.POST_SURVEYCHO_INFO, {taskno:taskno}))
       .then( res => {
         if (res && res.data) {
@@ -118,6 +122,9 @@ class PerfectInformantInfoView extends Component {
           loading: false
         })
     })
+  }
+  componentDidMount(){
+    this.requestData()
   }
   renderRowItem(title,value){
     return (

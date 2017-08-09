@@ -114,21 +114,21 @@ class InsuranceReportPartyInfoView extends Component {
             </View>
           <View style={{backgroundColor:backgroundGrey,height:1,marginTop:15,marginLeft:15}}></View>
         </View>:null}
-        <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:15,marginBottom:15}}>
-          <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>是否保险报案</Text>
-          <TouchableHighlight style={{marginRight:15}} underlayColor={'transparent'} onPress={()=>{
-            if (value.dutyCode != '1') {
-              value.isReport = !value.isReport
-              this.setState({
-                refresh: true
-              })
-            } else {
-              Toast.showShortCenter('无责方无需保险报案')
-            }
-          }}>
-            <Image source={selImage} style={{width:19,height:19,alignSelf:'center'}}/>
-          </TouchableHighlight>
-        </View>
+        <TouchableHighlight style={{marginTop:15,marginBottom:15}} underlayColor={'transparent'} onPress={()=>{
+          if (value.dutyCode != '1') {
+            value.isReport = !value.isReport
+            this.setState({
+              refresh: true
+            })
+          } else {
+            Toast.showShortCenter('无责方无需保险报案')
+          }
+        }}>
+          <View style={{flexDirection:'row',justifyContent:'space-between',flex:1}}>
+            <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>是否保险报案</Text>
+            <Image source={selImage} style={{width:19,height:19,alignSelf:'center',marginRight:15}}/>
+          </View>
+        </TouchableHighlight>
       </View>
     )
   }

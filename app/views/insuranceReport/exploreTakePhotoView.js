@@ -93,6 +93,11 @@ class ExploreTakePhotoView extends Component {
             }
         };
   }
+  componentWillUnmount(){
+    if (this.props.navigation.state.params.requestData) {
+      this.props.navigation.state.params.requestData()
+    }
+  }
   componentDidMount(){
     let { taskno,needRequestPhoto } = this.props.navigation.state.params
     if (needRequestPhoto) {
