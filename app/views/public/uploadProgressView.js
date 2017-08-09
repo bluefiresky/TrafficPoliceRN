@@ -106,14 +106,13 @@ class UploadProgressView extends Component {
     }
   }
 
-  async _done(title, content, success){
+  async _done(title, content, success, handleWay){
     this.timer && clearInterval(this.timer);
 
     let self = this;
     let left = null;
     let right = null;
     let done;
-    let handleWay = this.state.handleWay;
     if(success){
       if(handleWay === '03' || handleWay === '05'){
         let success = await StorageHelper.saveStep6_7_1(this.state.taskNo)
@@ -135,8 +134,9 @@ class UploadProgressView extends Component {
       }};
       let label = (handleWay === '01' || handleWay === '02')?'查看离线认定书':(handleWay === '04'? '查看离线协议书':'返回首页');
       right = {label, event: async () => {
-        self.setState({loading:true});
+
         if(self.state.loading) return;
+        self.setState({loading:true});
 
         if( handleWay === '03' || handleWay === '05'){
           let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
@@ -163,7 +163,7 @@ class UploadProgressView extends Component {
       let { success, fail, progress, leftTime } = this.state;
       if(success){
         this.setState({ progress:1 });
-        this._done('上传案件成功', '.....', true)
+        this._done('上传案件成功', '.....', true, handleWay)
       }else{
         if(fail){
           let errorTip = '';
@@ -174,7 +174,7 @@ class UploadProgressView extends Component {
           }else{
             errorTip = '当前网络差，案件信息上传失败，请寻找网络良好的位置点击重试！';
           }
-          this._done('上传案件失败', errorTip, false);
+          this._done('上传案件失败', errorTip, false, handleWay);
         }else{
           if(leftTime >= 1){
             let lt = leftTime - 1;
@@ -190,7 +190,7 @@ class UploadProgressView extends Component {
             }else{
               errorTip = '当前网络差，案件信息上传失败，请寻找网络良好的位置点击重试！';
             }
-            this._done('上传案件失败', errorTip, false);
+            this._done('上传案件失败', errorTip, false, handleWay);
           }
         }
       }

@@ -96,7 +96,7 @@ class GatheringPartyInformationView extends Component {
         error = `请选择正确的${this.carInfoData[i].title}保险公司`
         break;
       }
-      if (this.submitDataArr[i].carInsureNumber && this.submitDataArr[i].carInsureNumber.length < 10) {
+      if (this.submitDataArr[i].carInsureNumber && !TextUtility.checkLength(this.submitDataArr[i].carInsureNumber, 40, 20)) {
         error = `${this.carInfoData[i].title}的保单号输入不正确`
         break;
       }
@@ -152,7 +152,7 @@ class GatheringPartyInformationView extends Component {
   }
   //验证驾驶证号
   checkDriveNunm(driverNum){
-    return (!driverNum || driverNum.length < 6 || driverNum.length > 18 || !TextUtility.checkNumberAndLetters(text))
+    return (!driverNum || driverNum.length < 6 || driverNum.length > 18)
   }
   //验证姓名, 返回true,就是有问题
   checkName(name){

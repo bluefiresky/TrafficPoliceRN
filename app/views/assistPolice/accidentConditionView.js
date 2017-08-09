@@ -104,10 +104,12 @@ class AccidentConditionView extends Component {
   renderDamageSeleteView(code,index,currentDamagedArray){
 
     let check = currentDamagedArray? (currentDamagedArray.indexOf(code) != -1) : false;
-    let showColor =  check? mainBule : formRightText
+    let backColor =  check? mainBule : 'white';
+    let borderColor = check? mainBule : formRightText;
+    let textColor = check? 'white' : formRightText;
 
     return (
-      <TouchableHighlight style={{marginTop:10, borderColor:showColor, borderWidth:1,borderRadius:5,marginHorizontal:5,width:DamagedW, height:30,alignItems:'center',justifyContent:'center'}} key={index}
+      <TouchableHighlight style={{backgroundColor:backColor, marginTop:10, borderColor:borderColor, borderWidth:1,borderRadius:5,marginHorizontal:5,width:DamagedW, height:30,alignItems:'center',justifyContent:'center'}} key={index}
         onPress={() => {
           let i = currentDamagedArray.indexOf(code);
           if(i === -1) {
@@ -120,7 +122,7 @@ class AccidentConditionView extends Component {
           else currentDamagedArray.splice(i,1);
           this.setState({refresh:true})}}
         underlayColor='transparent'>
-          <Text style={{fontSize:16,color:showColor}}>{this.carDamageNameData[index]}</Text>
+          <Text style={{fontSize:16,color:textColor}}>{this.carDamageNameData[index]}</Text>
       </TouchableHighlight>
     )
   }

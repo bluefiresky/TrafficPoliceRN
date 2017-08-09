@@ -43,7 +43,7 @@ class ApHomePageView extends Component {
     this._onRefresh = this._onRefresh.bind(this);
   }
   componentWillMount(){
-    this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {}));
+    // this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {}));
   }
   componentDidMount() {
     //1、载入页面，加载账户信息、大队章、勘察章、字典表（保险公司、天气、车辆类型等）信息，加载过程显示loading，信息缓存到本地。2、每次启动APP，请求后台字典数据是否有更新，如果有更新，后台返回新的字典数据，客户端缓存最新字典数据；如果没有更新，不需重新缓存数据。若无网络，弹框提示“未检测到网络，是否离线处理？”点击继续。
@@ -107,7 +107,7 @@ class ApHomePageView extends Component {
         <TouchableHighlight style={{top:Platform.OS === 'ios'? 22 : 10,right:0,position:'absolute',width:50, height:40, paddingRight:15, paddingTop:8}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
           <Image source={require('./image/setting.png')} style={{width:20,height:20,alignSelf:'flex-end'}}/>
         </TouchableHighlight>
-        <View style={{flex:1, justifyContent:'center',marginTop:15,marginLeft:15,width:W-30,backgroundColor:'#ffffff',borderRadius:10, paddingVertical:15}}>
+        <View style={{flex:1, justifyContent:'center',marginTop:15,marginLeft:15,width:W-30,minHeight:InfoH, backgroundColor:'#ffffff',borderRadius:10, paddingVertical:15}}>
            <View style={{flexDirection:'row',marginLeft:20}}>
              <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
            </View>
@@ -181,7 +181,7 @@ class ApHomePageView extends Component {
     // 查看信分期的强制更新跳转，逻辑：isUpgrade -> [isAllUpgrade -> depCodes]
     this.forceUpdate = await this.props.dispatch( create_service(Contract.POST_FORCE_UPDATE, {appType: AppType, appVersion: Version}));
     // console.log('PpHomePageView execute _getData this.forceUpdate -->> ', this.forceUpdate);
-    // if(this._checkUpdate(this.forceUpdate)) return;
+    if(this._checkUpdate(this.forceUpdate)) return;
 
     // 字典需要上传本地的版本
     let v = getStore().getState().dictionary.version;
