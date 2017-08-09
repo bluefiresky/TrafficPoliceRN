@@ -72,7 +72,7 @@ class AGatheringPartyInformationView extends Component {
     this.setState({loading:true})
     //检测必填项
      let error = null;
-     for (var i = 0, max = this.submitDataArr.length; i < max; i++) {
+     for (let i = 0; i < this.submitDataArr.length; i++) {
        if (this.checkName(this.submitDataArr[i].name)){
          error = `请输入正确的${this.carInfoData[i].title}当事人姓名`
          break;
@@ -101,6 +101,12 @@ class AGatheringPartyInformationView extends Component {
          error = `${this.carInfoData[i].title}的保单号输入不正确`
          break;
        }
+     }
+
+     if(error) {
+       this.setState({loading:false});
+       Toast.showShortCenter(error);
+       return;
      }
 
      if(this.submitDataArr.length === 2){
@@ -151,7 +157,7 @@ class AGatheringPartyInformationView extends Component {
   }
   //验证姓名
   checkName(name){
-    return(!name || name.length < 2 || name.length > 10)
+    return(!name || name.length < 2 || name.length > 10 || !TextUtility.checkHanZi(name))
   }
   getNowTimeString(){
     let d = new Date();
@@ -183,9 +189,9 @@ class AGatheringPartyInformationView extends Component {
   onChangeText(text,index,type) {
     switch (type) {
       case 'Name':
-        if(TextUtility.checkHanZi(text)){
+        // if(TextUtility.checkHanZi(text)){
           this.submitDataArr[index].name = text;
-        }
+        // }
         break;
       case 'Phone':
         if(TextUtility.checkNumber(text)){

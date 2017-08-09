@@ -104,6 +104,12 @@ class ConfirmInformationView extends Component {
       // }
     }
 
+    if(error) {
+      this.setState({loading:false});
+      Toast.showShortCenter(error);
+      return;
+    }
+
     if(data.length === 2){
       if(data[0].phone === data[1].phone){
         error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的手机号不能相同`;
@@ -160,7 +166,7 @@ class ConfirmInformationView extends Component {
   }
   //验证姓名
   checkName(name){
-    return(!name || name.length < 2 || name.length > 10)
+    return(!name || name.length < 2 || name.length > 10 || !TextUtility.checkHanZi(name))
   }
 
   renderOnePersonInfo(value,ind,credential){
@@ -254,9 +260,9 @@ class ConfirmInformationView extends Component {
   onChangeText(text,index,type,item){
     switch (type) {
       case 'Name':
-        if(TextUtility.checkHanZi(text)){
+        // if(TextUtility.checkHanZi(text)){
           item.name = text;
-        }
+        // }
         break;
       case 'Phone':
         if(TextUtility.checkNumber(text)){

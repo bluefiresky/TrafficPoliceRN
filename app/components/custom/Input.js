@@ -131,6 +131,7 @@ export class Input extends Component {
           underlineColorAndroid={'transparent'}
           maxLength={maxLength}
           multiline={multiline}
+          autoCorrect={false}
         />
         {ClearButton}
       </View>
