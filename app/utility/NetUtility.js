@@ -8,7 +8,7 @@ import { Platform, NetInfo } from 'react-native';
 
 const IsIos = Platform.OS === 'ios';
 
-// return wifi, cell, none
+// return wifi, cell, none, unknown
 export async function getCurrentNetInfo(){
   try {
     let info = await NetInfo.fetch();

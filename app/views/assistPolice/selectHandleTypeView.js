@@ -34,7 +34,7 @@ class SelectHandleTypeView extends Component {
     //点击之前，先判断网络情况，无网情况，提示无网络，无法处理
     if(index != 0){
       let netInfo = await NetUtility.getCurrentNetInfo();
-      if(netInfo && netInfo != 'none'){
+      if(netInfo && netInfo != 'none' && netInfo != 'unknown'){
         let success = await StorageHelper.saveStep2(HandleWayArray[index]);
         this.setState({loading:false});
         if(success) this.props.navigation.navigate('AGatheringPartyInformationView',{index:index});

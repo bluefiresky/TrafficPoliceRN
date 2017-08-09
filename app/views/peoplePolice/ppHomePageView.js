@@ -82,7 +82,7 @@ class PpHomePageView extends Component {
     return (
       <View style={{flexDirection:'row',marginTop,alignItems:'center'}}>
         <Text style={{fontSize:16,color:formRightText}}>{title}</Text>
-        <Text style={{fontSize:16,color:formRightText}}>{value}</Text>
+        <Text style={{fontSize:16,color:formRightText, flex:1}}>{value}</Text>
       </View>
     )
   }
@@ -103,27 +103,26 @@ class PpHomePageView extends Component {
         }
         showsVerticalScrollIndicator={false}
         >
-        <Image source={require('./image/home_bg.png')} style={{width:W, height:HomeBgH, overflow:'visible'}}>
-          <Text style={{color:'#ffffff',fontSize:18,alignSelf:'center',marginTop:(Platform.OS === 'ios') ? 30 : 15,backgroundColor:'transparent'}}>首页</Text>
-          <TouchableHighlight style={{top:Platform.OS === 'ios'? 20 : 5,right:5,position:'absolute', padding:10}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
-            <Image source={require('./image/setting.png')} style={{width:18,height:18}}/>
-          </TouchableHighlight>
-          <View style={{marginTop:15,marginLeft:15,width:W-30,height:InfoH,backgroundColor:'#ffffff',borderRadius:10}}>
-             <View style={{flexDirection:'row',marginLeft:20,marginTop:20}}>
-               <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
-               <Image source={{uri: 'data:image/png;base64,' + global.personal.sealUrlBase64}} style={{marginLeft:15,width:90,height:40,resizeMode:'cover'}}/>
+        <Image source={require('./image/home_bg.png')} style={{position:'absolute', top:0, width:W, height:HomeBgH, overflow:'visible'}} />
+        <Text style={{color:'#ffffff',fontSize:18,alignSelf:'center',marginTop:(Platform.OS === 'ios') ? 30 : 15,backgroundColor:'transparent'}}>首页</Text>
+        <TouchableHighlight style={{top:Platform.OS === 'ios'? 20 : 5,right:5,position:'absolute', padding:10}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
+          <Image source={require('./image/setting.png')} style={{width:18,height:18}}/>
+        </TouchableHighlight>
+        <View style={{marginTop:15,marginLeft:15,width:W-30,minHeight:InfoH,backgroundColor:'#ffffff',borderRadius:10}}>
+           <View style={{flexDirection:'row',marginLeft:20,marginTop:20}}>
+             <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
+             <Image source={{uri: 'data:image/png;base64,' + global.personal.sealUrlBase64}} style={{marginLeft:15,width:90,height:40,resizeMode:'cover'}}/>
+           </View>
+           <View style={{margin:20}}>
+             <View>
+               {this.renderRowItem('手机号：', global.personal.mobile, 0)}
+               {this.renderRowItem('警员编号：', global.personal.policeNumber, 10)}
+               {this.renderRowItem('所属城市：', global.personal.cityName, 10)}
+               {this.renderRowItem('所属大队：', global.personal.depName, 10)}
              </View>
-             <View style={{margin:20}}>
-               <View>
-                 {this.renderRowItem('手机号：', global.personal.mobile, 0)}
-                 {this.renderRowItem('警员编号：', global.personal.policeNumber, 10)}
-                 {this.renderRowItem('所属城市：', global.personal.cityName, 10)}
-                 {this.renderRowItem('所属大队：', global.personal.depName, 10)}
-               </View>
-               <Image source={{uri: 'data:image/png;base64,' + global.personal.depSealUrlBase64}} style={{position:'absolute',right:10,width:90,height:90,resizeMode:'contain'}} />
-             </View>
-          </View>
-        </Image>
+             <Image source={{uri: 'data:image/png;base64,' + global.personal.depSealUrlBase64}} style={{position:'absolute',right:0,width:90,height:90,resizeMode:'contain'}} />
+           </View>
+        </View>
 
        {
         this.state.showWaitUpload ?
