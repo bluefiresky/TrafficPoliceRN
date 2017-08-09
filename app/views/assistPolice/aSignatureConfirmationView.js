@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager,NativeModules,TouchableOpacity,DeviceEventEmitter } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager,NativeModules,TouchableOpacity,DeviceEventEmitter, NetInfo } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { takeSnapshot } from "react-native-view-shot";
@@ -42,6 +42,10 @@ class ASignatureConfirmationView extends Component {
 
   componentWillMount(){
     let self = this;
+    NetInfo.isConnected.addEventListener('change', (isConnected) => {
+      console.log('NetUtility -->> the isConnected is -->> ', isConnected);
+    });
+
     DeviceEventEmitter.addListener('TitleBackPress', () => {
       if(self.canBack){
         self.props.navigation.goBack();
@@ -85,8 +89,8 @@ class ASignatureConfirmationView extends Component {
 
   //下一步
   async gotoNext(){
-    let netInfo = await NetUtility.getCurrentNetInfo();
-    if(!netInfo || netInfo == 'none' || netInfo == 'unknown'){
+    let isConnected = await NetUtility.getCurrentNetIsConnect();
+    if(!isConnected){
       Toast.showShortCenter('当前网络不可用，请检查网络设置');
       return;
     }
@@ -112,8 +116,9 @@ class ASignatureConfirmationView extends Component {
 
     }
 
-    this.setState({loading: true})
     if(this.state.loading) return;
+    this.setState({loading: true})
+
 
     let keysArray = Object.keys(mobileCodeMap);
     if(keysArray.length > 0){

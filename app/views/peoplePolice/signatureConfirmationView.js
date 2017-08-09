@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager,NetInfo } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { takeSnapshot } from "react-native-view-shot";
@@ -39,6 +39,12 @@ class SignatureConfirmationView extends Component {
     this.timerArray = [{timer: null}, {timer: null}, {timer: null}];
   }
 
+  componentWillMount(){
+    NetInfo.isConnected.addEventListener('change', (isConnected) => {
+      console.log('NetUtility -->> the isConnected is -->> ', isConnected);
+    });
+  }
+
   componentDidMount(){
     Orientation.lockToPortrait();
     this.setState({loading:true})
@@ -57,8 +63,8 @@ class SignatureConfirmationView extends Component {
 
   //下一步
   async gotoNext(){
-    let netInfo = await NetUtility.getCurrentNetInfo();
-    if(!netInfo || netInfo == 'none' || netInfo == 'unknown'){
+    let netInfo = await NetUtility.getCurrentNetIsConnect();
+    if(!isConnected){
       Toast.showShortCenter('当前网络不可用，请检查网络设置');
       return;
     }

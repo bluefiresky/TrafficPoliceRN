@@ -27,6 +27,8 @@
 		333BAC971ED1AC8A0048FC48 /* libRCTToast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 333BAC7F1ED1AB2E0048FC48 /* libRCTToast.a */; };
 		333BAC981ED1AC8A0048FC48 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 333BAC901ED1AB580048FC48 /* libRNImagePicker.a */; };
 		333BAC991ED1AC8A0048FC48 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 333BAC961ED1AB9B0048FC48 /* libRNVectorIcons.a */; };
+		337414A71F3AE94E00F00B58 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 337414A61F3AE94E00F00B58 /* NetworkExtension.framework */; };
+		337414AA1F3AE96500F00B58 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 337414A91F3AE96500F00B58 /* ExternalAccessory.framework */; };
 		338181D21F1C665A00131C5A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 338181D11F1C665A00131C5A /* Images.xcassets */; };
 		33EC05AA1EFAC9BC00E327E1 /* BaiduMapModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EC05A91EFAC9BC00E327E1 /* BaiduMapModule.m */; };
 		437C55546511429288D728D2 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E6ADB9F33424CDF8F020E1E /* Foundation.ttf */; };
@@ -341,6 +343,9 @@
 		333BAC6C1ED1AB2E0048FC48 /* RCTToast.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTToast.xcodeproj; path = "../node_modules/@remobile/react-native-toast/ios/RCTToast.xcodeproj"; sourceTree = "<group>"; };
 		333BAC8B1ED1AB580048FC48 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		333BAC911ED1AB9B0048FC48 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
+		337414A61F3AE94E00F00B58 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		337414A81F3AE94E00F00B58 /* TrafficPoliceRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TrafficPoliceRN.entitlements; path = TrafficPoliceRN/TrafficPoliceRN.entitlements; sourceTree = "<group>"; };
+		337414A91F3AE96500F00B58 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		338181D11F1C665A00131C5A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TrafficPoliceRN/Images.xcassets; sourceTree = "<group>"; };
 		33EC05A81EFAC98E00E327E1 /* BaiduMapModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaiduMapModule.h; path = TrafficPoliceRN/Modules/BaiduMap/BaiduMapModule.h; sourceTree = "<group>"; };
 		33EC05A91EFAC9BC00E327E1 /* BaiduMapModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BaiduMapModule.m; path = TrafficPoliceRN/Modules/BaiduMap/BaiduMapModule.m; sourceTree = "<group>"; };
@@ -390,8 +395,10 @@
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
+				337414AA1F3AE96500F00B58 /* ExternalAccessory.framework in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
+				337414A71F3AE94E00F00B58 /* NetworkExtension.framework in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				FB8C2B799CACEB674403CB07 /* libPods-TrafficPoliceRN.a in Frameworks */,
 				5227BF50F14B421FA8D4D60C /* libRCTBEEPickerManager.a in Frameworks */,
@@ -470,6 +477,8 @@
 		1160D828BB76EC37FFF51F83 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				337414A91F3AE96500F00B58 /* ExternalAccessory.framework */,
+				337414A61F3AE94E00F00B58 /* NetworkExtension.framework */,
 				4DA4511162E5D68E4D7A0BE8 /* libPods-TrafficPoliceRN.a */,
 				E5E8366E54D6469BA0593C6E /* libz.tbd */,
 			);
@@ -497,6 +506,7 @@
 		13B07FAE1A68108700A75B9A /* TrafficPoliceRN */ = {
 			isa = PBXGroup;
 			children = (
+				337414A81F3AE94E00F00B58 /* TrafficPoliceRN.entitlements */,
 				338181D11F1C665A00131C5A /* Images.xcassets */,
 				33EC05741EFAC86600E327E1 /* Modules */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -764,6 +774,17 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 8DED4FBNTQ;
+						SystemCapabilities = {
+							com.apple.NetworkExtensions = {
+								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+							com.apple.WAC = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1251,6 +1272,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = TrafficPoliceRN/TrafficPoliceRN.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 8DED4FBNTQ;
@@ -1293,6 +1315,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = TrafficPoliceRN/TrafficPoliceRN.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8DED4FBNTQ;
 				ENABLE_BITCODE = NO;

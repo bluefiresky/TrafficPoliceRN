@@ -107,15 +107,15 @@ class ApHomePageView extends Component {
         <TouchableHighlight style={{top:Platform.OS === 'ios'? 22 : 10,right:0,position:'absolute',width:50, height:40, paddingRight:15, paddingTop:8}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
           <Image source={require('./image/setting.png')} style={{width:20,height:20,alignSelf:'flex-end'}}/>
         </TouchableHighlight>
-        <View style={{flex:1, justifyContent:'center',marginTop:15,marginLeft:15,width:W-30,backgroundColor:'#ffffff',borderRadius:10, paddingVertical:10}}>
+        <View style={{flex:1, justifyContent:'center',marginTop:15,marginLeft:15,width:W-30,backgroundColor:'#ffffff',borderRadius:10, paddingVertical:15}}>
            <View style={{flexDirection:'row',marginLeft:20}}>
              <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
            </View>
            <View style={{marginTop:20,marginLeft:20,justifyContent:'space-between', backgroundColor:'white'}}>
-             {this.renderRowItem('手机号：', global.personal.mobile, 0)}
+             {this.renderRowItem('手机号：', global.personal.mobile, 5)}
              {/*this.renderRowItem('警员编号：', global.personal.policeNumber, 10)*/}
-             {this.renderRowItem('所属城市：', global.personal.cityName, 15)}
-             {this.renderRowItem('所属大队：', global.personal.depName, 15)}
+             {this.renderRowItem('所属城市：', global.personal.cityName, 20)}
+             {this.renderRowItem('所属大队：', global.personal.depName, 20)}
            </View>
         </View>
 
@@ -181,7 +181,7 @@ class ApHomePageView extends Component {
     // 查看信分期的强制更新跳转，逻辑：isUpgrade -> [isAllUpgrade -> depCodes]
     this.forceUpdate = await this.props.dispatch( create_service(Contract.POST_FORCE_UPDATE, {appType: AppType, appVersion: Version}));
     // console.log('PpHomePageView execute _getData this.forceUpdate -->> ', this.forceUpdate);
-    if(this._checkUpdate(this.forceUpdate)) return;
+    // if(this._checkUpdate(this.forceUpdate)) return;
 
     // 字典需要上传本地的版本
     let v = getStore().getState().dictionary.version;
