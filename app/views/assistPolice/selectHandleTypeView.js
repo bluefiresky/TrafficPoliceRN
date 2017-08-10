@@ -2,7 +2,7 @@
 * 登录页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight, NetInfo } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
@@ -29,12 +29,19 @@ class SelectHandleTypeView extends Component {
       showRoles:false
     }
   }
+
+  componentWillMount(){
+    NetInfo.isConnected.addEventListener('change', (isConnected) => {
+      console.log('NetUtility -->> the isConnected is -->> ', isConnected);
+    });
+  }
+
   async commit(index){
     this.setState({loading:true});
     //点击之前，先判断网络情况，无网情况，提示无网络，无法处理
     if(index != 0){
-      let netInfo = await NetUtility.getCurrentNetInfo();
-      if(netInfo && netInfo != 'none'){
+      let isConnected = await NetUtility.getCurrentNetIsConnect();
+      if(isConnected){
         let success = await StorageHelper.saveStep2(HandleWayArray[index]);
         this.setState({loading:false});
         if(success) this.props.navigation.navigate('AGatheringPartyInformationView',{index:index});

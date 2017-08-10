@@ -45,7 +45,7 @@ class PpHomePageView extends Component {
     this._onRefresh = this._onRefresh.bind(this);
   }
   componentWillMount(){
-    this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {}));
+    // this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {}));
   }
   componentDidMount() {
     //1、载入页面，加载账户信息、大队章、勘察章、字典表（保险公司、天气、车辆类型等）信息，加载过程显示loading，信息缓存到本地。2、每次启动APP，请求后台字典数据是否有更新，如果有更新，后台返回新的字典数据，客户端缓存最新字典数据；如果没有更新，不需重新缓存数据。若无网络，弹框提示“未检测到网络，是否离线处理？”点击继续。
@@ -82,7 +82,7 @@ class PpHomePageView extends Component {
     return (
       <View style={{flexDirection:'row',marginTop,alignItems:'center'}}>
         <Text style={{fontSize:16,color:formRightText}}>{title}</Text>
-        <Text style={{fontSize:16,color:formRightText}}>{value}</Text>
+        <Text style={{fontSize:16,color:formRightText, flex:1}}>{value}</Text>
       </View>
     )
   }
@@ -103,27 +103,26 @@ class PpHomePageView extends Component {
         }
         showsVerticalScrollIndicator={false}
         >
-        <Image source={require('./image/home_bg.png')} style={{width:W, height:HomeBgH, overflow:'visible'}}>
-          <Text style={{color:'#ffffff',fontSize:18,alignSelf:'center',marginTop:(Platform.OS === 'ios') ? 30 : 15,backgroundColor:'transparent'}}>首页</Text>
-          <TouchableHighlight style={{top:Platform.OS === 'ios'? 20 : 5,right:5,position:'absolute', padding:10}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
-            <Image source={require('./image/setting.png')} style={{width:18,height:18}}/>
-          </TouchableHighlight>
-          <View style={{marginTop:15,marginLeft:15,width:W-30,height:InfoH,backgroundColor:'#ffffff',borderRadius:10}}>
-             <View style={{flexDirection:'row',marginLeft:20,marginTop:20}}>
-               <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
-               <Image source={{uri: 'data:image/png;base64,' + global.personal.sealUrlBase64}} style={{marginLeft:15,width:90,height:40,resizeMode:'cover'}}/>
+        <Image source={require('./image/home_bg.png')} style={{position:'absolute', top:0, width:W, height:HomeBgH, overflow:'visible'}} />
+        <Text style={{color:'#ffffff',fontSize:18,alignSelf:'center',marginTop:(Platform.OS === 'ios') ? 30 : 15,backgroundColor:'transparent'}}>首页</Text>
+        <TouchableHighlight style={{top:Platform.OS === 'ios'? 20 : 5,right:5,position:'absolute', padding:10}} onPress={()=>{this.props.navigation.navigate('SettingView')}} underlayColor={'transparent'}>
+          <Image source={require('./image/setting.png')} style={{width:18,height:18}}/>
+        </TouchableHighlight>
+        <View style={{marginTop:15,marginLeft:15,width:W-30,minHeight:InfoH,backgroundColor:'#ffffff',borderRadius:10}}>
+           <View style={{flexDirection:'row',marginLeft:20,marginTop:20}}>
+             <Text style={{fontSize:22,color:formLeftText,fontWeight:'bold'}}>{global.personal.policeName}</Text>
+             <Image source={{uri: 'data:image/png;base64,' + global.personal.sealUrlBase64}} style={{marginLeft:15,width:90,height:40,resizeMode:'cover'}}/>
+           </View>
+           <View style={{margin:20}}>
+             <View>
+               {this.renderRowItem('手机号：', global.personal.mobile, 0)}
+               {this.renderRowItem('警员编号：', global.personal.policeNumber, 10)}
+               {this.renderRowItem('所属城市：', global.personal.cityName, 10)}
+               {this.renderRowItem('所属大队：', global.personal.depName, 10)}
              </View>
-             <View style={{margin:20}}>
-               <View>
-                 {this.renderRowItem('手机号：', global.personal.mobile, 0)}
-                 {this.renderRowItem('警员编号：', global.personal.policeNumber, 10)}
-                 {this.renderRowItem('所属城市：', global.personal.cityName, 10)}
-                 {this.renderRowItem('所属大队：', global.personal.depName, 10)}
-               </View>
-               <Image source={{uri: 'data:image/png;base64,' + global.personal.depSealUrlBase64}} style={{position:'absolute',right:10,width:90,height:90,resizeMode:'contain'}} />
-             </View>
-          </View>
-        </Image>
+             <Image source={{uri: 'data:image/png;base64,' + global.personal.depSealUrlBase64}} style={{position:'absolute',right:0,width:90,height:90,resizeMode:'contain'}} />
+           </View>
+        </View>
 
        {
         this.state.showWaitUpload ?

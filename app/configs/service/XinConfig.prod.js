@@ -13,7 +13,7 @@ export const XIN_REQ_TIMEOUT = 10000
 
 /** 请求服务的url @type {string} */
 export const XinConfigTitle = "Prod"
-export const XIN_SERVICE_URL = 'https://api.accidentx.zhongchebaolian.com/' /** 后台访问url */
+export const XIN_SERVICE_URL = 'https://api.accidentx.zhongchebaolian.com/police-api-web/router' /** 后台访问url */
 export const XIN_APISIGN_STR = '021711ea-3578-4408-91c0-8f3728964094'     /** 后台访问验签用到 */
 export const XIN_CURRENT_TIME = () => {                               /** 后台访问验签用到的时间戳 */
   return Date.parse(new Date());

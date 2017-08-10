@@ -71,7 +71,7 @@ class GatheringPartyInformationView extends Component {
     this.setState({loading:true})
     //检测必填项
     let error = null;
-    for (var i = 0, max = this.submitDataArr.length; i < max; i++) {
+    for (let i = 0; i < this.submitDataArr.length; i++) {
       if (this.checkName(this.submitDataArr[i].name)){
         error = `请输入正确的${this.carInfoData[i].title}当事人姓名`
         break;
@@ -96,10 +96,16 @@ class GatheringPartyInformationView extends Component {
         error = `请选择正确的${this.carInfoData[i].title}保险公司`
         break;
       }
-      if (this.submitDataArr[i].carInsureNumber && this.submitDataArr[i].carInsureNumber.length < 10) {
+      if (this.submitDataArr[i].carInsureNumber && !TextUtility.checkLength(this.submitDataArr[i].carInsureNumber, 40, 20)) {
         error = `${this.carInfoData[i].title}的保单号输入不正确`
         break;
       }
+    }
+
+    if(error) {
+      this.setState({loading:false});
+      Toast.showShortCenter(error);
+      return;
     }
 
     if(this.submitDataArr.length === 2){
@@ -107,6 +113,8 @@ class GatheringPartyInformationView extends Component {
         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的手机号不能相同`;
       }else if(this.submitDataArr[0].driverNum === this.submitDataArr[1].driverNum){
         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的驾驶证号不能相同`;
+      }else if(this.submitDataArr[0].licensePlateNum === this.submitDataArr[1].licensePlateNum){
+        error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的车牌号不能相同`;
       }
     }
 
@@ -123,6 +131,12 @@ class GatheringPartyInformationView extends Component {
         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[2].title} 的驾驶证号不能相同`;
       }else if(this.submitDataArr[1].driverNum === this.submitDataArr[2].driverNum){
         error = `${this.carInfoData[1].title} 与 ${this.carInfoData[2].title} 的驾驶证号不能相同`;
+      }else if(this.submitDataArr[0].licensePlateNum === this.submitDataArr[1].licensePlateNum){
+        error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的车牌号不能相同`;
+      }else if(this.submitDataArr[0].licensePlateNum === this.submitDataArr[2].licensePlateNum){
+        error = `${this.carInfoData[0].title} 与 ${this.carInfoData[2].title} 的车牌号不能相同`;
+      }else if(this.submitDataArr[1].licensePlateNum === this.submitDataArr[2].licensePlateNum){
+        error = `${this.carInfoData[1].title} 与 ${this.carInfoData[2].title} 的车牌号不能相同`;
       }
     }
 
@@ -146,11 +160,11 @@ class GatheringPartyInformationView extends Component {
   }
   //验证驾驶证号
   checkDriveNunm(driverNum){
-    return(!driverNum || driverNum.length < 6 || driverNum.length > 18)
+    return (!driverNum || driverNum.length < 6 || driverNum.length > 18)
   }
-  //验证姓名
+  //验证姓名, 返回true,就是有问题
   checkName(name){
-    return(!name || name.length < 2 || name.length > 10)
+    return (!name || name.length < 2 || name.length > 10 || !TextUtility.checkHanZi(name));
   }
   getNowTimeString(){
     let d = new Date();
@@ -182,20 +196,24 @@ class GatheringPartyInformationView extends Component {
   onChangeText(text,index,type) {
     switch (type) {
       case 'Name':
+      // if(TextUtility.checkHanZi(text)){
         this.submitDataArr[index].name = text;
         break;
+      // }
       case 'Phone':
         if(TextUtility.checkNumber(text)){
           this.submitDataArr[index].phone = text;
         }
         break;
       case 'DrivingLicense':
-        // if(TextUtility.checkNumber(text)){
+        if(TextUtility.checkNumberAndLetters(text)){
           this.submitDataArr[index].driverNum = text;
-        // }
+        }
         break;
       case 'InsuranceCertificateNum':
-        this.submitDataArr[index].carInsureNumber = text;
+        if(TextUtility.checkNumberAndLetters(text)){
+          this.submitDataArr[index].carInsureNumber = text;
+        }
         break;
       case 'OtherCarType':
         this.submitDataArr[index].carType = text;
@@ -242,7 +260,7 @@ class GatheringPartyInformationView extends Component {
       <View style={{backgroundColor:'#ffffff'}} key={index}>
         <View style={{width:W, height:(index>0)?10:0, backgroundColor:backgroundGrey}} />
         <View style={{marginTop:10,flexDirection:'row',paddingTop:10,paddingBottom:10,justifyContent:'space-between'}}>
-          <View style={{flexDirection:'row',marginLeft:15}}>
+          <View style={{flex:1, flexDirection:'row',marginLeft:15,paddingRight:10}}>
             <Image source={require('./image/line.png')} style={{width:2,height:16,alignSelf:'center'}}/>
             <Text style={{fontSize:17,color:formLeftText,marginLeft:10,alignSelf:'center'}}>
               {`${value.title}当事人`}
@@ -250,14 +268,14 @@ class GatheringPartyInformationView extends Component {
             </Text>
           </View>
           {(index == this.carInfoData.length - 1 && index !== 0)?<TouchableHighlight style={{alignSelf:'center',marginRight:15}} onPress={()=>this.deleteItem(index)} underlayColor='transparent'>
-            <Image style={{width:20,height:20}} source={require('./image/delete.png')}/>
+            <Image style={{width:20,height:20,marginRight:10}} source={require('./image/delete.png')}/>
           </TouchableHighlight>:null}
         </View>
 
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 20}}>
           <Text style={{fontSize:12,color:'red'}}>*</Text>
-          <Input label={'姓名: '} placeholder={'请输入当事人姓名'} style={{flex:1, height: 50, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Name') }}/>
+          <Input label={'姓名: '} value={this.submitDataArr[index].name} placeholder={'请输入当事人姓名'} style={{flex:1, height: 50, paddingLeft:5}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'Name') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 
@@ -327,7 +345,7 @@ class GatheringPartyInformationView extends Component {
 
         <View style={{flexDirection: 'row', alignItems:'center', paddingLeft: 22}}>
           <Text style={{fontSize:12,color:'red'}}></Text>
-          <Input label={'保单号: '} placeholder={'选填'} keyboardType={'email-address'}  maxLength={40} style={{flex:1, height: 50, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
+          <Input label={'保单号: '} value={this.submitDataArr[index].carInsureNumber} placeholder={'选填'} keyboardType={'email-address'}  maxLength={40} style={{flex:1, height: 50, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'InsuranceCertificateNum') }}/>
         </View>
         <View style={{width:W,height:1,backgroundColor:backgroundGrey}} />
 

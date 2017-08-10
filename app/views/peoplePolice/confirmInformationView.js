@@ -94,14 +94,20 @@ class ConfirmInformationView extends Component {
         error = `请输入${title}车辆类型`
         break;
       }
-      // if (!data[i].carInsureNumber) {
-      //   error = `请输入${title}保险单号`
-      //   break;
-      // }
+      if (data[i].carInsureNumber && !TextUtility.checkLength(data[i].carInsureNumber, 40, 20)) {
+        error = `请输入${title}保险单号`
+        break;
+      }
       // if (!data[i].carInsureDueDate) {
       //   error = `请输入${title}保险到期日`
       //   break;
       // }
+    }
+
+    if(error) {
+      this.setState({loading:false});
+      Toast.showShortCenter(error);
+      return;
     }
 
     if(data.length === 2){
@@ -109,6 +115,8 @@ class ConfirmInformationView extends Component {
         error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的手机号不能相同`;
       }else if(data[0].driverNum === data[1].driverNum){
         error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的驾驶证号不能相同`;
+      }else if(data[0].licensePlateNum === data[1].licensePlateNum){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的车牌号不能相同`;
       }
     }
 
@@ -125,6 +133,12 @@ class ConfirmInformationView extends Component {
         error = `${this.partyVerData[0].name} 与 ${this.partyVerData[2].name} 的驾驶证号不能相同`;
       }else if(data[1].driverNum === data[2].driverNum){
         error = `${this.partyVerData[1].name} 与 ${this.partyVerData[2].name} 的驾驶证号不能相同`;
+      }else if(data[0].licensePlateNum === data[1].licensePlateNum){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的车牌号不能相同`;
+      }else if(data[0].licensePlateNum === data[2].licensePlateNum){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[2].name} 的车牌号不能相同`;
+      }else if(data[1].licensePlateNum === data[2].licensePlateNum){
+        error = `${this.partyVerData[1].name} 与 ${this.partyVerData[2].name} 的车牌号不能相同`;
       }
     }
 
@@ -160,7 +174,7 @@ class ConfirmInformationView extends Component {
   }
   //验证姓名
   checkName(name){
-    return(!name || name.length < 2 || name.length > 10)
+    return(!name || name.length < 2 || name.length > 10 || !TextUtility.checkHanZi(name))
   }
 
   renderOnePersonInfo(value,ind,credential){
@@ -207,7 +221,7 @@ class ConfirmInformationView extends Component {
             </TouchableHighlight>
           </View>
           <View style={{width:W, height:1, backgroundColor:backgroundGrey}} />
-          {this.renderRowItem('保险单号',value.carInsureNumber,ind,'InsuranceCertificateNum',value)}
+          {this.renderRowItem('保险单号',value.carInsureNumber,ind,'InsuranceCertificateNum',value,40)}
           <View style={{flexDirection:'row',marginLeft:20,paddingTop:10}}>
             <Text style={{fontSize:16,color:formLeftText}}>保险到期日</Text>
             <DatePicker
@@ -254,7 +268,9 @@ class ConfirmInformationView extends Component {
   onChangeText(text,index,type,item){
     switch (type) {
       case 'Name':
-        item.name = text;
+        // if(TextUtility.checkHanZi(text)){
+          item.name = text;
+        // }
         break;
       case 'Phone':
         if(TextUtility.checkNumber(text)){
@@ -262,7 +278,7 @@ class ConfirmInformationView extends Component {
         }
         break;
       case 'DrivingLicense':
-        if(TextUtility.checkNumber(text)){
+        if(TextUtility.checkNumberAndLetters(text)){
           item.driverNum = text;
         }
         break;
@@ -277,7 +293,9 @@ class ConfirmInformationView extends Component {
         item.insureCompanyCode = text.code;
         break;
       case 'InsuranceCertificateNum':
-        item.carInsureNumber = text;
+        if(TextUtility.checkNumberAndLetters(text)){
+          item.carInsureNumber = text;
+        }
         break;
       case 'InsuranceTime':
         item.carInsureDueDate = text;
@@ -287,7 +305,7 @@ class ConfirmInformationView extends Component {
   }
 
   renderRowItem(title,value,index,type,item,maxLength){
-    let keyboardType = (type === 'Phone' || type === 'DrivingLicense')?'numeric':'default';
+    let keyboardType = (type === 'Phone')?'numeric':'default';
     let placeholder = `请输入${title}`;
     if(title == '保险单号') placeholder = '';
     return (

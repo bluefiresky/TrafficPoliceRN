@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,InteractionManager,NetInfo } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { takeSnapshot } from "react-native-view-shot";
@@ -13,7 +13,7 @@ import { W, H, backgroundGrey,formLeftText, formRightText,mainBule } from '../..
 import { ProgressView, XButton, Input } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
-import { StorageHelper, Utility, TextUtility } from '../../utility/index.js';
+import { StorageHelper, Utility, TextUtility, NetUtility } from '../../utility/index.js';
 
 const PersonalTitles = ['甲方', '乙方', '丙方'];
 const SignW = (W - 40);
@@ -39,6 +39,12 @@ class SignatureConfirmationView extends Component {
     this.timerArray = [{timer: null}, {timer: null}, {timer: null}];
   }
 
+  componentWillMount(){
+    NetInfo.isConnected.addEventListener('change', (isConnected) => {
+      console.log('NetUtility -->> the isConnected is -->> ', isConnected);
+    });
+  }
+
   componentDidMount(){
     Orientation.lockToPortrait();
     this.setState({loading:true})
@@ -57,6 +63,12 @@ class SignatureConfirmationView extends Component {
 
   //下一步
   async gotoNext(){
+    let isConnected = await NetUtility.getCurrentNetIsConnect();
+    if(!isConnected){
+      Toast.showShortCenter('当前网络不可用，请检查网络设置');
+      return;
+    }
+
     let mobileCodeMap = {};
     for(let i=0; i<this.dutyList.length; i++){
       let d = this.dutyList[i];
@@ -77,8 +89,9 @@ class SignatureConfirmationView extends Component {
       }
     }
 
-    this.setState({loading: true})
+
     if(this.state.loading) return;
+    this.setState({loading: true})
 
     let keysArray = Object.keys(mobileCodeMap);
     if(keysArray.length > 0){

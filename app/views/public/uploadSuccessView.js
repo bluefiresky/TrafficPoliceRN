@@ -41,9 +41,9 @@ class UploadSuccessView extends Component {
         <Image source={SuccessIcon} style={{width:100, height:100, resizeMode:'contain', marginTop:44}}/>
         <Text style={{fontSize:18, color:formLeftText, marginTop:10}}>案件上传成功</Text>
         <Text style={{fontSize:16, color:formRightText, marginTop:44, width:ContentW}}>{this.state.content}</Text>
-        <View style={{flexDirection:'row', marginTop:30}}>
+        <View style={{flexDirection:'row', marginTop:30,justifyContent:'center'}}>
           <XButton title={'处理完成'} onPress={this._onPress.bind(this, 1)} borderRadius={20} style={{backgroundColor:'#ffffff',width:ButtonW,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
-          <XButton title={'保险报案'} onPress={this._onPress.bind(this, 2)} borderRadius={20} style={{backgroundColor:'#267BD8',width:ButtonW}} textStyle={{color:'#ffffff',fontSize:14}}/>
+          {<XButton title={'保险报案'} onPress={this._onPress.bind(this, 2)} borderRadius={20} style={{backgroundColor:'#267BD8',width:ButtonW}} textStyle={{color:'#ffffff',fontSize:14}}/>}
         </View>
       </View>
     );
@@ -60,6 +60,10 @@ class UploadSuccessView extends Component {
       this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}) )
       DeviceEventEmitter.emit('InitHome');
     }else{
+      await StorageHelper.removeItem(global.personal.mobile+'unuploaded', global.currentCaseId)
+      await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
+      let deleteRes = Utility.deleteFileByName(global.currentCaseId)
+
       this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
     }
   }

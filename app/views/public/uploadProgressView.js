@@ -2,7 +2,7 @@
 * 设置页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager,BackHandler,DeviceEventEmitter } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,InteractionManager,BackHandler,DeviceEventEmitter,NetInfo } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
@@ -34,6 +34,7 @@ class UploadProgressView extends Component {
     }
     this.state = {
       loading:false,
+      leftTime:90,
       progress: 0,
       progressTip: '本次事故信息正在上传...',
       content,
@@ -47,6 +48,7 @@ class UploadProgressView extends Component {
     }
 
     this.info = null;
+    this.startDownload = false;
   }
 
   componentDidMount(){
@@ -56,6 +58,10 @@ class UploadProgressView extends Component {
   }
 
   componentWillMount(){
+    NetInfo.isConnected.addEventListener('change', (isConnected) => {
+      console.log('NetUtility -->> the isConnected is -->> ', isConnected);
+    });
+
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', () => { return true; });
     }
@@ -71,7 +77,10 @@ class UploadProgressView extends Component {
   render(){
     return(
       <View style={styles.container}>
-        <Progress.Bar progress={this.state.progress} width={ProgressBarW} height={8} borderRadius={6} style={{marginTop: 100}} color={mainBule} animated={false}/>
+        <View style={{marginTop:80, width:80, height:80, borderRadius:40, borderWidth:1, borderColor:mainBule, alignItems:'center', justifyContent:'center'}}>
+          <Text style={{color:mainBule, fontSize:22}}>{`${this.state.leftTime}s`}</Text>
+        </View>
+        {/*<Progress.Bar progress={this.state.progress} width={ProgressBarW} height={8} borderRadius={6} style={{marginTop: 100}} color={mainBule} animated={false}/> */}
         <Text style={{color:formLeftText, fontSize: 16, marginTop:20}}>{this.state.progressTip}</Text>
         <View style={{width:ContentW, marginTop:50}}><Text style={{color:formRightText, fontSize:14}}>{this.state.content}</Text></View>
         <TipModal show={this.state.showTip} {...this.state.tipParams} />
@@ -81,6 +90,9 @@ class UploadProgressView extends Component {
 
   /** Private **/
   async _startUpload(){
+    if(this.startDownload) return;
+    this.startDownload = true;
+
     let caseKey = (this.state.caseType == 1)? 'unuploaded':'uncompleted';
     this.info = await StorageHelper.getCurrentCaseInfo(caseKey);
     if(!this.info) return;
@@ -98,14 +110,14 @@ class UploadProgressView extends Component {
     }
   }
 
-  async _done(title, content, success){
+  async _done(title, content, success, handleWay){
     this.timer && clearInterval(this.timer);
+    this.startDownload = false;
 
     let self = this;
     let left = null;
     let right = null;
     let done;
-    let handleWay = this.state.handleWay;
     if(success){
       if(handleWay === '03' || handleWay === '05'){
         let success = await StorageHelper.saveStep6_7_1(this.state.taskNo)
@@ -122,13 +134,14 @@ class UploadProgressView extends Component {
       return;
     }else{
       left = {label: '重试', event:() => {
-        self.setState({progress: 0, showTip: false, success: false, fail: false})
         self._startUpload();
+        self.setState({progress: 0, showTip: false, success: false, fail: false, leftTime:90})
       }};
       let label = (handleWay === '01' || handleWay === '02')?'查看离线认定书':(handleWay === '04'? '查看离线协议书':'返回首页');
       right = {label, event: async () => {
-        self.setState({loading:true});
+
         if(self.state.loading) return;
+        self.setState({loading:true});
 
         if( handleWay === '03' || handleWay === '05'){
           let routeName = global.personal.policeType === 2?'PpHomePageView':'ApHomePageView';
@@ -152,10 +165,10 @@ class UploadProgressView extends Component {
 
   _animate(handleWay) {
     this.timer = setInterval(() => {
-      let { success, fail, progress } = this.state;
+      let { success, fail, progress, leftTime } = this.state;
       if(success){
         this.setState({ progress:1 });
-        this._done('上传案件成功', '.....', true)
+        this._done('上传案件成功', '.....', true, handleWay)
       }else{
         if(fail){
           let errorTip = '';
@@ -166,11 +179,24 @@ class UploadProgressView extends Component {
           }else{
             errorTip = '当前网络差，案件信息上传失败，请寻找网络良好的位置点击重试！';
           }
-          this._done('上传案件失败', errorTip, false);
+          this._done('上传案件失败', errorTip, false, handleWay);
         }else{
-          progress += Math.random() / 30;
-          if(progress > 0.9) progress = 0.9;
-          this.setState({ progress });
+          if(leftTime >= 1){
+            let lt = leftTime - 1;
+            progress += Math.random() / 30;
+            if(progress > 0.9) progress = 0.9;
+            this.setState({ progress, leftTime:lt });
+          }else{
+            let errorTip = '';
+            if(handleWay === '04'){
+              errorTip = '案件信息已存储在手机中，并已离线生成《道路交通事故自行协商协议书》。请告知当事人待网络信号良好时，案件信息将上传后台，然后当事人可收到包含本次事故认定书的短信。'
+            }else if(handleWay === '01' || handleWay === '02'){
+              errorTip = '案件信息已存储在手机中，并已离线生成《道路交通事故认定书（简易程序）》。请告知当事人待网络信号良好时，案件信息将上传后台，然后当事人可收到包含本次事故认定书的短信。'
+            }else{
+              errorTip = '当前网络差，案件信息上传失败，请寻找网络良好的位置点击重试！';
+            }
+            this._done('上传案件失败', errorTip, false, handleWay);
+          }
         }
       }
     }, 1000);
