@@ -48,18 +48,23 @@ class ExploreTakePhotoView extends Component {
     }
     if (photolist.length > 0) {
       for (var i = 0; i < photolist.length; i++) {
-        if (photolist[i].length > 0 && photolist[i].length < 8) {
-          for (var j = 0; j < photolist[i].length; j++) {
-            for (var k = 0; k < this.partyInfoData[i].photolist.length; k++) {
-              if (this.partyInfoData[i].photolist[k].phototypecode == photolist[i][j].phototypecode) {
+        let count = 0
+        for (var j = 0; j < photolist[i].length; j++) {
+          for (var k = 0; k < this.partyInfoData[i].photolist.length; k++) {
+            if (this.partyInfoData[i].photolist[k].phototypecode == photolist[i][j].phototypecode) {
+              if (photolist[i][j].phototypecode != '7' || count == 0) {
                 this.partyInfoData[i].photolist[k] = photolist[i][j]
+                if (photolist[i][j].phototypecode == '7') {
+                  count++
+                }
               }
             }
           }
-        } else if (photolist[i].length > 7) {
-          for (var j = 0; j < photolist[i].length; j++) {
-            for (var k = 0; k < this.partyInfoData[i].photolist.length; k++) {
-              this.partyInfoData[i].photolist = photolist[i]
+          if (photolist[i][j].phototypecode == '7') {
+            if (count == 1) {
+              count++
+            } else {
+              this.partyInfoData[i].photolist.push(photolist[i][j])
             }
           }
         }
