@@ -114,6 +114,8 @@ class AGatheringPartyInformationView extends Component {
          error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的手机号不能相同`;
        }else if(this.submitDataArr[0].driverNum === this.submitDataArr[1].driverNum){
          error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的驾驶证号不能相同`;
+       }else if(this.submitDataArr[0].licensePlateNum === this.submitDataArr[1].licensePlateNum){
+         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的车牌号不能相同`;
        }
      }
 
@@ -130,6 +132,12 @@ class AGatheringPartyInformationView extends Component {
          error = `${this.carInfoData[0].title} 与 ${this.carInfoData[2].title} 的驾驶证号不能相同`;
        }else if(this.submitDataArr[1].driverNum === this.submitDataArr[2].driverNum){
          error = `${this.carInfoData[1].title} 与 ${this.carInfoData[2].title} 的驾驶证号不能相同`;
+       }else if(this.submitDataArr[0].licensePlateNum === this.submitDataArr[1].licensePlateNum){
+         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[1].title} 的车牌号不能相同`;
+       }else if(this.submitDataArr[0].licensePlateNum === this.submitDataArr[2].licensePlateNum){
+         error = `${this.carInfoData[0].title} 与 ${this.carInfoData[2].title} 的车牌号不能相同`;
+       }else if(this.submitDataArr[1].licensePlateNum === this.submitDataArr[2].licensePlateNum){
+         error = `${this.carInfoData[1].title} 与 ${this.carInfoData[2].title} 的车牌号不能相同`;
        }
      }
 

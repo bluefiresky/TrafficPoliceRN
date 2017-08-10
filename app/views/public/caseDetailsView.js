@@ -105,7 +105,7 @@ class CaseDetailsView extends Component {
             this.accidentDes = accidentDesName;
 
             let bl = (pageFlag === '02')?'协议书':'认定书';
-            this.setState({loading: false, button1Text:`交通事故${bl}`, button2Text:null, pageFlag, pageUrl})
+            this.setState({loading: false, button1Text:`交通事故${bl}`, button2Text:'保险报案', pageFlag, pageUrl})
         })
       }else if(info){
         /*  本地待上传详情  **/

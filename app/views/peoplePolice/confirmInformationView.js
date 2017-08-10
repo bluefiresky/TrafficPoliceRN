@@ -115,6 +115,8 @@ class ConfirmInformationView extends Component {
         error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的手机号不能相同`;
       }else if(data[0].driverNum === data[1].driverNum){
         error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的驾驶证号不能相同`;
+      }else if(data[0].licensePlateNum === data[1].licensePlateNum){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的车牌号不能相同`;
       }
     }
 
@@ -131,6 +133,12 @@ class ConfirmInformationView extends Component {
         error = `${this.partyVerData[0].name} 与 ${this.partyVerData[2].name} 的驾驶证号不能相同`;
       }else if(data[1].driverNum === data[2].driverNum){
         error = `${this.partyVerData[1].name} 与 ${this.partyVerData[2].name} 的驾驶证号不能相同`;
+      }else if(data[0].licensePlateNum === data[1].licensePlateNum){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[1].name} 的车牌号不能相同`;
+      }else if(data[0].licensePlateNum === data[2].licensePlateNum){
+        error = `${this.partyVerData[0].name} 与 ${this.partyVerData[2].name} 的车牌号不能相同`;
+      }else if(data[1].licensePlateNum === data[2].licensePlateNum){
+        error = `${this.partyVerData[1].name} 与 ${this.partyVerData[2].name} 的车牌号不能相同`;
       }
     }
 
@@ -213,7 +221,7 @@ class ConfirmInformationView extends Component {
             </TouchableHighlight>
           </View>
           <View style={{width:W, height:1, backgroundColor:backgroundGrey}} />
-          {this.renderRowItem('保险单号',value.carInsureNumber,ind,'InsuranceCertificateNum',value)}
+          {this.renderRowItem('保险单号',value.carInsureNumber,ind,'InsuranceCertificateNum',value,40)}
           <View style={{flexDirection:'row',marginLeft:20,paddingTop:10}}>
             <Text style={{fontSize:16,color:formLeftText}}>保险到期日</Text>
             <DatePicker

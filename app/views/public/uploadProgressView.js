@@ -48,6 +48,7 @@ class UploadProgressView extends Component {
     }
 
     this.info = null;
+    this.startDownload = false;
   }
 
   componentDidMount(){
@@ -89,6 +90,9 @@ class UploadProgressView extends Component {
 
   /** Private **/
   async _startUpload(){
+    if(this.startDownload) return;
+    this.startDownload = true;
+
     let caseKey = (this.state.caseType == 1)? 'unuploaded':'uncompleted';
     this.info = await StorageHelper.getCurrentCaseInfo(caseKey);
     if(!this.info) return;
@@ -108,6 +112,7 @@ class UploadProgressView extends Component {
 
   async _done(title, content, success, handleWay){
     this.timer && clearInterval(this.timer);
+    this.startDownload = false;
 
     let self = this;
     let left = null;
@@ -129,8 +134,8 @@ class UploadProgressView extends Component {
       return;
     }else{
       left = {label: '重试', event:() => {
-        self.setState({progress: 0, showTip: false, success: false, fail: false, leftTime:90})
         self._startUpload();
+        self.setState({progress: 0, showTip: false, success: false, fail: false, leftTime:90})
       }};
       let label = (handleWay === '01' || handleWay === '02')?'查看离线认定书':(handleWay === '04'? '查看离线协议书':'返回首页');
       right = {label, event: async () => {
