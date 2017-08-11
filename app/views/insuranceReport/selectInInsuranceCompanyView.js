@@ -40,17 +40,20 @@ class SelectInInsuranceCompanyView extends Component {
   constructor(props){
     super(props);
     this.state = {
+      loading:false
     }
     //常用数据
     this.commonData = [{code:'110000003001',imageURL:zgrb},{code:'110000003003',imageURL:tpy},{code:'110000003005',imageURL:zgpa},{code:'110000003043',imageURL:zgrs},{code:'110000003007',imageURL:zhbx},{code:'110000003033',imageURL:ygbx}];
     global.stackKeys.SelectInInsuranceCompanyView = props.navigation.state.key;
   }
-  componentWillMount(){
+  componentDidMount(){
     let { insurecitylist } = getStore().getState().insuranceDictionary
-    for (var i = 0; i < insurecitylist.length; i++) {
-      for (var j = 0; j < this.commonData.length; j++) {
-        if (this.commonData[j].code == insurecitylist[i].code) {
-          this.commonData[j].data = insurecitylist[i];
+    if (insurecitylist.length > 0) {
+      for (var i = 0; i < insurecitylist.length; i++) {
+        for (var j = 0; j < this.commonData.length; j++) {
+          if (this.commonData[j].code == insurecitylist[i].code) {
+            this.commonData[j].data = insurecitylist[i];
+          }
         }
       }
     }
@@ -58,7 +61,25 @@ class SelectInInsuranceCompanyView extends Component {
   renderCell(item){
     let { insurecitylist } = getStore().getState().insuranceDictionary
     return (
-      <TouchableHighlight underlayColor={'transparent'} onPress={()=>{this.props.navigation.navigate('SelectCityView',{selData:this.props.navigation.state.params.selData,data:insurecitylist[item.index]})}}>
+      <TouchableHighlight underlayColor={'transparent'} onPress={()=>{
+        if (insurecitylist && insurecitylist.length > 0) {
+          this.props.navigation.navigate('SelectCityView',{selData:this.props.navigation.state.params.selData,data:insurecitylist[item.index]})
+        } else {
+          this.setState({
+            loading:true
+          })
+          this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {})).then((res)=>{
+            this.setState({
+              loading:false
+            })
+            if (res) {
+              this.props.navigation.navigate('SelectCityView',{selData:this.props.navigation.state.params.selData,data:res.data.insurecitylist[item.index]})
+            } else {
+              Toast.showShortCenter('获取城市信息失败，请点击重试');
+            }
+          });
+        }
+      }}>
         <View style={{flex:1}}>
           <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',backgroundColor:'#ffffff',paddingVertical:15}}>
             <Text style={{marginLeft:15}}>{item.title}</Text>
@@ -86,13 +107,39 @@ class SelectInInsuranceCompanyView extends Component {
   renderHearer(){
     let imageW = (W - 2) * 0.5;
     let imageH = imageW * 0.35;
+    let { insurecitylist } = getStore().getState().insuranceDictionary
     return (
       <View style={{backgroundColor:backgroundGrey}}>
         <Text style={{marginLeft:15,marginTop:10,marginBottom:10}}>常用</Text>
         <View style={{flexWrap:'wrap',flexDirection:'row'}}>
           {this.commonData.map((value,index) => {
             return(
-              <TouchableHighlight onPress={()=>{this.props.navigation.navigate('SelectCityView',{selData:this.props.navigation.state.params.selData,data:value.data})}} underlayColor={'transparent'} key={index}>
+              <TouchableHighlight onPress={()=>{
+                if (insurecitylist.length > 0) {
+                  this.props.navigation.navigate('SelectCityView',{selData:this.props.navigation.state.params.selData,data:value.data})
+                } else {
+                  this.setState({
+                    loading:true
+                  })
+                  this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {})).then((res)=>{
+                    this.setState({
+                      loading:false
+                    })
+                    if (res) {
+                      for (var i = 0; i < res.data.insurecitylist.length; i++) {
+                        for (var j = 0; j < this.commonData.length; j++) {
+                          if (this.commonData[j].code == res.data.insurecitylist[i].code) {
+                            this.commonData[j].data = res.data.insurecitylist[i];
+                          }
+                        }
+                      }
+                      this.props.navigation.navigate('SelectCityView',{selData:this.props.navigation.state.params.selData,data:this.commonData[index].data})
+                    } else {
+                      Toast.showShortCenter('获取城市信息失败，请点击重试');
+                    }
+                  });
+                }
+              }} underlayColor={'transparent'} key={index}>
                 <Image style={{width:imageW,height:imageH,marginLeft:1,backgroundColor:'#ffffff',marginTop:1}} source={value.imageURL} resizeMode='contain'/>
               </TouchableHighlight>
             )
@@ -103,16 +150,19 @@ class SelectInInsuranceCompanyView extends Component {
   }
   render(){
     return(
-      <SectionList
-          renderItem={this.renderItem.bind(this)}
-          ListHeaderComponent={this.renderHearer.bind(this)}
-          renderSectionHeader={this.renderSectionHeader.bind(this)}
-          sections={sections}
-          ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:backgroundGrey,width:W,height:0.5}}></View>)}}
-          keyExtractor={(data,index) => {return index}}
-          style={styles.container}
-          showsVerticalScrollIndicator={false}
-        />
+      <View style={{flex:1}}>
+        <SectionList
+            renderItem={this.renderItem.bind(this)}
+            ListHeaderComponent={this.renderHearer.bind(this)}
+            renderSectionHeader={this.renderSectionHeader.bind(this)}
+            sections={sections}
+            ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:backgroundGrey,width:W,height:0.5}}></View>)}}
+            keyExtractor={(data,index) => {return index}}
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+          />
+          <ProgressView show={this.state.loading}/>
+      </View>
     );
   }
 }
