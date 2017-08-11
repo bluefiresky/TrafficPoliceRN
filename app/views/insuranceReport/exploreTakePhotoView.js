@@ -27,6 +27,10 @@ const ImageH = (330 * ImageW)/510;
 
 class ExploreTakePhotoView extends Component {
 
+  static navigationOptions = {
+    header:null
+  }
+
   constructor(props){
     super(props);
     this.state = {
@@ -99,9 +103,7 @@ class ExploreTakePhotoView extends Component {
         };
   }
   componentWillUnmount(){
-    if (this.props.navigation.state.params.requestData) {
-      this.props.navigation.state.params.requestData()
-    }
+
   }
   componentDidMount(){
     let { taskno,needRequestPhoto } = this.props.navigation.state.params
@@ -114,27 +116,30 @@ class ExploreTakePhotoView extends Component {
           if (res) {
             this.surveyno = res.data.surveyno
             // this.partyInfoData = res.data.surveyphoto
-            for (var i = 0; i < this.partyInfoData.length; i++) {
+
+            for (var i = 0; i < res.data.surveyphoto.length; i++) {
               this.partyInfoData[i].licenseno = res.data.surveyphoto[i].licenseno
-              if (res.data.surveyphoto[i].photolist.length < 8) {
-                for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
-                  for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
-                    if (res.data.surveyphoto[i].photolist[k].phototypecode == this.partyInfoData[i].photolist[j].phototypecode) {
-                      this.partyInfoData[i].photolist[j] = res.data.surveyphoto[i].photolist[k]
+              let count = 0
+              for (var j = 0; j < res.data.surveyphoto[i].photolist.length; j++) {
+                for (var k = 0; k < this.partyInfoData[i].photolist.length; k++) {
+                  if (this.partyInfoData[i].photolist[k].phototypecode == res.data.surveyphoto[i].photolist[j].phototypecode) {
+                    if (res.data.surveyphoto[i].photolist[j].phototypecode != '7' || count == 0) {
+                      this.partyInfoData[i].photolist[k] = res.data.surveyphoto[i].photolist[j]
+                      if (res.data.surveyphoto[i].photolist[j].phototypecode == '7') {
+                        count++
+                      }
                     }
                   }
                 }
-              } else {
-                for (var i = 0; i < this.partyInfoData.length; i++) {
-                  this.partyInfoData[i].licenseno = res.data.surveyphoto[i].licenseno
-                  for (var j = 0; j < this.partyInfoData[i].photolist.length; j++) {
-                    for (var k = 0; k < res.data.surveyphoto[i].photolist.length; k++) {
-                      this.partyInfoData[i].photolist = res.data.surveyphoto[i].photolist
-                    }
+                if (res.data.surveyphoto[i].photolist[j].phototypecode == '7') {
+                  if (count == 1) {
+                    count++
+                  } else {
+                    this.partyInfoData[i].photolist.push(res.data.surveyphoto[i].photolist[j])
                   }
-                  this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',miniurl:'',phototypecode:'7',pid:''})
                 }
               }
+              this.partyInfoData[i].photolist.push({phototypename:'其它现场照片',url:'',miniurl:'',phototypecode:'7',pid:''})
             }
           }
           this.setState({
@@ -210,6 +215,9 @@ class ExploreTakePhotoView extends Component {
                       this.partyInfoData[ind].photolist[index].pid = res.data.pid;
                       let temp = JSON.parse(JSON.stringify(this.partyInfoData[ind].photolist))
                       this.partyInfoData[ind].photolist = temp
+                      // if (this.props.navigation.state.params.requestData) {
+                      //   this.props.navigation.state.params.requestData()
+                      // }
                     }
                     this.setState({
                       loading:false
@@ -418,6 +426,19 @@ class ExploreTakePhotoView extends Component {
           {this.renderDamageModalView()}
         </ScrollView>
         <ProgressView show={this.state.loading}/>
+        <View style={styles.navStyle}>
+           <TouchableHighlight onPress={()=> {
+             if (this.props.navigation.state.params.requestData) {
+               this.props.navigation.state.params.requestData()
+             }
+             this.props.navigation.goBack()
+           }} underlayColor={'transparent'} style={{width:24,height:40,marginLeft:5,marginTop:(Platform.OS === 'ios') ? 20:0,justifyContent:'center'}}>
+             <Image source={require('./image/back.png')} style={{width:12,height:20,alignSelf:'center'}}/>
+           </TouchableHighlight>
+           <View style={{flex:1,justifyContent:'center',marginTop:(Platform.OS === 'ios') ? 20:0}}>
+             <Text style={{alignSelf:'center',color:'#ffffff',fontSize:17,marginLeft:-24}}>查勘拍照</Text>
+           </View>
+        </View>
       </View>
     );
   }
@@ -433,6 +454,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.9)'
+  },
+  navStyle: {
+      width: W,
+      height: (Platform.OS === 'ios') ? 64:44,
+      position: 'absolute',
+      top: 0,
+      backgroundColor: '#1C79D9',
+      flexDirection:'row'
   }
 });
 
