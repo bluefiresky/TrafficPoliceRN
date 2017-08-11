@@ -155,7 +155,7 @@ export default class HistoricalCaseCellView extends Component {
                      </TouchableHighlight>
     }
       if (status != '2') {
-        if (status == '3' || status == '12' || status == '13') {
+        if (status == '3' || status == '13') {
           thirdButton = <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:'#267BD8'}} underlayColor='#267BD8' onPress={()=>{
             if (status == '3') {
               this.props.showHub();
