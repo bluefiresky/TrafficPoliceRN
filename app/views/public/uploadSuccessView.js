@@ -43,7 +43,7 @@ class UploadSuccessView extends Component {
         <Text style={{fontSize:16, color:formRightText, marginTop:44, width:ContentW}}>{this.state.content}</Text>
         <View style={{flexDirection:'row', marginTop:30,justifyContent:'center'}}>
           <XButton title={'处理完成'} onPress={this._onPress.bind(this, 1)} borderRadius={20} style={{backgroundColor:'#ffffff',width:ButtonW,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
-          {<XButton title={'保险报案'} onPress={this._onPress.bind(this, 2)} borderRadius={20} style={{backgroundColor:'#267BD8',width:ButtonW}} textStyle={{color:'#ffffff',fontSize:14}}/>}
+          {/*<XButton title={'保险报案'} onPress={this._onPress.bind(this, 2)} borderRadius={20} style={{backgroundColor:'#267BD8',width:ButtonW}} textStyle={{color:'#ffffff',fontSize:14}}/> */}
         </View>
       </View>
     );

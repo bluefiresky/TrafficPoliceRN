@@ -189,8 +189,8 @@ export default class HistoricalCaseCellView extends Component {
           }}>
             <Text style={{color:'#267BD8',alignSelf:'center'}}>事故详情</Text>
           </TouchableHighlight>
-          {secondButton}
-          {thirdButton}
+          {/*secondButton*/}
+          {/*thirdButton*/}
         </View>
       )
   }
