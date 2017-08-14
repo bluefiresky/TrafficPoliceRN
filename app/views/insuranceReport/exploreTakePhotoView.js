@@ -103,7 +103,9 @@ class ExploreTakePhotoView extends Component {
         };
   }
   componentWillUnmount(){
-
+    this.timer1 && clearInterval(this.timer1)
+    this.timer2 && clearInterval(this.timer2)
+    this.timer3 && clearInterval(this.timer3)
   }
   componentDidMount(){
     let { taskno,needRequestPhoto } = this.props.navigation.state.params
@@ -170,6 +172,10 @@ class ExploreTakePhotoView extends Component {
         this.setState({
           refresh: true
         })
+        this.timer1 = setTimeout(
+          () => {
+            this.takePhoto(this.partyInfoData[ind].photolist[index],index,ind)
+          },500);
       } else if ((index == 3 || index == 4) && this.partyInfoData[ind].photolist[index].phototypename.indexOf('(') > 0 ) {
         this.currentImgaeIndex = index;
         this.currentImgaeInSection = ind;
@@ -249,7 +255,7 @@ class ExploreTakePhotoView extends Component {
     this.setState({
       showBigImage: false
     })
-    this.timer = setTimeout(
+    this.timer2 = setTimeout(
       () => {
         this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
       },500);
@@ -381,7 +387,7 @@ class ExploreTakePhotoView extends Component {
                   showDamageModalView: false
                 })
                 if (count > 0) {
-                  this.timer = setTimeout(
+                  this.timer3 = setTimeout(
                     () => {
                       this.takePhoto(this.partyInfoData[this.currentImgaeInSection].photolist[this.currentImgaeIndex],this.currentImgaeIndex,this.currentImgaeInSection)
                     },500);
