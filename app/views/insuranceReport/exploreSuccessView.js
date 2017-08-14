@@ -16,12 +16,14 @@ import { NavigationActions } from 'react-navigation'
 
 class ExploreSuccessView extends Component {
 
+  static navigationOptions = {
+    header:null
+  }
   constructor(props){
     super(props);
     this.state = {
     }
   }
-  //取消远程定责
   goBack(){
     let routeName = global.personal.policeType === 2 ? 'PpHomePageView':'ApHomePageView';
     this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
@@ -29,21 +31,35 @@ class ExploreSuccessView extends Component {
   }
   render(){
     return(
-      <ScrollView style={styles.container}
-                   showsVerticalScrollIndicator={false}>
-        <Image source={require('./image/export_success.png')} style={{width:100,height:100,marginTop:30,alignSelf:'center'}}/>
-        <View style={{marginTop:20,marginLeft:15,width:W-30}}>
-          <Text style={{alignSelf:'center',fontSize:16,color:formLeftText}}>
-            现场查勘完成！
-          </Text>
-          <Text style={{alignSelf:'center',fontSize:14,color:formLeftText,lineHeight:20,marginTop:5,textAlign:'center',marginTop:50}}>
-            此案件已现场查勘成功，相关事故及查勘信息已传至保险公司，请告知当事人注意接听保险公司电话！
-          </Text>
+      <View style={{flex:1}}>
+        <ScrollView style={styles.container}
+                     showsVerticalScrollIndicator={false}>
+          <Image source={require('./image/export_success.png')} style={{width:100,height:100,marginTop:(Platform.OS === 'ios') ? 94 : 74,alignSelf:'center'}}/>
+          <View style={{marginTop:20,marginLeft:15,width:W-30}}>
+            <Text style={{alignSelf:'center',fontSize:16,color:formLeftText}}>
+              现场查勘完成！
+            </Text>
+            <Text style={{alignSelf:'center',fontSize:14,color:formLeftText,lineHeight:20,marginTop:5,textAlign:'center',marginTop:50}}>
+              此案件已现场查勘成功，相关事故及查勘信息已传至保险公司，请告知当事人注意接听保险公司电话！
+            </Text>
+          </View>
+           <View style={{marginLeft:15,marginBottom:10,marginTop:30}}>
+             <XButton title='返回首页' onPress={() => this.goBack()} style={{backgroundColor:'#ffffff',borderRadius:20,borderColor:'#267BD8',borderWidth:1}} textStyle={{color:'#267BD8'}}/>
+           </View>
+        </ScrollView>
+        <View style={styles.navStyle}>
+           <TouchableHighlight onPress={()=> {
+             let routeName = global.personal.policeType === 2 ? 'PpHomePageView':'ApHomePageView';
+             this.props.navigation.dispatch( NavigationActions.reset({index: 0, actions: [ NavigationActions.navigate({ routeName}) ]}))
+             DeviceEventEmitter.emit('InitHome');
+           }} underlayColor={'transparent'} style={{width:24,height:40,marginLeft:5,marginTop:(Platform.OS === 'ios') ? 20:0,justifyContent:'center'}}>
+             <Image source={require('./image/back.png')} style={{width:12,height:20,alignSelf:'center'}}/>
+           </TouchableHighlight>
+           <View style={{flex:1,justifyContent:'center',marginTop:(Platform.OS === 'ios') ? 20:0}}>
+             <Text style={{alignSelf:'center',color:'#ffffff',fontSize:18,marginLeft:-24}}>完成</Text>
+           </View>
         </View>
-         <View style={{marginLeft:15,marginBottom:10,marginTop:30}}>
-           <XButton title='返回首页' onPress={() => this.goBack()} style={{backgroundColor:'#ffffff',borderRadius:20,borderColor:'#267BD8',borderWidth:1}} textStyle={{color:'#267BD8'}}/>
-         </View>
-      </ScrollView>
+      </View>
     );
   }
 
@@ -52,6 +68,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff'
+  },
+  navStyle: {
+      width: W,
+      height: (Platform.OS === 'ios') ? 64:44,
+      position: 'absolute',
+      top: 0,
+      backgroundColor: '#1C79D9',
+      flexDirection:'row'
   }
 });
 
