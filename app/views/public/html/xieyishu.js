@@ -5,7 +5,7 @@ export function generateXYS(basic, personList, taskModal, damagedList, accidentD
      <head>
       <meta charset="UTF-8" />
       <meta name="format-detection" content="telephone=no"/>
-      <title>协警多车无争议协议书图片</title>
+      <title>协警</title>
       <style>*{padding:0;margin:0;font-size: 16px;font-family: FangSong_GB2312;}h1{font-size: 30px;text-align: center;}h5{line-height: 30px;}p{word-break:break-all;}img{height:80px;width: auto;position: absolute;left:40px;top:-20px;}.hid{overflow: hidden;}.borNo{border:none;}.borNo th{border:none;}.borL{border-left: 1px solid #000;}.borR{border-right: 1px solid #000;}.borT{border-top: 1px solid #000;}.borB{border-bottom: 1px solid #000;}.padL{padding-left: 20px;}.padR{padding-right: 84px;}.content{padding:30px 17px 0 17px;margin:0 auto;width:1200px;}.head{border-bottom: 1px solid #000;}.pad th,.pad td{padding:5px 0;}table{width: 100%;}table,th,td{border:1px solid #000;border-collapse: collapse;font-weight: normal;}th,td,tr{text-align: left;word-break:break-all;}span{padding-left: 15px;display:inline-block;height:18px;}.padNo{padding:0;}.tit{text-align: center;}.mainT th{text-align: center;}.describe{padding-left: 30px;padding-top: 15px;}.describe span{padding:0 5px;border-bottom: 1px solid #000;}.describe div p{float: left;position: relative;}.wid{display: inline-block;width:100px;}</style>
      </head>
      <body>
