@@ -131,7 +131,7 @@ export default class HistoricalCaseCellView extends Component {
             </View>
           </View>
           <View style={{position:'absolute',top:0,right:0,backgroundColor:'#ffffff',paddingTop:5,paddingBottom:5,paddingLeft:10,paddingRight:10}}>
-            <Text style={{fontSize:13,color:mainBule}}>{tipText}</Text>
+            <Text style={{fontSize:13,color:mainBule}}>{/*tipText*/}</Text>
           </View>
         </View>
       </TouchableHighlight>
