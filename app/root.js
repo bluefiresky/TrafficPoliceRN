@@ -134,10 +134,6 @@ class RootView extends Component {
     // global.currentCaseId = '1500390583744';
   }
 
-  componentWillMount(){
-    Orientation.lockToPortrait();
-  }
-
   render(){
     let { statusBackColor } = this.state;
     let { guide, navigation } = this.props;
