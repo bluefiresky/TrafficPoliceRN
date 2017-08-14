@@ -406,7 +406,7 @@ class ExploreTakePhotoView extends Component {
       <View style={{flex:1}}>
         <ScrollView style={{flex:1}}
                     showsVerticalScrollIndicator={false}>
-          <View style={{paddingTop:10}}>
+          <View style={{paddingTop:10,marginTop:(Platform.OS === 'ios') ? 64 : 44}}>
             <Text style={{fontSize:13,color:'#717171',marginLeft:15}}>
               请按以下要求采集事故现场照片
             </Text>
