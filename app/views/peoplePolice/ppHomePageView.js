@@ -205,7 +205,7 @@ class PpHomePageView extends Component {
     // console.log('PpHomePageView execute _getData this.dictionary -->> ', this.dictionary);
 
     // 保险报案字典
-    this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {}));
+    // this.props.dispatch( create_service(Contract.POST_INSURE_DICTIONARY, {}));
 
     this.unCompleteSum = await StorageHelper.getUnCompletedCaseSum();
     this.unUploadedSum = await StorageHelper.getUnUploadedCaseSum();
