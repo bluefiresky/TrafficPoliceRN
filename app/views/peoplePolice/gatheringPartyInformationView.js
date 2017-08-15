@@ -24,7 +24,6 @@ class GatheringPartyInformationView extends Component {
     this.state = {
       refresh:false,
       carInsureDueDate: '',
-      showOtherCarTextInput: false,
       loading:false,
     }
     this.partyName = '';
@@ -32,9 +31,9 @@ class GatheringPartyInformationView extends Component {
     this.partyDrivingLicense = '';
     this.partyInsuranceCertificateNum = '';
     //提交的内容
-    this.jiafangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
-    this.yifangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
-    this.bingfangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.jiafangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',showOtherCarType:false,insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.yifangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',showOtherCarType:false,insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
+    this.bingfangInfo = {name:'',phone:'',driverNum:'',carInsureNumber:'',carType:'小型载客汽车',showOtherCarType:false,insureCompanyCode:'',insureCompanyName: '',licensePlateNum:global.personal.provinceShortName,carInsureDueDate:this.state.carInsureDueDate,carDamagedPart: ''};
     this.carInfoData = [{title:'甲方',carNumArr:[getProvincialData(),getNumberData()]}];
     this.addOtherTitle = ['乙方','丙方'];
     this.addOtherInfo = [this.yifangInfo,this.bingfangInfo];
@@ -96,7 +95,7 @@ class GatheringPartyInformationView extends Component {
         error = `请选择正确的${this.carInfoData[i].title}保险公司`
         break;
       }
-      if (this.submitDataArr[i].carInsureNumber && !TextUtility.checkLength(this.submitDataArr[i].carInsureNumber, 40, 20)) {
+      if (this.submitDataArr[i].carInsureNumber && !TextUtility.checkLength(this.submitDataArr[i].carInsureNumber, 40, 10)) {
         error = `${this.carInfoData[i].title}的保单号输入不正确`
         break;
       }
@@ -233,23 +232,17 @@ class GatheringPartyInformationView extends Component {
       onPickerConfirm: data => {
         if (type == 'carTypeData') {
           if (data[0] == '其他') {
-            self.setState({
-              showOtherCarTextInput: true
-            })
+            self.submitDataArr[index].showOtherCarType = true;
           } else {
             self.submitDataArr[index].carType = data[0];
-            self.setState({
-              showOtherCarTextInput: false
-            })
+            self.submitDataArr[index].showOtherCarType = false;
           }
         } else if (type == 'insuranceCompanyData') {
           let w = self.insuranceCompanyData[self.insuranceCompanyLabel.indexOf(data[0])]
           self.submitDataArr[index].insureCompanyCode = w.inscomcode;
           self.submitDataArr[index].insureCompanyName = w.inscomname;
         }
-        this.setState({
-          refresh:true
-        })
+        this.setState({refresh:true})
       }
      });
      Picker.show();
@@ -310,14 +303,14 @@ class GatheringPartyInformationView extends Component {
             <Text style={{fontSize:16,color:formLeftText,marginLeft:5}}>车辆类型:</Text>
             <TouchableHighlight onPress={() => this.showTypePicker(this.carTypeData,index,'carTypeData')} underlayColor='transparent' style={{flex:1}}>
               <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-                <Text style={{fontSize:16,paddingLeft:13,color:formLeftText,marginLeft:10,marginRight:10}} >{this.state.showOtherCarTextInput?'其他':this.submitDataArr[index].carType}</Text>
+                <Text style={{fontSize:16,paddingLeft:13,color:formLeftText,marginLeft:10,marginRight:10}} >{this.submitDataArr[index].showOtherCarType?'其他':this.submitDataArr[index].carType}</Text>
                 <Image style={{width:7,height:12,resizeMode:'contain'}} source={require('./image/right_arrow.png')}/>
               </View>
             </TouchableHighlight>
           </View>
-          <View style={{width:W,height:this.state.showOtherCarTextInput?1:0,backgroundColor:backgroundGrey}} />
+          <View style={{width:W,height:this.submitDataArr[index].showOtherCarType?1:0,backgroundColor:backgroundGrey}} />
           {
-            this.state.showOtherCarTextInput?
+            this.submitDataArr[index].showOtherCarType?
               <Input label={'其他类型'} placeholder={'请输入其他车辆类型'} maxLength={18} style={{flex:1, height: 40, paddingLeft:10}} noBorder={true} onChange={(text) => { this.onChangeText(text,index,'OtherCarType') }}/>
               :
               null

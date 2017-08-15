@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import { NavigationActions } from 'react-navigation'
 
-import { W, H, backgroundGrey,formLeftText } from '../../configs/index.js';/** 自定义配置参数 */
+import { W, H, backgroundGrey,formLeftText,Version } from '../../configs/index.js';/** 自定义配置参数 */
 import { ProgressView } from '../../components/index.js';  /** 自定义组件 */
 import * as Contract from '../../service/contract.js'; /** api方法名 */
 import { create_service, getStore } from '../../redux/index.js'; /** 调用api的Action */
@@ -66,7 +66,7 @@ class SettingView extends Component {
           <TouchableHighlight style={{marginTop:10,height:44,width:W}} underlayColor='#B4B4B4' disabled={true}>
             <View style={{flex:1,flexDirection:'row',backgroundColor:'#ffffff',alignItems:'center',paddingLeft:20}}>
               <View style={{width:6,height:6,borderRadius:3,backgroundColor:'#1C79D9',alignSelf:'center'}} />
-              <Text style={{fontSize:16,marginLeft:10,color:formLeftText}}>版本号1.0</Text>
+              <Text style={{fontSize:16,marginLeft:10,color:formLeftText}}>版本号{Version}</Text>
             </View>
           </TouchableHighlight>
         </View>

@@ -94,7 +94,7 @@ class ConfirmInformationView extends Component {
         error = `请输入${title}车辆类型`
         break;
       }
-      if (data[i].carInsureNumber && !TextUtility.checkLength(data[i].carInsureNumber, 40, 20)) {
+      if (data[i].carInsureNumber && !TextUtility.checkLength(data[i].carInsureNumber, 40, 10)) {
         error = `请输入${title}保险单号`
         break;
       }
