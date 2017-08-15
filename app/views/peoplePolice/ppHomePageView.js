@@ -197,7 +197,7 @@ class PpHomePageView extends Component {
     // 查看信分期的强制更新跳转，逻辑：isUpgrade -> [isAllUpgrade -> depCodes]
     this.forceUpdate = await this.props.dispatch( create_service(Contract.POST_FORCE_UPDATE, {appType: AppType, appVersion: Version}));
     // console.log('PpHomePageView execute _getData this.forceUpdate -->> ', this.forceUpdate);
-    if(this._checkUpdate(this.forceUpdate)) return;
+    // if(this._checkUpdate(this.forceUpdate)) return;
 
     // 字典需要上传本地的版本
     let v = getStore().getState().dictionary.version;
