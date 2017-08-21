@@ -145,7 +145,12 @@ export default class HistoricalCaseCellView extends Component {
       secondButton = <TouchableHighlight
                        style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:(status == '2' ? '#267BD8':'#ffffff')}} underlayColor={(status == '2' ? '#267BD8':'transparent')} onPress={()=>{
                          if (status == '2') {
-                           this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
+                           let date = new Date()
+                           if (date.getHours() > 8 && date.getHours() < 18) {
+                             this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
+                           } else {
+                             Toast.showShortCenter('请在每天的9:00-18:00之间使用保险报案功能。')
+                           }
                          } else {
                            //保险报案详情
                            this.props.navigation.navigate('InsuranceReportDetailView',{taskno:taskNo,status:status})
