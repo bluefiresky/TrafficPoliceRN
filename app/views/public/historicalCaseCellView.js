@@ -7,7 +7,7 @@ import { StyleSheet, Image, Text, View, TouchableHighlight } from 'react-native'
 import { create_service } from '../../redux/index.js'; /** 调用api的Action */
 import {W, formLeftText, formRightText, mainBule} from '../../configs/index.js';
 import * as Contract from '../../service/contract.js'; /** api方法名 */
-
+import Toast from '@remobile/react-native-toast';
 const PStepToView = {
   '0':'PhotoEvidenceVeiw',
   '1':'GatheringPartyInformationView',
