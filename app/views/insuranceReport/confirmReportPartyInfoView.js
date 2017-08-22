@@ -2,7 +2,7 @@
 * 当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,Alert } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TextInput,TouchableHighlight,Platform,FlatList,Alert,Modal,TouchableOpacity} from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 
@@ -15,13 +15,16 @@ import { XButton } from '../../components/index.js';  /** 自定义组件 */
 import Picker from 'react-native-picker';
 import { ScrollerSegment } from '../../components/index';
 
+const ImageW = (W - 3 * 20) / 2;
+const ImageH = (330 * ImageW)/510;
 class ConfirmReportPartyInfoView extends Component {
 
   constructor(props){
     super(props);
     this.state = {
       refresh:false,
-      loading:false
+      loading:false,
+      showBigImage:false
     }
     this.segDatas = ['当事人甲方', '当事人乙方','当事人丙方','当事人丁方']
     this.rowNum = 2;
@@ -73,12 +76,19 @@ class ConfirmReportPartyInfoView extends Component {
   }
   renderPhotoItem(value,index) {
     return (
-      <View style={{marginLeft:this.rowMargin,marginBottom:15}} key={index}>
-          <Image style={{width: this.rowWH,height: this.rowWH * 0.5,justifyContent:'center',borderColor:'#D4D4D4',borderWidth:1}}
-                 source={{uri: value.url}}>
-          </Image>
-          <Text style={{alignSelf:'center',marginTop:10,color:formLeftText,fontSize:12}}>{value.phototypename}</Text>
-      </View>
+        <TouchableHighlight style={{marginBottom:15}} underlayColor={'transparent'} onPress={() =>{
+          this.currentImgae = value.url
+          this.setState({
+            showBigImage: true
+          })
+        }} key={index}>
+          <View style={{marginLeft:15,marginBottom:15,justifyContent:'center'}}>
+            <Image style={{width: ImageW,height: ImageH,alignSelf:'center'}} source={{uri:value.miniurl}}/>
+            <View style={{flexDirection:'row',alignSelf:'center',marginTop:10}}>
+              <Text style={{color:formLeftText,fontSize:12,marginLeft:5}}>{value.phototypename}</Text>
+            </View>
+          </View>
+        </TouchableHighlight>
     )
   }
   renderOneParty(value) {
@@ -149,6 +159,15 @@ class ConfirmReportPartyInfoView extends Component {
       <View style={styles.container}>
         {content}
         <ProgressView show={this.state.loading}/>
+        <View>
+          <Modal animationType="none" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
+            <TouchableOpacity onPress={() =>{
+              this.setState({showBigImage:false})
+             }} style={styles.modalContainer} underlayColor={'#ffffff'}>
+              <Image source={{uri:this.currentImgae}} style={{width:W,height:(H-200),alignSelf:'center'}} resizeMode='contain'/>
+            </TouchableOpacity>
+          </Modal>
+        </View>
        </View>
     );
   }
@@ -158,7 +177,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: backgroundGrey
-  }
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)'
+  },
 });
 
 module.exports.ConfirmReportPartyInfoView = connect()(ConfirmReportPartyInfoView)
