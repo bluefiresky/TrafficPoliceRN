@@ -169,44 +169,45 @@ class PerfectInformantInfoView extends Component {
                      placeholder = {'请输入报案人车辆车架号'}/>
         </View> */}
         {/* <View style={{backgroundColor:backgroundGrey,height:1,marginTop:15,marginLeft:15}}></View> */}
-        <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-          <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>驾驶证有效期是否正常</Text>
-          <TouchableHighlight style={{marginRight:15}} underlayColor={'transparent'} onPress={()=>{
+        <TouchableHighlight style={{marginTop:10}} underlayColor={'transparent'} onPress={()=>{
             value.driverflag = !value.driverflag
             this.data[ind].driverflag = (value.driverflag ? 1 : 0)
             this.setState({
               refresh: true
             })
-          }}>
-            <Image source={selImage1} style={{width:19,height:19,alignSelf:'center'}}/>
-          </TouchableHighlight>
-        </View>
+        }}>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
+            <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>驾驶证有效期是否正常</Text>
+            <Image source={selImage1} style={{width:19,height:19,alignSelf:'center',marginRight:15}}/>
+          </View>
+        </TouchableHighlight>
+
         <View style={{backgroundColor:backgroundGrey,height:1,marginTop:15,marginLeft:15}}></View>
-        <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-          <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>行驶证有效期是否正常</Text>
-          <TouchableHighlight style={{marginRight:15}} underlayColor={'transparent'} onPress={()=>{
+        <TouchableHighlight style={{marginTop:10}} underlayColor={'transparent'} onPress={()=>{
             value.drivingflag = !value.drivingflag
             this.data[ind].drivingflag = (value.drivingflag ? 1 : 0)
             this.setState({
               refresh: true
             })
-          }}>
-            <Image source={selImage2} style={{width:19,height:19,alignSelf:'center'}}/>
-          </TouchableHighlight>
-        </View>
+        }}>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
+            <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>行驶证有效期是否正常</Text>
+            <Image source={selImage2} style={{width:19,height:19,alignSelf:'center',marginRight:15}}/>
+          </View>
+        </TouchableHighlight>
         <View style={{backgroundColor:backgroundGrey,height:1,marginTop:15,marginLeft:15}}></View>
-        <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-          <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>准驾车型与车辆类型是否匹配</Text>
-          <TouchableHighlight style={{marginRight:15}} underlayColor={'transparent'} onPress={()=>{
+        <TouchableHighlight style={{marginTop:10}} underlayColor={'transparent'} onPress={()=>{
             value.matchingflag = !value.matchingflag
             this.data[ind].matchingflag = (value.matchingflag ? 1 : 0)
             this.setState({
               refresh: true
             })
-          }}>
-            <Image source={selImage3} style={{width:19,height:19,alignSelf:'center'}}/>
-          </TouchableHighlight>
-        </View>
+        }}>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
+            <Text style={{marginLeft:15,color:formLeftText,alignSelf:'center'}}>准驾车型与车辆类型是否匹配</Text>
+            <Image source={selImage3} style={{width:19,height:19,alignSelf:'center',marginRight:15}}/>
+          </View>
+        </TouchableHighlight>
         <View style={{backgroundColor:backgroundGrey,height:1,marginTop:15,marginLeft:15}}></View>
         <View style={{marginTop:10,marginLeft:15}}>
           <Text style={{color:formLeftText}}>

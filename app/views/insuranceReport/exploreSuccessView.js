@@ -36,11 +36,11 @@ class ExploreSuccessView extends Component {
                      showsVerticalScrollIndicator={false}>
           <Image source={require('./image/export_success.png')} style={{width:100,height:100,marginTop:(Platform.OS === 'ios') ? 94 : 74,alignSelf:'center'}}/>
           <View style={{marginTop:20,marginLeft:15,width:W-30}}>
-            <Text style={{alignSelf:'center',fontSize:16,color:formLeftText}}>
-              现场查勘完成！
+            <Text style={{alignSelf:'center',fontSize:16,color:formLeftText,lineHeight:20,textAlign:'center'}}>
+              查勘完成请等待工作人员审核！
             </Text>
-            <Text style={{alignSelf:'center',fontSize:14,color:formLeftText,lineHeight:20,marginTop:5,textAlign:'center',marginTop:50}}>
-              此案件已现场查勘成功，相关事故及查勘信息已传至保险公司，请告知当事人注意接听保险公司电话！
+            <Text style={{alignSelf:'center',fontSize:14,color:formLeftText,lineHeight:20,marginTop:5,textAlign:'center',marginTop:30}}>
+              最多5分钟，审核结果会以短信的形式告知您。
             </Text>
           </View>
            <View style={{marginLeft:15,marginBottom:10,marginTop:30}}>

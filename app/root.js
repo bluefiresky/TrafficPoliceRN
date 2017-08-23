@@ -51,7 +51,7 @@ const PublicNavigator = StackNavigator({
   SettingView: { screen: SettingView, navigationOptions: { title: '设置'} },
   FeedBackView: { screen: FeedBackView, navigationOptions: { title: '意见反馈'} },
   HistoricalCaseView: { screen: HistoricalCaseView},
-  CaseDetailsView: { screen: CaseDetailsView, navigationOptions: { title: '案件详情'} },
+  CaseDetailsView: { screen: CaseDetailsView, navigationOptions: { title: '事故详情'} },
   LookBigImageView: { screen: LookBigImageView, navigationOptions: { title: '查看大图'} },
   LookConclusionView: { screen: LookConclusionView, navigationOptions: { title: '案件详情'} },
   SignatureView: {screen: SignatureView, navigationOptions: {title: '签名'} },
@@ -95,7 +95,7 @@ const PublicNavigator = StackNavigator({
   ExploreTakePhotoView: { screen: ExploreTakePhotoView, navigationOptions: { title: '查勘拍照'} },
   ConfirmReportPartyInfoView: { screen: ConfirmReportPartyInfoView, navigationOptions: { title: '确认信息'} },
   ExploreSuccessView: { screen: ExploreSuccessView, navigationOptions: { title: '完成'} },
-  InsuranceReportDetailView: { screen: InsuranceReportDetailView, navigationOptions: { title: '案件详情'} },
+  InsuranceReportDetailView: { screen: InsuranceReportDetailView, navigationOptions: { title: '保险报案详情'} },
 
 },{
   headerMode: 'screen',

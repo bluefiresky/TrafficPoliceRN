@@ -158,7 +158,7 @@ export default class HistoricalCaseCellView extends Component {
                        }}>
                          <Text style={{color:(status == '2' ? '#ffffff':'#267BD8'),alignSelf:'center'}}>{status == '2' ? '保险报案' : '保险报案详情'}</Text>
                      </TouchableHighlight>
-    }
+      }
       if (status != '2') {
         if (status == '3' || status == '13') {
           thirdButton = <TouchableHighlight style={{borderColor:'#267BD8',borderWidth:1,width:(W-82)/3,paddingVertical:8,borderRadius:50,marginLeft:15,backgroundColor:'#267BD8'}} underlayColor='#267BD8' onPress={()=>{
