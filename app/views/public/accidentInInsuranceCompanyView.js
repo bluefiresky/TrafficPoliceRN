@@ -20,23 +20,30 @@ import zgpa from './image/zgpa.png'
 import zgrs from './image/zgrs.png'
 import zhbx from './image/zhbx.png'
 import ygbx from './image/ygbx.png'
-var sections = [{"key": "A",data:[{title:'安邦财产保险股份有限公司',code:'110000003025'},{title:'安诚财产保险股份有限公司',code:'110000003045'},{title:'安华农业保险股份有限公司',code:'110000003027'},{title:'安盛天平财产保险股份有限公司',code:'110000003051'},
-                  {title:'安联财产保险（中国）有限公司',code:'110000010001'},{title:'安心财产保险有限责任公司',code:'110000010006'}]},
+var sections = [
+                {"key": "A",data:[{title:'安邦财产保险股份有限公司',code:'110000003025'},{title:'安诚财产保险股份有限公司',code:'110000003045'},{title:'安华农业保险股份有限公司',code:'110000003027'},{title:'安盛天平财产保险股份有限公司',code:'110000003051'},
+                  {title:'安联财产保险（中国）有限公司',code:'110000010001'},{title:'安心财产保险有限责任公司',code:'110000010006'},{title:'安信农业保险股份有限公司',code:'110000010026'}]},
                 {"key": "B",data:[{title:'渤海财产保险股份有限公司',code:'110000003053'},{title:'北部湾财产保险股份有限公司',code:'110000010004'}]},
-                {"key": "C",data:[{title:'长安责任保险股份有限公司',code:'110000003059'},{title:'长江财产保险股份有限公司',code:'110000003077'}]},
+                {"key": "C",data:[{title:'长安责任保险股份有限公司',code:'110000003059'},{title:'长江财产保险股份有限公司',code:'110000003077'},{title:'诚泰财产保险股份有限公司',code:'110000010010'}]},
                 {"key": "D",data:[{title:'东京海上日动火灾保险(中国)有限公司',code:'110000004001'},{title:'都邦财产保险股份有限公司',code:'110000003035'},{title:'鼎和财产保险股份有限公司',code:'110000010002'}]},
-                {"key": "F",data:[{title:'富德财产保险股份有限公司',code:'110000003087'}]},
-                {"key": "G",data:[{title:'国泰财产保险有限责任公司',code:'110000004029'}]},
-                {"key": "H",data:[{title:'合众财产保险股份有限公司',code:'110000003091'},{title:'华安财产保险股份有限公司',code:'110000003013'},{title:'华农财产保险股份有限公司',code:'110000003037'},{title:'华泰财产保险股份有限公司',code:'110000003017'}]},
+                {"key": "F",data:[{title:'富德财产保险股份有限公司',code:'110000003087'},{title:'富邦财产保险有限公司',code:'110000010011'}]},
+                {"key": "G",data:[{title:'国泰财产保险有限责任公司',code:'110000004029'},{title:'国元农业保险股份有限公司',code:'110000010012'}]},
+                {"key": "H",data:[{title:'合众财产保险股份有限公司',code:'110000003091'},{title:'华安财产保险股份有限公司',code:'110000003013'},{title:'华农财产保险股份有限公司',code:'110000003037'},{title:'华泰财产保险股份有限公司',code:'110000003017'},
+                  {title:'恒邦财产保险股份有限公司',code:'110000010016'},{title:'华海财产保险股份有限公司',code:'110000010017'},{title:'海峡金桥财产保险股份有限公司',code:'110000010022'}]},
+                {"key": "J",data:[{title:'锦泰财产保险股份有限公司',code:'110000010013'},{title:'久隆财产保险有限公司',code:'110000010021'},{title:'建信财产保险有限公司',code:'110000010024'}]},
                 {"key": "L",data:[{title:'利宝保险有限公司',code:'110000004017'}]},
+                {"key": "M",data:[{title:'美亚财产保险有限公司',code:'110000010025'}]},
                 {"key": "R",data:[{title:'日本财产保险(中国)有限公司',code:'110000004033'}]},
                 {"key": "S",data:[{title:'三井住友海上火灾保险(中国)有限公司',code:'110000004011'},{title:'三星财产保险（中国）有限公司',code:'110000004013'},{title:'史带财产保险股份有限公司',code:'110000003071'}]},
-                {"key": "T",data:[{title:'太平财产保险有限公司',code:'110000003019'},{title:'泰山财产保险股份有限公司',code:'110000004602'},{title:'天安保险股份有限公司',code:'110000003009'}]},
-                {"key": "X",data:[{title:'信达财产保险股份有限公司',code:'110000003067'},{title:'现代财产保险(中国)有限公司',code:'110000004015'},{title:'新疆前海联合财产保险股份有限公司',code:'110000010005'}]},
-                {"key": "Y",data:[{title:'阳光财产保险股份有限公司',code:'110000003033'},{title:'燕赵财产保险股份有限公司',code:'110000004603'},{title:'英大泰和财产保险股份有限公司',code:'110000003057'},{title:'永安财产保险股份有限公司',code:'110000003015'},{title:'永诚财产保险股份有限公司',code:'110000003029'},{title:'亚太财产保险有限公司',code:'110000003049'}]},
+                {"key": "T",data:[{title:'太平财产保险有限公司',code:'110000003019'},{title:'泰山财产保险股份有限公司',code:'110000004602'},{title:'天安保险股份有限公司',code:'110000003009'},{title:'泰康在线财产保险股份有限公司',code:'110000010023'}]},
+                {"key": "X",data:[{title:'信达财产保险股份有限公司',code:'110000003067'},{title:'现代财产保险(中国)有限公司',code:'110000004015'},{title:'新疆前海联合财产保险股份有限公司',code:'110000010005'},{title:'鑫安汽车保险股份有限公司',code:'110000010015'}]},
+                {"key": "Y",data:[{title:'阳光财产保险股份有限公司',code:'110000003033'},{title:'燕赵财产保险股份有限公司',code:'110000004603'},{title:'英大泰和财产保险股份有限公司',code:'110000003057'},{title:'永安财产保险股份有限公司',code:'110000003015'},
+                  {title:'永诚财产保险股份有限公司',code:'110000003029'},{title:'亚太财产保险有限公司',code:'110000003049'},{title:'阳光农业相互保险公司',code:'110000010014'}]},
                 {"key": "Z",data:[{title:'浙商财产保险股份有限公司',code:'110000003039'},{title:'中煤财产保险股份有限公司',code:'110000004601'},{title:'中国大地财产保险股份有限公司',code:'110000004501'},{title:'中国人寿财产保险股份有限公司',code:'110000003043'},
                   {title:'中国人民财产保险股份有限公司', code:'110000003001'},{title:'中国太平洋财产保险股份有限公司',code:'110000003003'},{title:'中国平安财产保险股份有限公司',code:'110000003005'},{title:'中华联合财产保险股份有限公司',code:'110000003007'},
-                  {title:'中银保险有限公司',code:'110000003047'},{title:'中意财产保险有限公司',code:'110000004503'},{title:'紫金财产保险股份有限公司',code:'110000003073'},{title:'众诚汽车保险股份有限公司',code:'110000010003'}]}];
+                  {title:'中银保险有限公司',code:'110000003047'},{title:'中意财产保险有限公司',code:'110000004503'},{title:'紫金财产保险股份有限公司',code:'110000003073'},{title:'众诚汽车保险股份有限公司',code:'110000010003'},{title:'中国铁路财产保险自保有限公司',code:'110000010007'},{title:'珠峰财产保险股份有限公司',code:'110000010008'},
+                  {title:'中航安盟保险有限公司',code:'110000010009'},{title:'中原农业保险股份有限公司',code:'110000010018'},{title:'中路财产保险股份有限公司',code:'110000010019'},{title:'众安在线财产保险股份有限公司',code:'110000010020'}]}
+               ];
 class AccidentInsuranceCompanyView extends Component {
 
   constructor(props){
@@ -108,7 +115,7 @@ class AccidentInsuranceCompanyView extends Component {
           ListHeaderComponent={this.renderHearer.bind(this)}
           renderSectionHeader={this.renderSectionHeader.bind(this)}
           sections={sections}
-          ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:backgroundGrey,width:W,height:0.5}}></View>)}}
+          ItemSeparatorComponent={()=>{return(<View style={{backgroundColor:backgroundGrey,width:W,height:StyleSheet.hairlineWidth}}></View>)}}
           keyExtractor={(data,index) => {return index}}
           style={styles.container}
           showsVerticalScrollIndicator={false}
