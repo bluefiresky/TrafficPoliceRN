@@ -179,9 +179,9 @@ class AccidentConditionView extends Component {
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{height:15, width:W}}/>
-          <FormPicker label={'本次事故形态'} placeholder={'请选择事故形态'} value={taskModal? taskModal.name:null} onChange={(res)=>{this.setState({taskModal:res})} } data={this.accidentFormData} noBorder={true}/>
+          <FormPicker label={'本次事故形态'} placeholder={'请选择事故形态'} value={taskModal} onChange={(res)=>{this.setState({taskModal:res})} } data={this.accidentFormData} noBorder={true}/>
           <View style={{height:15, width:W}}/>
-          <SituationPicker label={'本次事故情形'} placeholder={'请选择事故情形'} value={accidentDes?accidentDes.name:null} onChange={(res)=>{this.setState({accidentDes:res})}} data={this.accidentCondition} noBorder={true}/>
+          <SituationPicker label={'本次事故情形'} placeholder={'请选择事故情形'} value={accidentDes} onChange={(res)=>{this.setState({accidentDes:res})}} data={this.accidentCondition} noBorder={true}/>
 
           <View style={{marginTop:15,backgroundColor:'#ffffff'}}>
             <View style={{flexDirection:'row',backgroundColor:'#ffffff',marginTop:10}}>

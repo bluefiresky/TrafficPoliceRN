@@ -7,8 +7,11 @@ import React, { Component } from 'react';
 
 import _Picker from 'react-native-picker';
 
-import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, TouchableHighlight, Platform, Image  } from 'react-native';
-import { W, borderColor, formLeftText, formRightText, commonText, placeholderColor } from '../../configs/index.js';
+import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, TouchableHighlight, Platform, Image, Modal, TouchableOpacity } from 'react-native';
+import { W, H, borderColor, formLeftText, formRightText, commonText, placeholderColor, mainBule } from '../../configs/index.js';
+
+const ModalW = W - 60;
+const ModalH = H - 100;
 
 export class FormPicker extends Component {
 
@@ -18,6 +21,9 @@ export class FormPicker extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      show:false
+    }
 
     this._onPress = this._onPress.bind(this);
     this._onChangeText = this._onChangeText.bind(this);
@@ -25,25 +31,27 @@ export class FormPicker extends Component {
     this.labelArray = [];
   }
 
-  componentDidMount(){
-    this.data.forEach( (entry) => {
-      this.labelArray.push(entry.name)
-    })
-  }
+  // componentDidMount(){
+  //   this.data.forEach( (entry) => {
+  //     this.labelArray.push(entry.name)
+  //   })
+  // }
 
   _onPress(){
-    let self = this;
-    _Picker.init({
-        pickerData: this.labelArray,
-        pickerConfirmBtnText: '确认',
-        pickerCancelBtnText: '取消',
-        pickerTitleText: '',
-        onPickerConfirm: label => {
-          let entry = self._getValueByLabel(this.data, label[0]);
-          self._onChangeText(entry)
-        }
-    });
-    _Picker.show();
+    this.setState({show:true})
+    // let self = this;
+    // _Picker.init({
+    //     pickerData: this.labelArray,
+    //     pickerConfirmBtnText: '确认',
+    //     pickerCancelBtnText: '取消',
+    //     pickerTitleText: '',
+    //     onPickerConfirm: label => {
+    //       let entry = self._getValueByLabel(this.data, label[0]);
+    //       self._onChangeText(entry)
+    //     }
+    // });
+    // _Picker.show();
+
   }
 
   _getValueByLabel(array, label){
@@ -68,6 +76,7 @@ export class FormPicker extends Component {
 
   render(){
     let { label, labelWidth, placeholder, noBorder, /** fields */value } = this.props;
+    let { show } = this.state;
     const border = noBorder? null : { borderBottomColor :  borderColor, borderBottomWidth: 0.5 };
 
     return(
@@ -80,7 +89,7 @@ export class FormPicker extends Component {
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
               {
                 value && value != ''?
-                <Text style={{fontSize: 14, color: commonText}} numberOfLines={2} >{value}</Text>
+                <Text style={{fontSize: 14, color: commonText}} numberOfLines={2} >{value.name}</Text>
                 :
                 <Text style={{fontSize: 14, color: placeholderColor}}>{placeholder}</Text>
               }
@@ -90,7 +99,48 @@ export class FormPicker extends Component {
             </View>
           </View>
         </TouchableWithoutFeedback>
+        {this.renderModal(show, value)}
+      </View>
+    )
+  }
+
+  renderModal(show, select){
+    return(
+      <View>
+        <Modal animationType="slide" transparent={true} visible={show} onRequestClose={() => {}}>
+          <TouchableOpacity onPress={() => this.setState({show:false})} style={styles.modalContainer} activeOpacity={1}>
+            <View style={{width:ModalW, borderRadius:10, backgroundColor:'white', flexDirection:'row', flexWrap:'wrap', padding:5}}>
+              {this.data.map((value, index) => {
+                let show = (select && (select.code == value.code))? {back:mainBule, border:mainBule, text:'white'} : {back:'white', border:formRightText, text:formRightText};
+                return(
+                  <TouchableOpacity
+                    key={index} activeOpacity={0.8} style={{margin:5, backgroundColor:show.back, borderColor:show.border, borderWidth:1, borderRadius:5, paddingVertical:3, paddingHorizontal:5}}
+                    onPress={()=>{
+                      this._onChangeText(value);
+                      this.setState({show:false})
+                    }} >
+                    <Text style={{fontSize:16, color:show.text, includeFontPadding:false, textAlignVertical:'center'}}>{value.name}</Text>
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
+          </TouchableOpacity>
+        </Modal>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    alignItems: 'center'
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)'
+  }
+});
