@@ -22,26 +22,26 @@ class InsuranceReportPartyInfoView extends Component {
       refresh: false,
       loading: false
     }
-    this.partyData = [];
+    this.partyData = props.navigation.state.params.partyData;
   }
   componentDidMount(){
-    let { taskno } = this.props.navigation.state.params
-    this.setState({
-      loading:true
-    })
-    this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: taskno}))
-      .then( res => {
-        if (res && res.personList.length > 0) {
-          this.partyData = res.personList
-          for (var i = 0; i < this.partyData.length; i++) {
-            //1代表无责
-            this.partyData[i].isReport = (this.partyData[i].dutyCode != '1')
-          }
-        }
-        this.setState({
-          loading:false
-        })
-    })
+    // let { taskno } = this.props.navigation.state.params
+    // this.setState({
+    //   loading:true
+    // })
+    // this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: taskno}))
+    //   .then( res => {
+    //     if (res && res.personList.length > 0) {
+    //       this.partyData = res.personList
+    //       for (var i = 0; i < this.partyData.length; i++) {
+    //         //1代表无责
+    //         this.partyData[i].isReport = (this.partyData[i].dutyCode != '1')
+    //       }
+    //     }
+    //     this.setState({
+    //       loading:false
+    //     })
+    // })
   }
   //下一步
   gotoNext(){
