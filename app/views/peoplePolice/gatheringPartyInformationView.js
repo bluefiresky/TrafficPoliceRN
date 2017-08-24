@@ -233,6 +233,7 @@ class GatheringPartyInformationView extends Component {
         if (type == 'carTypeData') {
           if (data[0] == '其他') {
             self.submitDataArr[index].showOtherCarType = true;
+            self.submitDataArr[index].carType = '';
           } else {
             self.submitDataArr[index].carType = data[0];
             self.submitDataArr[index].showOtherCarType = false;

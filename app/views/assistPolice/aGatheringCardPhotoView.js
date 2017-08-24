@@ -2,7 +2,7 @@
 * 协警当事人信息页面
 */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView,TouchableHighlight,Platform,Alert,InteractionManager } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView,TouchableHighlight,Platform,Alert,InteractionManager,Modal,TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 import Toast from '@remobile/react-native-toast';
 import ImagePicker from 'react-native-image-picker';
@@ -27,9 +27,11 @@ const photoOption = {
   maxWidth: 750,
   maxHeight: 1000,
   quality: 0.5,
+  rotation: 90,
   storageOptions: { cameraRoll:true, skipBackup: true, path: 'images' }
 }
 const DocumentPath = Platform.select({ android: 'file://', ios: RNFS.DocumentDirectoryPath + '/images/' });
+const BigImageH = H-200
 
 class AGatheringCardPhotoView extends Component {
 
@@ -38,9 +40,13 @@ class AGatheringCardPhotoView extends Component {
     this.state = {
       showTip: false,
       tipParams: {},
-      loading:false
+      loading:false,
+      showBigImage:false,
     }
     this.carInfoData = [];
+    this.currentImgae = null;
+    this.currentImgaeIndex = -1;
+    this.currentCarInfoDataIndex = -1;
   }
 
   async componentDidMount(){
@@ -61,7 +67,39 @@ class AGatheringCardPhotoView extends Component {
   takePhoto(index,ind){
     //点击其它是拍照
     let self = this;
+    let p = self.carInfoData[ind].data[index];
+    if (p.photoData) {
+      this.currentImgae = p.photoData;
+      this.currentCarInfoDataIndex = ind;
+      this.currentImgaeIndex = index;
+      this.setState({ showBigImage: true })
+
+    } else {
+      ImagePicker.showImagePicker(photoOption, (response) => {
+        if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
+          console.log('AGatheringCardPhotoView and ImagePicker response -->> ', response);
+          let photoData;
+          if(Platform.OS === 'ios'){
+            photoData = response.uri.substring(response.uri.lastIndexOf('/')+1);
+          }else{
+            photoData = response.path;
+          }
+
+          // let p = self.carInfoData[ind].data[index];
+          p.photoData = photoData;
+          p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
+          self.setState({refresh: true})
+        }
+      });
+    }
+  }
+
+  //重拍
+  reTakePhoto(){
+    let self = this;
+    let p = self.carInfoData[this.currentCarInfoDataIndex].data[this.currentImgaeIndex];
     ImagePicker.showImagePicker(photoOption, (response) => {
+      this.setState({ showBigImage: false });
       if (response.didCancel) {} else if (response.error) {} else if (response.customButton) {} else {
         console.log('AGatheringCardPhotoView and ImagePicker response -->> ', response);
         let photoData;
@@ -71,13 +109,14 @@ class AGatheringCardPhotoView extends Component {
           photoData = response.path;
         }
 
-        let p = self.carInfoData[ind].data[index];
+        // let p = self.carInfoData[ind].data[self.currentImgaeIndex];
         p.photoData = photoData;
         p.photoDate = Utility.formatDate('yyyy-MM-dd hh:mm:ss')
         self.setState({refresh: true})
       }
     });
   }
+
   //信息采集完成
   gotoNext(){
     this.setState({loading:true})
@@ -148,6 +187,19 @@ class AGatheringCardPhotoView extends Component {
              </View>
            </View>
         </ScrollView>
+        <View>
+          <Modal animationType="slide" transparent={true} visible={this.state.showBigImage} onRequestClose={() => {}}>
+            <TouchableOpacity onPress={() => this.setState({showBigImage:false})} style={styles.modalContainer} activeOpacity={1}>
+             <View style={{flex:1, marginTop:60}}>
+               <Image source={{uri:DocumentPath+this.currentImgae, isStatic:true}} style={{width:W,height:BigImageH,resizeMode:'contain'}}/>
+             </View>
+              <View style={{height:60, flexDirection:'row', alignItems: 'center', justifyContent:'center'}}>
+                <XButton title={'重拍'} onPress={() => this.reTakePhoto()} style={{backgroundColor:'#ffffff',borderRadius:20,width:(W-90)/2,borderWidth:1,borderColor:'#267BD8'}} textStyle={{color:'#267BD8',fontSize:14}}/>
+                <XButton title={'返回'} onPress={() => this.setState({showBigImage:false})} style={{backgroundColor:'#267BD8',borderRadius:20,width:(W-90)/2}} textStyle={{color:'#ffffff',fontSize:14}} disabled={this.currentImgaeIndex < 3}/>
+              </View>
+            </TouchableOpacity>
+          </Modal>
+        </View>
         <TipModal show={this.state.showTip} {...this.state.tipParams} />
         <ProgressView show={this.state.loading} hasTitleBar={true} />
       </View>
@@ -160,6 +212,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: backgroundGrey
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.9)'
   }
 });
 
