@@ -36,7 +36,7 @@ export default class TrafficPoliceRN extends Component {
       global.stackKeys = {};
       global.personal = state.personal;
       global.storage = storage;
-      global.openInsurance = false;
+      global.openInsurance = true;
       AsyncStorage.getItem("has_open_app")
         .then((data) => {
           this.setState({store: store, guide: data})
