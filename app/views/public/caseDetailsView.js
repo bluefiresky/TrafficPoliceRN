@@ -234,12 +234,22 @@ class CaseDetailsView extends Component {
           this.props.navigation.navigate('CommonWebView', {title:button1Text, url:pageUrl})
         }
       }else{
-        let date = new Date()
-        if (date.getHours() > 8 && date.getHours() < 18) {
-          this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
-        } else {
-          Toast.showShortCenter('请在每天的9:00-18:00之间使用保险报案功能。')
-        }
+        this.setState({
+          loading: true
+        })
+        this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: taskNo}))
+          .then( res => {
+            if (res && res.personList.length > 0) {
+              let partyData = res.personList
+              for (var i = 0; i < partyData.length; i++) {
+                partyData[i].isReport = (partyData[i].dutyCode != '1')
+              }
+              this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo,partyData:partyData})
+            }
+            this.setState({
+              loading: false
+            })
+        })
       }
     }else if(this.type === 2){  // 本地案件
       if(t === 1){

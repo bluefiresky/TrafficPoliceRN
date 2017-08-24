@@ -63,12 +63,22 @@ class UploadSuccessView extends Component {
       await StorageHelper.removeItem(global.personal.mobile+'unuploaded', global.currentCaseId)
       await StorageHelper.removeItem(global.personal.mobile+'uncompleted', global.currentCaseId);
       let deleteRes = Utility.deleteFileByName(global.currentCaseId)
-      let date = new Date()
-      if (date.getHours() > 8 && date.getHours() < 18) {
-        this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo})
-      } else {
-        Toast.showShortCenter('请在每天的9:00-18:00之间使用保险报案功能。')
-      }
+      this.setState({
+        loading: true
+      })
+      this.props.dispatch( create_service(Contract.POST_ACCIDENT_PERSON, {taskNum: taskNo}))
+        .then( res => {
+          if (res && res.personList.length > 0) {
+            let partyData = res.personList
+            for (var i = 0; i < partyData.length; i++) {
+              partyData[i].isReport = (partyData[i].dutyCode != '1')
+            }
+            this.props.navigation.navigate('InsuranceReportPartyInfoView',{taskno:taskNo,partyData:partyData})
+          }
+          this.setState({
+            loading: false
+          })
+      })
     }
   }
 }
