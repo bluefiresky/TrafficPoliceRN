@@ -21,20 +21,22 @@ import zgrs from './image/zgrs.png'
 import zhbx from './image/zhbx.png'
 import ygbx from './image/ygbx.png'
 var sections = [{"key": "A",data:[{title:'安邦财产保险股份有限公司',index:23},{title:'安诚财产保险股份有限公司',index:16},{title:'安华农业保险股份有限公司',index:26},{title:'安盛天平财产保险股份有限公司',index:32}]},
-                {"key": "B",data:[{title:'北京保险行业协会',index:37},{title:'渤海财产保险股份有限公司',index:33}]},
+                {"key": "B",data:[{title:'渤海财产保险股份有限公司',index:33}]},
                 {"key": "C",data:[{title:'长安责任保险股份有限公司',index:1},{title:'长江财产保险股份有限公司',index:35}]},
-                {"key": "D",data:[{title:'东京海上日动火灾保险(中国)有限公司',index:34},{title:'都邦财产保险股份有限公司',index:40}]},
+                {"key": "D",data:[{title:'东京海上日动火灾保险(中国)有限公司',index:34},{title:'都邦财产保险股份有限公司',index:39}]},
                 {"key": "F",data:[{title:'富德财产保险股份有限公司',index:15}]},
                 {"key": "G",data:[{title:'国泰财产保险有限责任公司',index:4}]},
-                {"key": "H",data:[{title:'合众财产保险股份有限公司',index:41},{title:'华安财产保险股份有限公司',index:39},{title:'华农财产保险股份有限公司',index:0},{title:'华泰财产保险股份有限公司',index:6}]},
+                {"key": "H",data:[{title:'合众财产保险股份有限公司',index:40},{title:'华安财产保险股份有限公司',index:38},{title:'华农财产保险股份有限公司',index:0},{title:'华泰财产保险股份有限公司',index:6}]},
                 {"key": "L",data:[{title:'利宝保险有限公司',index:24}]},
-                {"key": "M",data:[{title:'民安保险(中国)有限公司',index:27}]},
+                {"key": "M",data:[{title:'亚太财产保险有限公司',index:27}]},
                 {"key": "R",data:[{title:'日本财产保险(中国)有限公司',index:14}]},
-                {"key": "S",data:[{title:'三井住友海上火灾保险(中国)有限公司',index:13},{title:'三星财产保险（中国）有限公司',index:18},{title:'史带财产保险股份有限公司',index:42}]},
-                {"key": "T",data:[{title:'太平财产保险有限公司',index:8},{title:'泰山财产保险股份有限公司',index:11},{title:'天安保险股份有限公司',index:30}]},
+                {"key": "S",data:[{title:'三井住友海上火灾保险(中国)有限公司',index:13},{title:'三星财产保险（中国）有限公司',index:18},{title:'史带财产保险股份有限公司',index:41}]},
+                {"key": "T",data:[{title:'太平财产保险有限公司',index:9},{title:'泰山财产保险股份有限公司',index:11},{title:'天安保险股份有限公司',index:30}]},
                 {"key": "X",data:[{title:'信达财产保险股份有限公司',index:17},{title:'现代财产保险(中国)有限公司',index:21}]},
-                {"key": "Y",data:[{title:'阳光财产保险股份有限公司',index:36},{title:'燕赵财产保险股份有限公司',index:9},{title:'英大泰和财产保险股份有限公司',index:38},{title:'永安财产保险股份有限公司',index:2},{title:'永诚财产保险股份有限公司',index:29}]},
-                {"key": "Z",data:[{title:'浙商财产保险股份有限公司',index:3},{title:'中煤财产保险股份有限公司',index:5},{title:'中国大地财产保险股份有限公司',index:7},{title:'中国人寿财产保险股份有限公司',index:12},{title:'中国人民财产保险股份有限公司',index:19},{title:'中国太平洋财产保险股份有限公司',index:22},{title:'中国平安财产保险股份有限公司',index:25},{title:'中华联合财产保险股份有限公司',index:28},{title:'中银保险有限公司',index:20},{title:'中意财产保险有限公司',index:10},{title:'紫金财产保险股份有限公司',index:31}]}];
+                {"key": "Y",data:[{title:'阳光财产保险股份有限公司',index:36},{title:'燕赵财产保险股份有限公司',index:8},{title:'英大泰和财产保险股份有限公司',index:37},{title:'永安财产保险股份有限公司',index:2},{title:'永诚财产保险股份有限公司',index:29}]},
+                {"key": "Z",data:[{title:'浙商财产保险股份有限公司',index:3},{title:'中煤财产保险股份有限公司',index:5},{title:'中国大地财产保险股份有限公司',index:7},{title:'中国人寿财产保险股份有限公司',index:12},{title:'中国人民财产保险股份有限公司',index:19},
+                {title:'中国太平洋财产保险股份有限公司',index:22},{title:'中国平安财产保险股份有限公司',index:25},{title:'中华联合财产保险股份有限公司',index:28},{title:'中银保险有限公司',index:20},{title:'中意财产保险有限公司',index:10},
+                {title:'紫金财产保险股份有限公司',index:31}]}];
 class SelectInInsuranceCompanyView extends Component {
 
   constructor(props){
