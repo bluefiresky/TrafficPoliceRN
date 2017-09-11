@@ -7,7 +7,7 @@ import { Platform, Dimensions } from "react-native"
 
 const o = Dimensions.get("window")
 
-export const Version = '2.2'
+export const Version = '2.3'
 export const W = o.width
 export const H = o.height
 export const TitleBarHeight = Platform.OS === 'ios' ? 64 : 44
